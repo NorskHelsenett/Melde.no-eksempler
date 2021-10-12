@@ -17,7 +17,8 @@ namespace Example.Toveisdialog
     class Program
     {
         // Points to Melde.no API base
-        private static readonly Uri ApiBaseAddress = new("https://localhost:44342/");
+        //private static readonly Uri ApiBaseAddress = new("https://localhost:44342/");
+        private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
 
         // Points to the HelseId instance you want to use
         private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
@@ -46,34 +47,71 @@ namespace Example.Toveisdialog
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
-            var dialogClient = new DialogClient(httpClient);
+            var dialogClient = new EksternDialogClient(httpClient);
 
-            const string refNr = "Ugyxam";
-            const string epost = "test@nhn.no";
-            const string fnr = "13065906141";
+            const string refNr = "Uww35g";
 
-            // Create dialog
-            var createPayload = new OpprettDialogInfo
+            //
+            // Check wether dialog exists
+            //
+            string dialogRef = null;
+            try
             {
-                UonsketHendelseRefnr = refNr, // PromptForInput("RefNr"),
-                Epostadresse = epost, // PromptForInput("Epost"),
-                Meldeordning = Meldeordning.Varselordningen33A,
-                Meldingstekst = "Dette er en test dialog",
-                Fødselsnummer = fnr
-            };
+                var response = await dialogClient.GetDialogInfoAsync(refNr);
+                dialogRef = response.DialogRef;
+            }
+            catch (ApiException e)
+            {
+                Console.WriteLine(e.StatusCode);
+                Console.WriteLine(e.Message);
+            }
 
-            var createResponse = await dialogClient.BeginDialogAsync(createPayload);
+            //
+            // Create dialog if not existing. Will fail if dialog existed
+            //
+            try
+            {
+                var createPayload = new CreateDialogInfo
+                {
+                    ReportRef = refNr, // PromptForInput("RefNr"),
+                    ReportArea = 2
+                };
 
+                var createdResponse = await dialogClient.StartDialogAsync(createPayload);
+                dialogRef = createdResponse.DialogRef;
+            }
+            catch (ApiException e)
+            {
+                Console.WriteLine(e.StatusCode);
+                Console.WriteLine(e.Message);
+            }
+
+            //
             // Write a message to the newly created dialog
-            var messagePayload = new OpprettDialogMeldingInfo
+            //
+            try
             {
-                DialogRefnr = createResponse.DialogRefnr,
-                Meldingstekst = "Hei hei! Dette er en automatisk melding.",
-                Fødselsnummer = fnr,
-                Epostadresse = epost
-            };
+                var messagePayload = new CreateDialogMessageInfo
+                {
+                    DialogRef = dialogRef,
+                    MessageText = "Hei hei! Melding fra API klient"
+                };
 
-            var messageResponse = await dialogClient.WriteMessageAsync(messagePayload);
+                var messageResponse = await dialogClient.SendMessageAsync(messagePayload);
+            }
+            catch(ApiException e)
+            {
+                Console.WriteLine(e.StatusCode);
+                Console.WriteLine(e.Message);
+            }
+
+            // Expected no unread messages at this point
+            var messages = await dialogClient.GetUnreadMessagesAsync(dialogRef);
+
+            // Manual work: Reply to message from web
+
+            // Expected one or more unread messages at this point
+            var unreadMessages = await dialogClient.GetUnreadMessagesAsync(dialogRef);
         }
 
         private static string PromptForInput(string message)
@@ -169,6 +207,10 @@ namespace Example.Toveisdialog
                 {
                     Type = OidcConstants.ClientAssertionTypes.JwtBearer,
                     Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
+                },
+                Parameters = new Dictionary<string, string>
+                {
+                    { "scope", "nhn:melde/dialog/melding" }
                 }
             };
             var response = await c.RequestTokenAsync(tokenRequest, cancellationToken);

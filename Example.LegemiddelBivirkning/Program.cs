@@ -17,8 +17,8 @@ namespace Example.LegemiddelBivirkning
     class Program
     {
         // Points to Melde.no API base
-        private static readonly Uri ApiBaseAddress = new ("https://localhost:44342/");
-        //private static readonly Uri ApiBaseAddress = new ("https://api.qa.melde.no/");
+        //private static readonly Uri ApiBaseAddress = new ("https://localhost:44342/");
+        private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
 
         // Points to the HelseId instance you want to use
         private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
@@ -34,7 +34,7 @@ namespace Example.LegemiddelBivirkning
                 .AddHttpMessageHandler(_ =>
                 {
                     // Provide your own client id and private key settings
-                    var clientId = "511115ba-a407-4b08-9701-0a1bb247fb26";
+                    var clientId = "<client id>";
                     var jwtPrivateKey = new Dictionary<string, object>
                     {
                         // ... key parts
@@ -50,7 +50,7 @@ namespace Example.LegemiddelBivirkning
             // Fill out request data
             var requestData = new LegemiddelBivirkningRequest
             {
-                EksternSaksId = "MYSYS-R194",
+                EksternSaksId = "MYSYS-R195",
                 Melder = new MelderPart
                 {
                     Fødselsnummer = "13065906141",
@@ -78,6 +78,8 @@ namespace Example.LegemiddelBivirkning
                             Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
                             Batchnummer = "Batchnummer A412"
                         },
+                        PreparatNavn = "Painkillers",
+                        ErVaksine = false
                     },
                     new LegemidlerPart
                     {
@@ -93,6 +95,8 @@ namespace Example.LegemiddelBivirkning
                             Administrasjonssted = LegemiddelAdministrasjonssted.HoyreArm,
                             Dosenummer = Dosenummer.To
                         },
+                        PreparatNavn = "Supervax",
+                        ErVaksine = true
                     }
                 },
                 Symptom = new List<SymptomPart>
@@ -127,8 +131,8 @@ namespace Example.LegemiddelBivirkning
             Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}-------------------------------------------------{Environment.NewLine}{Environment.NewLine}");
 
             // Call the API and wait for response
-            var apiClient = new UonsketHendelseClient(httpClient);
-            var response = await apiClient.LegemiddelBivirkningAsync(null, requestData);
+            var apiClient = new EksternUonsketHendelseClient(httpClient);
+            var response = await apiClient.LegemiddelBivirkningAsync(requestData);
 
             // If the call was succesful write out response
             if (response.Status == HttpStatusCode.OK || response.Status == HttpStatusCode.Created)
