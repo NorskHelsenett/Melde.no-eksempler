@@ -207,10 +207,6 @@ namespace Example.Toveisdialog
                 {
                     Type = OidcConstants.ClientAssertionTypes.JwtBearer,
                     Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
-                },
-                Parameters = new Dictionary<string, string>
-                {
-                    { "scope", "nhn:melde/dialog/melding" }
                 }
             };
             var response = await c.RequestTokenAsync(tokenRequest, cancellationToken);
