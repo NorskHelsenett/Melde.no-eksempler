@@ -94,12 +94,13 @@ namespace Example.Toveisdialog
                 var messagePayload = new CreateDialogMessageInfo
                 {
                     DialogRef = dialogRef,
-                    MessageText = "Hei hei! Melding fra API klient"
+                    MessageText = "Hei hei! Melding fra API klient",
+                    SenderName = "Ola Nordmann"
                 };
 
                 var messageResponse = await dialogClient.SendMessageAsync(messagePayload);
             }
-            catch(ApiException e)
+            catch (ApiException e)
             {
                 Console.WriteLine(e.StatusCode);
                 Console.WriteLine(e.Message);
