@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
+<<<<<<< HEAD
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Toveisdialog", "Example.Toveisdialog.csproj", "{BC11C7DF-4667-4B52-B436-AB4455FA07DB}"
+=======
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example.Toveisdialog", "Example.Toveisdialog.csproj", "{89A567B1-02CE-4116-8225-7DB110E7103D}"
+>>>>>>> b73889a0dc3debf070f68501e49b70267ceabc7f
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +17,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
 		{BC11C7DF-4667-4B52-B436-AB4455FA07DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BC11C7DF-4667-4B52-B436-AB4455FA07DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC11C7DF-4667-4B52-B436-AB4455FA07DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC11C7DF-4667-4B52-B436-AB4455FA07DB}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{89A567B1-02CE-4116-8225-7DB110E7103D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89A567B1-02CE-4116-8225-7DB110E7103D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89A567B1-02CE-4116-8225-7DB110E7103D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89A567B1-02CE-4116-8225-7DB110E7103D}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> b73889a0dc3debf070f68501e49b70267ceabc7f
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+<<<<<<< HEAD
 		SolutionGuid = {D573F72F-0FDD-4F5A-A884-41DD525A7F44}
+=======
+		SolutionGuid = {54F783B9-DB28-42F7-82DE-A1A141309A39}
+>>>>>>> b73889a0dc3debf070f68501e49b70267ceabc7f
 	EndGlobalSection
 EndGlobal
