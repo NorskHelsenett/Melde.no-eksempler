@@ -101,6 +101,90 @@
         ]
       }
     },
+    "/api/ekstern/uonskethendelse/kosmetikk-bivirkning": {
+      "post": {
+        "tags": [
+          "EksternUonsketHendelse"
+        ],
+        "summary": "Meld om bivirkning av kosmetikk. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
+        "description": "Man må enten oppgi pasientens fødselsnummer eller fødselsdato og kjønn.\nVed bruk av et personlig HelseId-token vil fødselsnummer bli hentet derfra.",
+        "operationId": "EksternUonsketHendelse_Kosmetikk",
+        "requestBody": {
+          "x-name": "kos",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KosmetikkRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "En melding har blitt oppdatert.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "En melding har blitt opprettet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ServiceAuthorization": []
+          },
+          {
+            "WebAuthorization": []
+          }
+        ]
+      }
+    },
     "/api/ekstern/uonskethendelse/legemiddel-bivirkning": {
       "post": {
         "tags": [
@@ -565,7 +649,7 @@
             "description": "Påkrevd. Informasjon om melder. For eksempel HPR-Id og e-postadresse.",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MelderPart2"
+                "$ref": "#/components/schemas/Melder"
               }
             ]
           },
@@ -574,7 +658,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/HendelsePart"
+                "$ref": "#/components/schemas/Hendelse"
               }
             ]
           },
@@ -583,7 +667,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientPart2"
+                "$ref": "#/components/schemas/Pasient"
               }
             ]
           },
@@ -591,7 +675,7 @@
             "type": "array",
             "description": "Kontaktpersoner for meldingen",
             "items": {
-              "$ref": "#/components/schemas/KontaktpersonPart"
+              "$ref": "#/components/schemas/Kontaktperson"
             }
           },
           "Parorende": {
@@ -599,7 +683,7 @@
             "description": "Pårørende til den det varsles for.",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/ParorendePart"
+              "$ref": "#/components/schemas/Parorende"
             }
           },
           "AnnenInformasjon": {
@@ -607,7 +691,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/AnnenInformasjonPart2"
+                "$ref": "#/components/schemas/AnnenInformasjon"
               }
             ]
           },
@@ -619,6 +703,32 @@
           "SendToUkom": {
             "type": "boolean",
             "description": "Indikerer om meldingen skal sendes til UKOM eller ikke.\nGjelder kun hvis EksterntSaksSystem er 'MeldeHendelse'.",
+            "nullable": true
+          }
+        }
+      },
+      "AnnenInformasjon": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "VarsletTilFylkesmannen": {
+            "type": "boolean",
+            "description": "Er fylkesmannen varslet?",
+            "nullable": true
+          },
+          "VarsletFylkesmann": {
+            "type": "string",
+            "description": "Navn på fylkesmannen som evt er blitt varslet - eksemplel \"Fylkesmannen i Viken\".",
+            "nullable": true
+          },
+          "TidligereVarslet": {
+            "type": "boolean",
+            "description": "Er forholdet blitt varslet tidligere?",
+            "nullable": true
+          },
+          "TidligereVarsletKanal": {
+            "type": "string",
+            "description": "Om varslet tidligere, hvordan er det i fall blitt varslet? Feks brev til sykehuset.",
             "nullable": true
           }
         }
@@ -645,35 +755,6 @@
             "description": "Eventuelle andre relevante opplysninger. Påkrevd.",
             "nullable": true,
             "example": "Det er mange opplysninger, men de har vi ikke."
-          }
-        }
-      },
-      "AnnenInformasjonPart2": {
-        "type": "object",
-        "description": "Annen informasjon",
-        "additionalProperties": false,
-        "required": [
-          "TidligereVarslet"
-        ],
-        "properties": {
-          "VarsletTilFylkesmannen": {
-            "type": "boolean",
-            "description": "Er fylkesmannen varslet?",
-            "nullable": true
-          },
-          "VarsletFylkesmann": {
-            "type": "string",
-            "description": "Kreves hvis varslet til fylkesmannen.\nNavn på fylkesmannen som evt er blitt varslet - eksemplel \"Fylkesmannen i Viken\".",
-            "nullable": true
-          },
-          "TidligereVarslet": {
-            "type": "boolean",
-            "description": "Er forholdet blitt varslet tidligere?"
-          },
-          "TidligereVarsletKanal": {
-            "type": "string",
-            "description": "Kreves hvis varslet tidligere.\nHvordan er det blitt varslet? Feks brev til sykehuset.",
-            "nullable": true
           }
         }
       },
@@ -741,6 +822,22 @@
           "Ukjent"
         ]
       },
+      "BivirkningVedTidligereBruk": {
+        "type": "string",
+        "description": "Om bivirkning har oppstått ved tidligere bruk av produkt eller lignende produkter",
+        "x-enumNames": [
+          "Ja",
+          "Nei",
+          "Delvis",
+          "VetIkke"
+        ],
+        "enum": [
+          "Ja",
+          "Nei",
+          "Delvis",
+          "VetIkke"
+        ]
+      },
       "Bostedsfylke": {
         "type": "integer",
         "description": "",
@@ -772,6 +869,31 @@
           50,
           54
         ]
+      },
+      "BrukAvProduktetPart": {
+        "type": "object",
+        "description": "Beskriver bruk av et kosmetisk produkt",
+        "additionalProperties": false,
+        "properties": {
+          "ProduktetBruktHvorPaKroppen": {
+            "type": "array",
+            "description": "Hvor på kroppen har produktet blitt brukt? Flere alternativer er mulig.\nSe HvorPaKroppen for definerte steder. Andre steder vil bli AnnetSted, fritekst.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/HvorPaKroppen"
+            }
+          },
+          "LengdeBruk": {
+            "type": "string",
+            "description": "Hvor lenge produktet har blitt brukt",
+            "nullable": true
+          },
+          "BeskrivelseAvBruk": {
+            "type": "string",
+            "description": "Mer informasjon om bruken av produktet",
+            "nullable": true
+          }
+        }
       },
       "CreateDialogInfo": {
         "type": "object",
@@ -944,6 +1066,28 @@
           }
         }
       },
+      "FolgerAvBivirkning": {
+        "type": "string",
+        "description": "Følger av bivirkning\nMan kan også oppgi tekster ikke definert i enumen, de vil da bli tolket som annet, fritekst.",
+        "x-enumNames": [
+          "SykefravarMedEgenmelding",
+          "SykefravarMedLegemelding",
+          "MidlertidigEllerVarigArbeidsufor",
+          "Sykehusopphold",
+          "LivstruendeReaksjon",
+          "Annet",
+          "Ingen"
+        ],
+        "enum": [
+          "SykefravarMedEgenmelding",
+          "SykefravarMedLegemelding",
+          "MidlertidigEllerVarigArbeidsufor",
+          "Sykehusopphold",
+          "LivstruendeReaksjon",
+          "Annet",
+          "Ingen"
+        ]
+      },
       "GetDialogInfoResponse": {
         "type": "object",
         "description": "Dialog info response",
@@ -1039,20 +1183,17 @@
           "XX"
         ]
       },
-      "HendelsePart": {
+      "Hendelse": {
         "type": "object",
         "description": "Informasjon om hendelsen.",
         "additionalProperties": false,
-        "required": [
-          "HvaSkjedde"
-        ],
         "properties": {
           "HvaSkjedde": {
             "type": "string",
             "description": "Tekstlig beskrivelse av hva som skjedde.",
-            "minLength": 1
+            "nullable": true
           },
-          "TidspunktForHendelsen": {
+          "Tidspunkt": {
             "description": "Tidspunkt for hendelsen, dvs dato og klokkeslett",
             "nullable": true,
             "oneOf": [
@@ -1210,6 +1351,80 @@
           511
         ]
       },
+      "HvorPaKroppen": {
+        "type": "string",
+        "description": "Hvor på kroppen",
+        "x-enumNames": [
+          "Ansikt",
+          "Oye",
+          "OyelokkOmradeRundtOyet",
+          "Lepper",
+          "Nese",
+          "Munnhule",
+          "TennerTannkjott",
+          "Tunge",
+          "Har",
+          "Hodebunn",
+          "NakkeHals",
+          "Bryst",
+          "Mage",
+          "Rumpe",
+          "Rygg",
+          "Arm",
+          "Armhule",
+          "Albue",
+          "Hand",
+          "Ben",
+          "Fot",
+          "OmradeRundtAnusKjonnsorgan",
+          "Negler",
+          "HeleKroppen",
+          "AnnetSted"
+        ],
+        "enum": [
+          "Ansikt",
+          "Oye",
+          "OyelokkOmradeRundtOyet",
+          "Lepper",
+          "Nese",
+          "Munnhule",
+          "TennerTannkjott",
+          "Tunge",
+          "Har",
+          "Hodebunn",
+          "NakkeHals",
+          "Bryst",
+          "Mage",
+          "Rumpe",
+          "Rygg",
+          "Arm",
+          "Armhule",
+          "Albue",
+          "Hand",
+          "Ben",
+          "Fot",
+          "OmradeRundtAnusKjonnsorgan",
+          "Negler",
+          "HeleKroppen",
+          "AnnetSted"
+        ]
+      },
+      "Kjopssted": {
+        "type": "string",
+        "description": "Kjøpssted",
+        "x-enumNames": [
+          "UtsalgsstedINorge",
+          "UtsalgsstedIEtAnnetLand",
+          "Netthandel",
+          "VetIkke"
+        ],
+        "enum": [
+          "UtsalgsstedINorge",
+          "UtsalgsstedIEtAnnetLand",
+          "Netthandel",
+          "VetIkke"
+        ]
+      },
       "Klokkeslett": {
         "type": "object",
         "description": "Tidsangivelse for klokkeslett.",
@@ -1227,20 +1442,14 @@
           }
         }
       },
-      "KontaktpersonPart": {
+      "Kontaktperson": {
         "type": "object",
-        "description": "Opplysninger om kontaktperson",
         "additionalProperties": false,
-        "required": [
-          "Navn",
-          "Telefon",
-          "Stilling"
-        ],
         "properties": {
           "Navn": {
             "type": "string",
             "description": "Navn til kontaktperson",
-            "minLength": 1
+            "nullable": true
           },
           "Epost": {
             "type": "string",
@@ -1250,17 +1459,174 @@
           "Telefon": {
             "type": "string",
             "description": "Telefon til kontaktperson",
-            "minLength": 1
+            "nullable": true
           },
           "Stilling": {
             "type": "string",
             "description": "Stilling til kontaktperson, for eksempel sykepleier.",
-            "minLength": 1
+            "nullable": true
           },
           "Arbeidssted": {
             "type": "string",
             "description": "Arbeidssted til kontaktperson",
             "nullable": true
+          }
+        }
+      },
+      "KosmetikkBivirkningPart": {
+        "type": "object",
+        "description": "Informasjon om bivirkninger av kosmetikk",
+        "additionalProperties": false,
+        "required": [
+          "BivirkningHvorPaKroppen",
+          "Reaksjon"
+        ],
+        "properties": {
+          "BivirkningHvorPaKroppen": {
+            "type": "array",
+            "description": "Påkrevd. Hvor på kroppen oppstod bivirkningen? Flere alternativer er mulig.\nSe HvorPaKroppen for definerte steder. Andre steder vil bli AnnetSted, fritekst.",
+            "items": {
+              "$ref": "#/components/schemas/HvorPaKroppen"
+            }
+          },
+          "Reaksjon": {
+            "type": "array",
+            "description": "Påkrevd. Hvilke type bivirkningssymptom? Flere alternativer er mulig.\nSe Reaksjon for definerte reaksjoner. Andre reaksjoner vil bli annet, fritekst.",
+            "items": {
+              "$ref": "#/components/schemas/Reaksjon"
+            }
+          },
+          "Reaksjonstid": {
+            "description": "Hvor lang tid etter bruken av produktet oppstod bivirkningen?",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Reaksjonstid"
+              }
+            ]
+          },
+          "ReaksjonstidSpesifisert": {
+            "type": "string",
+            "description": "Nærmere beskrivelse av reaksjonstid",
+            "nullable": true
+          },
+          "FolgerAvBivirkning": {
+            "description": "Om personen ble sykemeldt, midlertidig arbeidsufør, osv.\nSe FolgerAvBivirkning for definerte følger. Andre verdier vil bli annet, fritekst.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FolgerAvBivirkning"
+              }
+            ]
+          },
+          "BivirkningVarighet": {
+            "type": "string",
+            "description": "Hvor lenge bivirkningen varte.",
+            "nullable": true
+          },
+          "BivirkningensForlop": {
+            "type": "string",
+            "description": "Mer utfyllende informasjon om forløpet av bivirkningen.",
+            "nullable": true
+          }
+        }
+      },
+      "KosmetikkProduktPart": {
+        "type": "object",
+        "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+        "additionalProperties": false,
+        "properties": {
+          "Produktinformasjon": {
+            "description": "Beskrivelse av produktet.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProduktinformasjonPart"
+              }
+            ]
+          },
+          "BrukAvProduktet": {
+            "description": "Beskrivelse av bruk av produktet.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BrukAvProduktetPart"
+              }
+            ]
+          }
+        }
+      },
+      "KosmetikkRequest": {
+        "type": "object",
+        "description": "Kosmetikk DTO",
+        "additionalProperties": false,
+        "required": [
+          "EksternSaksId",
+          "Melder"
+        ],
+        "properties": {
+          "EksternSaksId": {
+            "type": "string",
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn."
+          },
+          "Sprak": {
+            "description": "Språk ('Norwegian' | 'Norsk' | 'English' | 'Engelsk')",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              }
+            ]
+          },
+          "Melder": {
+            "description": "Påkrevd. Informasjon om melder. For eksempel HPR-Id og e-postadresse.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Melder"
+              }
+            ]
+          },
+          "Hendelse": {
+            "description": "Informasjon om hendelsen.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Hendelse"
+              }
+            ]
+          },
+          "Pasient": {
+            "description": "Informasjon om pasient. For eksempel fødselsdato og initialer/navn.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Pasienten"
+              }
+            ]
+          },
+          "Bivirkning": {
+            "description": "Beskriver bivirkningen.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/KosmetikkBivirkningPart"
+              }
+            ]
+          },
+          "RelevanteOpplysninger": {
+            "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RelevanteOpplysningerPart"
+              }
+            ]
+          },
+          "Produkter": {
+            "type": "array",
+            "description": "Beskriver legemidler. Minst ett må oppgis. Maksimalt fire kan oppgis.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/KosmetikkProduktPart"
+            }
           }
         }
       },
@@ -1571,6 +1937,93 @@
           }
         }
       },
+      "Melder": {
+        "type": "object",
+        "description": "Informasjon om hvem som melder inn en uønsket hendelse. Enten e-postadresse eller postadresse er påkrevd.",
+        "additionalProperties": false,
+        "required": [
+          "Navn"
+        ],
+        "properties": {
+          "HerId": {
+            "type": "integer",
+            "description": "Kommunikasjonspartens Id i Adresseregisteret (AR).",
+            "format": "int32",
+            "nullable": true
+          },
+          "HprId": {
+            "type": "integer",
+            "description": "Helsepersonellets Id i Helsepersonellregisteret",
+            "format": "int32",
+            "nullable": true
+          },
+          "Navn": {
+            "type": "string",
+            "description": "Melders navn. Påkrevd."
+          },
+          "Fodselsnummer": {
+            "type": "string",
+            "description": "Melders fødselsnummer. Optional",
+            "nullable": true
+          },
+          "Kvalifikasjon": {
+            "description": "Melders HelsepersonellKategori.\nSe kodeverk 9060 på volven: https://volven.no/searchres.asp?searchstring=9060&catID=3.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/HelsepersonellKategori"
+              }
+            ]
+          },
+          "Epost": {
+            "type": "string",
+            "description": "Melders e-postadresse. For eksempel \"noe@noe.noe\"",
+            "nullable": true
+          },
+          "Telefon": {
+            "type": "string",
+            "description": "Melders telefonnummer. For eksempel \"84785632\"",
+            "nullable": true
+          },
+          "Stilling": {
+            "type": "string",
+            "description": "Melders stilling. For eksempel \"Sykepleier\"",
+            "nullable": true
+          },
+          "Rolle": {
+            "description": "Melders rolle. Lovlige verdier er \"Leder | Behandler | Øvrig ansatt | Annen\"",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MelderRolle"
+              }
+            ]
+          },
+          "AnnenRolle": {
+            "type": "string",
+            "description": "Annen rolle som melder har. Eksempel \"Tilfeldig forbipasserende\".",
+            "nullable": true
+          },
+          "Virksomhet": {
+            "description": "Navn på melders virksomhet. For eksempel sykehusets navn",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Virksomhet"
+              }
+            ]
+          },
+          "GjeldendeVirksomhet": {
+            "description": "Virksomheten varselet gjelder.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Virksomhet"
+              }
+            ]
+          }
+        }
+      },
       "MelderPart": {
         "type": "object",
         "description": "Melders opplysninger.",
@@ -1599,106 +2052,6 @@
             "description": "Melders telefonnummer.",
             "nullable": true,
             "example": "99999999"
-          }
-        }
-      },
-      "MelderPart2": {
-        "type": "object",
-        "description": "Melders opplysninger.",
-        "additionalProperties": false,
-        "required": [
-          "Navn",
-          "Epost",
-          "Telefon",
-          "Stilling",
-          "Rolle"
-        ],
-        "properties": {
-          "HerId": {
-            "type": "integer",
-            "description": "Kommunikasjonspartens Id i Adresseregisteret (AR).",
-            "format": "int32",
-            "nullable": true
-          },
-          "HprId": {
-            "type": "integer",
-            "description": "Helsepersonellets Id i Helsepersonellregisteret",
-            "format": "int32",
-            "nullable": true
-          },
-          "Navn": {
-            "type": "string",
-            "description": "Melders navn. Påkrevd",
-            "example": "Line Danser"
-          },
-          "Foedselsnummer": {
-            "type": "string",
-            "description": "Melders fødselsnummer. Brukes i maskin til maskin HelseId.",
-            "nullable": true,
-            "example": "13065906141"
-          },
-          "Kvalifikasjon": {
-            "description": "Melders HelsepersonellKategori.\nSe kodeverk 9060 på volven: https://volven.no/searchres.asp?searchstring=9060&catID=3.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/HelsepersonellKategori"
-              }
-            ]
-          },
-          "Organisasjonsnummer": {
-            "type": "string",
-            "description": "Melders organisasjonsnummer.",
-            "nullable": true,
-            "example": "883974832"
-          },
-          "Epost": {
-            "type": "string",
-            "description": "Melders e-post.",
-            "minLength": 1,
-            "example": "TestData@melde.no"
-          },
-          "Telefon": {
-            "type": "string",
-            "description": "Melders telefonnummer.",
-            "minLength": 1,
-            "example": "99999999"
-          },
-          "Stilling": {
-            "type": "string",
-            "description": "Melders stilling. For eksempel \"Sykepleier\"",
-            "minLength": 1
-          },
-          "Rolle": {
-            "description": "Melders rolle. Lovlige verdier er \"Leder | Behandler | Øvrig ansatt | Annen\"",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/MelderRolle"
-              }
-            ]
-          },
-          "AnnenRolle": {
-            "type": "string",
-            "description": "Annen rolle som melder har. Eksempel \"Tilfeldig forbipasserende\".",
-            "nullable": true
-          },
-          "Virksomhet": {
-            "description": "Navn på melders virksomhet. For eksempel sykehusets navn",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/VirksomhetPart"
-              }
-            ]
-          },
-          "GjeldendeVirksomhet": {
-            "description": "Virksomheten varselet gjelder.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/VirksomhetPart"
-              }
-            ]
           }
         }
       },
@@ -1769,6 +2122,20 @@
           }
         }
       },
+      "NettHandel": {
+        "type": "string",
+        "description": "Netthandel, om norsk eller utenlandsk",
+        "x-enumNames": [
+          "NorskNettside",
+          "UtenlandskNettside",
+          "VetIkke"
+        ],
+        "enum": [
+          "NorskNettside",
+          "UtenlandskNettside",
+          "VetIkke"
+        ]
+      },
       "PagaendeBehandling": {
         "type": "string",
         "description": "Hva gjorde bruker når bivirkning oppstod",
@@ -1783,9 +2150,8 @@
           "VetIkke"
         ]
       },
-      "ParorendePart": {
+      "Parorende": {
         "type": "object",
-        "description": "Opplysninger om pårørende",
         "additionalProperties": false,
         "properties": {
           "Foedselsnummer": {
@@ -1840,6 +2206,99 @@
           }
         }
       },
+      "Pasient": {
+        "type": "object",
+        "description": "Informasjon om pasienten som ble påvirket av hendelsen, om noen.",
+        "additionalProperties": false,
+        "properties": {
+          "Kjonn": {
+            "description": "Kjønn",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PasientensKjonn"
+              }
+            ]
+          },
+          "Fodselsdato": {
+            "description": "Fødselsdato. Man kan bruke delvis presisjon, men om man oppgir noe, må man ha minst fødselsår. Man kan bare oppgi dato om man har måned også.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Dato"
+              }
+            ]
+          },
+          "Initialer": {
+            "type": "string",
+            "description": "Pasientens initialer",
+            "nullable": true
+          },
+          "Alder": {
+            "type": "integer",
+            "description": "Pasientens alder i år",
+            "format": "int32",
+            "nullable": true
+          },
+          "Fodselsnummer": {
+            "type": "string",
+            "description": "Pasientens fødselsnummer, 11 siffer",
+            "nullable": true
+          },
+          "Vekt": {
+            "type": "integer",
+            "description": "Vekt, i kilogram.",
+            "format": "int32",
+            "nullable": true
+          },
+          "Hoyde": {
+            "type": "integer",
+            "description": "Høyde, i centimeter",
+            "format": "int32",
+            "nullable": true
+          },
+          "Bostedsfylke": {
+            "description": "Fylket pasienten bor i",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Bostedsfylke"
+              }
+            ]
+          },
+          "Navn": {
+            "type": "string",
+            "description": "Pasientens navn",
+            "nullable": true
+          },
+          "Nasjonalitet": {
+            "type": "string",
+            "description": "Pasientens nasjonalitet",
+            "nullable": true
+          }
+        }
+      },
+      "Pasienten": {
+        "type": "object",
+        "description": "Informasjon om pasienten som ble påvirket av hendelsen, om noen.",
+        "additionalProperties": false,
+        "properties": {
+          "Kjonn": {
+            "description": "Kjønn",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PasientensKjonn"
+              }
+            ]
+          },
+          "Alder": {
+            "type": "integer",
+            "description": "Pasientens alder i år",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
       "PasientensKjonn": {
         "type": "string",
         "description": "Pasientens kjønn (OID=3101)\nSe kodeverk 3101 på volven: https://volven.no/produkt.asp?id=382591&catID=3&subID=8.",
@@ -1885,76 +2344,112 @@
           }
         }
       },
-      "PasientPart2": {
+      "ProduktinformasjonPart": {
         "type": "object",
-        "description": "Informasjon om pasienten som ble påvirket av hendelsen, om noen.",
+        "description": "Beskriver et kosmetisk produkt",
         "additionalProperties": false,
+        "required": [
+          "ProduktType"
+        ],
         "properties": {
-          "Kjonn": {
-            "description": "Kjønn",
+          "ProduktNavn": {
+            "type": "string",
+            "description": "Navnet på produktet",
+            "nullable": true
+          },
+          "ProduktType": {
+            "description": "Type produkt. Påkrevd.\nSe Produkttype for definerte produkttyper. Hvis ikke definert, vil det bli tolket som annet, fritekst.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Produkttype"
+              }
+            ]
+          },
+          "LeverandorProdusent": {
+            "type": "string",
+            "description": "Navnet på leverandøren eller produsenten av produktet.",
+            "nullable": true
+          },
+          "ErProduktUtgattPaHoldbarhetsdato": {
+            "description": "Om produktet har gått ut på dato",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientensKjonn"
+                "$ref": "#/components/schemas/Utgatt"
               }
             ]
           },
-          "Foedselsdato": {
-            "description": "Fødselsdato.",
+          "HvorProduktetErKjopt": {
+            "description": "Hvor produktet er kjøpt.",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Dato"
+                "$ref": "#/components/schemas/Kjopssted"
               }
             ]
           },
-          "Initialer": {
-            "type": "string",
-            "description": "Pasientens initialer",
-            "nullable": true
-          },
-          "Alder": {
-            "type": "integer",
-            "description": "Pasientens alder i år",
-            "format": "int32",
-            "nullable": true
-          },
-          "Foedselsnummer": {
-            "type": "string",
-            "description": "Pasientens fødselsnummer, 11 siffer",
-            "nullable": true
-          },
-          "Vekt": {
-            "type": "integer",
-            "description": "Vekt, i kilogram.",
-            "format": "int32",
-            "nullable": true
-          },
-          "Hoyde": {
-            "type": "integer",
-            "description": "Høyde, i centimeter",
-            "format": "int32",
-            "nullable": true
-          },
-          "Bostedsfylke": {
-            "description": "Fylket pasienten bor i",
+          "Salgskanal": {
+            "description": "Hva slags sted produktet er kjøpt.",
+            "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Bostedsfylke"
+                "$ref": "#/components/schemas/Salgskanal"
               }
             ]
           },
-          "Navn": {
-            "type": "string",
-            "description": "Pasientens navn",
-            "nullable": true
+          "Netthandel": {
+            "description": "Hvis produktet er kjøpt på nett, hva slags nettsted produktet er kjøpt på.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NettHandel"
+              }
+            ]
           },
-          "Nasjonalitet": {
+          "BatchLotNummer": {
             "type": "string",
-            "description": "Pasientens nasjonalitet",
+            "description": "Batchnummer på produktet.",
             "nullable": true
           }
         }
+      },
+      "Produkttype": {
+        "type": "string",
+        "description": "Type produkt\nMan kan også oppgi tekster ikke definert i enumen, de vil da bli tolket som annet, fritekst.",
+        "x-enumNames": [
+          "Fuktighetspleie",
+          "Hudrens",
+          "Harbehandling",
+          "Harpleie",
+          "Sminke",
+          "Sape",
+          "Deodorant",
+          "Parfyme",
+          "Solprodukter",
+          "Negleprodukter",
+          "Munnhygiene",
+          "Barberingsprodukter",
+          "Harfjerningsprodukter",
+          "Tatovering",
+          "Annet"
+        ],
+        "enum": [
+          "Fuktighetspleie",
+          "Hudrens",
+          "Harbehandling",
+          "Harpleie",
+          "Sminke",
+          "Sape",
+          "Deodorant",
+          "Parfyme",
+          "Solprodukter",
+          "Negleprodukter",
+          "Munnhygiene",
+          "Barberingsprodukter",
+          "Harfjerningsprodukter",
+          "Tatovering",
+          "Annet"
+        ]
       },
       "PågårFortsatt": {
         "type": "string",
@@ -1966,6 +2461,130 @@
         "enum": [
           "Ja",
           "Nei"
+        ]
+      },
+      "Reaksjon": {
+        "type": "string",
+        "description": "Hva slags reaksjon som har oppstått",
+        "x-enumNames": [
+          "EksemUtslett",
+          "ElveblestUrticaria",
+          "Hevelse",
+          "Blemmer",
+          "NupperIHuden",
+          "SvieBrennendeFolelse",
+          "Kloe",
+          "Rodhet",
+          "FlassingTorrHud",
+          "AkneKviser",
+          "RennendeOyne",
+          "RennendeNese",
+          "OverUnderpigmenteringIHuden",
+          "Hartap",
+          "Svimmelhet",
+          "Kvalme",
+          "Smerter",
+          "AnafylaksiAllergiskSjokk",
+          "Annet"
+        ],
+        "enum": [
+          "EksemUtslett",
+          "ElveblestUrticaria",
+          "Hevelse",
+          "Blemmer",
+          "NupperIHuden",
+          "SvieBrennendeFolelse",
+          "Kloe",
+          "Rodhet",
+          "FlassingTorrHud",
+          "AkneKviser",
+          "RennendeOyne",
+          "RennendeNese",
+          "OverUnderpigmenteringIHuden",
+          "Hartap",
+          "Svimmelhet",
+          "Kvalme",
+          "Smerter",
+          "AnafylaksiAllergiskSjokk",
+          "Annet"
+        ]
+      },
+      "Reaksjonstid": {
+        "type": "string",
+        "description": "Hvor lang tid etter bruken av produktet bivirkningen oppstod",
+        "x-enumNames": [
+          "Innen30Min",
+          "Innen30MinTil1Time",
+          "Innen24Timer",
+          "MerEnn1Dogn",
+          "Annet",
+          "VetIkke"
+        ],
+        "enum": [
+          "Innen30Min",
+          "Innen30MinTil1Time",
+          "Innen24Timer",
+          "MerEnn1Dogn",
+          "Annet",
+          "VetIkke"
+        ]
+      },
+      "RelevanteOpplysningerPart": {
+        "type": "object",
+        "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+        "additionalProperties": false,
+        "properties": {
+          "BivirkningerVedTidligereBruk": {
+            "description": "Om det har oppstått bivirkninger ved tidligere bruk av det aktuelle produktet/de aktuelle produktene eller lignende produkter.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BivirkningVedTidligereBruk"
+              }
+            ]
+          },
+          "TidligereBrukSpesifisert": {
+            "type": "string",
+            "description": "Beskrivelse av tidligere bruk.",
+            "nullable": true
+          },
+          "TilstandBerortOmradeForBruk": {
+            "type": "array",
+            "description": "Tilstanden til berørt hudområde før bruk av produktet.\nSe Tilstand for definerte tilstander. Andre tilstander vil bli Annet, fritekst.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Tilstand"
+            }
+          },
+          "AllergiEllerHudlidelse": {
+            "type": "string",
+            "description": "Om personen har allergi eller annen hudlidelse, beskriv hva slags type allergi eller hudlidelse dette er.",
+            "nullable": true
+          }
+        }
+      },
+      "Salgskanal": {
+        "type": "string",
+        "description": "Typer utsalgssted",
+        "x-enumNames": [
+          "Apotek",
+          "Parfymeri",
+          "Frisorsalong",
+          "Hudpleiesalong",
+          "Helsekostbutikk",
+          "Matvarebutikk",
+          "TaxFree",
+          "Annet"
+        ],
+        "enum": [
+          "Apotek",
+          "Parfymeri",
+          "Frisorsalong",
+          "Hudpleiesalong",
+          "Helsekostbutikk",
+          "Matvarebutikk",
+          "TaxFree",
+          "Annet"
         ]
       },
       "SymptomPart": {
@@ -2059,6 +2678,36 @@
           }
         }
       },
+      "Tilstand": {
+        "type": "string",
+        "description": "Tilstand til område før et produkt ble brukt",
+        "x-enumNames": [
+          "Normal",
+          "Torr",
+          "Irritert",
+          "Annet"
+        ],
+        "enum": [
+          "Normal",
+          "Torr",
+          "Irritert",
+          "Annet"
+        ]
+      },
+      "Utgatt": {
+        "type": "string",
+        "description": "Om et produkt er utgått",
+        "x-enumNames": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ],
+        "enum": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ]
+      },
       "VedleggPart": {
         "type": "object",
         "description": "Vedlegg, følgende filtyper er støttet: .jpeg, .png, .tiff, pdf, .rtf, .docx.",
@@ -2078,18 +2727,14 @@
           }
         }
       },
-      "VirksomhetPart": {
+      "Virksomhet": {
         "type": "object",
-        "description": "Opplysninger om virksomhet",
         "additionalProperties": false,
-        "required": [
-          "Navn"
-        ],
         "properties": {
           "Navn": {
             "type": "string",
             "description": "Navn på virksomheten, for eksempel \"St. Olav Hospital HF\"",
-            "minLength": 1
+            "nullable": true
           },
           "Helseregion": {
             "type": "string",
