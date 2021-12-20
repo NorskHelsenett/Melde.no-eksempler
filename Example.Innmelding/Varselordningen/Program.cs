@@ -48,18 +48,17 @@ namespace Example.Varselordningen
             {
                 EksternSaksId = "MYSYS-R195",
                 EksterntSaksSystem = "",
-                Melder = new MelderPart2
+                Melder = new Melder
                 {
                     Navn = "VILDE MOEN-BRATLI",
-                    Foedselsnummer = "13075706604",
-                    Organisasjonsnummer = "883974832",
+                    Fodselsnummer = "13075706604",
                     Epost = "TestData@melde.no",
                     Telefon = "99999999",
                     HerId = 0,
                     Stilling = "Doktor",
                     Rolle = MelderRolle.Behandler,
                     HprId = 8458111,
-                    Virksomhet = new VirksomhetPart
+                    Virksomhet = new Virksomhet
                     {
                         Navn = "ST. OLAVS HOSPITAL HF",
                         Helseregion = "ST. OLAVS HOSPITAL HF",
@@ -74,7 +73,7 @@ namespace Example.Varselordningen
                             Navn = "Alminnelige somatiske sykehus",
                         }
                     },
-                    GjeldendeVirksomhet = new VirksomhetPart
+                    GjeldendeVirksomhet = new Virksomhet
                     {
                         Navn = "ST. OLAVS HOSPITAL HF",
                         Helseregion = "ST. OLAVS HOSPITAL HF",
@@ -90,16 +89,16 @@ namespace Example.Varselordningen
                         }
                     }
                 },
-                Pasient = new PasientPart2
+                Pasient = new Pasient
                 {
-                    Foedselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
+                    Fodselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
                     Kjonn = PasientensKjonn.Mann,
-                    Foedselsnummer = "13075706604"
+                    Fodselsnummer = "13075706604"
                 },
-                Hendelse = new HendelsePart
+                Hendelse = new Hendelse
                 {
                     HvaSkjedde = "Datt på rattata",
-                    TidspunktForHendelsen = new Tidspunkt {
+                    Tidspunkt = new Tidspunkt {
                         DatoForHendelsen = new Dato { Ar = 2021, Maned = 7, Dag = 13 },
                         KlokkeslettForHendelsen = new Klokkeslett
                         {
@@ -108,9 +107,9 @@ namespace Example.Varselordningen
                         }
                     }
                 },
-                Kontaktpersoner = new List<KontaktpersonPart>
+                Kontaktpersoner = new List<Kontaktperson>
                 {
-                    new KontaktpersonPart
+                    new Kontaktperson
                     {
                         Navn = "VILDE MOEN_BRATLI",
                         Epost = "TestData@melde.no",
@@ -118,7 +117,7 @@ namespace Example.Varselordningen
                         Stilling = "Doktor"
                     }
                 },
-                AnnenInformasjon = new AnnenInformasjonPart2
+                AnnenInformasjon = new AnnenInformasjon
                 {
                     VarsletTilFylkesmannen = true,
                     VarsletFylkesmann = "Fylkesmannen i Viken",

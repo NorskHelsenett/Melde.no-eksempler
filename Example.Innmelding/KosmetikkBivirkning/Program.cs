@@ -101,12 +101,12 @@ namespace Example.Kosmetikk
                         }
                     }
                 },
-                Pasient = new Pasient
+                Pasient = new Pasienten
                 {
                     Kjonn = PasientensKjonn.Mann,
                     Alder = 40
                 },
-                Bivirkning = new KosmetikkBivirkning
+                Bivirkning = new KosmetikkBivirkningPart
                 {
                     BivirkningHvorPaKroppen = new List<HvorPaKroppen>
                     {
