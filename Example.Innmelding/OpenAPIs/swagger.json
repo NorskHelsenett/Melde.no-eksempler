@@ -353,6 +353,90 @@
         ]
       }
     },
+    "/api/ekstern/uonskethendelse/medisinsk-utstyr": {
+      "post": {
+        "tags": [
+          "EksternUonsketHendelse"
+        ],
+        "summary": "Meld om bivirkning av medisinsk utstyr. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
+        "operationId": "EksternUonsketHendelse_MedisinskUtstyr",
+        "requestBody": {
+          "x-name": "req",
+          "description": "Request object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MedisinskUtstyrRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "En melding har blitt oppdatert.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "En melding har blitt opprettet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ServiceAuthorization": []
+          },
+          {
+            "WebAuthorization": []
+          }
+        ]
+      }
+    },
     "/api/ekstern/dialog": {
       "post": {
         "tags": [
@@ -1209,7 +1293,7 @@
           54
         ]
       },
-      "BrukAvProduktet": {
+      "BrukAvProduktetPart": {
         "type": "object",
         "description": "Beskriver bruk av et kosmetisk produkt",
         "additionalProperties": false,
@@ -1219,7 +1303,7 @@
             "description": "Hvor på kroppen har produktet blitt brukt? Flere alternativer er mulig.\nSe HvorPaKroppen for definerte steder. Andre steder vil bli AnnetSted, fritekst.",
             "nullable": true,
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/HvorPaKroppen"
             }
           },
           "LengdeBruk": {
@@ -1404,6 +1488,28 @@
             "nullable": true
           }
         }
+      },
+      "FolgerAvBivirkning": {
+        "type": "string",
+        "description": "Følger av bivirkning\nMan kan også oppgi tekster ikke definert i enumen, de vil da bli tolket som annet, fritekst.",
+        "x-enumNames": [
+          "SykefravarMedEgenmelding",
+          "SykefravarMedLegemelding",
+          "MidlertidigEllerVarigArbeidsufor",
+          "Sykehusopphold",
+          "LivstruendeReaksjon",
+          "Annet",
+          "Ingen"
+        ],
+        "enum": [
+          "SykefravarMedEgenmelding",
+          "SykefravarMedLegemelding",
+          "MidlertidigEllerVarigArbeidsufor",
+          "Sykehusopphold",
+          "LivstruendeReaksjon",
+          "Annet",
+          "Ingen"
+        ]
       },
       "GetDialogInfoResponse": {
         "type": "object",
@@ -1668,6 +1774,130 @@
           511
         ]
       },
+      "HvorErUtstyret": {
+        "type": "string",
+        "description": "Hvor utstyret befinner seg på innsendingstidspunktet",
+        "x-enumNames": [
+          "Helseforetak",
+          "PasientBruker",
+          "PaVeiTilProdusent",
+          "Produsent",
+          "DistributorForhandlerOmsetter",
+          "Kastet",
+          "FortsattImplantert",
+          "Ukjent"
+        ],
+        "enum": [
+          "Helseforetak",
+          "PasientBruker",
+          "PaVeiTilProdusent",
+          "Produsent",
+          "DistributorForhandlerOmsetter",
+          "Kastet",
+          "FortsattImplantert",
+          "Ukjent"
+        ]
+      },
+      "HvorPaKroppen": {
+        "type": "string",
+        "description": "Hvor på kroppen",
+        "x-enumNames": [
+          "Ansikt",
+          "Oye",
+          "OyelokkOmradeRundtOyet",
+          "Lepper",
+          "Nese",
+          "Munnhule",
+          "TennerTannkjott",
+          "Tunge",
+          "Har",
+          "Hodebunn",
+          "NakkeHals",
+          "Bryst",
+          "Mage",
+          "Rumpe",
+          "Rygg",
+          "Arm",
+          "Armhule",
+          "Albue",
+          "Hand",
+          "Ben",
+          "Fot",
+          "OmradeRundtAnusKjonnsorgan",
+          "Negler",
+          "HeleKroppen",
+          "AnnetSted"
+        ],
+        "enum": [
+          "Ansikt",
+          "Oye",
+          "OyelokkOmradeRundtOyet",
+          "Lepper",
+          "Nese",
+          "Munnhule",
+          "TennerTannkjott",
+          "Tunge",
+          "Har",
+          "Hodebunn",
+          "NakkeHals",
+          "Bryst",
+          "Mage",
+          "Rumpe",
+          "Rygg",
+          "Arm",
+          "Armhule",
+          "Albue",
+          "Hand",
+          "Ben",
+          "Fot",
+          "OmradeRundtAnusKjonnsorgan",
+          "Negler",
+          "HeleKroppen",
+          "AnnetSted"
+        ]
+      },
+      "IdNavn": {
+        "type": "object",
+        "description": "Generic long id + string name",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "description": "Generert ID i En Vei Inn sin database",
+            "format": "int64"
+          },
+          "Navn": {
+            "type": "string",
+            "description": "Name of the item",
+            "nullable": true
+          }
+        }
+      },
+      "ImplantatInformasjon": {
+        "type": "object",
+        "description": "Informasjon om implantat (aktivt eller passivt)",
+        "additionalProperties": false,
+        "properties": {
+          "ImplantertDato": {
+            "description": "Når implantatet ble operert inn.\nMan kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Dato"
+              }
+            ]
+          },
+          "EksplantertDato": {
+            "description": "Når implantatet ble operert ut.\nMan kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Dato"
+              }
+            ]
+          }
+        }
+      },
       "Kjopssted": {
         "type": "string",
         "description": "Kjøpssted",
@@ -1682,6 +1912,20 @@
           "UtsalgsstedIEtAnnetLand",
           "Netthandel",
           "VetIkke"
+        ]
+      },
+      "KlassifikasjonAvHendelsen": {
+        "type": "string",
+        "description": "Klassifikasjon av hendelse",
+        "x-enumNames": [
+          "Dodsfall",
+          "AlvorligForverringAvHelsetilstand",
+          "KunneHaFortTilDodEllerForverring"
+        ],
+        "enum": [
+          "Dodsfall",
+          "AlvorligForverringAvHelsetilstand",
+          "KunneHaFortTilDodEllerForverring"
         ]
       },
       "Klokkeslett": {
@@ -1732,7 +1976,7 @@
           }
         }
       },
-      "KosmetikkBivirkning": {
+      "KosmetikkBivirkningPart": {
         "type": "object",
         "description": "Informasjon om bivirkninger av kosmetikk",
         "additionalProperties": false,
@@ -1745,14 +1989,14 @@
             "type": "array",
             "description": "Påkrevd. Hvor på kroppen oppstod bivirkningen? Flere alternativer er mulig.\nSe HvorPaKroppen for definerte steder. Andre steder vil bli AnnetSted, fritekst.",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/HvorPaKroppen"
             }
           },
           "Reaksjon": {
             "type": "array",
             "description": "Påkrevd. Hvilke type bivirkningssymptom? Flere alternativer er mulig.\nSe Reaksjon for definerte reaksjoner. Andre reaksjoner vil bli annet, fritekst.",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/Reaksjon"
             }
           },
           "Reaksjonstid": {
@@ -1770,9 +2014,12 @@
             "nullable": true
           },
           "FolgerAvBivirkning": {
-            "type": "string",
             "description": "Om personen ble sykemeldt, midlertidig arbeidsufør, osv.\nSe FolgerAvBivirkning for definerte følger. Andre verdier vil bli annet, fritekst.",
-            "nullable": true
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/FolgerAvBivirkning"
+              }
+            ]
           },
           "BivirkningVarighet": {
             "type": "string",
@@ -1786,7 +2033,7 @@
           }
         }
       },
-      "KosmetikkProdukt": {
+      "KosmetikkProduktPart": {
         "type": "object",
         "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
         "additionalProperties": false,
@@ -1796,7 +2043,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Produktinformasjon"
+                "$ref": "#/components/schemas/ProduktinformasjonPart"
               }
             ]
           },
@@ -1805,7 +2052,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BrukAvProduktet"
+                "$ref": "#/components/schemas/BrukAvProduktetPart"
               }
             ]
           }
@@ -1816,16 +2063,10 @@
         "description": "Kosmetikk DTO",
         "additionalProperties": false,
         "required": [
-          "EksterntSaksSystem",
           "EksternSaksId",
-          "MeldingsId",
           "Melder"
         ],
         "properties": {
-          "EksterntSaksSystem": {
-            "type": "string",
-            "description": "Påkrevd. Eksternt system, for eksempel navn på avvikssystem."
-          },
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn."
@@ -1838,12 +2079,6 @@
               }
             ]
           },
-          "MeldingsId": {
-            "type": "string",
-            "description": "Påkrevd. MeldingsId på meldingen. Oppgitt ved innsending.",
-            "format": "guid",
-            "minLength": 1
-          },
           "Melder": {
             "description": "Påkrevd. Informasjon om melder. For eksempel HPR-Id og e-postadresse.",
             "oneOf": [
@@ -1852,12 +2087,21 @@
               }
             ]
           },
+          "Hendelse": {
+            "description": "Informasjon om hendelsen.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Hendelse"
+              }
+            ]
+          },
           "Pasient": {
             "description": "Informasjon om pasient. For eksempel fødselsdato og initialer/navn.",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Pasient"
+                "$ref": "#/components/schemas/Pasienten"
               }
             ]
           },
@@ -1866,7 +2110,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkBivirkning"
+                "$ref": "#/components/schemas/KosmetikkBivirkningPart"
               }
             ]
           },
@@ -1875,7 +2119,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/RelevanteOpplysninger"
+                "$ref": "#/components/schemas/RelevanteOpplysningerPart"
               }
             ]
           },
@@ -1884,7 +2128,7 @@
             "description": "Beskriver legemidler. Minst ett må oppgis. Maksimalt fire kan oppgis.",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/KosmetikkProdukt"
+              "$ref": "#/components/schemas/KosmetikkProduktPart"
             }
           }
         }
@@ -2196,6 +2440,162 @@
           }
         }
       },
+      "MedisinskUtstyrMelding": {
+        "type": "object",
+        "description": "Informasjon om medisinsk utstyr og legemidler",
+        "additionalProperties": false,
+        "required": [
+          "Handelsnavn",
+          "Produsent"
+        ],
+        "properties": {
+          "NkknTypeKode": {
+            "type": "integer",
+            "description": "Kode for type utstyr i NKKN",
+            "format": "int32",
+            "nullable": true
+          },
+          "Handelsnavn": {
+            "type": "string",
+            "description": "Navn på utstyret. Påkrevd.",
+            "minLength": 1
+          },
+          "Produsent": {
+            "type": "string",
+            "description": "Produsent av utstyret. Påkrevd.",
+            "minLength": 1
+          },
+          "Modell": {
+            "type": "string",
+            "description": "Modellnavn",
+            "nullable": true
+          },
+          "NkknGruppe": {
+            "description": "Utstyrsgruppe i NKKN. Utstyrsgruppe er mellomste nivået",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/IdNavn"
+              }
+            ]
+          },
+          "NkknKategori": {
+            "description": "Utstyrskategori i NKKN. Påkrevd. Utstyrskategori er øverste nivået.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NkknKategori"
+              }
+            ]
+          },
+          "Serienummer": {
+            "type": "string",
+            "description": "Utstyrets serienummer",
+            "nullable": true
+          },
+          "BatchLotNummer": {
+            "type": "string",
+            "description": "Utstyrets batchnummer",
+            "nullable": true
+          },
+          "Produksjonsdato": {
+            "description": "Når utstyret ble produsert. Man kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Dato"
+              }
+            ]
+          },
+          "Utlopsdato": {
+            "description": "Når utstyret går ut på dato. Man kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Dato"
+              }
+            ]
+          },
+          "HvorErUtstyret": {
+            "description": "Hvor utstyret befinner seg. Påkrevd.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/HvorErUtstyret"
+              }
+            ]
+          },
+          "Distributor": {
+            "type": "string",
+            "description": "Distributør av utstyret.",
+            "nullable": true
+          },
+          "KlassifikasjonAvHendelsen": {
+            "description": "Klassifikasjon av hendelsen. Påkrevd.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/KlassifikasjonAvHendelsen"
+              }
+            ]
+          },
+          "ImplantatInformasjon": {
+            "description": "Dersom implantat: Informasjon om når implantatet ble operert inn og ut",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ImplantatInformasjon"
+              }
+            ]
+          }
+        }
+      },
+      "MedisinskUtstyrRequest": {
+        "type": "object",
+        "description": "Kosmetikk DTO",
+        "additionalProperties": false,
+        "required": [
+          "EksternSaksId",
+          "Melder",
+          "Hendelse",
+          "MedisinskUtstyrMelding"
+        ],
+        "properties": {
+          "EksternSaksId": {
+            "type": "string",
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn."
+          },
+          "Sprak": {
+            "description": "Språk ('Norwegian' | 'Norsk' | 'English' | 'Engelsk')",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              }
+            ]
+          },
+          "Melder": {
+            "description": "Påkrevd. Informasjon om melder. For eksempel HPR-Id og e-postadresse.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Melder"
+              }
+            ]
+          },
+          "Hendelse": {
+            "description": "Informasjon om hendelse. For eksempel tidspunkt og beskrivelse",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Hendelse"
+              }
+            ]
+          },
+          "MedisinskUtstyrMelding": {
+            "description": "Meldinger om uønsket hendelse på blod eller celler og vev, eller organer",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MedisinskUtstyrMelding"
+              }
+            ]
+          }
+        }
+      },
       "Melder": {
         "type": "object",
         "description": "Informasjon om hvem som melder inn en uønsket hendelse. Enten e-postadresse eller postadresse er påkrevd.",
@@ -2395,6 +2795,38 @@
           "VetIkke"
         ]
       },
+      "NkknKategori": {
+        "type": "string",
+        "description": "Kategori medisinsk utstyr",
+        "x-enumNames": [
+          "AktivtImplanterbartUtstyr",
+          "AnestesiologiskOgRespiratoriskUtstyr",
+          "DentaltUtstyr",
+          "ElektromekaniskUtstyr",
+          "Sykehusutrustning",
+          "InVitroDiagnostiskUtstyr",
+          "PassivtImplanterbartUtstyr",
+          "OftalmologiskOgOptiskUtstyr",
+          "Flergangsutstyr",
+          "Engangsutstyr",
+          "TekniskeHjelpemidler",
+          "DiagnostiskOgTerapeutiskStralegivendeUtstyr"
+        ],
+        "enum": [
+          "AktivtImplanterbartUtstyr",
+          "AnestesiologiskOgRespiratoriskUtstyr",
+          "DentaltUtstyr",
+          "ElektromekaniskUtstyr",
+          "Sykehusutrustning",
+          "InVitroDiagnostiskUtstyr",
+          "PassivtImplanterbartUtstyr",
+          "OftalmologiskOgOptiskUtstyr",
+          "Flergangsutstyr",
+          "Engangsutstyr",
+          "TekniskeHjelpemidler",
+          "DiagnostiskOgTerapeutiskStralegivendeUtstyr"
+        ]
+      },
       "PagaendeBehandling": {
         "type": "string",
         "description": "Hva gjorde bruker når bivirkning oppstod",
@@ -2536,6 +2968,28 @@
           }
         }
       },
+      "Pasienten": {
+        "type": "object",
+        "description": "Informasjon om pasienten som ble påvirket av hendelsen, om noen.",
+        "additionalProperties": false,
+        "properties": {
+          "Kjonn": {
+            "description": "Kjønn",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PasientensKjonn"
+              }
+            ]
+          },
+          "Alder": {
+            "type": "integer",
+            "description": "Pasientens alder i år",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
       "PasientensKjonn": {
         "type": "string",
         "description": "Pasientens kjønn (OID=3101)\nSe kodeverk 3101 på volven: https://volven.no/produkt.asp?id=382591&catID=3&subID=8.",
@@ -2581,7 +3035,7 @@
           }
         }
       },
-      "Produktinformasjon": {
+      "ProduktinformasjonPart": {
         "type": "object",
         "description": "Beskriver et kosmetisk produkt",
         "additionalProperties": false,
@@ -2595,9 +3049,12 @@
             "nullable": true
           },
           "ProduktType": {
-            "type": "string",
             "description": "Type produkt. Påkrevd.\nSe Produkttype for definerte produkttyper. Hvis ikke definert, vil det bli tolket som annet, fritekst.",
-            "minLength": 1
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Produkttype"
+              }
+            ]
           },
           "LeverandorProdusent": {
             "type": "string",
@@ -2647,6 +3104,44 @@
           }
         }
       },
+      "Produkttype": {
+        "type": "string",
+        "description": "Type produkt\nMan kan også oppgi tekster ikke definert i enumen, de vil da bli tolket som annet, fritekst.",
+        "x-enumNames": [
+          "Fuktighetspleie",
+          "Hudrens",
+          "Harbehandling",
+          "Harpleie",
+          "Sminke",
+          "Sape",
+          "Deodorant",
+          "Parfyme",
+          "Solprodukter",
+          "Negleprodukter",
+          "Munnhygiene",
+          "Barberingsprodukter",
+          "Harfjerningsprodukter",
+          "Tatovering",
+          "Annet"
+        ],
+        "enum": [
+          "Fuktighetspleie",
+          "Hudrens",
+          "Harbehandling",
+          "Harpleie",
+          "Sminke",
+          "Sape",
+          "Deodorant",
+          "Parfyme",
+          "Solprodukter",
+          "Negleprodukter",
+          "Munnhygiene",
+          "Barberingsprodukter",
+          "Harfjerningsprodukter",
+          "Tatovering",
+          "Annet"
+        ]
+      },
       "PågårFortsatt": {
         "type": "string",
         "description": "Pågår symptomet fortsatt hos pasient.",
@@ -2657,6 +3152,52 @@
         "enum": [
           "Ja",
           "Nei"
+        ]
+      },
+      "Reaksjon": {
+        "type": "string",
+        "description": "Hva slags reaksjon som har oppstått",
+        "x-enumNames": [
+          "EksemUtslett",
+          "ElveblestUrticaria",
+          "Hevelse",
+          "Blemmer",
+          "NupperIHuden",
+          "SvieBrennendeFolelse",
+          "Kloe",
+          "Rodhet",
+          "FlassingTorrHud",
+          "AkneKviser",
+          "RennendeOyne",
+          "RennendeNese",
+          "OverUnderpigmenteringIHuden",
+          "Hartap",
+          "Svimmelhet",
+          "Kvalme",
+          "Smerter",
+          "AnafylaksiAllergiskSjokk",
+          "Annet"
+        ],
+        "enum": [
+          "EksemUtslett",
+          "ElveblestUrticaria",
+          "Hevelse",
+          "Blemmer",
+          "NupperIHuden",
+          "SvieBrennendeFolelse",
+          "Kloe",
+          "Rodhet",
+          "FlassingTorrHud",
+          "AkneKviser",
+          "RennendeOyne",
+          "RennendeNese",
+          "OverUnderpigmenteringIHuden",
+          "Hartap",
+          "Svimmelhet",
+          "Kvalme",
+          "Smerter",
+          "AnafylaksiAllergiskSjokk",
+          "Annet"
         ]
       },
       "Reaksjonstid": {
@@ -2679,7 +3220,7 @@
           "VetIkke"
         ]
       },
-      "RelevanteOpplysninger": {
+      "RelevanteOpplysningerPart": {
         "type": "object",
         "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
         "additionalProperties": false,
@@ -2703,7 +3244,7 @@
             "description": "Tilstanden til berørt hudområde før bruk av produktet.\nSe Tilstand for definerte tilstander. Andre tilstander vil bli Annet, fritekst.",
             "nullable": true,
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/Tilstand"
             }
           },
           "AllergiEllerHudlidelse": {
@@ -2827,6 +3368,22 @@
             "nullable": true
           }
         }
+      },
+      "Tilstand": {
+        "type": "string",
+        "description": "Tilstand til område før et produkt ble brukt",
+        "x-enumNames": [
+          "Normal",
+          "Torr",
+          "Irritert",
+          "Annet"
+        ],
+        "enum": [
+          "Normal",
+          "Torr",
+          "Irritert",
+          "Annet"
+        ]
       },
       "Utgatt": {
         "type": "string",
