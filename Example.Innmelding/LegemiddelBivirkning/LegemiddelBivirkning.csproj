@@ -24,12 +24,9 @@
     </PackageReference>
   </ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\OpenAPIs\OpenAPIs.csproj" />
+	</ItemGroup>
+
   <!-- Remember to set <ClassName> - https://github.com/dotnet/aspnetcore/issues/21656 -->
-  <ItemGroup>
-    <OpenApiReference Include="OpenAPIs\swagger.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApi">
-      <SourceUri>https://api.test.melde.no/swagger/v10/swagger.json</SourceUri>
-      <ClassName>{controller}Client</ClassName>
-      <Options>/useBaseUrl:false /output:obj\MeldeClient.cs /GenerateClientInterfaces:false</Options>
-    </OpenApiReference>
-  </ItemGroup>
 </Project>
