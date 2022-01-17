@@ -100,11 +100,6 @@ namespace Example.Varselordningen
                     HvaSkjedde = "Datt på rattata",
                     Tidspunkt = new Tidspunkt {
                         DatoForHendelsen = new Dato { Ar = 2021, Maned = 7, Dag = 13 },
-                        KlokkeslettForHendelsen = new Klokkeslett
-                        {
-                            Timer = 10,
-                            Minutter = 12
-                        }
                     }
                 },
                 Kontaktpersoner = new List<Kontaktperson>

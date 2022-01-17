@@ -94,11 +94,6 @@ namespace Example.Kosmetikk
                     Tidspunkt = new Tidspunkt
                     {
                         DatoForHendelsen = new Dato { Ar = 2021, Maned = 7, Dag = 13 },
-                        KlokkeslettForHendelsen = new Klokkeslett
-                        {
-                            Timer = 10,
-                            Minutter = 12
-                        }
                     }
                 },
                 MedisinskUtstyrMelding = new MedisinskUtstyrMelding
