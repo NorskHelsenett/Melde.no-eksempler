@@ -1433,12 +1433,14 @@
           "En",
           "To",
           "Tre",
+          "Fire",
           "IkkeISerie"
         ],
         "enum": [
           "En",
           "To",
           "Tre",
+          "Fire",
           "IkkeISerie"
         ]
       },
@@ -1626,10 +1628,12 @@
             ]
           },
           "UsikkerDato": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Flagg for å indikere at dato er usikker"
           },
           "DatoMerknad": {
             "type": "string",
+            "description": "Dato merknad",
             "nullable": true
           }
         }
@@ -3352,20 +3356,6 @@
                 "$ref": "#/components/schemas/Dato"
               }
             ]
-          },
-          "KlokkeslettForHendelsen": {
-            "description": "Tidspunkt hendelsen skjedde",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Klokkeslett"
-              }
-            ]
-          },
-          "Merknad": {
-            "type": "string",
-            "description": "Merknad om tidspunktet for hendelsen",
-            "nullable": true
           }
         }
       },
@@ -3455,6 +3445,11 @@
           "Orgnummer": {
             "type": "string",
             "description": "Organisasjonnummeret til virksomheten, for eksempel \"883974832\"",
+            "nullable": true
+          },
+          "OverordnetEnhet": {
+            "type": "string",
+            "description": "Organisasjonnummeret til overordnet enhet, for eksempel \"883974832\"",
             "nullable": true
           },
           "Naringskode": {
