@@ -784,20 +784,16 @@
         "description": "AlvorligHendelse DTO",
         "additionalProperties": false,
         "required": [
-          "EksterntSaksSystem",
           "EksternSaksId",
           "MeldingsId",
           "Melder",
           "Kontaktpersoner"
         ],
         "properties": {
-          "EksterntSaksSystem": {
-            "type": "string",
-            "description": "Påkrevd. Eksternt system, for eksempel navn på avvikssystem."
-          },
           "EksternSaksId": {
             "type": "string",
-            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn."
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
+            "minLength": 1
           },
           "Sprak": {
             "description": "Språk ('Norwegian' | 'Norsk' | 'English' | 'Engelsk')",
@@ -1155,7 +1151,8 @@
         "properties": {
           "EksternSaksId": {
             "type": "string",
-            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn."
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
+            "minLength": 1
           },
           "Sprak": {
             "description": "Språk ('Norwegian' | 'Norsk' | 'English' | 'Engelsk')",
@@ -2073,7 +2070,8 @@
         "properties": {
           "EksternSaksId": {
             "type": "string",
-            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn."
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
+            "minLength": 1
           },
           "Sprak": {
             "description": "Språk ('Norwegian' | 'Norsk' | 'English' | 'Engelsk')",
@@ -2234,6 +2232,12 @@
         "description": "LegemiddelBivirkning DTO",
         "additionalProperties": false,
         "properties": {
+          "EksternSaksId": {
+            "type": "string",
+            "description": "Meldingens id i eksternt sakssystem.",
+            "nullable": true,
+            "example": "MYSYS-REF8345"
+          },
           "Melder": {
             "description": "Inneholder data om innmelder av bivirkningene.",
             "nullable": true,
@@ -2284,12 +2288,6 @@
                 "$ref": "#/components/schemas/AnnenInformasjonPart"
               }
             ]
-          },
-          "EksternSaksId": {
-            "type": "string",
-            "description": "Meldingens id i eksternt sakssystem.",
-            "nullable": true,
-            "example": "MYSYS-REF8345"
           }
         }
       },
@@ -2564,7 +2562,8 @@
         "properties": {
           "EksternSaksId": {
             "type": "string",
-            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn."
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
+            "minLength": 1
           },
           "Sprak": {
             "description": "Språk ('Norwegian' | 'Norsk' | 'English' | 'Engelsk')",
