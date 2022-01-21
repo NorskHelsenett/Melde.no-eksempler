@@ -208,7 +208,8 @@ namespace Example.Toveisdialog
                 {
                     Type = OidcConstants.ClientAssertionTypes.JwtBearer,
                     Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
-                }
+                },
+                ClientCredentialStyle = ClientCredentialStyle.PostBody
             };
             var response = await c.RequestTokenAsync(tokenRequest, cancellationToken);
 

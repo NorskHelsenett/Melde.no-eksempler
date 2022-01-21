@@ -30,13 +30,14 @@ namespace Example.Varselordningen
                 .AddHttpMessageHandler(_ =>
                 {
                     // Provide your own client id and private key settings
+                    var clientType = ClientType.Machine;
                     var clientId = "<client id>";
                     var jwtPrivateKey = new Dictionary<string, object>
                     {
                         // ... key parts
                     };
 
-                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, ClientType.Machine);
+                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, new string[] { "nhn:melde/alvorlighendelse" }, clientType);
                 });
 
             var provider = serviceCollection.BuildServiceProvider();
