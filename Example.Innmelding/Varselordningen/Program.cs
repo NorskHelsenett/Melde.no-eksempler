@@ -36,7 +36,7 @@ namespace Example.Varselordningen
                         // ... key parts
                     };
 
-                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey);
+                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, ClientType.Machine);
                 });
 
             var provider = serviceCollection.BuildServiceProvider();
@@ -47,7 +47,6 @@ namespace Example.Varselordningen
             var requestData = new AlvorligHendelseRequest
             {
                 EksternSaksId = "MYSYS-R195",
-                EksterntSaksSystem = "",
                 Melder = new Melder
                 {
                     Navn = "VILDE MOEN-BRATLI",

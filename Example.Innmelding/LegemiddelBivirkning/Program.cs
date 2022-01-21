@@ -35,7 +35,7 @@ namespace Example.LegemiddelBivirkning
                         // ... key parts
                     };
 
-                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey);
+                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, ClientType.Machine);
                 });
 
             var provider = serviceCollection.BuildServiceProvider();

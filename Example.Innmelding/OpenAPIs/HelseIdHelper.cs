@@ -12,37 +12,6 @@ using System.Threading.Tasks;
 
 namespace OpenAPIs
 {
-    public class JwkTokenHandler : DelegatingHandler
-    {
-        private readonly string _stsUrl;
-        private readonly string _clientId;
-        private readonly string _jwtPrivateKey;
-
-        public JwkTokenHandler(string stsUrl, string clientId, Dictionary<string, object> jwtPrivateKey)
-        {
-            _stsUrl = stsUrl;
-            _clientId = clientId;
-            _jwtPrivateKey = JsonConvert.SerializeObject(jwtPrivateKey);
-        }
-
-        protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request,
-            CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrWhiteSpace(_stsUrl))
-            {
-                return await base.SendAsync(request, cancellationToken);
-            }
-
-            var accessToken = await HelseIdTokenHelper.GetAccessToken(_stsUrl, _clientId, _jwtPrivateKey, cancellationToken);
-            request.SetBearerToken(accessToken);
-
-            // Proceed calling the inner handler, that will actually send the request
-            // to our protected api
-            return await base.SendAsync(request, cancellationToken);
-        }
-    }
-
     /// <summary>
     /// Convenience class for communicating with HelseId,
     /// e.g. obtaining an OAuth access token.
@@ -75,7 +44,7 @@ namespace OpenAPIs
         /// </code>
         /// </example>
         /// <returns></returns>
-        public static async Task<string> GetAccessToken(string stsUrl, string clientId, string jwkPrivateKey, CancellationToken cancellationToken = default)
+        public static async Task<string> GetAccessToken(string stsUrl, string clientId, string jwkPrivateKey, ClientType clientType, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(stsUrl)) throw new ArgumentException(nameof(stsUrl));
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException(nameof(clientId));
@@ -89,28 +58,49 @@ namespace OpenAPIs
                 throw new Exception($"Error getting discovery document from HelseId: {disco.Error}, stsUrl: {stsUrl}");
             }
 
-            var tokenRequest = new TokenRequest
+            var accessToken = null as string;
+            if(clientType == ClientType.Machine)
             {
-                Address = disco.TokenEndpoint,
-                ClientId = clientId,
-                GrantType = OidcConstants.GrantTypes.ClientCredentials,
-                ClientAssertion = new ClientAssertion
+                var tokenRequest = new TokenRequest
                 {
-                    Type = OidcConstants.ClientAssertionTypes.JwtBearer,
-                    Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
+                    Address = disco.TokenEndpoint,
+                    ClientId = clientId,
+                    GrantType = OidcConstants.GrantTypes.ClientCredentials,
+                    ClientAssertion = new ClientAssertion
+                    {
+                        Type = OidcConstants.ClientAssertionTypes.JwtBearer,
+                        Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
+                    }
+                };
+                var response = await c.RequestTokenAsync(tokenRequest, cancellationToken).ConfigureAwait(false);
+
+                if (response.IsError)
+                {
+                    throw new Exception($"Error getting access token from HelseId. {response.Error}, ErrorDescription: {response.ErrorDescription}, stsUrl: {stsUrl}, clientId: {clientId}");
                 }
-            };
-            var response = await c.RequestTokenAsync(tokenRequest, cancellationToken);
 
-            if (response.IsError)
-            {
-                throw new Exception($"Error getting access token from HelseId. {response.Error}, ErrorDescription: {response.ErrorDescription}, stsUrl: {stsUrl}, clientId: {clientId}");
+                accessToken = response.AccessToken;
             }
+            else
+            {
+                //await Program.Main();
 
-            return response.AccessToken;
+                var tokenRequest = new PersonalTokenRequest()
+                {
+                    StsUrl = stsUrl,
+                    ClientId = clientId,
+                    ClientAssertion = new ClientAssertion
+                    {
+                        Type = OidcConstants.ClientAssertionTypes.JwtBearer,
+                        Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
+                    }
+                };
+                accessToken = await tokenRequest.RequestTokenAsync().ConfigureAwait(false);
+            }
+            return accessToken;
         }
 
-        private static string BuildClientAssertion(DiscoveryDocumentResponse disco, string clientId, string jwkPrivateKey)
+        public static string BuildClientAssertion(DiscoveryDocumentResponse disco, string clientId, string jwkPrivateKey)
         {
             var claims = new List<Claim>
             {
