@@ -95,14 +95,15 @@ namespace OpenAPIs
             // the given start page. At the start page we can publish the html that we
             // generated from the StartUrl and at the redirect uri we can retrieve the 
             // authorization code and return it to the application
-            var listener = new ContainedHttpServer(localhost, redirectUrl,
+            using (var listener = new ContainedHttpServer(localhost, redirectUrl,
                 new Dictionary<string, Action<HttpContext>> {
                     { startPage, async ctx => await ctx.Response.WriteAsync(startPageHtml)}
-                });
+                }))
+            {
+                RunBrowser(localhost + startPage);
 
-            RunBrowser(localhost + startPage);
-
-            return await listener.WaitForCallbackAsync();
+                return await listener.WaitForCallbackAsync();
+            }
         }
 
         private static void RunBrowser(string url)
