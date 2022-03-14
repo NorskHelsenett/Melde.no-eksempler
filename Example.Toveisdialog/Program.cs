@@ -30,12 +30,13 @@ namespace Example.Toveisdialog
                     // Provide your own client id and private key settings
                     var clientId = "<client id>";
                     var clientType = ClientType.Machine;
+                    var scopes = new string[] { "nhn:melde/dialog/opprett", "nhn:melde/dialog/melding" };
                     var jwtPrivateKey = new Dictionary<string, object>
                     {
                         // ... key parts
                     };
 
-                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, clientType);
+                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, scopes, clientType);
                 });
 
             var provider = serviceCollection.BuildServiceProvider();
