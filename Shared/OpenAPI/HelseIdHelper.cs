@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenAPIs
+namespace OpenAPI
 {
     public class HelseIdTokenHelper
     {
@@ -43,7 +43,7 @@ namespace OpenAPIs
                     ClientCredentialStyle = ClientCredentialStyle.PostBody,
                     Parameters = new Parameters(new Dictionary<string, string>
                     {
-                        { "scope", string.Join(" ", scopes) }
+                        //{ "scope", string.Join(" ", scopes) }
                     })
                 };
                 var response = await c.RequestTokenAsync(tokenRequest, cancellationToken).ConfigureAwait(false);

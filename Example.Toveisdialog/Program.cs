@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Example.Toveisdialog.OpenAPIs;
+using OpenAPI;
 using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
 

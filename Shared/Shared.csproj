@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="OpenAPI\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="IdentityModel" Version="6.0.0" />
+		<PackageReference Include="IdentityModel.OidcClient" Version="5.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.16.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="NSwag.ApiDescription.Client" Version="13.15.10">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
+	</ItemGroup>
+
+	<!-- Remember to set <ClassName> - https://github.com/dotnet/aspnetcore/issues/21656 -->
+	<ItemGroup>
+		<OpenApiReference Include="OpenAPI\swagger.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApi">
+			<SourceUri>https://api.test.melde.no/swagger/index.html?url=/swagger/v10/external/swagger.json</SourceUri>
+			<ClassName>{controller}Client</ClassName>
+			<Options>/useBaseUrl:false /output:obj\MeldeClient.cs /GenerateClientInterfaces:false</Options>
+		</OpenApiReference>
+	</ItemGroup>
+
+</Project>

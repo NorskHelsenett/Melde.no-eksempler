@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
-namespace Example.Toveisdialog.OpenAPIs
+namespace OpenAPI
 {
-    public class PersonalTokenRequest
+    class PersonalTokenRequest
     {
-        const string Localhost = "http://localhost:8090";
+        const string Localhost = "http://localhost:8089";
         const string RedirectUrl = "/callback";
         const string StartPage = "/start";
 
@@ -36,15 +37,15 @@ namespace Example.Toveisdialog.OpenAPIs
 
                 //var clientAssertionPayload = GetClientAssertionPayload(disco, ClientId, "JWK");
                 var oidcClient = new OidcClient(new OidcClientOptions
-                {
+                {                    
                     Authority = StsUrl,
                     LoadProfile = false,
                     RedirectUri = $"{Localhost}{RedirectUrl}",
                     Scope = "openid profile offline_access " + string.Join(" ", Scopes),
                     ClientId = ClientId,
-                    ClientAssertion = ClientAssertion,
+                    ClientAssertion = ClientAssertion,                   
 
-                    Policy = new Policy { ValidateTokenIssuerName = true },
+                    Policy = new Policy { ValidateTokenIssuerName = true },                    
                 });
 
                 var state = await oidcClient.PrepareLoginAsync();
@@ -75,7 +76,7 @@ namespace Example.Toveisdialog.OpenAPIs
 
         private static ClientAssertion GetClientAssertionPayload(DiscoveryDocumentResponse disco, string clientId, string jwk)
         {
-            var clientAssertionString = HelseIdHelper.BuildClientAssertion(disco, clientId, jwk);
+            var clientAssertionString = HelseIdTokenHelper.BuildClientAssertion(disco, clientId, jwk);
             return new ClientAssertion
             {
                 Type = OidcConstants.ClientAssertionTypes.JwtBearer,
@@ -102,7 +103,7 @@ namespace Example.Toveisdialog.OpenAPIs
                 RunBrowser(localhost + startPage);
 
                 return await listener.WaitForCallbackAsync();
-            }                
+            }
         }
 
         private static void RunBrowser(string url)

@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Varselordningen", "Varselor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biovigilans", "Biovigilans\Biovigilans.csproj", "{CDF3DD6D-32EB-4E08-911B-AC422310A135}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAPIs", "OpenAPIs\OpenAPIs.csproj", "{671736C1-7CC3-47C8-9D20-CBD1288B7667}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedisinskUtstyr", "MedisinskUtstyr\MedisinskUtstyr.csproj", "{A68921C5-268D-46A0-B5F9-6B19AA310227}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MedisinskUtstyr", "MedisinskUtstyr\MedisinskUtstyr.csproj", "{A68921C5-268D-46A0-B5F9-6B19AA310227}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\Shared\Shared.csproj", "{5D7EB798-7BB5-49AB-885D-19BD52BF5DA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,14 @@ Global
 		{CDF3DD6D-32EB-4E08-911B-AC422310A135}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDF3DD6D-32EB-4E08-911B-AC422310A135}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDF3DD6D-32EB-4E08-911B-AC422310A135}.Release|Any CPU.Build.0 = Release|Any CPU
-		{671736C1-7CC3-47C8-9D20-CBD1288B7667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{671736C1-7CC3-47C8-9D20-CBD1288B7667}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{671736C1-7CC3-47C8-9D20-CBD1288B7667}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{671736C1-7CC3-47C8-9D20-CBD1288B7667}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A68921C5-268D-46A0-B5F9-6B19AA310227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A68921C5-268D-46A0-B5F9-6B19AA310227}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A68921C5-268D-46A0-B5F9-6B19AA310227}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A68921C5-268D-46A0-B5F9-6B19AA310227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D7EB798-7BB5-49AB-885D-19BD52BF5DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D7EB798-7BB5-49AB-885D-19BD52BF5DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D7EB798-7BB5-49AB-885D-19BD52BF5DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D7EB798-7BB5-49AB-885D-19BD52BF5DA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

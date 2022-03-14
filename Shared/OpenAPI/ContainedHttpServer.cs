@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Example.Toveisdialog.OpenAPIs
+namespace OpenAPI
 {
     public class ContainedHttpServer : IDisposable
     {
@@ -95,7 +95,7 @@ namespace Example.Toveisdialog.OpenAPIs
 
                 _source.TrySetResult(value);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ctx.Response.StatusCode = 400;
                 ctx.Response.ContentType = "text/html";

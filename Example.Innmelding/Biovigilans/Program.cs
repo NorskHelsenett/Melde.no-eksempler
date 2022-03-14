@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using OpenAPIs;
+using OpenAPI;
 
 namespace Example.Biovigilans
 {

@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v13.13.2.0 (NJsonSchema v10.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Melde.no API - External",
@@ -13,7 +13,7 @@
   },
   "servers": [
     {
-      "url": "https://localhost:44342"
+      "url": "https://api.test.melde.no"
     }
   ],
   "paths": {
@@ -199,6 +199,90 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/KosmetikkRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "En melding har blitt oppdatert.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "En melding har blitt opprettet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ServiceAuthorization": []
+          },
+          {
+            "WebAuthorization": []
+          }
+        ]
+      }
+    },
+    "/api/ekstern/uonskethendelse/kosttilskudd-bivirkning": {
+      "post": {
+        "tags": [
+          "EksternUonsketHendelse"
+        ],
+        "summary": "Meld om bivirkning av kosttilskudd. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
+        "description": "Man må enten oppgi pasientens fødselsnummer eller fødselsdato og kjønn.\nVed bruk av et personlig HelseId-token vil fødselsnummer bli hentet derfra.",
+        "operationId": "EksternUonsketHendelse_Kosttilskudd",
+        "requestBody": {
+          "x-name": "kos",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KosttilskuddRequest"
               }
             }
           },
@@ -534,6 +618,7 @@
             "name": "dialogRef",
             "in": "path",
             "required": true,
+            "description": "Dialogreferanse på formatet 'Dxxxx'",
             "schema": {
               "type": "string",
               "nullable": true
@@ -775,10 +860,104 @@
           }
         ]
       }
+    },
+    "/api/ekstern/nokup/lookup/{codes}": {
+      "get": {
+        "tags": [
+          "Nokup"
+        ],
+        "summary": "Lookup one or more Nokup codes",
+        "operationId": "Nokup_NokupLookup",
+        "parameters": [
+          {
+            "name": "codes",
+            "in": "path",
+            "required": true,
+            "description": "Semicolon separated list of codes",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vellykket forespørsel",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NokupLookupResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NokupLookupResult"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ServiceAuthorization": []
+          },
+          {
+            "WebAuthorization": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
+      "AllergiEllerAnnenPåvirkendeFaktor": {
+        "type": "string",
+        "description": "Om et produkt er utgått",
+        "x-enumNames": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ],
+        "enum": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ]
+      },
       "AlvorligHendelseRequest": {
         "type": "object",
         "description": "AlvorligHendelse DTO",
@@ -873,6 +1052,7 @@
       },
       "AnnenInformasjon": {
         "type": "object",
+        "description": "Annen informasjon",
         "additionalProperties": false,
         "properties": {
           "VarsletTilFylkesmannen": {
@@ -1258,8 +1438,24 @@
           "VetIkke"
         ]
       },
+      "BivirkningVedTidligereBruk2": {
+        "type": "string",
+        "description": "Om bivirkning har oppstått ved tidligere bruk av produkt eller lignende produkter",
+        "x-enumNames": [
+          "Ja",
+          "Nei",
+          "Delvis",
+          "VetIkke"
+        ],
+        "enum": [
+          "Ja",
+          "Nei",
+          "Delvis",
+          "VetIkke"
+        ]
+      },
       "Bostedsfylke": {
-        "type": "integer",
+        "type": "string",
         "description": "",
         "x-enumNames": [
           "IkkeOppgitt",
@@ -1276,19 +1472,59 @@
           "TromsOgFinmark"
         ],
         "enum": [
-          0,
-          3,
-          11,
-          15,
-          18,
-          30,
-          34,
-          38,
-          42,
-          46,
-          50,
-          54
+          "IkkeOppgitt",
+          "Oslo",
+          "Rogaland",
+          "MøreOgRomsdal",
+          "Nordland",
+          "Viken",
+          "Innlandet",
+          "VestfoldOgTelemark",
+          "Agder",
+          "Vestland",
+          "Trøndelag",
+          "TromsOgFinmark"
         ]
+      },
+      "BrukAvProduktet": {
+        "type": "object",
+        "description": "Beskriver bruk av et kosttilskudd",
+        "additionalProperties": false,
+        "properties": {
+          "MengdeIngredienserEllerVirkestoffPrDagligDose": {
+            "type": "string",
+            "description": "Mengde ingredienser/virkestoff pr. daglig dose",
+            "nullable": true
+          },
+          "AnbefaltDagligDose": {
+            "type": "string",
+            "description": "Anbefalt døgndose",
+            "nullable": true
+          },
+          "FaktiskInntattDagligDose": {
+            "type": "string",
+            "description": "Faktisk inntatt daglig dose ",
+            "nullable": true
+          },
+          "BruksPeriode": {
+            "type": "string",
+            "description": "Hvor lenge produktet har blitt brukt",
+            "nullable": true
+          },
+          "LegemidlerSamtidigSomKosttilskudd": {
+            "description": "Er legemidler tatt samtidig som kosttilskudd? ",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LegemidlerSamtidigSomKosttilskudd"
+              }
+            ]
+          },
+          "HvilkeLegemiderErTattSamtidig": {
+            "type": "string",
+            "description": "Hvilke legemidler er tatt samtidig som kosttilskuddet",
+            "nullable": true
+          }
+        }
       },
       "BrukAvProduktetPart": {
         "type": "object",
@@ -1636,7 +1872,7 @@
         }
       },
       "HttpStatusCode": {
-        "type": "integer",
+        "type": "string",
         "description": "",
         "x-enumNames": [
           "Continue",
@@ -1707,72 +1943,72 @@
           "NetworkAuthenticationRequired"
         ],
         "enum": [
-          100,
-          101,
-          102,
-          103,
-          200,
-          201,
-          202,
-          203,
-          204,
-          205,
-          206,
-          207,
-          208,
-          226,
-          300,
-          300,
-          301,
-          301,
-          302,
-          302,
-          303,
-          303,
-          304,
-          305,
-          306,
-          307,
-          307,
-          308,
-          400,
-          401,
-          402,
-          403,
-          404,
-          405,
-          406,
-          407,
-          408,
-          409,
-          410,
-          411,
-          412,
-          413,
-          414,
-          415,
-          416,
-          417,
-          421,
-          422,
-          423,
-          424,
-          426,
-          428,
-          429,
-          431,
-          451,
-          500,
-          501,
-          502,
-          503,
-          504,
-          505,
-          506,
-          507,
-          508,
-          510,
-          511
+          "Continue",
+          "SwitchingProtocols",
+          "Processing",
+          "EarlyHints",
+          "OK",
+          "Created",
+          "Accepted",
+          "NonAuthoritativeInformation",
+          "NoContent",
+          "ResetContent",
+          "PartialContent",
+          "MultiStatus",
+          "AlreadyReported",
+          "IMUsed",
+          "Ambiguous",
+          "Ambiguous",
+          "Moved",
+          "Moved",
+          "Redirect",
+          "Redirect",
+          "RedirectMethod",
+          "RedirectMethod",
+          "NotModified",
+          "UseProxy",
+          "Unused",
+          "TemporaryRedirect",
+          "TemporaryRedirect",
+          "PermanentRedirect",
+          "BadRequest",
+          "Unauthorized",
+          "PaymentRequired",
+          "Forbidden",
+          "NotFound",
+          "MethodNotAllowed",
+          "NotAcceptable",
+          "ProxyAuthenticationRequired",
+          "RequestTimeout",
+          "Conflict",
+          "Gone",
+          "LengthRequired",
+          "PreconditionFailed",
+          "RequestEntityTooLarge",
+          "RequestUriTooLong",
+          "UnsupportedMediaType",
+          "RequestedRangeNotSatisfiable",
+          "ExpectationFailed",
+          "MisdirectedRequest",
+          "UnprocessableEntity",
+          "Locked",
+          "FailedDependency",
+          "UpgradeRequired",
+          "PreconditionRequired",
+          "TooManyRequests",
+          "RequestHeaderFieldsTooLarge",
+          "UnavailableForLegalReasons",
+          "InternalServerError",
+          "NotImplemented",
+          "BadGateway",
+          "ServiceUnavailable",
+          "GatewayTimeout",
+          "HttpVersionNotSupported",
+          "VariantAlsoNegotiates",
+          "InsufficientStorage",
+          "LoopDetected",
+          "NotExtended",
+          "NetworkAuthenticationRequired"
         ]
       },
       "HvorErUtstyret": {
@@ -1915,6 +2151,24 @@
           "VetIkke"
         ]
       },
+      "Kjopssted2": {
+        "type": "string",
+        "description": "Kjøpssted",
+        "x-enumNames": [
+          "UtsalgsstedNorge",
+          "UtsalgsstedUtland",
+          "NetthandelNorge",
+          "NetthandelUtland",
+          "VetIkke"
+        ],
+        "enum": [
+          "UtsalgsstedNorge",
+          "UtsalgsstedUtland",
+          "NetthandelNorge",
+          "NetthandelUtland",
+          "VetIkke"
+        ]
+      },
       "KlassifikasjonAvHendelsen": {
         "type": "string",
         "description": "Klassifikasjon av hendelse",
@@ -1948,6 +2202,7 @@
       },
       "Kontaktperson": {
         "type": "object",
+        "description": "Kontaktperson",
         "additionalProperties": false,
         "properties": {
           "Navn": {
@@ -2135,6 +2390,164 @@
           }
         }
       },
+      "KosttilskuddBivirkning": {
+        "type": "object",
+        "description": "Informasjon om bivirkninger av kosmetikk",
+        "additionalProperties": false,
+        "required": [
+          "BivirkningHvorPaKroppen",
+          "Reaksjon"
+        ],
+        "properties": {
+          "BivirkningHvorPaKroppen": {
+            "type": "array",
+            "description": "Påkrevd. Hvor på kroppen oppstod bivirkningen? Flere alternativer er mulig.\nSe HvorPaKroppen for definerte steder. Andre steder vil bli AnnetSted, fritekst.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Reaksjon": {
+            "type": "array",
+            "description": "Påkrevd. Hvilke type bivirkningssymptom? Flere alternativer er mulig.\nSe Reaksjon for definerte reaksjoner. Andre reaksjoner vil bli annet, fritekst.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "Reaksjonstid": {
+            "description": "Hvor lang tid etter bruken av produktet oppstod bivirkningen?",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Reaksjonstid2"
+              }
+            ]
+          },
+          "ReaksjonstidSpesifisert": {
+            "type": "string",
+            "description": "Nærmere beskrivelse av reaksjonstid",
+            "nullable": true
+          },
+          "AllergiEllerAnnenPåvirkendeFaktor": {
+            "description": "Om personen har allergi eller annet som kan påvirke produktets virkning.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AllergiEllerAnnenPåvirkendeFaktor"
+              }
+            ]
+          },
+          "FolgerAvBivirkning": {
+            "type": "string",
+            "description": "Om personen ble sykemeldt, midlertidig arbeidsufør, osv.\nSe FolgerAvBivirkning for definerte følger. Andre verdier vil bli annet, fritekst.",
+            "nullable": true
+          },
+          "BivirkningVarighet": {
+            "type": "string",
+            "description": "Hvor lenge bivirkningen varte.",
+            "nullable": true
+          }
+        }
+      },
+      "KosttilskuddProdukt": {
+        "type": "object",
+        "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+        "additionalProperties": false,
+        "properties": {
+          "Produktinformasjon": {
+            "description": "Beskrivelse av produktet.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Produktinformasjon"
+              }
+            ]
+          },
+          "BrukAvProduktet": {
+            "description": "Beskrivelse av bruk av produktet.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BrukAvProduktet"
+              }
+            ]
+          }
+        }
+      },
+      "KosttilskuddRequest": {
+        "type": "object",
+        "description": "Kosmetikk DTO",
+        "additionalProperties": false,
+        "required": [
+          "EksternSaksId",
+          "Melder"
+        ],
+        "properties": {
+          "EksternSaksId": {
+            "type": "string",
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
+            "minLength": 1
+          },
+          "Sprak": {
+            "description": "Språk ('Norwegian' | 'Norsk' | 'English' | 'Engelsk')",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              }
+            ]
+          },
+          "Melder": {
+            "description": "Påkrevd. Informasjon om melder. For eksempel HPR-Id og e-postadresse.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Melder"
+              }
+            ]
+          },
+          "Hendelse": {
+            "description": "Informasjon om hendelsen.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Hendelse"
+              }
+            ]
+          },
+          "Pasient": {
+            "description": "Informasjon om pasient. For eksempel fødselsdato og initialer/navn.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Pasienten"
+              }
+            ]
+          },
+          "Bivirkning": {
+            "description": "Beskriver bivirkningen.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/KosttilskuddBivirkning"
+              }
+            ]
+          },
+          "RelevanteOpplysninger": {
+            "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RelevanteOpplysninger"
+              }
+            ]
+          },
+          "Produkter": {
+            "type": "array",
+            "description": "Beskriver legemidler. Minst ett må oppgis. Maksimalt fire kan oppgis.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/KosttilskuddProdukt"
+            }
+          }
+        }
+      },
       "KvitteringsMelding": {
         "allOf": [
           {
@@ -2188,7 +2601,7 @@
         ]
       },
       "Language": {
-        "type": "integer",
+        "type": "string",
         "description": "",
         "x-enumNames": [
           "Unknown",
@@ -2199,12 +2612,12 @@
           "Engelsk"
         ],
         "enum": [
-          0,
-          1,
-          1,
-          1,
-          2,
-          2
+          "Unknown",
+          "Norwegian",
+          "Norwegian",
+          "Norwegian",
+          "English",
+          "English"
         ]
       },
       "LegemiddelAdministrasjonssted": {
@@ -2442,6 +2855,20 @@
           }
         }
       },
+      "LegemidlerSamtidigSomKosttilskudd": {
+        "type": "string",
+        "description": "Om et legemiddel har blitt brukt samtidig som kosttilskuddet",
+        "x-enumNames": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ],
+        "enum": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ]
+      },
       "MedisinskUtstyrMelding": {
         "type": "object",
         "description": "Informasjon om medisinsk utstyr og legemidler",
@@ -2666,6 +3093,10 @@
             "description": "Annen rolle som melder har. Eksempel \"Tilfeldig forbipasserende\".",
             "nullable": true
           },
+          "ViaFullmakt": {
+            "type": "boolean",
+            "description": "True hvis meldingen er sendt inn av noen andre, som har fullmakt"
+          },
           "Virksomhet": {
             "description": "Navn på melders virksomhet. For eksempel sykehusets navn",
             "nullable": true,
@@ -2718,7 +3149,7 @@
         }
       },
       "MelderRolle": {
-        "type": "integer",
+        "type": "string",
         "description": "Lovlige verdier for rolle som melder kan ha",
         "x-enumNames": [
           "DefaultNull",
@@ -2731,14 +3162,14 @@
           "AnnenParorende"
         ],
         "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          10,
-          11,
-          12
+          "annet",
+          "leder",
+          "behandler",
+          "øvrig ansatt",
+          "annet",
+          "annet",
+          "annet",
+          "annet"
         ]
       },
       "Message": {
@@ -2770,6 +3201,7 @@
       },
       "Naringskode": {
         "type": "object",
+        "description": "Næringskode",
         "additionalProperties": false,
         "properties": {
           "Id": {
@@ -2830,6 +3262,71 @@
           "DiagnostiskOgTerapeutiskStralegivendeUtstyr"
         ]
       },
+      "NokupLookupOption": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasChildren": {
+            "type": "boolean"
+          }
+        }
+      },
+      "NokupLookupResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "InputType": {
+            "$ref": "#/components/schemas/OptionType"
+          },
+          "Mandatory": {
+            "type": "boolean"
+          },
+          "MaxLength": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Options": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/NokupLookupOption"
+            }
+          }
+        }
+      },
+      "OptionType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "SingleChoice",
+          "MultipleChoice",
+          "All",
+          "Text"
+        ],
+        "enum": [
+          "SingleChoice",
+          "MultipleChoice",
+          "All",
+          "Text"
+        ]
+      },
       "PagaendeBehandling": {
         "type": "string",
         "description": "Hva gjorde bruker når bivirkning oppstod",
@@ -2844,8 +3341,21 @@
           "VetIkke"
         ]
       },
+      "PågårFortsatt": {
+        "type": "string",
+        "description": "Pågår symptomet fortsatt hos pasient.",
+        "x-enumNames": [
+          "Ja",
+          "Nei"
+        ],
+        "enum": [
+          "Ja",
+          "Nei"
+        ]
+      },
       "Parorende": {
         "type": "object",
+        "description": "Pårørende",
         "additionalProperties": false,
         "properties": {
           "Foedselsnummer": {
@@ -3038,6 +3548,69 @@
           }
         }
       },
+      "Produktinformasjon": {
+        "type": "object",
+        "description": "Beskriver et kosttilskudd",
+        "additionalProperties": false,
+        "required": [
+          "ProduktType"
+        ],
+        "properties": {
+          "ProduktNavn": {
+            "type": "string",
+            "description": "Navnet på produktet",
+            "nullable": true
+          },
+          "ProduktType": {
+            "description": "Type produkt. Påkrevd.\nSe Produkttype for definerte produkttyper. Hvis ikke definert, vil det bli tolket som annet, fritekst.",
+            "minLength": 1,
+            "$ref": "#/components/schemas/Produkttype"
+          },
+          "Ingredienser": {
+            "type": "string",
+            "description": "Ingredienser/virkestoff i produktet",
+            "nullable": true
+          },
+          "LeverandorProdusent": {
+            "type": "string",
+            "description": "Navnet på leverandøren eller produsenten av produktet.",
+            "nullable": true
+          },
+          "ErProduktUtgattPaHoldbarhetsdato": {
+            "description": "Om produktet har gått ut på dato",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Utgatt2"
+              }
+            ]
+          },
+          "ErBivirkningMeldtTilLeverandorEllerProdusent": {
+            "type": "string",
+            "description": "Er bivirkningen meldt til produsent fra før av?",
+            "nullable": true
+          },
+          "HvorProduktetErKjopt": {
+            "description": "Hvor produktet er kjøpt.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Kjopssted2"
+              }
+            ]
+          },
+          "ButikkNavn": {
+            "type": "string",
+            "description": "Navn på butikken",
+            "nullable": true
+          },
+          "BatchLotNummer": {
+            "type": "string",
+            "description": "Batchnummer på produktet.",
+            "nullable": true
+          }
+        }
+      },
       "ProduktinformasjonPart": {
         "type": "object",
         "description": "Beskriver et kosmetisk produkt",
@@ -3145,18 +3718,6 @@
           "Annet"
         ]
       },
-      "PågårFortsatt": {
-        "type": "string",
-        "description": "Pågår symptomet fortsatt hos pasient.",
-        "x-enumNames": [
-          "Ja",
-          "Nei"
-        ],
-        "enum": [
-          "Ja",
-          "Nei"
-        ]
-      },
       "Reaksjon": {
         "type": "string",
         "description": "Hva slags reaksjon som har oppstått",
@@ -3222,6 +3783,60 @@
           "Annet",
           "VetIkke"
         ]
+      },
+      "Reaksjonstid2": {
+        "type": "string",
+        "description": "Hvor lang tid etter bruken av produktet bivirkningen oppstod",
+        "x-enumNames": [
+          "Innen30Min",
+          "Innen30MinTil1Time",
+          "Innen24Timer",
+          "MerEnn1Dogn",
+          "Annet",
+          "VetIkke"
+        ],
+        "enum": [
+          "Innen30Min",
+          "Innen30MinTil1Time",
+          "Innen24Timer",
+          "MerEnn1Dogn",
+          "Annet",
+          "VetIkke"
+        ]
+      },
+      "RelevanteOpplysninger": {
+        "type": "object",
+        "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+        "additionalProperties": false,
+        "properties": {
+          "BivirkningerVedTidligereBruk": {
+            "description": "Om det har oppstått bivirkninger ved tidligere bruk av det aktuelle produktet/de aktuelle produktene eller lignende produkter.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/BivirkningVedTidligereBruk2"
+              }
+            ]
+          },
+          "TidligereBrukSpesifisert": {
+            "type": "string",
+            "description": "Beskrivelse av tidligere bruk.",
+            "nullable": true
+          },
+          "TilstandBerortOmradeForBruk": {
+            "type": "array",
+            "description": "Tilstanden til berørt hudområde før bruk av produktet.\nSe Tilstand for definerte tilstander. Andre tilstander vil bli Annet, fritekst.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Tilstand"
+            }
+          },
+          "AllergiEllerHudlidelse": {
+            "type": "string",
+            "description": "Om personen har allergi eller annen hudlidelse, beskriv hva slags type allergi eller hudlidelse dette er.",
+            "nullable": true
+          }
+        }
       },
       "RelevanteOpplysningerPart": {
         "type": "object",
@@ -3388,6 +4003,20 @@
           "VetIkke"
         ]
       },
+      "Utgatt2": {
+        "type": "string",
+        "description": "Om et produkt er utgått",
+        "x-enumNames": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ],
+        "enum": [
+          "Ja",
+          "Nei",
+          "VetIkke"
+        ]
+      },
       "VedleggPart": {
         "type": "object",
         "description": "Vedlegg, følgende filtyper er støttet: .jpeg, .png, .tiff, pdf, .rtf, .docx.",
@@ -3409,6 +4038,7 @@
       },
       "Virksomhet": {
         "type": "object",
+        "description": "Virksomhet",
         "additionalProperties": false,
         "properties": {
           "Navn": {
