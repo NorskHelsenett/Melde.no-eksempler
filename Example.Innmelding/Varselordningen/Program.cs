@@ -47,64 +47,35 @@ namespace Example.Varselordningen
             //// Fill out request data
             var requestData = new AlvorligHendelseRequest
             {
-                EksternSaksId = "MYSYS-R195",
-                Melder = new Melder
+                Hode = new HodePart
                 {
-                    Navn = "VILDE MOEN-BRATLI",
-                    Fodselsnummer = "13075706604",
-                    Epost = "TestData@melde.no",
-                    Telefon = "99999999",
-                    HerId = 0,
-                    Stilling = "Doktor",
-                    Rolle = MelderRolle.Behandler,
-                    HprId = 8458111,
-                    Virksomhet = new Virksomhet
+                    EksternSaksId = "MYSYS-R195",
+                },
+                Melding = new AlvorligHendelseMeldingPart
+                {
+                    Melder = new AlvorligHendelseMelderPart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
+                        Fødselsnummer = "13075706604",
+                        Epost = "TestData@melde.no",
+                        Telefon = "99999999",
+                        Organisasjonsnummer = "883974832",
+                        Rolle = "Behandler",
+                        Stilling = "Lege"
                     },
-                    GjeldendeVirksomhet = new Virksomhet
+                    Pasient = new AlvorligHendelsePasientPart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
-                    }
-                },
-                Pasient = new Pasient
+                        //Fødselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
+                        //Kjønn = PasientensKjonn.Mann,
+                        Fødselsnummer = "13075706604"
+                    },
+                    Hendelse = new AlvorligHendelseHendelsePart
+                    {
+                        HvaSkjedde = "Datt på rattata",
+                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                    },
+                    Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
                 {
-                    Fodselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
-                    Kjonn = PasientensKjonn.Mann,
-                    Fodselsnummer = "13075706604"
-                },
-                Hendelse = new Hendelse
-                {
-                    HvaSkjedde = "Datt på rattata",
-                    Tidspunkt = new Tidspunkt {
-                        DatoForHendelsen = new Dato { Ar = 2021, Maned = 7, Dag = 13 },
-                    }
-                },
-                Kontaktpersoner = new List<Kontaktperson>
-                {
-                    new Kontaktperson
+                    new AlvorligHendelseKontaktperson
                     {
                         Navn = "VILDE MOEN_BRATLI",
                         Epost = "TestData@melde.no",
@@ -112,15 +83,14 @@ namespace Example.Varselordningen
                         Stilling = "Doktor"
                     }
                 },
-                AnnenInformasjon = new AnnenInformasjon
-                {
-                    VarsletTilFylkesmannen = true,
-                    VarsletFylkesmann = "Fylkesmannen i Viken",
-                    TidligereVarslet = true,
-                    TidligereVarsletKanal = "Faks til sykehus"
-                },
-                SendToHtil = true,
-                SendToUkom = true
+                    AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
+                    {
+                        VarsletTilFylkesmannen = true,
+                        VarsletFylkesmann = "Fylkesmannen i Viken",
+                        TidligereVarslet = true,
+                        TidligereVarsletKanal = "Faks til sykehus"
+                    }
+                }
             };
 
             // Example of data sent with request

@@ -14,10 +14,10 @@ namespace Example.Kosmetikk
         // Points to Melde.no API base
         //private static readonly Uri ApiBaseAddress = new ("https://localhost:44342/");
         private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
+        //private static readonly Uri ApiBaseAddress = new("https://api.qa.melde.no/");
 
         // Points to the HelseId instance you want to use
         private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
-
 
         static async Task Main(string[] args)
         {
@@ -47,98 +47,67 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new KosmetikkRequest
             {
-                EksternSaksId = "MYSYS-R195",
-                Melder = new Melder
+                Hode = new HodePart
                 {
-                    Navn = "VILDE MOEN-BRATLI",
-                    Fodselsnummer = "13075706604",
-                    Epost = "TestData@melde.no",
-                    Telefon = "99999999",
-                    HerId = 0,
-                    Stilling = "Doktor",
-                    Rolle = MelderRolle.Behandler,
-                    HprId = 8458111,
-                    Virksomhet = new Virksomhet
+                    EksternSaksId = "MYSYS-R195",
+
+                },
+                Melding = new KosmetikkMeldingPart
+                {
+                    Melder = new KosmetikkMelderPart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
+                        Fødselsnummer = "13075706604",
+                        Epost = "TestData@melde.no",
+                        Organisasjonsnummer = "883974832"
                     },
-                    GjeldendeVirksomhet = new Virksomhet
+                    Hendelse = new KosmetikkHendelsePart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
-                    }
-                },
-                Hendelse = new Hendelse
-                {
-                    HvaSkjedde = "Fikk utslett av såpe",
-                    Tidspunkt = new Tidspunkt
+                        HvaSkjedde = "Fikk utslett av såpe",
+                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                    },
+                    Pasient = new KosmetikkPasientPart
                     {
-                        DatoForHendelsen = new Dato { Ar = 2021, Maned = 7, Dag = 13 },
-                    }
-                },
-                Pasient = new Pasienten
-                {
-                    Kjonn = PasientensKjonn.Mann,
-                    Alder = 40
-                },
-                Bivirkning = new KosmetikkBivirkningPart
-                {
-                    BivirkningHvorPaKroppen = new List<HvorPaKroppen>
+                        Kjonn = PasientensKjonn.Mann,
+                        Alder = 40
+                    },
+                    Bivirkning = new KosmetikkBivirkningPart
+                    {
+                        BivirkningHvorPaKroppen = new List<HvorPaKroppen>
                     {
                         HvorPaKroppen.Ansikt,
                         HvorPaKroppen.Mage,
                     },
-                    Reaksjon = new List<Reaksjon>
+                        Reaksjon = new List<Reaksjon>
                     {
                         Reaksjon.EksemUtslett,
                         Reaksjon.Hevelse
                     },
-                    FolgerAvBivirkning = FolgerAvBivirkning.Sykehusopphold,
-                    Reaksjonstid = Reaksjonstid.Innen30Min,
-                },
-                RelevanteOpplysninger = new RelevanteOpplysningerPart
-                {
-                    BivirkningerVedTidligereBruk = BivirkningVedTidligereBruk.Delvis
-                },
-                Produkter = new List<KosmetikkProduktPart>
-                {
-                    new KosmetikkProduktPart
+                        FolgerAvBivirkning = FolgerAvBivirkning.Sykehusopphold,
+                        Reaksjonstid = Reaksjonstid.Innen30Min,
+                    },
+                    RelevanteOpplysninger = new KosmetikkRelevanteOpplysningerPart
                     {
-                        Produktinformasjon = new ProduktinformasjonPart
+                        BivirkningerVedTidligereBruk = BivirkningVedTidligereBruk.Delvis
+                    },
+                    Produkter = new List<KosmetikkProduktPart>
+                    {
+                        new KosmetikkProduktPart
                         {
-                            ProduktNavn = "Lano",
-                            ProduktType = Produkttype.Sape,
-                            Salgskanal = Salgskanal.Matvarebutikk
-                        },
-                        BrukAvProduktet = new BrukAvProduktetPart
-                        {
-                            ProduktetBruktHvorPaKroppen = new List<HvorPaKroppen>
+                            Produktinformasjon = new ProduktinformasjonPart
                             {
-                                HvorPaKroppen.Ansikt,
-                                HvorPaKroppen.Mage
+                                ProduktNavn = "Lano",
+                                ProduktType = Produkttype.Sape,
+                                Salgskanal = Salgskanal.Matvarebutikk
                             },
-                            BeskrivelseAvBruk = "Vårrengjøring"
+                            BrukAvProduktet = new BrukAvProduktetPart
+                            {
+                                ProduktetBruktHvorPaKroppen = new List<HvorPaKroppen>
+                                {
+                                    HvorPaKroppen.Ansikt,
+                                    HvorPaKroppen.Mage
+                                },
+                                BeskrivelseAvBruk = "Vårrengjøring"
+                            }
                         }
                     }
                 }

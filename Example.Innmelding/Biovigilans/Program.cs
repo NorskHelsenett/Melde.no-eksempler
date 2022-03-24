@@ -48,72 +48,40 @@ namespace Example.Biovigilans
             //// Fill out request data
             var requestData = new BiovigilansRequest
             {
-                EksternSaksId = "MYSYS-R195",
-                Melder = new Melder
+                Hode = new HodePart
                 {
-                    Navn = "VILDE MOEN-BRATLI",
-                    Fodselsnummer = "13075706604",
-                    Epost = "TestData@melde.no",
-                    Telefon = "99999999",
-                    HerId = 0,
-                    Stilling = "Doktor",
-                    Rolle = MelderRolle.Behandler,
-                    HprId = 8458111,
-                    Virksomhet = new Virksomhet
+                    EksternSaksId = "MYSYS-R195",
+                },
+                Melding = new BiovigilansMeldingPart
+                {
+                    Melder = new BiovigilansMelderPart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
+                        Fødselsnummer = "13075706604",
+                        Epost = "TestData@melde.no",
+                        Organisasjonsnummer = "883974832"
                     },
-                    GjeldendeVirksomhet = new Virksomhet
+                    Pasient = new BiovigilansPasientPart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
+                        Fødselsår = 1990,
+                        Kjønn = PasientensKjonn.Mann,
+                    },
+                    Hendelse = new BiovigilansHendelsePart
+                    {
+                        HvaSkjedde = "Datt på rattata",
+                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                    },
+                    Biovigilans = new BiovigilansPart
+                    {
+                        StedForHendelsen = "1.1",
+                        Hendelsestype = "2.10.1.1.1",
+                        MedvirkendeFaktorer = new string[] { "3.2.1" },
+                        Forebyggbarhet = "4.1",
+                        FaktiskKonsekvensForPasient = "5.2",
+                        Hyppighet = "6.2",
+                        MuligKonsekvensVedGjentakelse = "7.3",
+                        DefinisjonKode = "2",
+                        OppdagetKode = "1"
                     }
-                },
-                Pasient = new Pasient
-                {
-                    Fodselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
-                    Kjonn = PasientensKjonn.Mann,
-                    Fodselsnummer = "13075706604"
-                },
-                Hendelse = new Hendelse
-                {
-                    HvaSkjedde = "Datt på rattata",
-                    Tidspunkt = new Tidspunkt {
-                        DatoForHendelsen = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
-                    }
-                },
-                BiovigilansMelding = new BiovigilansMelding
-                {
-                    StedForHendelsen = "1.1",
-                    Hendelsestype = "2.10.1.1.1",
-                    MedvirkendeFaktorer = new string[] { "3.2.1" },
-                    Forebyggbarhet = "4.1",
-                    FaktiskKonsekvensForPasient = "5.2",
-                    Hyppighet = "6.2",
-                    MuligKonsekvensVedGjentakelse = "7.3",
-                    DefinisjonKode = "2",
-                    OppdagetKode = "1"
                 }
             };
 

@@ -47,63 +47,32 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new MedisinskUtstyrRequest
             {
-                EksternSaksId = "MYSYS-R195",
-                Melder = new Melder
+                Hode = new HodePart
                 {
-                    Navn = "VILDE MOEN-BRATLI",
-                    Fodselsnummer = "13075706604",
-                    Epost = "TestData@melde.no",
-                    Telefon = "99999999",
-                    HerId = 0,
-                    Stilling = "Doktor",
-                    Rolle = MelderRolle.Behandler,
-                    HprId = 8458111,
-                    Virksomhet = new Virksomhet
+                    EksternSaksId = "MYSYS-R195",
+                },
+                Melding = new MedisinskUtstyrMeldingPart
+                {
+                    Melder = new MedisinskUtstyrMelderPart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
+                        Fødselsnummer = "13075706604",
+                        Epost = "TestData@melde.no",
+                        Telefon = "99999999",
+                        Organisasjonsnummer = "883974832"
                     },
-                    GjeldendeVirksomhet = new Virksomhet
+                    Hendelse = new MedisinskUtstyrHendelsePart
                     {
-                        Navn = "ST. OLAVS HOSPITAL HF",
-                        Helseregion = "ST. OLAVS HOSPITAL HF",
-                        Postadresse = "Prinsesse Kristinas gate 3",
-                        Postnummer = "7030",
-                        Poststed = "TRONDHEIM",
-                        Kommune = "TRONDHEIM",
-                        Orgnummer = "883974832",
-                        Naringskode = new Naringskode
-                        {
-                            Id = "86.101",
-                            Navn = "Alminnelige somatiske sykehus",
-                        }
-                    }
-                },
-                Hendelse = new Hendelse
-                {
-                    HvaSkjedde = "Fikk utslett av såpe",
-                    Tidspunkt = new Tidspunkt
+                        HvaSkjedde = "Fikk utslett av såpe",
+                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                    },
+                    MedisinskUtstyr = new MedisinskUtstyrPart
                     {
-                        DatoForHendelsen = new Dato { Ar = 2021, Maned = 7, Dag = 13 },
+                        Handelsnavn = "Storz 488 B",
+                        Produsent = "Storz",
+                        HvorErUtstyret = HvorErUtstyret.Helseforetak,
+                        NkknKategori = NkknKategori.AktivtImplanterbartUtstyr,
+                        KlassifikasjonAvHendelsen = KlassifikasjonAvHendelsen.KunneHaFortTilDodEllerForverring,
                     }
-                },
-                MedisinskUtstyrMelding = new MedisinskUtstyrMelding
-                {
-                    Handelsnavn = "Storz 488 B",
-                    Produsent = "Storz",
-                    HvorErUtstyret = HvorErUtstyret.Helseforetak,
-                    NkknKategori = NkknKategori.AktivtImplanterbartUtstyr,
-                    KlassifikasjonAvHendelsen = KlassifikasjonAvHendelsen.KunneHaFortTilDodEllerForverring,
                 }
             };
 

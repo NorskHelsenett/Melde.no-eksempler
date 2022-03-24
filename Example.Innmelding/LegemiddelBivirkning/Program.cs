@@ -47,14 +47,14 @@ namespace Example.LegemiddelBivirkning
             var requestData = new LegemiddelBivirkningRequest
             {
                 EksternSaksId = "MYSYS-R195",
-                Melder = new MelderPart
+                Melder = new LegemiddelBivirkningMelderPart
                 {
                     Fødselsnummer = "13065906141",
                     Organisasjonsnummer = "883974832",
                     Epost = "TestData@melde.no",
                     Telefon = "99999999"
                 },
-                Pasient = new PasientPart
+                Pasient = new LegemiddelBivirkningPasientPart
                 {
                     Fødselsdato = "07.03.1990",
                     Kjønn = PasientensKjonn.Mann
@@ -95,16 +95,16 @@ namespace Example.LegemiddelBivirkning
                         ErVaksine = true
                     }
                 },
-                Symptom = new List<SymptomPart>
+                Symptom = new List<LegemiddelBivirkningSymptomPart>
                 {
-                    new SymptomPart
+                    new LegemiddelBivirkningSymptomPart
                     {
                         Beskrivelse = "Blodtrykksfall",
                         Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
                         Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
                         PågårFortsatt = PågårFortsatt.Nei,
                     },
-                    new SymptomPart
+                    new LegemiddelBivirkningSymptomPart
                     {
                         Beskrivelse = "Stor trang til å teste APIer",
                         Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
@@ -113,7 +113,7 @@ namespace Example.LegemiddelBivirkning
                         Utfall = BivirkningUtfall.RestituertMenMedEttervirkninger
                     }
                 },
-                AnnenInformasjon = new AnnenInformasjonPart
+                AnnenInformasjon = new LegemiddelBivirkningAnnenInformasjonPart
                 {
                     Alvorlighet = new List<BivirkningAlvorlighet>
                         {BivirkningAlvorlighet.Livstruende, BivirkningAlvorlighet.AnomaliFodselsdefekt},
