@@ -41,7 +41,7 @@ namespace Example.LegemiddelBivirkning
             // Fill out request data
             var requestData = new LegemiddelBivirkningRequest
             {
-                EksternSaksId = "MYSYS-R195",
+                EksternSaksId = Guid.NewGuid().ToString(),
                 Melder = new LegemiddelBivirkningMelderPart
                 {
                     Fødselsnummer = "13065906141",

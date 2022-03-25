@@ -1491,6 +1491,10 @@
         "type": "object",
         "description": "Melders opplysninger.",
         "additionalProperties": false,
+        "required": [
+          "Organisasjonsnavn",
+          "Epost"
+        ],
         "properties": {
           "Fødselsnummer": {
             "type": "string",
@@ -1504,10 +1508,16 @@
             "nullable": true,
             "example": "883974832"
           },
+          "Organisasjonsnavn": {
+            "type": "string",
+            "description": "Melders organisasjonsnavn.",
+            "minLength": 1,
+            "example": "883974832"
+          },
           "Epost": {
             "type": "string",
             "description": "Melders e-post.",
-            "nullable": true,
+            "minLength": 1,
             "example": "TestData@melde.no"
           }
         }

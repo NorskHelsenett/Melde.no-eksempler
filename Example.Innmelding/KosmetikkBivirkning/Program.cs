@@ -43,7 +43,7 @@ namespace Example.Kosmetikk
             {
                 Hode = new HodePart
                 {
-                    EksternSaksId = "MYSYS-R195",
+                    EksternSaksId = Guid.NewGuid().ToString(),
 
                 },
                 Melding = new KosmetikkMeldingPart

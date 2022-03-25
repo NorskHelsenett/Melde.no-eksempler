@@ -44,7 +44,7 @@ namespace Example.Biovigilans
             {
                 Hode = new HodePart
                 {
-                    EksternSaksId = "MYSYS-R195",
+                    EksternSaksId = Guid.NewGuid().ToString(),
                 },
                 Melding = new BiovigilansMeldingPart
                 {
@@ -52,7 +52,8 @@ namespace Example.Biovigilans
                     {
                         Fødselsnummer = "13075706604",
                         Epost = "TestData@melde.no",
-                        Organisasjonsnummer = "883974832"
+                        Organisasjonsnummer = "883974832",
+                        Organisasjonsnavn = "St. Olavs Hospital",
                     },
                     Pasient = new BiovigilansPasientPart
                     {
