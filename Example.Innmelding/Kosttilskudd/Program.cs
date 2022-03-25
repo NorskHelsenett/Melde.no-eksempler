@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Example.Auth;
 using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -12,8 +13,9 @@ namespace Example.Kosmetikk
     class Program
     {
         // Points to Melde.no API base
-        private static readonly Uri ApiBaseAddress = new("https://localhost:44342/");
-        // private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
+        //private static readonly Uri ApiBaseAddress = new("https://localhost:44342/");
+        private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
+        //private static readonly Uri ApiBaseAddress = new("https://api.qa.melde.no/");
 
         // Points to the HelseId instance you want to use
         private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
@@ -27,18 +29,11 @@ namespace Example.Kosmetikk
             {
                 client.BaseAddress = ApiBaseAddress;
             })
-                .AddHttpMessageHandler(_ =>
-                {
-                    // Provide your own client id and private key settings
-                    var clientType = ClientType.Machine;
-                    var clientId = "<client id>";
-                    var jwtPrivateKey = new Dictionary<string, object>
-                    {
-                        // ... key parts
-                    };
-
-                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, new string[] { "nhn:melde/kosttilskudd" }, clientType);
-                });
+            .AddHttpMessageHandler(_ =>
+            {
+                // Auth params can be set in AuthParams.cs
+                return new JwkTokenHandler(HelseIdUrl, AuthParams.ClientId, AuthParams.Jwk, new[] { "nhn:melde/kosttilskudd" }, AuthParams.ClientType);
+            });
 
             var provider = serviceCollection.BuildServiceProvider();
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();

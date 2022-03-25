@@ -1211,6 +1211,7 @@
         "description": "Melders opplysninger.",
         "additionalProperties": false,
         "required": [
+          "Organisasjonsnavn",
           "Epost",
           "Telefon",
           "Rolle",
@@ -1229,6 +1230,12 @@
             "nullable": true,
             "example": "883974832"
           },
+          "Organisasjonsnavn": {
+            "type": "string",
+            "description": "Melders organisasjonsnavn.",
+            "minLength": 1,
+            "example": "883974832"
+          },
           "Epost": {
             "type": "string",
             "description": "Melders e-post.",
@@ -1242,10 +1249,13 @@
             "example": "99999999"
           },
           "Rolle": {
-            "type": "string",
             "description": "Melder's rolle",
-            "minLength": 1,
-            "example": "Behandler"
+            "example": "Behandler",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/MelderRolle"
+              }
+            ]
           },
           "Stilling": {
             "type": "string",
@@ -3770,6 +3780,30 @@
             "type": "boolean"
           }
         }
+      },
+      "MelderRolle": {
+        "type": "integer",
+        "description": "Lovlige verdier for rolle som melder kan ha",
+        "x-enumNames": [
+          "DefaultNull",
+          "Leder",
+          "Behandler",
+          "ØvrigAnsatt",
+          "Annet",
+          "PasientBruker",
+          "NarmesteParorende",
+          "AnnenParorende"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          10,
+          11,
+          12
+        ]
       },
       "Message": {
         "type": "object",

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Example.Auth;
 using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -27,18 +28,11 @@ namespace Example.Kosmetikk
             {
                 client.BaseAddress = ApiBaseAddress;
             })
-                .AddHttpMessageHandler(_ =>
-                {
-                    // Provide your own client id and private key settings
-                    var clientType = ClientType.Machine;
-                    var clientId = "<client id>";
-                    var jwtPrivateKey = new Dictionary<string, object>
-                    {
-                        // ... key parts
-                    };
-
-                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, new string[] { "nhn:melde/kosmetikk" }, clientType);
-                });
+            .AddHttpMessageHandler(_ =>
+            {
+                // Auth params can be set in AuthParams.cs
+                return new JwkTokenHandler(HelseIdUrl, AuthParams.ClientId, AuthParams.Jwk, new[] { "nhn:melde/kosmetikk" }, AuthParams.ClientType);
+            });
 
             var provider = serviceCollection.BuildServiceProvider();
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
