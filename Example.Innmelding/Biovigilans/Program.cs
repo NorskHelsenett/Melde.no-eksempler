@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Example.Auth;
+using Example.Configuration;
 using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -12,14 +12,8 @@ namespace Example.Biovigilans
 {
     class Program
     {
-        // Points to Melde.no API base
-        //private static readonly Uri ApiBaseAddress = new ("https://localhost:44342/");
-        private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
-        //private static readonly Uri ApiBaseAddress = new("https://api.qa.melde.no/");
-
         // Points to the HelseId instance you want to use
         private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
-
 
         static async Task Main(string[] args)
         {
@@ -27,12 +21,12 @@ namespace Example.Biovigilans
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddHttpClient("MeldeNo", client =>
             {
-                client.BaseAddress = ApiBaseAddress;
+                client.BaseAddress = Config.ApiUri;
             })
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(HelseIdUrl, AuthParams.ClientId, AuthParams.Jwk, new[] { "nhn:melde/biovigilans" }, AuthParams.ClientType);
+                return new JwkTokenHandler(HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/biovigilans" }, Config.ClientType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();

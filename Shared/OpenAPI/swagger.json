@@ -1835,62 +1835,6 @@
           "VetIkke"
         ]
       },
-      "BivirkningVedTidligereBruk2": {
-        "type": "string",
-        "description": "Om bivirkning har oppstått ved tidligere bruk av produkt eller lignende produkter",
-        "x-enumNames": [
-          "Ja",
-          "Nei",
-          "Delvis",
-          "VetIkke"
-        ],
-        "enum": [
-          "Ja",
-          "Nei",
-          "Delvis",
-          "VetIkke"
-        ]
-      },
-      "BrukAvProduktet": {
-        "type": "object",
-        "description": "Beskriver bruk av et kosttilskudd",
-        "additionalProperties": false,
-        "properties": {
-          "MengdeIngredienserEllerVirkestoffPrDagligDose": {
-            "type": "string",
-            "description": "Mengde ingredienser/virkestoff pr. daglig dose",
-            "nullable": true
-          },
-          "AnbefaltDagligDose": {
-            "type": "string",
-            "description": "Anbefalt døgndose",
-            "nullable": true
-          },
-          "FaktiskInntattDagligDose": {
-            "type": "string",
-            "description": "Faktisk inntatt daglig dose ",
-            "nullable": true
-          },
-          "BruksPeriode": {
-            "type": "string",
-            "description": "Hvor lenge produktet har blitt brukt",
-            "nullable": true
-          },
-          "LegemidlerSamtidigSomKosttilskudd": {
-            "description": "Er legemidler tatt samtidig som kosttilskudd? ",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/LegemidlerSamtidigSomKosttilskudd"
-              }
-            ]
-          },
-          "HvilkeLegemiderErTattSamtidig": {
-            "type": "string",
-            "description": "Hvilke legemidler er tatt samtidig som kosttilskuddet",
-            "nullable": true
-          }
-        }
-      },
       "BrukAvProduktetPart": {
         "type": "object",
         "description": "Beskriver bruk av et kosmetisk produkt",
@@ -2417,40 +2361,6 @@
           }
         }
       },
-      "Kjopssted": {
-        "type": "string",
-        "description": "Kjøpssted",
-        "x-enumNames": [
-          "UtsalgsstedINorge",
-          "UtsalgsstedIEtAnnetLand",
-          "Netthandel",
-          "VetIkke"
-        ],
-        "enum": [
-          "UtsalgsstedINorge",
-          "UtsalgsstedIEtAnnetLand",
-          "Netthandel",
-          "VetIkke"
-        ]
-      },
-      "Kjopssted2": {
-        "type": "string",
-        "description": "Kjøpssted",
-        "x-enumNames": [
-          "UtsalgsstedNorge",
-          "UtsalgsstedUtland",
-          "NetthandelNorge",
-          "NetthandelUtland",
-          "VetIkke"
-        ],
-        "enum": [
-          "UtsalgsstedNorge",
-          "UtsalgsstedUtland",
-          "NetthandelNorge",
-          "NetthandelUtland",
-          "VetIkke"
-        ]
-      },
       "KlassifikasjonAvHendelsen": {
         "type": "string",
         "description": "Klassifikasjon av hendelse",
@@ -2559,6 +2469,22 @@
             ]
           }
         }
+      },
+      "KosmetikkKjopssted": {
+        "type": "string",
+        "description": "Kjøpssted",
+        "x-enumNames": [
+          "UtsalgsstedINorge",
+          "UtsalgsstedIEtAnnetLand",
+          "Netthandel",
+          "VetIkke"
+        ],
+        "enum": [
+          "UtsalgsstedINorge",
+          "UtsalgsstedIEtAnnetLand",
+          "Netthandel",
+          "VetIkke"
+        ]
       },
       "KosmetikkMelderPart": {
         "type": "object",
@@ -2790,7 +2716,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Reaksjonstid2"
+                "$ref": "#/components/schemas/Reaksjonstid"
               }
             ]
           },
@@ -2819,6 +2745,46 @@
           }
         }
       },
+      "KosttilskuddBrukAvProduktet": {
+        "type": "object",
+        "description": "Beskriver bruk av et kosttilskudd",
+        "additionalProperties": false,
+        "properties": {
+          "MengdeIngredienserEllerVirkestoffPrDagligDose": {
+            "type": "string",
+            "description": "Mengde ingredienser/virkestoff pr. daglig dose",
+            "nullable": true
+          },
+          "AnbefaltDagligDose": {
+            "type": "string",
+            "description": "Anbefalt døgndose",
+            "nullable": true
+          },
+          "FaktiskInntattDagligDose": {
+            "type": "string",
+            "description": "Faktisk inntatt daglig dose ",
+            "nullable": true
+          },
+          "BruksPeriode": {
+            "type": "string",
+            "description": "Hvor lenge produktet har blitt brukt",
+            "nullable": true
+          },
+          "LegemidlerSamtidigSomKosttilskudd": {
+            "description": "Er legemidler tatt samtidig som kosttilskudd? ",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LegemidlerSamtidigSomKosttilskudd"
+              }
+            ]
+          },
+          "HvilkeLegemiderErTattSamtidig": {
+            "type": "string",
+            "description": "Hvilke legemidler er tatt samtidig som kosttilskuddet",
+            "nullable": true
+          }
+        }
+      },
       "KosttilskuddHendelsePart": {
         "type": "object",
         "description": "Informasjon om hendelsen.",
@@ -2839,6 +2805,24 @@
             ]
           }
         }
+      },
+      "KosttilskuddKjopssted": {
+        "type": "string",
+        "description": "Kjøpssted",
+        "x-enumNames": [
+          "UtsalgsstedNorge",
+          "UtsalgsstedUtland",
+          "NetthandelNorge",
+          "NetthandelUtland",
+          "VetIkke"
+        ],
+        "enum": [
+          "UtsalgsstedNorge",
+          "UtsalgsstedUtland",
+          "NetthandelNorge",
+          "NetthandelUtland",
+          "VetIkke"
+        ]
       },
       "KosttilskuddMelderPart": {
         "type": "object",
@@ -2956,6 +2940,72 @@
           }
         }
       },
+      "KosttilskuddProduktinformasjon": {
+        "type": "object",
+        "description": "Beskriver et kosttilskudd",
+        "additionalProperties": false,
+        "required": [
+          "ProduktType"
+        ],
+        "properties": {
+          "ProduktNavn": {
+            "type": "string",
+            "description": "Navnet på produktet",
+            "nullable": true
+          },
+          "ProduktType": {
+            "description": "Type produkt. Påkrevd.\nSe Produkttype for definerte produkttyper. Hvis ikke definert, vil det bli tolket som annet, fritekst.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Produkttype"
+              }
+            ]
+          },
+          "Ingredienser": {
+            "type": "string",
+            "description": "Ingredienser/virkestoff i produktet",
+            "nullable": true
+          },
+          "LeverandorProdusent": {
+            "type": "string",
+            "description": "Navnet på leverandøren eller produsenten av produktet.",
+            "nullable": true
+          },
+          "ErProduktUtgattPaHoldbarhetsdato": {
+            "description": "Om produktet har gått ut på dato",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Utgatt"
+              }
+            ]
+          },
+          "ErBivirkningMeldtTilLeverandorEllerProdusent": {
+            "type": "string",
+            "description": "Er bivirkningen meldt til produsent fra før av?",
+            "nullable": true
+          },
+          "HvorProduktetErKjopt": {
+            "description": "Hvor produktet er kjøpt.",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/KosttilskuddKjopssted"
+              }
+            ]
+          },
+          "ButikkNavn": {
+            "type": "string",
+            "description": "Navn på butikken",
+            "nullable": true
+          },
+          "BatchLotNummer": {
+            "type": "string",
+            "description": "Batchnummer på produktet.",
+            "nullable": true
+          }
+        }
+      },
       "KosttilskuddProduktPart": {
         "type": "object",
         "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
@@ -2966,7 +3016,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Produktinformasjon"
+                "$ref": "#/components/schemas/KosttilskuddProduktinformasjon"
               }
             ]
           },
@@ -2975,7 +3025,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BrukAvProduktet"
+                "$ref": "#/components/schemas/KosttilskuddBrukAvProduktet"
               }
             ]
           }
@@ -2991,7 +3041,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BivirkningVedTidligereBruk2"
+                "$ref": "#/components/schemas/BivirkningVedTidligereBruk"
               }
             ]
           },
@@ -3983,69 +4033,6 @@
           "IkkeSpesifisert"
         ]
       },
-      "Produktinformasjon": {
-        "type": "object",
-        "description": "Beskriver et kosttilskudd",
-        "additionalProperties": false,
-        "required": [
-          "ProduktType"
-        ],
-        "properties": {
-          "ProduktNavn": {
-            "type": "string",
-            "description": "Navnet på produktet",
-            "nullable": true
-          },
-          "ProduktType": {
-            "description": "Type produkt. Påkrevd.\nSe Produkttype for definerte produkttyper. Hvis ikke definert, vil det bli tolket som annet, fritekst.",
-            "minLength": 1,
-            "$ref": "#/components/schemas/Produkttype"
-          },
-          "Ingredienser": {
-            "type": "string",
-            "description": "Ingredienser/virkestoff i produktet",
-            "nullable": true
-          },
-          "LeverandorProdusent": {
-            "type": "string",
-            "description": "Navnet på leverandøren eller produsenten av produktet.",
-            "nullable": true
-          },
-          "ErProduktUtgattPaHoldbarhetsdato": {
-            "description": "Om produktet har gått ut på dato",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Utgatt2"
-              }
-            ]
-          },
-          "ErBivirkningMeldtTilLeverandorEllerProdusent": {
-            "type": "string",
-            "description": "Er bivirkningen meldt til produsent fra før av?",
-            "nullable": true
-          },
-          "HvorProduktetErKjopt": {
-            "description": "Hvor produktet er kjøpt.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Kjopssted2"
-              }
-            ]
-          },
-          "ButikkNavn": {
-            "type": "string",
-            "description": "Navn på butikken",
-            "nullable": true
-          },
-          "BatchLotNummer": {
-            "type": "string",
-            "description": "Batchnummer på produktet.",
-            "nullable": true
-          }
-        }
-      },
       "ProduktinformasjonPart": {
         "type": "object",
         "description": "Beskriver et kosmetisk produkt",
@@ -4086,7 +4073,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Kjopssted"
+                "$ref": "#/components/schemas/KosmetikkKjopssted"
               }
             ]
           },
@@ -4231,26 +4218,6 @@
           "VetIkke"
         ]
       },
-      "Reaksjonstid2": {
-        "type": "string",
-        "description": "Hvor lang tid etter bruken av produktet bivirkningen oppstod",
-        "x-enumNames": [
-          "Innen30Min",
-          "Innen30MinTil1Time",
-          "Innen24Timer",
-          "MerEnn1Dogn",
-          "Annet",
-          "VetIkke"
-        ],
-        "enum": [
-          "Innen30Min",
-          "Innen30MinTil1Time",
-          "Innen24Timer",
-          "MerEnn1Dogn",
-          "Annet",
-          "VetIkke"
-        ]
-      },
       "Salgskanal": {
         "type": "string",
         "description": "Typer utsalgssted",
@@ -4292,20 +4259,6 @@
         ]
       },
       "Utgatt": {
-        "type": "string",
-        "description": "Om et produkt er utgått",
-        "x-enumNames": [
-          "Ja",
-          "Nei",
-          "VetIkke"
-        ],
-        "enum": [
-          "Ja",
-          "Nei",
-          "VetIkke"
-        ]
-      },
-      "Utgatt2": {
         "type": "string",
         "description": "Om et produkt er utgått",
         "x-enumNames": [

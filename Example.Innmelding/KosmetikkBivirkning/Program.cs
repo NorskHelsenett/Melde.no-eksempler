@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Example.Auth;
+using Example.Configuration;
 using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -12,11 +12,6 @@ namespace Example.Kosmetikk
 {
     class Program
     {
-        // Points to Melde.no API base
-        //private static readonly Uri ApiBaseAddress = new ("https://localhost:44342/");
-        private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
-        //private static readonly Uri ApiBaseAddress = new("https://api.qa.melde.no/");
-
         // Points to the HelseId instance you want to use
         private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
 
@@ -26,12 +21,12 @@ namespace Example.Kosmetikk
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddHttpClient("MeldeNo", client =>
             {
-                client.BaseAddress = ApiBaseAddress;
+                client.BaseAddress = Config.ApiUri;
             })
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(HelseIdUrl, AuthParams.ClientId, AuthParams.Jwk, new[] { "nhn:melde/kosmetikk" }, AuthParams.ClientType);
+                return new JwkTokenHandler(HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/kosmetikk" }, Config.ClientType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();
@@ -67,15 +62,15 @@ namespace Example.Kosmetikk
                     Bivirkning = new KosmetikkBivirkningPart
                     {
                         BivirkningHvorPaKroppen = new List<HvorPaKroppen>
-                    {
-                        HvorPaKroppen.Ansikt,
-                        HvorPaKroppen.Mage,
-                    },
+                        {
+                            HvorPaKroppen.Ansikt,
+                            HvorPaKroppen.Mage,
+                        },
                         Reaksjon = new List<Reaksjon>
-                    {
-                        Reaksjon.EksemUtslett,
-                        Reaksjon.Hevelse
-                    },
+                        {
+                            Reaksjon.EksemUtslett,
+                            Reaksjon.Hevelse
+                        },
                         FolgerAvBivirkning = FolgerAvBivirkning.Sykehusopphold,
                         Reaksjonstid = Reaksjonstid.Innen30Min,
                     },

@@ -1,10 +1,14 @@
 ﻿using OpenAPI;
+using Shared.Configuration;
+using System;
 using System.Collections.Generic;
 
-namespace Example.Auth
+namespace Example.Configuration
 {
-    class AuthParams
+    class Config
     {
+        public static Uri ApiUri => SharedConfig.GetApiUri(Env.LOCAL);
+
         public static ClientType ClientType => ClientType.Person;
 
         public static string ClientId => "<Client id>";
