@@ -35,12 +35,9 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new MedisinskUtstyrRequest
             {
-                Hode = new HodePart
+                Hode = new HodePartOfMedisinskUtstyrMelderPartAndMedisinskUtstyrHendelsePartAndIPasientPart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
-                },
-                Melding = new MedisinskUtstyrMeldingPart
-                {
                     Melder = new MedisinskUtstyrMelderPart
                     {
                         Fødselsnummer = "13075706604",
@@ -53,6 +50,9 @@ namespace Example.Kosmetikk
                         HvaSkjedde = "Fikk utslett av såpe",
                         Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
+                },
+                Melding = new MedisinskUtstyrMeldingPart
+                {
                     MedisinskUtstyr = new MedisinskUtstyrPart
                     {
                         Handelsnavn = "Storz 488 B",

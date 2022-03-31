@@ -36,12 +36,9 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new KosttilskuddRequest()
             {
-                Hode = new HodePart
+                Hode = new HodePartOfKosttilskuddMelderPartAndKosttilskuddHendelsePartAndKosttilskuddPasientPart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
-                },
-                Melding = new KosttilskuddMeldingPart
-                {
                     Melder = new KosttilskuddMelderPart
                     {
                         Fødselsnummer = "13075706604",
@@ -58,6 +55,9 @@ namespace Example.Kosmetikk
                         Kjonn = PasientensKjonn.Mann,
                         Alder = 40
                     },
+                },
+                Melding = new KosttilskuddMeldingPart
+                {
                     Bivirkning = new KosttilskuddBivirkningPart
                     {
                         BivirkningHvorPaKroppen = new List<string>()

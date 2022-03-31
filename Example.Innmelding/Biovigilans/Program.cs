@@ -36,12 +36,9 @@ namespace Example.Biovigilans
             //// Fill out request data
             var requestData = new BiovigilansRequest
             {
-                Hode = new HodePart
+                Hode = new HodePartOfBiovigilansMelderPartAndBiovigilansHendelsePartAndBiovigilansPasientPart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
-                },
-                Melding = new BiovigilansMeldingPart
-                {
                     Melder = new BiovigilansMelderPart
                     {
                         Fødselsnummer = "13075706604",
@@ -49,16 +46,19 @@ namespace Example.Biovigilans
                         Organisasjonsnummer = "883974832",
                         Organisasjonsnavn = "St. Olavs Hospital",
                     },
-                    Pasient = new BiovigilansPasientPart
-                    {
-                        Fødselsår = 1990,
-                        Kjønn = PasientensKjonn.Mann,
-                    },
                     Hendelse = new BiovigilansHendelsePart
                     {
                         HvaSkjedde = "Datt på rattata",
                         Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
+                    Pasient = new BiovigilansPasientPart
+                    {
+                        Fødselsår = 1990,
+                        Kjønn = PasientensKjonn.Mann,
+                    },
+                },
+                Melding = new BiovigilansMeldingPart
+                {
                     Biovigilans = new BiovigilansPart
                     {
                         StedForHendelsen = "1.1",

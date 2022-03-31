@@ -36,13 +36,9 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new KosmetikkRequest
             {
-                Hode = new HodePart
+                Hode = new HodePartOfKosmetikkMelderPartAndKosmetikkHendelsePartAndKosmetikkPasientPart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
-
-                },
-                Melding = new KosmetikkMeldingPart
-                {
                     Melder = new KosmetikkMelderPart
                     {
                         Fødselsnummer = "13075706604",
@@ -59,6 +55,9 @@ namespace Example.Kosmetikk
                         Kjonn = PasientensKjonn.Mann,
                         Alder = 40
                     },
+                },
+                Melding = new KosmetikkMeldingPart
+                {
                     Bivirkning = new KosmetikkBivirkningPart
                     {
                         BivirkningHvorPaKroppen = new List<HvorPaKroppen>
@@ -82,13 +81,13 @@ namespace Example.Kosmetikk
                     {
                         new KosmetikkProduktPart
                         {
-                            Produktinformasjon = new ProduktinformasjonPart
+                            Produktinformasjon = new KosmetikkProduktinformasjonPart
                             {
                                 ProduktNavn = "Lano",
                                 ProduktType = Produkttype.Sape,
                                 Salgskanal = Salgskanal.Matvarebutikk
                             },
-                            BrukAvProduktet = new BrukAvProduktetPart
+                            BrukAvProduktet = new KosmetikkBrukAvProduktetPart
                             {
                                 ProduktetBruktHvorPaKroppen = new List<HvorPaKroppen>
                                 {

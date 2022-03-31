@@ -36,12 +36,9 @@ namespace Example.Varselordningen
             //// Fill out request data
             var requestData = new AlvorligHendelseRequest
             {
-                Hode = new HodePart
+                Hode = new HodePartOfAlvorligHendelseMelderPartAndAlvorligHendelseHendelsePartAndAlvorligHendelsePasientPart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
-                },
-                Melding = new AlvorligHendelseMeldingPart
-                {
                     Melder = new AlvorligHendelseMelderPart
                     {
                         Fødselsnummer = "13075706604",
@@ -52,17 +49,20 @@ namespace Example.Varselordningen
                         Rolle = MelderRolle.Behandler,
                         Stilling = "Lege"
                     },
+                    Hendelse = new AlvorligHendelseHendelsePart
+                    {
+                        HvaSkjedde = "Datt på rattata",
+                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                    },
                     Pasient = new AlvorligHendelsePasientPart
                     {
                         //Fødselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
                         //Kjønn = PasientensKjonn.Mann,
                         Fødselsnummer = "13075706604"
                     },
-                    Hendelse = new AlvorligHendelseHendelsePart
-                    {
-                        HvaSkjedde = "Datt på rattata",
-                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
-                    },
+                },
+                Melding = new AlvorligHendelseMeldingPart
+                {
                     Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
                 {
                     new AlvorligHendelseKontaktperson

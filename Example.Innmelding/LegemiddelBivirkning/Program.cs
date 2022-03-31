@@ -49,15 +49,15 @@ namespace Example.LegemiddelBivirkning
                     Fødselsdato = "07.03.1990",
                     Kjønn = PasientensKjonn.Mann
                 },
-                Legemidler = new List<LegemidlerPart>
+                Legemidler = new List<LegemiddelBivirkningLegemidlerPart>
                 {
-                    new LegemidlerPart
+                    new LegemiddelBivirkningLegemidlerPart
                     {
                         MerkevareId = "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C",
                         Rolle = LegemiddelRolle.Samtidig,
                         Indikasjon = "IndikasjonTestData",
                         ErPagaendeBehandling = PagaendeBehandling.Nei,
-                        Dosering = new LegemiddelDoseringPart
+                        Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
                         {
                             Doseringstekst = "1000mg per dag",
                             Startdato = new Dato {Ar = 1990},
@@ -67,13 +67,13 @@ namespace Example.LegemiddelBivirkning
                         PreparatNavn = "Painkillers",
                         ErVaksine = false
                     },
-                    new LegemidlerPart
+                    new LegemiddelBivirkningLegemidlerPart
                     {
                         MerkevareId = "ID_7C25C265-6B8D-4E66-8832-D514BE638BF2",
                         Rolle = LegemiddelRolle.Mistenkt,
                         Indikasjon = "",
                         ErPagaendeBehandling = PagaendeBehandling.Ja,
-                        Dosering = new LegemiddelDoseringPart
+                        Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
                         {
                             Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 23},
                             Tidspunkt = new Klokkeslett {Timer = 23, Minutter = 5},
