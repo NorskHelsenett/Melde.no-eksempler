@@ -49,7 +49,7 @@ namespace Example.Biovigilans
                     Hendelse = new BiovigilansHendelsePart
                     {
                         HvaSkjedde = "Datt på rattata",
-                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
                     Pasient = new BiovigilansPasientPart
                     {

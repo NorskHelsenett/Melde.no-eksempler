@@ -1039,7 +1039,8 @@
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
-            "minLength": 1
+            "minLength": 1,
+            "example": "MYSYS-REF8345"
           },
           "Melder": {
             "description": "Informasjon om melder",
@@ -1085,7 +1086,7 @@
             "type": "string",
             "nullable": true
           },
-          "Tidspunkt": {
+          "Dato": {
             "nullable": true,
             "oneOf": [
               {
@@ -1176,6 +1177,14 @@
                 "$ref": "#/components/schemas/PasientensKjonn"
               }
             ]
+          },
+          "Navn": {
+            "type": "string",
+            "nullable": true
+          },
+          "Nasjonalitet": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1305,7 +1314,7 @@
             "description": "Tekstlig beskrivelse av hva som skjedde.",
             "nullable": true
           },
-          "Tidspunkt": {
+          "Dato": {
             "description": "Tidspunkt for hendelsen, dvs dato",
             "nullable": true,
             "oneOf": [
@@ -1317,11 +1326,6 @@
           "UsikkerDato": {
             "type": "boolean",
             "description": "Flagg for å indikere at dato er usikker"
-          },
-          "DatoMerknad": {
-            "type": "string",
-            "description": "Dato merknad",
-            "nullable": true
           }
         }
       },
@@ -1362,6 +1366,7 @@
         "description": "Melders opplysninger.",
         "additionalProperties": false,
         "required": [
+          "Organisasjonsnummer",
           "Organisasjonsnavn",
           "Epost",
           "Telefon",
@@ -1378,7 +1383,7 @@
           "Organisasjonsnummer": {
             "type": "string",
             "description": "Melders organisasjonsnummer.",
-            "nullable": true,
+            "minLength": 1,
             "example": "883974832"
           },
           "Organisasjonsnavn": {
@@ -1517,8 +1522,13 @@
             "nullable": true,
             "example": 15037104229
           },
+          "Navn": {
+            "type": "string",
+            "description": "Pasientens navn. Påkrevet om ikke føselsnummer er satt.",
+            "nullable": true
+          },
           "Kjønn": {
-            "description": "Pasientens kjønn. Påkrevd om ikke fødselsnummer er lagt inn.",
+            "description": "Pasientens kjønn. Påkrevet om ikke fødselsnummer er satt.",
             "nullable": true,
             "example": "Mann",
             "oneOf": [
@@ -1528,7 +1538,7 @@
             ]
           },
           "Fødselsdato": {
-            "description": "Pasientens fødselsdato. Påkrevd om ikke fødselsnummer er lagt inn.",
+            "description": "Pasientens fødselsdato. Påkrevet om ikke fødselsnummer er satt.",
             "nullable": true,
             "example": "07.03.1990",
             "oneOf": [
@@ -1536,6 +1546,11 @@
                 "$ref": "#/components/schemas/Dato"
               }
             ]
+          },
+          "Nasjonalitet": {
+            "type": "string",
+            "description": "Pasientens nasjonalitet. Påkrevet om ikke fødselsnummer er satt.",
+            "nullable": true
           }
         }
       },
@@ -1600,7 +1615,7 @@
             "description": "Tekstlig beskrivelse av hva som skjedde.",
             "nullable": true
           },
-          "Tidspunkt": {
+          "Dato": {
             "description": "Tidspunkt for hendelsen, dvs dato",
             "nullable": true,
             "oneOf": [
@@ -2165,7 +2180,8 @@
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
-            "minLength": 1
+            "minLength": 1,
+            "example": "MYSYS-REF8345"
           },
           "Melder": {
             "description": "Informasjon om melder",
@@ -2207,7 +2223,8 @@
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
-            "minLength": 1
+            "minLength": 1,
+            "example": "MYSYS-REF8345"
           },
           "Melder": {
             "description": "Informasjon om melder",
@@ -2249,7 +2266,8 @@
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
-            "minLength": 1
+            "minLength": 1,
+            "example": "MYSYS-REF8345"
           },
           "Melder": {
             "description": "Informasjon om melder",
@@ -2291,7 +2309,8 @@
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
-            "minLength": 1
+            "minLength": 1,
+            "example": "MYSYS-REF8345"
           },
           "Melder": {
             "description": "Informasjon om melder",
@@ -2322,6 +2341,49 @@
           }
         }
       },
+      "HodePartOfLegemiddelBivirkningMelderPartAndLegemiddelBivirkningHendelsePartAndLegemiddelBivirkningPasientPart": {
+        "type": "object",
+        "description": "Base-klasse for alle meldinger",
+        "additionalProperties": false,
+        "required": [
+          "EksternSaksId"
+        ],
+        "properties": {
+          "EksternSaksId": {
+            "type": "string",
+            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
+            "minLength": 1,
+            "example": "MYSYS-REF8345"
+          },
+          "Melder": {
+            "description": "Informasjon om melder",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LegemiddelBivirkningMelderPart"
+              }
+            ]
+          },
+          "Hendelse": {
+            "description": "Informasjon om hendelsen",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LegemiddelBivirkningHendelsePart"
+              }
+            ]
+          },
+          "Pasient": {
+            "description": "Informasjon om pasient",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LegemiddelBivirkningPasientPart"
+              }
+            ]
+          }
+        }
+      },
       "HodePartOfMedisinskUtstyrMelderPartAndMedisinskUtstyrHendelsePartAndIPasientPart": {
         "type": "object",
         "description": "Base-klasse for alle meldinger",
@@ -2333,7 +2395,8 @@
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
-            "minLength": 1
+            "minLength": 1,
+            "example": "MYSYS-REF8345"
           },
           "Melder": {
             "description": "Informasjon om melder",
@@ -2756,7 +2819,7 @@
             "description": "Tekstlig beskrivelse av hva som skjedde.",
             "nullable": true
           },
-          "Tidspunkt": {
+          "Dato": {
             "description": "Tidspunkt for hendelsen, dvs dato",
             "nullable": true,
             "oneOf": [
@@ -3132,7 +3195,7 @@
             "description": "Tekstlig beskrivelse av hva som skjedde.",
             "nullable": true
           },
-          "Tidspunkt": {
+          "Dato": {
             "description": "Tidspunkt for hendelsen, dvs dato",
             "nullable": true,
             "oneOf": [
@@ -3488,10 +3551,17 @@
             "items": {
               "$ref": "#/components/schemas/BivirkningAlvorlighet"
             }
-          },
-          "AndreOpplysninger": {
+          }
+        }
+      },
+      "LegemiddelBivirkningHendelsePart": {
+        "type": "object",
+        "description": "Informasjon om hendelsen",
+        "additionalProperties": false,
+        "properties": {
+          "HvaSkjedde": {
             "type": "string",
-            "description": "Eventuelle andre relevante opplysninger. Påkrevd.",
+            "description": "Tekstlig beskrivelse av hva som skjedde.",
             "nullable": true,
             "example": "Det er mange opplysninger, men de har vi ikke."
           }
@@ -3726,10 +3796,18 @@
             ]
           },
           "Fødselsdato": {
-            "type": "string",
             "description": "Pasientens fødselsdato. Påkrevd om ikke fødselsnummer er lagt inn.",
             "nullable": true,
-            "example": "07.03.1990"
+            "example": {
+              "Ar": 1980,
+              "Maned": 5,
+              "Dag": 24
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Dato"
+              }
+            ]
           }
         }
       },
@@ -3737,61 +3815,24 @@
         "type": "object",
         "description": "LegemiddelBivirkning DTO",
         "additionalProperties": false,
+        "required": [
+          "Hode",
+          "Melding"
+        ],
         "properties": {
-          "EksternSaksId": {
-            "type": "string",
-            "description": "Meldingens id i eksternt sakssystem.",
-            "nullable": true,
-            "example": "MYSYS-REF8345"
-          },
-          "Melder": {
-            "description": "Inneholder data om innmelder av bivirkningene.",
-            "nullable": true,
+          "Hode": {
+            "description": "Meldingshode",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelBivirkningMelderPart"
+                "$ref": "#/components/schemas/HodePartOfLegemiddelBivirkningMelderPartAndLegemiddelBivirkningHendelsePartAndLegemiddelBivirkningPasientPart"
               }
             ]
           },
-          "Pasient": {
-            "description": "Inneholder data om pasienten som har opplevd eller opplever bivirkningene.",
-            "nullable": true,
+          "Melding": {
+            "description": "Meldingsinnhold",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelBivirkningPasientPart"
-              }
-            ]
-          },
-          "Legemidler": {
-            "type": "array",
-            "description": "Liste over hvilke legemidler Pasient bruker og som kan være relevant.",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/LegemiddelBivirkningLegemidlerPart"
-            }
-          },
-          "Symptom": {
-            "type": "array",
-            "description": "Liste over symptomer Pasient opplever.",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/LegemiddelBivirkningSymptomPart"
-            }
-          },
-          "Vedlegg": {
-            "type": "array",
-            "description": "Vedlagte filer av relevans.",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VedleggPart"
-            }
-          },
-          "AnnenInformasjon": {
-            "description": "Annen relevant informarsjon knyttet til meldingen.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/LegemiddelBivirkningAnnenInformasjonPart"
+                "$ref": "#/components/schemas/LegemiddelBivirkningMeldingPart"
               }
             ]
           }
@@ -3896,7 +3937,7 @@
             "description": "Tekstlig beskrivelse av hva som skjedde.",
             "nullable": true
           },
-          "Tidspunkt": {
+          "Dato": {
             "description": "Tidspunkt for hendelsen, dvs dato",
             "nullable": true,
             "oneOf": [

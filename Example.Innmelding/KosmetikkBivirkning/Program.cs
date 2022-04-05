@@ -48,7 +48,7 @@ namespace Example.Kosmetikk
                     Hendelse = new KosmetikkHendelsePart
                     {
                         HvaSkjedde = "Fikk utslett av såpe",
-                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
                     Pasient = new KosmetikkPasientPart
                     {

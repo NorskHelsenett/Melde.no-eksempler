@@ -36,78 +36,87 @@ namespace Example.LegemiddelBivirkning
             // Fill out request data
             var requestData = new LegemiddelBivirkningRequest
             {
-                EksternSaksId = Guid.NewGuid().ToString(),
-                Melder = new LegemiddelBivirkningMelderPart
+                Hode = new HodePartOfLegemiddelBivirkningMelderPartAndLegemiddelBivirkningHendelsePartAndLegemiddelBivirkningPasientPart
                 {
-                    Fødselsnummer = "13065906141",
-                    Organisasjonsnummer = "883974832",
-                    Epost = "TestData@melde.no",
-                    Telefon = "99999999"
-                },
-                Pasient = new LegemiddelBivirkningPasientPart
-                {
-                    Fødselsdato = "07.03.1990",
-                    Kjønn = PasientensKjonn.Mann
-                },
-                Legemidler = new List<LegemiddelBivirkningLegemidlerPart>
-                {
-                    new LegemiddelBivirkningLegemidlerPart
+                    EksternSaksId = Guid.NewGuid().ToString(),
+                    Melder = new LegemiddelBivirkningMelderPart
                     {
-                        MerkevareId = "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C",
-                        Rolle = LegemiddelRolle.Samtidig,
-                        Indikasjon = "IndikasjonTestData",
-                        ErPagaendeBehandling = PagaendeBehandling.Nei,
-                        Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
-                        {
-                            Doseringstekst = "1000mg per dag",
-                            Startdato = new Dato {Ar = 1990},
-                            Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
-                            Batchnummer = "Batchnummer A412"
-                        },
-                        PreparatNavn = "Painkillers",
-                        ErVaksine = false
+                        Fødselsnummer = "13065906141",
+                        Organisasjonsnummer = "883974832",
+                        Epost = "TestData@melde.no",
+                        Telefon = "99999999"
                     },
-                    new LegemiddelBivirkningLegemidlerPart
+                    Pasient = new LegemiddelBivirkningPasientPart
                     {
-                        MerkevareId = "ID_7C25C265-6B8D-4E66-8832-D514BE638BF2",
-                        Rolle = LegemiddelRolle.Mistenkt,
-                        Indikasjon = "",
-                        ErPagaendeBehandling = PagaendeBehandling.Ja,
-                        Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
-                        {
-                            Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 23},
-                            Tidspunkt = new Klokkeslett {Timer = 23, Minutter = 5},
-                            Batchnummer = "Batchnummer #R1195",
-                            Administrasjonssted = LegemiddelAdministrasjonssted.HoyreArm,
-                            Dosenummer = Dosenummer.To
-                        },
-                        PreparatNavn = "Supervax",
-                        ErVaksine = true
+                        Fødselsdato = new Dato { Ar = 1990, Maned = 3, Dag = 7 },
+                        Kjønn = PasientensKjonn.Mann
+                    },
+                    Hendelse = new LegemiddelBivirkningHendelsePart
+                    {
+                        HvaSkjedde = "Det er mange opplysninger, men de har vi ikke."
                     }
                 },
-                Symptom = new List<LegemiddelBivirkningSymptomPart>
+                Melding = new LegemiddelBivirkningMeldingPart
                 {
-                    new LegemiddelBivirkningSymptomPart
+                    Legemidler = new List<LegemiddelBivirkningLegemidlerPart>
                     {
-                        Beskrivelse = "Blodtrykksfall",
-                        Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
-                        Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
-                        PågårFortsatt = PågårFortsatt.Nei,
+                        new LegemiddelBivirkningLegemidlerPart
+                        {
+                            MerkevareId = "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C",
+                            Rolle = LegemiddelRolle.Samtidig,
+                            Indikasjon = "IndikasjonTestData",
+                            ErPagaendeBehandling = PagaendeBehandling.Nei,
+                            Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
+                            {
+                                Doseringstekst = "1000mg per dag",
+                                Startdato = new Dato {Ar = 1990},
+                                Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
+                                Batchnummer = "Batchnummer A412"
+                            },
+                            PreparatNavn = "Painkillers",
+                            ErVaksine = false
+                        },
+                        new LegemiddelBivirkningLegemidlerPart
+                        {
+                            MerkevareId = "ID_7C25C265-6B8D-4E66-8832-D514BE638BF2",
+                            Rolle = LegemiddelRolle.Mistenkt,
+                            Indikasjon = "",
+                            ErPagaendeBehandling = PagaendeBehandling.Ja,
+                            Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
+                            {
+                                Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 23},
+                                Tidspunkt = new Klokkeslett {Timer = 23, Minutter = 5},
+                                Batchnummer = "Batchnummer #R1195",
+                                Administrasjonssted = LegemiddelAdministrasjonssted.HoyreArm,
+                                Dosenummer = Dosenummer.To
+                            },
+                            PreparatNavn = "Supervax",
+                            ErVaksine = true
+                        }
                     },
-                    new LegemiddelBivirkningSymptomPart
+                    Symptom = new List<LegemiddelBivirkningSymptomPart>
                     {
-                        Beskrivelse = "Stor trang til å teste APIer",
-                        Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
-                        Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
-                        PågårFortsatt = PågårFortsatt.Nei,
-                        Utfall = BivirkningUtfall.RestituertMenMedEttervirkninger
-                    }
-                },
-                AnnenInformasjon = new LegemiddelBivirkningAnnenInformasjonPart
-                {
-                    Alvorlighet = new List<BivirkningAlvorlighet>
+                        new LegemiddelBivirkningSymptomPart
+                        {
+                            Beskrivelse = "Blodtrykksfall",
+                            Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
+                            Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
+                            PågårFortsatt = PågårFortsatt.Nei,
+                        },
+                        new LegemiddelBivirkningSymptomPart
+                        {
+                            Beskrivelse = "Stor trang til å teste APIer",
+                            Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
+                            Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
+                            PågårFortsatt = PågårFortsatt.Nei,
+                            Utfall = BivirkningUtfall.RestituertMenMedEttervirkninger
+                        }
+                    },
+                    AnnenInformasjon = new LegemiddelBivirkningAnnenInformasjonPart
+                    {
+                        Alvorlighet = new List<BivirkningAlvorlighet>
                         {BivirkningAlvorlighet.Livstruende, BivirkningAlvorlighet.AnomaliFodselsdefekt},
-                    AndreOpplysninger = "Det er mange opplysninger, men de har vi ikke."
+                    }
                 }
             };
 

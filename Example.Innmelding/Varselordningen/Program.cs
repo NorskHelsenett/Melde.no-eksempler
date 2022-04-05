@@ -41,7 +41,7 @@ namespace Example.Varselordningen
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new AlvorligHendelseMelderPart
                     {
-                        Fødselsnummer = "13075706604",
+                        Fødselsnummer = "130757066049",
                         Epost = "TestData@melde.no",
                         Telefon = "99999999",
                         Organisasjonsnummer = "883974832",
@@ -52,7 +52,7 @@ namespace Example.Varselordningen
                     Hendelse = new AlvorligHendelseHendelsePart
                     {
                         HvaSkjedde = "Datt på rattata",
-                        Tidspunkt = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
                     Pasient = new AlvorligHendelsePasientPart
                     {
