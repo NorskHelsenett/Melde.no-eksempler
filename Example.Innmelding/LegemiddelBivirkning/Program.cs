@@ -12,9 +12,6 @@ namespace Example.LegemiddelBivirkning
 {
     class Program
     {
-        // Points to the HelseId instance you want to use
-        private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
-
         static async Task Main()
         {
             // Setup HTTP client with authentication for HelseId
@@ -26,7 +23,7 @@ namespace Example.LegemiddelBivirkning
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/legemiddelbivirkning" }, Config.ClientType);
+                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/legemiddelbivirkning" }, Config.ClientType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();

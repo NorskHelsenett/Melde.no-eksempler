@@ -7,6 +7,8 @@ namespace Example.Configuration
 {
     class Config
     {
+        public static string HelseIdUrl => "https://helseid-sts.test.nhn.no";
+
         public static Uri ApiUri => SharedConfig.GetApiUri(Env.LOCAL);
 
         public static ClientType ClientType => ClientType.Person;

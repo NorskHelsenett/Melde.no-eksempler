@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Example.Configuration;
@@ -12,9 +11,6 @@ namespace Example.Biovigilans
 {
     class Program
     {
-        // Points to the HelseId instance you want to use
-        private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
-
         static async Task Main(string[] args)
         {
             // Setup HTTP client with authentication for HelseId
@@ -26,7 +22,7 @@ namespace Example.Biovigilans
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/biovigilans" }, Config.ClientType);
+                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/biovigilans" }, Config.ClientType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();

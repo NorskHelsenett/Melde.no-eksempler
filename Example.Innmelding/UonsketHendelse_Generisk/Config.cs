@@ -1,7 +1,5 @@
 ﻿using OpenAPI;
 using Shared.Configuration;
-using System;
-using System.Collections.Generic;
 
 namespace Example.Configuration
 {

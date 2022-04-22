@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Example.Configuration;
+﻿using Example.Configuration;
 using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using OpenAPI;
 
-namespace Example.Kosmetikk
+namespace Example.Varselordningen
 {
     class Program
     {
@@ -23,7 +19,7 @@ namespace Example.Kosmetikk
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/kosmetikk" }, Config.ClientType);
+                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/alvorlighendelse" }, Config.ClientType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();
@@ -31,69 +27,55 @@ namespace Example.Kosmetikk
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             //// Fill out request data
-            var requestData = new KosmetikkRequest
+            var requestData = new UonsketHendelseRequest
             {
-                Hode = new HodePartOfKosmetikkMelderPartAndKosmetikkHendelsePartAndKosmetikkPasientPart
+                Meldeordninger = new MeldeordningerPart
+                {
+                    AlvorligHendelse = true
+                },
+                Hode = new HodePartOfUonsketHendelseMelderPartAndUonsketHendelseHendelsePartAndUonsketHendelsePasientPart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new KosmetikkMelderPart
+                    Melder = new UonsketHendelseMelderPart
                     {
                         Fødselsnummer = "13075706604",
                         Epost = "TestData@melde.no",
-                        Organisasjonsnummer = "883974832"
+                        Telefon = "99999999",
+                        Organisasjonsnummer = "883974832",
+                        Organisasjonsnavn = "St. Olavs Hospital",
+                        Rolle = MelderRolle.Behandler,
+                        Stilling = "Lege"
                     },
-                    Hendelse = new KosmetikkHendelsePart
+                    Hendelse = new UonsketHendelseHendelsePart
                     {
-                        HvaSkjedde = "Fikk utslett av såpe",
+                        HvaSkjedde = "Datt på rattata",
                         Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
-                    Pasient = new KosmetikkPasientPart
+                    Pasient = new UonsketHendelsePasientPart
                     {
-                        Kjonn = PasientensKjonn.Mann,
-                        Alder = 40
+                        //Fødselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
+                        //Kjønn = PasientensKjonn.Mann,
+                        Fødselsnummer = "13075706604"
                     },
                 },
-                Melding = new KosmetikkMeldingPart
+                AlvorligHendelse = new AlvorligHendelseMeldingPart
                 {
-                    Bivirkning = new KosmetikkBivirkningPart
+                    Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
+                {
+                    new AlvorligHendelseKontaktperson
                     {
-                        BivirkningHvorPaKroppen = new List<HvorPaKroppen>
-                        {
-                            HvorPaKroppen.Ansikt,
-                            HvorPaKroppen.Mage,
-                        },
-                        Reaksjon = new List<Reaksjon>
-                        {
-                            Reaksjon.EksemUtslett,
-                            Reaksjon.Hevelse
-                        },
-                        FolgerAvBivirkning = FolgerAvBivirkning.Sykehusopphold,
-                        Reaksjonstid = Reaksjonstid.Innen30Min,
-                    },
-                    RelevanteOpplysninger = new KosmetikkRelevanteOpplysningerPart
+                        Navn = "VILDE MOEN_BRATLI",
+                        Epost = "TestData@melde.no",
+                        Telefon = "00000000",
+                        Stilling = "Doktor"
+                    }
+                },
+                    AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
                     {
-                        BivirkningerVedTidligereBruk = BivirkningVedTidligereBruk.Delvis
-                    },
-                    Produkter = new List<KosmetikkProduktPart>
-                    {
-                        new KosmetikkProduktPart
-                        {
-                            Produktinformasjon = new KosmetikkProduktinformasjonPart
-                            {
-                                ProduktNavn = "Lano",
-                                ProduktType = Produkttype.Sape,
-                                Salgskanal = Salgskanal.Matvarebutikk
-                            },
-                            BrukAvProduktet = new KosmetikkBrukAvProduktetPart
-                            {
-                                ProduktetBruktHvorPaKroppen = new List<HvorPaKroppen>
-                                {
-                                    HvorPaKroppen.Ansikt,
-                                    HvorPaKroppen.Mage
-                                },
-                                BeskrivelseAvBruk = "Vårrengjøring"
-                            }
-                        }
+                        VarsletTilFylkesmannen = true,
+                        VarsletFylkesmann = "Fylkesmannen i Viken",
+                        TidligereVarslet = true,
+                        TidligereVarsletKanal = "Faks til sykehus"
                     }
                 }
             };
@@ -105,7 +87,7 @@ namespace Example.Kosmetikk
 
             //call API, wait for response
             var apiClient = new EksternUonsketHendelseClient(httpClient);
-            var response = await apiClient.KosmetikkAsync(requestData);
+            var response = await apiClient.UonsketHendelseAsync(requestData);
 
             // If the call was succesful write out response
             if (response.Status == HttpStatusCode.OK || response.Status == HttpStatusCode.Created)
