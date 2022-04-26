@@ -49,7 +49,7 @@ namespace Example.Kosmetikk
                     },
                     Pasient = new KosmetikkPasientPart
                     {
-                        Kjonn = PasientensKjonn.Mann,
+                        Kjønn = PasientensKjonn.Mann,
                         Alder = 40
                     },
                 },

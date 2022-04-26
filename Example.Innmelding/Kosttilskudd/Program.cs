@@ -49,7 +49,7 @@ namespace Example.Kosmetikk
                     },
                     Pasient = new KosttilskuddPasientPart
                     {
-                        Kjonn = PasientensKjonn.Mann,
+                        Kjønn = PasientensKjonn.Mann,
                         Alder = 40
                     },
                 },
@@ -57,44 +57,56 @@ namespace Example.Kosmetikk
                 {
                     Bivirkning = new KosttilskuddBivirkningPart
                     {
-                        BivirkningHvorPaKroppen = new List<string>()
-                        {
-                            HvorPaKroppen.Albue.ToString()
-                        },
-                        Reaksjon = new List<string>()
+                        Reaksjoner = new List<string>()
                         {
                             Reaksjon.EksemUtslett.ToString(),
                             Reaksjon.Hevelse.ToString()
                         },
-                        FolgerAvBivirkning = FolgerAvBivirkning.Sykehusopphold.ToString()
-
+                        Reaksjonstid = "ReakTid",
+                        ReaksjonstidTekst = "ReakTidTekst",
+                        FolgerAvBivirkning = "Folger",
+                        FolgerAvBivirkningTekst = "FolgerTekst",
+                        BivirkningVarighet = "BivVarighet",
+                        PaagaarFortsatt = YesNo.Ja,
+                        BivirkningerVedTidligereBruk = YesNoDontKnow.VetIkke,
+                        BivirkningerVedTidligereBrukTekst = "BivTidBrukTekst",
+                        AllergiEllerAnnenPaavirkendeFaktor = YesNoDontKnow.Ja,
+                        AllergiEllerAnnenPaavirkendeFaktorTekst = "AllergiTekst",
+                        HarUnderliggendeSykdom = YesNoDontKnow.Ja,
+                        KanUnderliggendeSykdomVareArsak = YesNoDontKnow.Nei
                     },
-                    RelevanteOpplysninger = new KosttilskuddRelevanteOpplysningerPart
-                    {
-                        BivirkningerVedTidligereBruk = BivirkningVedTidligereBruk.Ja,
-                        TidligereBrukSpesifisert = null,
-                        TilstandBerortOmradeForBruk = null,
-                        AllergiEllerHudlidelse = null
-                    },
-                    Produkter = new List<KosttilskuddProduktPart>
+                    Produkter = new[]
                     {
                         new KosttilskuddProduktPart
                         {
-                            Produktinformasjon = new KosttilskuddProduktinformasjon()
+                            Produktinformasjon = new KosttilskuddProduktinformasjonPart
                             {
-                                ProduktNavn = "Lano",
-                                ProduktType = Produkttype.Harbehandling,
-                                BatchLotNummer = "a",
-                                Ingredienser = "Såpe",
-                                LeverandorProdusent = "Lilleborg",
-                                HvorProduktetErKjopt = KosttilskuddKjopssted.NetthandelNorge,
-                                ErProduktUtgattPaHoldbarhetsdato = Utgatt.Nei
+                                ProduktNavn = "ProdNavn",
+                                Ingredienser = "Ingr",
+                                LeverandorProdusent = "LevProdusent",
+                                Holdbarhetsdato = new Dato(){Ar = 2022, Maned = 12, Dag = 2 },
+                                ErBivirkningMeldtTilLeverandorEllerProdusent = YesNoDontKnow.VetIkke,
+                                HvorProduktetErKjopt = "Hvor",
+                                ButikkNavn = "Butikknavn",
+                                BatchLotNummer = "Batch",
+                                Vedlegg = new []
+                                {
+                                    new Vedlegg
+                                    {
+                                        Navn = "Test.txt",
+                                        Innhold = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
+                                    }
+                                }
                             },
-                            BrukAvProduktet = new KosttilskuddBrukAvProduktet()
+                            BrukAvProduktet = new KosttilskuddBrukAvProduktetPart
                             {
-                                AnbefaltDagligDose = "ja",
-                                MengdeIngredienserEllerVirkestoffPrDagligDose = "1",
-                                FaktiskInntattDagligDose = "1.5",
+                                MengdeIngredienserEllerVirkestoffPrDagligDose = "Mengde",
+                                AnbefaltDagligDose = "DglDose",
+                                FaktiskInntattDagligDose = "FaktiskDose",
+                                BruksPeriode = "Periode",
+                                LegemidlerSamtidigSomKosttilskudd = YesNoDontKnow.Ja,
+                                HvilkeLegemiderErTattSamtidig = new [] { "Dundersalt" },
+
                             }
                         }
                     }

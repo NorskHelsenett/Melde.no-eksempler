@@ -31,7 +31,8 @@ namespace Example.Varselordningen
             {
                 Meldeordninger = new MeldeordningerPart
                 {
-                    AlvorligHendelse = true
+                    AlvorligHendelse = true,
+                    Kosttilskudd = true
                 },
                 Hode = new HodePartOfUonsketHendelseMelderPartAndUonsketHendelseHendelsePartAndUonsketHendelsePasientPart
                 {
@@ -61,21 +62,79 @@ namespace Example.Varselordningen
                 AlvorligHendelse = new AlvorligHendelseMeldingPart
                 {
                     Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
-                {
-                    new AlvorligHendelseKontaktperson
                     {
-                        Navn = "VILDE MOEN_BRATLI",
-                        Epost = "TestData@melde.no",
-                        Telefon = "00000000",
-                        Stilling = "Doktor"
-                    }
-                },
+                        new AlvorligHendelseKontaktperson
+                        {
+                            Navn = "VILDE MOEN_BRATLI",
+                            Epost = "TestData@melde.no",
+                            Telefon = "00000000",
+                            Stilling = "Doktor"
+                        }
+                    },
                     AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
                     {
                         VarsletTilFylkesmannen = true,
                         VarsletFylkesmann = "Fylkesmannen i Viken",
                         TidligereVarslet = true,
                         TidligereVarsletKanal = "Faks til sykehus"
+                    }
+                },
+                Kosttilskudd = new KosttilskuddMeldingPart
+                {
+                    Bivirkning = new KosttilskuddBivirkningPart
+                    {
+                        Reaksjoner = new List<string>()
+                        {
+                            Reaksjon.EksemUtslett.ToString(),
+                            Reaksjon.Hevelse.ToString()
+                        },
+                        Reaksjonstid = "ReakTid",
+                        ReaksjonstidTekst = "ReakTidTekst",
+                        FolgerAvBivirkning = "Folger",
+                        FolgerAvBivirkningTekst = "FolgerTekst",
+                        BivirkningVarighet = "BivVarighet",
+                        PaagaarFortsatt = YesNo.Ja,
+                        BivirkningerVedTidligereBruk = YesNoDontKnow.VetIkke,
+                        BivirkningerVedTidligereBrukTekst = "BivTidBrukTekst",
+                        AllergiEllerAnnenPaavirkendeFaktor = YesNoDontKnow.Ja,
+                        AllergiEllerAnnenPaavirkendeFaktorTekst = "AllergiTekst",
+                        HarUnderliggendeSykdom = YesNoDontKnow.Ja,
+                        KanUnderliggendeSykdomVareArsak = YesNoDontKnow.Nei
+                    },
+                    Produkter = new[]
+                    {
+                        new KosttilskuddProduktPart
+                        {
+                            Produktinformasjon = new KosttilskuddProduktinformasjonPart
+                            {
+                                ProduktNavn = "ProdNavn",
+                                Ingredienser = "Ingr",
+                                LeverandorProdusent = "LevProdusent",
+                                Holdbarhetsdato = new Dato(){Ar = 2022, Maned = 12, Dag = 2 },
+                                ErBivirkningMeldtTilLeverandorEllerProdusent = YesNoDontKnow.VetIkke,
+                                HvorProduktetErKjopt = "Hvor",
+                                ButikkNavn = "Butikknavn",
+                                BatchLotNummer = "Batch",
+                                Vedlegg = new []
+                                {
+                                    new Vedlegg
+                                    {
+                                        Navn = "Test.txt",
+                                        Innhold = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
+                                    }
+                                }
+                            },
+                            BrukAvProduktet = new KosttilskuddBrukAvProduktetPart
+                            {
+                                MengdeIngredienserEllerVirkestoffPrDagligDose = "Mengde",
+                                AnbefaltDagligDose = "DglDose",
+                                FaktiskInntattDagligDose = "FaktiskDose",
+                                BruksPeriode = "Periode",
+                                LegemidlerSamtidigSomKosttilskudd = YesNoDontKnow.Ja,
+                                HvilkeLegemiderErTattSamtidig = new [] { "Dundersalt" },
+
+                            }
+                        }
                     }
                 }
             };
