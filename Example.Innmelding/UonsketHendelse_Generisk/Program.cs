@@ -19,7 +19,7 @@ namespace Example.Varselordningen
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/alvorlighendelse" }, Config.ClientType);
+                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/uonskethendelse" }, Config.ClientType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();
@@ -43,7 +43,6 @@ namespace Example.Varselordningen
                         Epost = "TestData@melde.no",
                         Telefon = "99999999",
                         Organisasjonsnummer = "883974832",
-                        Organisasjonsnavn = "St. Olavs Hospital",
                         Rolle = MelderRolle.Behandler,
                         Stilling = "Lege"
                     },
@@ -73,10 +72,8 @@ namespace Example.Varselordningen
                     },
                     AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
                     {
-                        VarsletTilFylkesmannen = true,
-                        VarsletFylkesmann = "Fylkesmannen i Viken",
-                        TidligereVarslet = true,
-                        TidligereVarsletKanal = "Faks til sykehus"
+                        VarsletTilStatsforvalter = YesNoDontKnow.Ja,
+                        VarsletStatsforvalter = "Fylkesmannen i Viken",
                     }
                 },
                 Kosttilskudd = new KosttilskuddMeldingPart

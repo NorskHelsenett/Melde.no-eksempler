@@ -62,7 +62,7 @@ namespace Example.LegemiddelBivirkning
                             MerkevareId = "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C",
                             Rolle = LegemiddelRolle.Samtidig,
                             Indikasjon = "IndikasjonTestData",
-                            ErPagaendeBehandling = PagaendeBehandling.Nei,
+                            ErPagaendeBehandling = YesNoDontKnow.Nei,
                             Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
                             {
                                 Doseringstekst = "1000mg per dag",
@@ -78,7 +78,7 @@ namespace Example.LegemiddelBivirkning
                             MerkevareId = "ID_7C25C265-6B8D-4E66-8832-D514BE638BF2",
                             Rolle = LegemiddelRolle.Mistenkt,
                             Indikasjon = "",
-                            ErPagaendeBehandling = PagaendeBehandling.Ja,
+                            ErPagaendeBehandling = YesNoDontKnow.Ja,
                             Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
                             {
                                 Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 23},
@@ -98,14 +98,14 @@ namespace Example.LegemiddelBivirkning
                             Beskrivelse = "Blodtrykksfall",
                             Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
                             Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
-                            PågårFortsatt = PågårFortsatt.Nei,
+                            PågårFortsatt = YesNo.Nei,
                         },
                         new LegemiddelBivirkningSymptomPart
                         {
                             Beskrivelse = "Stor trang til å teste APIer",
                             Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
                             Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
-                            PågårFortsatt = PågårFortsatt.Nei,
+                            PågårFortsatt = YesNo.Nei,
                             Utfall = BivirkningUtfall.RestituertMenMedEttervirkninger
                         }
                     },

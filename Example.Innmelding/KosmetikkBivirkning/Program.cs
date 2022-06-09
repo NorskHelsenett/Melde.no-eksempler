@@ -67,7 +67,6 @@ namespace Example.Kosmetikk
                             Reaksjon.EksemUtslett,
                             Reaksjon.Hevelse
                         },
-                        FolgerAvBivirkning = FolgerAvBivirkning.Sykehusopphold,
                         Reaksjonstid = Reaksjonstid.Innen30Min,
                     },
                     RelevanteOpplysninger = new KosmetikkRelevanteOpplysningerPart

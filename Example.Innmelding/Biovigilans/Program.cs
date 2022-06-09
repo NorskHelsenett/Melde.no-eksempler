@@ -29,6 +29,10 @@ namespace Example.Biovigilans
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
+            // Nokup lookup
+            var nokupClient = new NokupClient(httpClient);
+            var nokupResult = await nokupClient.NokupLookupAsync("0");
+
             //// Fill out request data
             var requestData = new BiovigilansRequest
             {
@@ -40,7 +44,6 @@ namespace Example.Biovigilans
                         Fødselsnummer = "13075706604",
                         Epost = "TestData@melde.no",
                         Organisasjonsnummer = "883974832",
-                        Organisasjonsnavn = "St. Olavs Hospital",
                     },
                     Hendelse = new BiovigilansHendelsePart
                     {

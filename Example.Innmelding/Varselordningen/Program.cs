@@ -42,7 +42,6 @@ namespace Example.Varselordningen
                         Epost = "TestData@melde.no",
                         Telefon = "99999999",
                         Organisasjonsnummer = "883974832",
-                        Organisasjonsnavn = "St. Olavs Hospital",
                         Rolle = MelderRolle.Behandler,
                         Stilling = "Lege"
                     },
@@ -72,10 +71,8 @@ namespace Example.Varselordningen
                 },
                     AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
                     {
-                        VarsletTilFylkesmannen = true,
-                        VarsletFylkesmann = "Fylkesmannen i Viken",
-                        TidligereVarslet = true,
-                        TidligereVarsletKanal = "Faks til sykehus"
+                        VarsletTilStatsforvalter = YesNoDontKnow.Ja,
+                        VarsletStatsforvalter = "Fylkesmannen i Viken",
                     }
                 }
             };
