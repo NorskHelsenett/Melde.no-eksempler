@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using OpenAPI;
 using Microsoft.Extensions.DependencyInjection;
 using MeldeApiReport;
 using MeldeApiDialog;
+using Example.Configuration;
 
 namespace Example.Toveisdialog
 {
     class Program
     {
-        // Points to Melde.no API base
-        //private static readonly Uri ApiBaseAddress = new("https://localhost:44342/");
-        private static readonly Uri ApiBaseAddress = new("https://api.test.melde.no/");
+        const string    UONSKET_HENDELSE_REF = "Uww35g";
+        const int       MELDEORDNING_ID = 2;
+        const bool      CREATE_DIALOG = true;
 
-        // Points to the HelseId instance you want to use
-        private static readonly string HelseIdUrl = "https://helseid-sts.test.nhn.no";
 
         static async Task Main(string[] args)
         {
@@ -24,20 +22,12 @@ namespace Example.Toveisdialog
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddHttpClient("MeldeNo", client =>
             {
-                client.BaseAddress = ApiBaseAddress;
+                client.BaseAddress = Config.ApiUri;
             })
                 .AddHttpMessageHandler(_ =>
                 {
-                    // Provide your own client id and private key settings
-                    var clientId = "<client id>";
-                    var clientType = ClientType.Machine;
                     var scopes = new string[] { "nhn:melde/dialog/opprett", "nhn:melde/dialog/melding" };
-                    var jwtPrivateKey = new Dictionary<string, object>
-                    {
-                        // ... key parts
-                    };
-
-                    return new JwkTokenHandler(HelseIdUrl, clientId, jwtPrivateKey, scopes, clientType);
+                    return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, Config.ClientType);
                 });
 
             var provider = serviceCollection.BuildServiceProvider();
@@ -46,15 +36,13 @@ namespace Example.Toveisdialog
 
             var dialogClient = new EksternDialogClient(httpClient);
 
-            const string refNr = "Uww35g";
-
             //
             // Check wether dialog exists
             //
             string dialogRef = null;
             try
             {
-                var response = await dialogClient.GetDialogInfoAsync(refNr);
+                var response = await dialogClient.GetDialogInfoAsync(UONSKET_HENDELSE_REF);
                 dialogRef = response.DialogRef;
             }
             catch (ApiException e)
@@ -63,24 +51,27 @@ namespace Example.Toveisdialog
                 Console.WriteLine(e.Message);
             }
 
-            //
-            // Create dialog if not existing. Will fail if dialog existed
-            //
-            try
+            if(CREATE_DIALOG)
             {
-                var createPayload = new CreateDialogInfo
+                //
+                // Create dialog if not existing. Will fail if dialog existed
+                //
+                try
                 {
-                    ReportRef = refNr, // PromptForInput("RefNr"),
-                    ReportArea = 2
-                };
+                    var createPayload = new CreateDialogInfo
+                    {
+                        ReportRef = UONSKET_HENDELSE_REF,
+                        ReportArea = MELDEORDNING_ID
+                    };
 
-                var createdResponse = await dialogClient.StartDialogAsync(createPayload);
-                dialogRef = createdResponse.DialogRef;
-            }
-            catch (ApiException e)
-            {
-                Console.WriteLine(e.StatusCode);
-                Console.WriteLine(e.Message);
+                    var createdResponse = await dialogClient.StartDialogAsync(createPayload);
+                    dialogRef = createdResponse.DialogRef;
+                }
+                catch (ApiException e)
+                {
+                    Console.WriteLine(e.StatusCode);
+                    Console.WriteLine(e.Message);
+                }
             }
 
             //
