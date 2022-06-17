@@ -28,10 +28,18 @@
 
 	<!-- Remember to set <ClassName> - https://github.com/dotnet/aspnetcore/issues/21656 -->
 	<ItemGroup>
-		<OpenApiReference Include="OpenAPI\swagger.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApi">
-			<SourceUri>https://api.test.melde.no/swagger/index.html?url=/swagger/v10/external/swagger.json</SourceUri>
+		<OpenApiReference Include="OpenAPI\swagger-report.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApiReport">
+			<SourceUri>https://api.qa.melde.no/swagger/index.html?url=/swagger/External/v1/swagger.json</SourceUri>
 			<ClassName>{controller}Client</ClassName>
-			<Options>/useBaseUrl:false /output:obj\MeldeClient.cs /GenerateClientInterfaces:false</Options>
+			<Options>/useBaseUrl:false /output:obj\MeldeClientReport.cs /GenerateClientInterfaces:false</Options>
+		</OpenApiReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<OpenApiReference Include="OpenAPI\swagger-dialog.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApiDialog">
+			<SourceUri>https://api.qa.melde.no/swagger/index.html?url=/swagger/ExternalDialog/v1/swagger.json</SourceUri>
+			<ClassName>{controller}Client</ClassName>
+			<Options>/useBaseUrl:false /output:obj\MeldeClientDialog.cs /GenerateClientInterfaces:false /AdditionalNamespaceUsages:MeldeApiReport</Options>
 		</OpenApiReference>
 	</ItemGroup>
 

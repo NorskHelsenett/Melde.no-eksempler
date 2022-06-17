@@ -1,5 +1,5 @@
 ﻿using Example.Configuration;
-using MeldeApi;
+using MeldeApiReport;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using OpenAPI;

@@ -95,7 +95,7 @@ namespace OpenAPI
 
                 _source.TrySetResult(value);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 ctx.Response.StatusCode = 400;
                 ctx.Response.ContentType = "text/html";

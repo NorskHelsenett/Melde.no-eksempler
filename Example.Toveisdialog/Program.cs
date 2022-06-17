@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using OpenAPI;
-using MeldeApi;
 using Microsoft.Extensions.DependencyInjection;
+using MeldeApiReport;
+using MeldeApiDialog;
 
 namespace Example.Toveisdialog
 {

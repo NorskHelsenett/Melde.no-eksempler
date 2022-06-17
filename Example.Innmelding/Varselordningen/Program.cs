@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Example.Configuration;
-using MeldeApi;
+using MeldeApiReport;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using OpenAPI;
