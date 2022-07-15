@@ -29,12 +29,7 @@ namespace Example.Varselordningen
             //// Fill out request data
             var requestData = new UonsketHendelseRequest
             {
-                Meldeordninger = new MeldeordningerPart
-                {
-                    AlvorligHendelse = true,
-                    Kosttilskudd = true
-                },
-                Hode = new HodePartOfUonsketHendelseMelderPartAndUonsketHendelseHendelsePartAndUonsketHendelsePasientPart
+                Hode = new UonsketHendelseHodePart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new UonsketHendelseMelderPart
@@ -49,7 +44,7 @@ namespace Example.Varselordningen
                     Hendelse = new UonsketHendelseHendelsePart
                     {
                         HvaSkjedde = "Datt på rattata",
-                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                        Dato = "2021-07-13"
                     },
                     Pasient = new UonsketHendelsePasientPart
                     {
@@ -57,79 +52,87 @@ namespace Example.Varselordningen
                         //Kjønn = PasientensKjonn.Mann,
                         Fødselsnummer = "13075706604"
                     },
-                },
-                AlvorligHendelse = new AlvorligHendelseMeldingPart
-                {
-                    Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
+                    Meldingstyper = new UonsketHendelseMeldingstyperPart
                     {
-                        new AlvorligHendelseKontaktperson
+                        AlvorligHendelse = true,
+                        Kosttilskudd = true
+                    },
+                },
+                Meldinger = new UonsketHendelseMeldingerPart
+                {
+                    AlvorligHendelse = new AlvorligHendelseMeldingPart
+                    {
+                        Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
                         {
-                            Navn = "VILDE MOEN_BRATLI",
-                            Epost = "TestData@melde.no",
-                            Telefon = "00000000",
-                            Stilling = "Doktor"
+                            new AlvorligHendelseKontaktperson
+                            {
+                                Navn = "VILDE MOEN_BRATLI",
+                                Epost = "TestData@melde.no",
+                                Telefon = "00000000",
+                                Stilling = "Doktor"
+                            }
+                        },
+                        AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
+                        {
+                            VarsletTilStatsforvalter = YesNoDontKnow.Ja,
+                            VarsletStatsforvalter = "Fylkesmannen i Viken",
                         }
                     },
-                    AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
+                    Kosttilskudd = new KosttilskuddMeldingPart
                     {
-                        VarsletTilStatsforvalter = YesNoDontKnow.Ja,
-                        VarsletStatsforvalter = "Fylkesmannen i Viken",
-                    }
-                },
-                Kosttilskudd = new KosttilskuddMeldingPart
-                {
-                    Bivirkning = new KosttilskuddBivirkningPart
-                    {
-                        Reaksjoner = new List<string>()
+                        Bivirkning = new KosttilskuddBivirkningPart
+                        {
+                            Reaksjoner = new List<string>()
                         {
                             Reaksjon.EksemUtslett.ToString(),
                             Reaksjon.Hevelse.ToString()
                         },
-                        Reaksjonstid = "ReakTid",
-                        ReaksjonstidTekst = "ReakTidTekst",
-                        FolgerAvBivirkning = "Folger",
-                        FolgerAvBivirkningTekst = "FolgerTekst",
-                        BivirkningVarighet = "BivVarighet",
-                        PaagaarFortsatt = YesNo.Ja,
-                        BivirkningerVedTidligereBruk = YesNoDontKnow.VetIkke,
-                        BivirkningerVedTidligereBrukTekst = "BivTidBrukTekst",
-                        AllergiEllerAnnenPaavirkendeFaktor = YesNoDontKnow.Ja,
-                        AllergiEllerAnnenPaavirkendeFaktorTekst = "AllergiTekst",
-                        HarUnderliggendeSykdom = YesNoDontKnow.Ja,
-                        KanUnderliggendeSykdomVareArsak = YesNoDontKnow.Nei
-                    },
-                    Produkter = new[]
-                    {
-                        new KosttilskuddProduktPart
+                            Reaksjonstid = "ReakTid",
+                            ReaksjonstidTekst = "ReakTidTekst",
+                            FolgerAvBivirkning = "Folger",
+                            FolgerAvBivirkningTekst = "FolgerTekst",
+                            BivirkningVarighet = "BivVarighet",
+                            PaagaarFortsatt = YesNo.Ja,
+                            BivirkningerVedTidligereBruk = YesNoDontKnow.VetIkke,
+                            BivirkningerVedTidligereBrukTekst = "BivTidBrukTekst",
+                            AllergiEllerAnnenPaavirkendeFaktor = YesNoDontKnow.Ja,
+                            AllergiEllerAnnenPaavirkendeFaktorTekst = "AllergiTekst",
+                            HarUnderliggendeSykdom = YesNoDontKnow.Ja,
+                            KanUnderliggendeSykdomVareArsak = YesNoDontKnow.Nei
+                        },
+                        Produkter = new[]
                         {
-                            Produktinformasjon = new KosttilskuddProduktinformasjonPart
+                            new KosttilskuddProduktPart
                             {
-                                ProduktNavn = "ProdNavn",
-                                Ingredienser = "Ingr",
-                                LeverandorProdusent = "LevProdusent",
-                                Holdbarhetsdato = new Dato(){Ar = 2022, Maned = 12, Dag = 2 },
-                                ErBivirkningMeldtTilLeverandorEllerProdusent = YesNoDontKnow.VetIkke,
-                                HvorProduktetErKjopt = "Hvor",
-                                ButikkNavn = "Butikknavn",
-                                BatchLotNummer = "Batch",
-                                Vedlegg = new []
+                                Produktinformasjon = new KosttilskuddProduktinformasjonPart
                                 {
-                                    new Vedlegg
+                                    ProduktNavn = "ProdNavn",
+                                    Ingredienser = "Ingr",
+                                    LeverandorProdusent = "LevProdusent",
+                                    Holdbarhetsdato = "2022-12-02",
+                                    ErBivirkningMeldtTilLeverandorEllerProdusent = YesNoDontKnow.VetIkke,
+                                    HvorProduktetErKjopt = "Hvor",
+                                    ButikkNavn = "Butikknavn",
+                                    BatchLotNummer = "Batch",
+                                    Vedlegg = new []
                                     {
-                                        Navn = "Test.txt",
-                                        Innhold = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
+                                        new Vedlegg
+                                        {
+                                            Navn = "Test.txt",
+                                            Innhold = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
+                                        }
                                     }
-                                }
-                            },
-                            BrukAvProduktet = new KosttilskuddBrukAvProduktetPart
-                            {
-                                MengdeIngredienserEllerVirkestoffPrDagligDose = "Mengde",
-                                AnbefaltDagligDose = "DglDose",
-                                FaktiskInntattDagligDose = "FaktiskDose",
-                                BruksPeriode = "Periode",
-                                LegemidlerSamtidigSomKosttilskudd = YesNoDontKnow.Ja,
-                                HvilkeLegemiderErTattSamtidig = new [] { "Dundersalt" },
+                                },
+                                BrukAvProduktet = new KosttilskuddBrukAvProduktetPart
+                                {
+                                    MengdeIngredienserEllerVirkestoffPrDagligDose = "Mengde",
+                                    AnbefaltDagligDose = "DglDose",
+                                    FaktiskInntattDagligDose = "FaktiskDose",
+                                    BruksPeriode = "Periode",
+                                    LegemidlerSamtidigSomKosttilskudd = YesNoDontKnow.Ja,
+                                    HvilkeLegemiderErTattSamtidig = new [] { "Dundersalt" },
 
+                                }
                             }
                         }
                     }

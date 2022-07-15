@@ -33,7 +33,7 @@ namespace Example.Varselordningen
             //// Fill out request data
             var requestData = new AlvorligHendelseRequest
             {
-                Hode = new HodePartOfAlvorligHendelseMelderPartAndAlvorligHendelseHendelsePartAndAlvorligHendelsePasientPart
+                Hode = new AlvorligHendelseHodePart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new AlvorligHendelseMelderPart
@@ -48,27 +48,27 @@ namespace Example.Varselordningen
                     Hendelse = new AlvorligHendelseHendelsePart
                     {
                         HvaSkjedde = "Datt på rattata",
-                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                        Dato = "2021-07-13"
                     },
                     Pasient = new AlvorligHendelsePasientPart
                     {
                         //Fødselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
                         //Kjønn = PasientensKjonn.Mann,
-                        Fødselsnummer = "13075706604"
+                        Fødselsnummer = "13075706604",
                     },
                 },
                 Melding = new AlvorligHendelseMeldingPart
                 {
                     Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
-                {
-                    new AlvorligHendelseKontaktperson
                     {
-                        Navn = "VILDE MOEN_BRATLI",
-                        Epost = "TestData@melde.no",
-                        Telefon = "00000000",
-                        Stilling = "Doktor"
-                    }
-                },
+                        new AlvorligHendelseKontaktperson
+                        {
+                            Navn = "VILDE MOEN_BRATLI",
+                            Epost = "TestData@melde.no",
+                            Telefon = "00000000",
+                            Stilling = "Doktor"
+                        }
+                    },
                     AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
                     {
                         VarsletTilStatsforvalter = YesNoDontKnow.Ja,

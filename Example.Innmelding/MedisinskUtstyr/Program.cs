@@ -32,7 +32,7 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new MedisinskUtstyrRequest
             {
-                Hode = new HodePartOfMedisinskUtstyrMelderPartAndMedisinskUtstyrHendelsePartAndIPasientPart
+                Hode = new MedisinskUtstyrHodePart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new MedisinskUtstyrMelderPart
@@ -45,7 +45,7 @@ namespace Example.Kosmetikk
                     Hendelse = new MedisinskUtstyrHendelsePart
                     {
                         HvaSkjedde = "Fikk utslett av såpe",
-                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                        Dato = "2021-07-13"
                     },
                 },
                 Melding = new MedisinskUtstyrMeldingPart

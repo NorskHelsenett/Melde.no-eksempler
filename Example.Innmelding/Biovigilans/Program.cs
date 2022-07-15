@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Example.Configuration;
@@ -30,13 +31,56 @@ namespace Example.Biovigilans
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             // Nokup lookup
+            // Example for Hendelsestype
             var nokupClient = new NokupClient(httpClient);
+
+            // Start lookup and select hendelsestype (code 2)
             var nokupResult = await nokupClient.NokupLookupAsync("0");
+            var selection = nokupResult.First().Options.First(n => n.Code == "2");
+
+            // Lookup and select code 2.10
+            nokupResult = await nokupClient.NokupLookupAsync(selection.Code);
+            selection = nokupResult.First().Options.First(n => n.Code == "2.10");
+
+            // Lookup and select code 2.10.1
+            nokupResult = await nokupClient.NokupLookupAsync(selection.Code);
+            selection = nokupResult.First().Options.First(n => n.Code == "2.10.1");
+
+            // Lookup and select code 2.10.1.1
+            nokupResult = await nokupClient.NokupLookupAsync(selection.Code);
+            selection = nokupResult.First().Options.First(n => n.Code == "2.10.1.1");
+
+            // Lookup and select code 2.10.1.1.1
+            nokupResult = await nokupClient.NokupLookupAsync(selection.Code);
+            selection = nokupResult.First().Options.First(n => n.Code == "2.10.1.1.1");
+
+            nokupResult = await nokupClient.NokupLookupAsync(selection.Code);
+
+            // set hendelsestype
+            var hendelsestype = nokupResult.First().IsLeafNokupNode ? selection.Code : throw new Exception("This should be a leaf node");
+
+            // Additional info
+            string definisjonKode = "", oppdagetKode = "";
+
+            foreach(var option in nokupResult.First().Options)
+            {
+                nokupResult = await nokupClient.NokupLookupAsync(option.Code);
+                if (nokupResult.First().Code.Contains("Definisjon"))
+                {
+                    // Select DefinisjonKode = 3
+                    definisjonKode = nokupResult.First().Options.Where(n => n.Code == (option.Code + ".3")).Select(n => n.Code).First().Split(".").Last();
+                }
+                else if (nokupResult.First().Code.Contains("Oppdaget"))
+                {
+                    // Select OppdagetKode = 2
+                    oppdagetKode = nokupResult.First().Options.Where(n => n.Code == (option.Code + ".2")).Select(n => n.Code).First().Split(".").Last();
+                }
+            }
 
             //// Fill out request data
             var requestData = new BiovigilansRequest
             {
-                Hode = new HodePartOfBiovigilansMelderPartAndBiovigilansHendelsePartAndBiovigilansPasientPart
+                Hode = new BiovigilansHodePart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new BiovigilansMelderPart
@@ -48,7 +92,7 @@ namespace Example.Biovigilans
                     Hendelse = new BiovigilansHendelsePart
                     {
                         HvaSkjedde = "Datt på rattata",
-                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
+                        Dato = "2021-07-13"
                     },
                     Pasient = new BiovigilansPasientPart
                     {
@@ -61,14 +105,14 @@ namespace Example.Biovigilans
                     Biovigilans = new BiovigilansPart
                     {
                         StedForHendelsen = "1.1",
-                        Hendelsestype = "2.10.1.1.1",
+                        Hendelsestype = hendelsestype,
                         MedvirkendeFaktorer = new string[] { "3.2.1" },
                         Forebyggbarhet = "4.1",
                         FaktiskKonsekvensForPasient = "5.2",
                         Hyppighet = "6.2",
                         MuligKonsekvensVedGjentakelse = "7.3",
-                        DefinisjonKode = "2",
-                        OppdagetKode = "1"
+                        DefinisjonKode = definisjonKode,
+                        OppdagetKode = oppdagetKode
                     }
                 }
             };

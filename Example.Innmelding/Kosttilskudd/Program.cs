@@ -33,24 +33,24 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new KosttilskuddRequest()
             {
-                Hode = new HodePartOfKosttilskuddMelderPartAndKosttilskuddHendelsePartAndKosttilskuddPasientPart
+                Hode = new KosttilskuddHodePart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new KosttilskuddMelderPart
                     {
                         Fødselsnummer = "13075706604",
                         Epost = "TestData@melde.no",
+                        Telefon = "99887766",
                         Organisasjonsnummer = "883974832"
                     },
                     Hendelse = new KosttilskuddHendelsePart
                     {
                         HvaSkjedde = "Fikk utslett av såpe",
-                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
                     Pasient = new KosttilskuddPasientPart
                     {
                         Kjønn = PasientensKjonn.Mann,
-                        Alder = 40
+                        Fødselsår = 1982
                     },
                 },
                 Melding = new KosttilskuddMeldingPart
@@ -84,7 +84,7 @@ namespace Example.Kosmetikk
                                 ProduktNavn = "ProdNavn",
                                 Ingredienser = "Ingr",
                                 LeverandorProdusent = "LevProdusent",
-                                Holdbarhetsdato = new Dato(){Ar = 2022, Maned = 12, Dag = 2 },
+                                Holdbarhetsdato = "2022-12-02",
                                 ErBivirkningMeldtTilLeverandorEllerProdusent = YesNoDontKnow.VetIkke,
                                 HvorProduktetErKjopt = "Hvor",
                                 ButikkNavn = "Butikknavn",

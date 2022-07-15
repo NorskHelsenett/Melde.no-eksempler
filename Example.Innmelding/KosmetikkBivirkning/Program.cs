@@ -33,24 +33,25 @@ namespace Example.Kosmetikk
             //// Fill out request data
             var requestData = new KosmetikkRequest
             {
-                Hode = new HodePartOfKosmetikkMelderPartAndKosmetikkHendelsePartAndKosmetikkPasientPart
+                Hode = new KosmetikkHodePart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new KosmetikkMelderPart
                     {
                         Fødselsnummer = "13075706604",
                         Epost = "TestData@melde.no",
-                        Organisasjonsnummer = "883974832"
+                        Telefon = "99887766",
+                        Organisasjonsnummer = "883974832",
+                        
                     },
                     Hendelse = new KosmetikkHendelsePart
                     {
                         HvaSkjedde = "Fikk utslett av såpe",
-                        Dato = new Dato { Ar = 2021, Maned = 7, Dag = 13 }
                     },
                     Pasient = new KosmetikkPasientPart
                     {
                         Kjønn = PasientensKjonn.Mann,
-                        Alder = 40
+                        Fødselsår = 1982
                     },
                 },
                 Melding = new KosmetikkMeldingPart

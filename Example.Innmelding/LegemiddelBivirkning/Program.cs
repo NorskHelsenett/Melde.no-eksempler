@@ -33,7 +33,7 @@ namespace Example.LegemiddelBivirkning
             // Fill out request data
             var requestData = new LegemiddelBivirkningRequest
             {
-                Hode = new HodePartOfLegemiddelBivirkningMelderPartAndLegemiddelBivirkningHendelsePartAndLegemiddelBivirkningPasientPart
+                Hode = new LegemiddelBivirkningHodePart
                 {
                     EksternSaksId = Guid.NewGuid().ToString(),
                     Melder = new LegemiddelBivirkningMelderPart
@@ -45,7 +45,7 @@ namespace Example.LegemiddelBivirkning
                     },
                     Pasient = new LegemiddelBivirkningPasientPart
                     {
-                        Fødselsdato = new Dato { Ar = 1990, Maned = 3, Dag = 7 },
+                        Fødselsdato = "1990-03-07",
                         Kjønn = PasientensKjonn.Mann
                     },
                     Hendelse = new LegemiddelBivirkningHendelsePart
