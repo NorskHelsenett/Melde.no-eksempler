@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KosmetikkBivirkning", "Kosm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LegemiddelBivirkning", "LegemiddelBivirkning\LegemiddelBivirkning.csproj", "{A6734DEB-4E76-43C0-8410-806EF8DF35B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Varselordningen", "Varselordningen\Varselordningen.csproj", "{89E7A48F-5394-462E-A64E-344339A36084}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlvorligHendelse", "AlvorligHendelse\AlvorligHendelse.csproj", "{89E7A48F-5394-462E-A64E-344339A36084}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Biovigilans", "Biovigilans\Biovigilans.csproj", "{CDF3DD6D-32EB-4E08-911B-AC422310A135}"
 EndProject
