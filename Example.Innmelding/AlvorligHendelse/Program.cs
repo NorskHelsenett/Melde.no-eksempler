@@ -52,7 +52,7 @@ namespace Example.AlvorligHendelse
                     },
                     Pasient = new AlvorligHendelsePasientPart
                     {
-                        //Fødselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
+                        //Fødselsdato = "1990-07-13",
                         //Kjønn = PasientensKjonn.Mann,
                         Fødselsnummer = "13075706604",
                     },

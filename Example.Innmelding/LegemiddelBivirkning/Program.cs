@@ -66,8 +66,8 @@ namespace Example.LegemiddelBivirkning
                             Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
                             {
                                 Doseringstekst = "1000mg per dag",
-                                Startdato = new Dato {Ar = 1990},
-                                Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
+                                Startdato = "1990",
+                                Sluttdato = "1994-05-24",
                                 Batchnummer = "Batchnummer A412"
                             },
                             PreparatNavn = "Painkillers",
@@ -81,8 +81,8 @@ namespace Example.LegemiddelBivirkning
                             ErPagaendeBehandling = YesNoDontKnow.Ja,
                             Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
                             {
-                                Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 23},
-                                Tidspunkt = new Klokkeslett {Timer = 23, Minutter = 5},
+                                Startdato = "1994-05-23",
+                                Tidspunkt = "23:05",
                                 Batchnummer = "Batchnummer #R1195",
                                 Administrasjonssted = LegemiddelAdministrasjonssted.HoyreArm,
                                 Dosenummer = Dosenummer.To
@@ -96,15 +96,15 @@ namespace Example.LegemiddelBivirkning
                         new LegemiddelBivirkningSymptomPart
                         {
                             Beskrivelse = "Blodtrykksfall",
-                            Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
-                            Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
+                            Startdato = "1994-05-24",
+                            Sluttdato = "1994-05-25",
                             PågårFortsatt = YesNo.Nei,
                         },
                         new LegemiddelBivirkningSymptomPart
                         {
                             Beskrivelse = "Stor trang til å teste APIer",
-                            Startdato = new Dato {Ar = 1994, Maned = 5, Dag = 24},
-                            Sluttdato = new Dato {Ar = 1994, Maned = 5, Dag = 25},
+                            Startdato = "1994-05-24",
+                            Sluttdato = "1994-05-25",
                             PågårFortsatt = YesNo.Nei,
                             Utfall = BivirkningUtfall.RestituertMenMedEttervirkninger
                         }

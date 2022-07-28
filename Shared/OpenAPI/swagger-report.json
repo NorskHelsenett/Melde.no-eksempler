@@ -549,7 +549,7 @@
         }
       }
     },
-    "/api/ekstern/v1/nokup/lookup/{codes}": {
+    "/api/ekstern/v1/nokup/lookup": {
       "get": {
         "tags": [
           "Nokup"
@@ -559,8 +559,7 @@
         "parameters": [
           {
             "name": "codes",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "description": "Semicolon separated list of codes",
             "schema": {
               "type": "string",
@@ -1073,7 +1072,7 @@
           "EksternSaksId": {
             "type": "string",
             "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
-            "maxLength": 64,
+            "maxLength": 100,
             "minLength": 1,
             "example": "MYSYS-REF8345"
           }
@@ -1224,45 +1223,22 @@
             "example": "1000mg per dag"
           },
           "Startdato": {
+            "type": "string",
             "description": "Oppstart for bruk av legemidlet. Årstall er påkrevd.",
             "nullable": true,
-            "example": {
-              "Ar": 1994,
-              "Maned": 5,
-              "Dag": 24
-            },
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Dato"
-              }
-            ]
+            "example": "1996-01-04"
           },
           "Sluttdato": {
+            "type": "string",
             "description": "Sluttdato for bruk av legemidlet. Årstall er påkrevd.",
             "nullable": true,
-            "example": {
-              "Ar": 1996,
-              "Maned": 1,
-              "Dag": 4
-            },
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Dato"
-              }
-            ]
+            "example": "1996-01-04"
           },
           "Tidspunkt": {
+            "type": "string",
             "description": "Tidspunkt for når en vaksine ble satt. Blir kun hensyntatt om det er en vaksine.",
             "nullable": true,
-            "example": {
-              "Timer": 23,
-              "Minutter": 5
-            },
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Klokkeslett"
-              }
-            ]
+            "example": "23:05"
           },
           "Batchnummer": {
             "type": "string",
@@ -1290,47 +1266,6 @@
                 "$ref": "#/components/schemas/Dosenummer"
               }
             ]
-          }
-        }
-      },
-      "Dato": {
-        "type": "object",
-        "description": "Tidsangivelse. Kan være delvis. Minst år må oppgis.",
-        "additionalProperties": false,
-        "properties": {
-          "Ar": {
-            "type": "integer",
-            "description": "År",
-            "format": "int32"
-          },
-          "Maned": {
-            "type": "integer",
-            "description": "Måned",
-            "format": "int32",
-            "nullable": true
-          },
-          "Dag": {
-            "type": "integer",
-            "description": "Dato",
-            "format": "int32",
-            "nullable": true
-          }
-        }
-      },
-      "Klokkeslett": {
-        "type": "object",
-        "description": "Tidsangivelse for klokkeslett.",
-        "additionalProperties": false,
-        "properties": {
-          "Timer": {
-            "type": "integer",
-            "description": "Timer",
-            "format": "int32"
-          },
-          "Minutter": {
-            "type": "integer",
-            "description": "Minutter",
-            "format": "int32"
           }
         }
       },
@@ -1387,32 +1322,16 @@
             "example": "Blodtrykksfall"
           },
           "Startdato": {
+            "type": "string",
             "description": "Bivirkningssymptomets startdato.",
             "nullable": true,
-            "example": {
-              "Ar": 1994,
-              "Maned": 5,
-              "Dag": 24
-            },
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Dato"
-              }
-            ]
+            "example": "1996-01-04"
           },
           "Sluttdato": {
+            "type": "string",
             "description": "Bivirkningssymptomets sluttdato.",
             "nullable": true,
-            "example": {
-              "Ar": 1994,
-              "Maned": 5,
-              "Dag": 25
-            },
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Dato"
-              }
-            ]
+            "example": "1996-01-04"
           },
           "PågårFortsatt": {
             "description": "Pågår symptomet fortsatt hos pasient.",
@@ -2963,16 +2882,21 @@
         "type": "object",
         "description": "Vedlegg.",
         "additionalProperties": false,
+        "required": [
+          "Innhold",
+          "Navn"
+        ],
         "properties": {
           "Innhold": {
             "type": "string",
             "description": "Filinnhold. Base 64 enkodet string.",
-            "nullable": true
+            "minLength": 1
           },
           "Navn": {
             "type": "string",
             "description": "Filnavn.",
-            "nullable": true
+            "maxLength": 64,
+            "minLength": 1
           }
         }
       },
