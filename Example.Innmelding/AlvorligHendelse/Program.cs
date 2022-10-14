@@ -31,48 +31,50 @@ namespace Example.AlvorligHendelse
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             //// Fill out request data
-            var requestData = new AlvorligHendelseRequest
+            var requestData = new SeriousIncidentRequest
             {
-                Hode = new AlvorligHendelseHodePart
+                Header = new SeriousIncidentHeaderPart
                 {
-                    EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new AlvorligHendelseMelderPart
+                    ExternalCaseId = Guid.NewGuid().ToString(),
+                    Reporter = new SeriousIncidentReporterPart
                     {
-                        Fødselsnummer = "13075706604",
-                        Epost = "TestData@melde.no",
-                        Telefon = "99999999",
-                        Organisasjonsnummer = "883974832",
-                        Rolle = MelderRolle.Behandler,
-                        Stilling = "Lege"
+                        SSN = "13075706604",
+                        Email = "TestData@melde.no",
+                        Phone = "99999999",
+                        OrganizationNumber = "883974832",
+                        Role = ReporterRole.Treator,
+                        Position = "Lege"
                     },
-                    Hendelse = new AlvorligHendelseHendelsePart
+                    Incident = new SeriousIncidentIncidentPart
                     {
-                        HvaSkjedde = "Datt på rattata",
-                        Dato = "2021-07-13"
+                        IncidentDescription = "Datt på rattata",
+                        IncidentDate = "2021-07-13"
                     },
-                    Pasient = new AlvorligHendelsePasientPart
+                    Patient = new SeriousIncidentPatientPart
                     {
-                        //Fødselsdato = "1990-07-13",
-                        //Kjønn = PasientensKjonn.Mann,
-                        Fødselsnummer = "13075706604",
+                        //DateOfBirth = "1990-07-13",
+                        //Gender = Gender.Male,
+                        SSN = "13075706604",
                     },
                 },
-                Melding = new AlvorligHendelseMeldingPart
+                Report = new SeriousIncidentReportPart
                 {
-                    Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
+                    ContactPersons = new List<SeriousIncidentContactPerson>
                     {
-                        new AlvorligHendelseKontaktperson
+                        new SeriousIncidentContactPerson
                         {
-                            Navn = "VILDE MOEN_BRATLI",
-                            Epost = "TestData@melde.no",
-                            Telefon = "00000000",
-                            Stilling = "Doktor"
+                            Name = "VILDE MOEN_BRATLI",
+                            Email = "TestData@melde.no",
+                            Phone = "00000000",
+                            Position = "Doktor"
                         }
                     },
-                    AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
+                    NextOfKin = new List<SeriousIncidentNextOfKin>
                     {
-                        VarsletTilStatsforvalter = YesNoDontKnow.Ja,
-                        VarsletStatsforvalter = "Fylkesmannen i Viken",
+                        new SeriousIncidentNextOfKin
+                        {
+                            Name = "Bror Børresen"
+                        }
                     }
                 }
             };

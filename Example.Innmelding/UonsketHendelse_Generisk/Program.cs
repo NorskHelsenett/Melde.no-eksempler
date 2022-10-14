@@ -27,110 +27,112 @@ namespace Example.Varselordningen
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             //// Fill out request data
-            var requestData = new UonsketHendelseRequest
+            var requestData = new AdverseIncidentRequest
             {
-                Hode = new UonsketHendelseHodePart
+                Header = new AdverseIncidentHeaderPart
                 {
-                    EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new UonsketHendelseMelderPart
+                    ExternalCaseId = Guid.NewGuid().ToString(),
+                    Reporter = new AdverseIncidentReporterPart
                     {
-                        Fødselsnummer = "13075706604",
-                        Epost = "TestData@melde.no",
-                        Telefon = "99999999",
-                        Organisasjonsnummer = "883974832",
-                        Rolle = MelderRolle.Behandler,
-                        Stilling = "Lege"
+                        SSN = "13075706604",
+                        Email = "TestData@melde.no",
+                        Phone = "99999999",
+                        OrganizationNumber = "883974832",
+                        Role = ReporterRole.Treator,
+                        Position = "Lege"
                     },
-                    Hendelse = new UonsketHendelseHendelsePart
+                    Incident = new AdverseIncidentIncidentPart
                     {
-                        HvaSkjedde = "Datt på rattata",
-                        Dato = "2021-07-13"
+                        IncidentDescription = "Datt på rattata",
+                        IncidentDate = "2021-07-13"
                     },
-                    Pasient = new UonsketHendelsePasientPart
+                    Patient = new AdverseIncidentPatientPart
                     {
-                        //Fødselsdato = new Dato { Ar = 1990, Maned = 7, Dag = 13 },
-                        //Kjønn = PasientensKjonn.Mann,
-                        Fødselsnummer = "13075706604"
+                        //DateOfBirth = "1990-07-13",
+                        //Gender = Gender.Male,
+                        SSN = "13075706604"
                     },
-                    Meldingstyper = new UonsketHendelseMeldingstyperPart
+                    ReportAreas = new AdverseIncidentReportAreasPart
                     {
-                        AlvorligHendelse = true,
-                        Kosttilskudd = true
+                        SeriousIncident = true,
+                        DietarySupplements = true
                     },
                 },
-                Meldinger = new UonsketHendelseMeldingerPart
+                Report = new AdverseIncidentReportPart
                 {
-                    AlvorligHendelse = new AlvorligHendelseMeldingPart
+                    SeriousIncident = new SeriousIncidentReportPart
                     {
-                        Kontaktpersoner = new List<AlvorligHendelseKontaktperson>
+                        ContactPersons = new List<SeriousIncidentContactPerson>
                         {
-                            new AlvorligHendelseKontaktperson
+                            new SeriousIncidentContactPerson
                             {
-                                Navn = "VILDE MOEN_BRATLI",
-                                Epost = "TestData@melde.no",
-                                Telefon = "00000000",
-                                Stilling = "Doktor"
+                                Name = "VILDE MOEN_BRATLI",
+                                Email = "TestData@melde.no",
+                                Phone = "00000000",
+                                Position = "Doktor"
                             }
                         },
-                        AnnenInformasjon = new AlvorligHendelseAnnenInformasjon
+                        NextOfKin = new List<SeriousIncidentNextOfKin>
                         {
-                            VarsletTilStatsforvalter = YesNoDontKnow.Ja,
-                            VarsletStatsforvalter = "Fylkesmannen i Viken",
+                            new SeriousIncidentNextOfKin
+                            {
+                                Name = "Bror Børresen"
+                            }
                         }
                     },
-                    Kosttilskudd = new KosttilskuddMeldingPart
+                    DietarySupplements = new DietarySupplementsReportPart
                     {
-                        Bivirkning = new KosttilskuddBivirkningPart
+                        SideEffect = new DietarySupplementsSideEffectsPart
                         {
-                            Reaksjoner = new List<string>()
-                        {
-                            Reaksjon.EksemUtslett.ToString(),
-                            Reaksjon.Hevelse.ToString()
-                        },
-                            Reaksjonstid = "ReakTid",
-                            ReaksjonstidTekst = "ReakTidTekst",
-                            FolgerAvBivirkning = "Folger",
-                            FolgerAvBivirkningTekst = "FolgerTekst",
-                            BivirkningVarighet = "BivVarighet",
-                            PaagaarFortsatt = YesNo.Ja,
-                            BivirkningerVedTidligereBruk = YesNoDontKnow.VetIkke,
-                            BivirkningerVedTidligereBrukTekst = "BivTidBrukTekst",
-                            AllergiEllerAnnenPaavirkendeFaktor = YesNoDontKnow.Ja,
-                            AllergiEllerAnnenPaavirkendeFaktorTekst = "AllergiTekst",
-                            HarUnderliggendeSykdom = YesNoDontKnow.Ja,
-                            KanUnderliggendeSykdomVareArsak = YesNoDontKnow.Nei
-                        },
-                        Produkter = new[]
-                        {
-                            new KosttilskuddProduktPart
+                            Reactions = new List<string>()
                             {
-                                Produktinformasjon = new KosttilskuddProduktinformasjonPart
+                                Reaction.EczemaRash.ToString(),
+                                Reaction.Swelling.ToString()
+                            },
+                            ReactionDelay = "ReakTid",
+                            ReactionDelayDescription = "ReakTidTekst",
+                            Outcome = "Folger",
+                            OutcomeDescription = "FolgerTekst",
+                            SideEffectDuration = "BivVarighet",
+                            Ongoing = YesNo.Yes,
+                            SideEffectsOnPreviousUse = YesNoDontKnow.DontKnow,
+                            SideEffectsOnPreviousUseDescription = "BivTidBrukTekst",
+                            AnyAllergiesOrInfluencingIssues = YesNoDontKnow.Yes,
+                            AnyAllergiesOrInfluencingIssuesDescription = "AllergiTekst",
+                            AnyUnderlyingDiseases = YesNoDontKnow.Yes,
+                            CanDiseaseBeTheCause = YesNoDontKnow.No
+                        },
+                        Products = new[]
+                        {
+                            new DietarySupplementsProductPart
+                            {
+                                ProductInformation = new DietarySupplementsProductInformationPart
                                 {
-                                    ProduktNavn = "ProdNavn",
-                                    Ingredienser = "Ingr",
-                                    LeverandorProdusent = "LevProdusent",
-                                    Holdbarhetsdato = "2022-12-02",
-                                    ErBivirkningMeldtTilLeverandorEllerProdusent = YesNoDontKnow.VetIkke,
-                                    HvorProduktetErKjopt = "Hvor",
-                                    ButikkNavn = "Butikknavn",
-                                    BatchLotNummer = "Batch",
-                                    Vedlegg = new []
+                                    ProductName = "ProdNavn",
+                                    Ingredients = "Ingr",
+                                    VendorOrManufacturer = "LevProdusent",
+                                    BestBeforeDate = "2022-12-02",
+                                    ReportedToVendorOrProducer = YesNoDontKnow.DontKnow,
+                                    PurchaseLocation = "Hvor",
+                                    ShopName = "Butikknavn",
+                                    BatchLotNumber = "Batch",
+                                    Attachments = new []
                                     {
-                                        new Vedlegg
+                                        new AttachmentPart
                                         {
-                                            Navn = "Test.txt",
-                                            Innhold = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
+                                            Name = "Test.txt",
+                                            Content = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
                                         }
                                     }
                                 },
-                                BrukAvProduktet = new KosttilskuddBrukAvProduktetPart
+                                ProductUsage = new DietarySupplementsProductUsagePart
                                 {
-                                    MengdeIngredienserEllerVirkestoffPrDagligDose = "Mengde",
-                                    AnbefaltDagligDose = "DglDose",
-                                    FaktiskInntattDagligDose = "FaktiskDose",
-                                    BruksPeriode = "Periode",
-                                    LegemidlerSamtidigSomKosttilskudd = YesNoDontKnow.Ja,
-                                    HvilkeLegemiderErTattSamtidig = new [] { "Dundersalt" },
+                                    AmountOfIngredientsInDailyDose = "Mengde",
+                                    RecommendedDailyDose = "DglDose",
+                                    ActualDailyDoseTaken = "FaktiskDose",
+                                    UsageDuration = "Periode",
+                                    AnyDrugsTakenAtSameTime = YesNoDontKnow.Yes,
+                                    DrugsTakenAtSameTime = new [] { "Dundersalt" },
 
                                 }
                             }

@@ -30,33 +30,33 @@ namespace Example.Kosmetikk
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             //// Fill out request data
-            var requestData = new MedisinskUtstyrRequest
+            var requestData = new MedicalEquipmentRequest
             {
-                Hode = new MedisinskUtstyrHodePart
+                Header = new MedicalEquipmentHeaderPart
                 {
-                    EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new MedisinskUtstyrMelderPart
+                    ExternalCaseId = Guid.NewGuid().ToString(),
+                    Reporter = new MedicalEquipmentReporterPart
                     {
-                        Fødselsnummer = "13075706604",
-                        Epost = "TestData@melde.no",
-                        Telefon = "99999999",
-                        Organisasjonsnummer = "883974832"
+                        SSN = "13075706604",
+                        Email = "TestData@melde.no",
+                        Phone = "99999999",
+                        OrganizationNumber = "883974832"
                     },
-                    Hendelse = new MedisinskUtstyrHendelsePart
+                    Incident = new MedicalEquipmentIncidentPart
                     {
-                        HvaSkjedde = "Fikk utslett av såpe",
-                        Dato = "2021-07-13"
+                        IncidentDescription = "Fikk utslett av såpe",
+                        IncidentDate = "2021-07-13"
                     },
                 },
-                Melding = new MedisinskUtstyrMeldingPart
+                Report = new MedicalEquipmentReportPart
                 {
-                    MedisinskUtstyr = new MedisinskUtstyrPart
+                    MedicalEquipment = new MedicalEquipmentPart
                     {
-                        Handelsnavn = "Storz 488 B",
-                        Produsent = "Storz",
-                        HvorErUtstyret = HvorErUtstyret.Helseforetak,
-                        NkknKategori = NkknKategori.AktivtImplanterbartUtstyr,
-                        KlassifikasjonAvHendelsen = KlassifikasjonAvHendelsen.KunneHaFortTilDodEllerForverring,
+                        EquipmentName = "Storz 488 B",
+                        Manufacturer = "Storz",
+                        EquipmentLocation = EquipmentLocation.Healhcare,
+                        NkknCategory = NkknCategory.ActiveImplantableEquipment,
+                        IncidentClassification = IncidentClassification.MayHaveCausedDeathOrSeriousDeterioration,
                     }
                 }
             };

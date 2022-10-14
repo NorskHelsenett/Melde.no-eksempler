@@ -31,88 +31,91 @@ namespace Example.LegemiddelBivirkning
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             // Fill out request data
-            var requestData = new LegemiddelBivirkningRequest
+            var requestData = new DrugSideEffectsRequest
             {
-                Hode = new LegemiddelBivirkningHodePart
+                Header = new DrugSideEffectsHeaderPart
                 {
-                    EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new LegemiddelBivirkningMelderPart
+                    ExternalCaseId = Guid.NewGuid().ToString(),
+                    Reporter = new DrugSideEffectsReporterPart
                     {
-                        Fødselsnummer = "13065906141",
-                        Organisasjonsnummer = "883974832",
-                        Epost = "TestData@melde.no",
-                        Telefon = "99999999"
+                        SSN = "13065906141",
+                        OrganizationNumber = "883974832",
+                        Email = "TestData@melde.no",
+                        Phone = "99999999"
                     },
-                    Pasient = new LegemiddelBivirkningPasientPart
+                    Patient = new DrugSideEffectsPatientPart
                     {
-                        Fødselsdato = "1990-03-07",
-                        Kjønn = PasientensKjonn.Mann
+                        DateOfBirth = "1990-03-07",
+                        Gender = Gender.Male
                     },
-                    Hendelse = new LegemiddelBivirkningHendelsePart
+                    Incident = new DrugSideEffectsIncidentPart
                     {
-                        HvaSkjedde = "Det er mange opplysninger, men de har vi ikke."
+                        IncidentDescription = "Det er mange opplysninger, men de har vi ikke."
                     }
                 },
-                Melding = new LegemiddelBivirkningMeldingPart
+                Report = new DrugSideEffectsReportPart
                 {
-                    Legemidler = new List<LegemiddelBivirkningLegemidlerPart>
+                    Drugs = new List<DrugSideEffectsDrugPart>
                     {
-                        new LegemiddelBivirkningLegemidlerPart
+                        new DrugSideEffectsDrugPart
                         {
-                            MerkevareId = "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C",
-                            Rolle = LegemiddelRolle.Samtidig,
-                            Indikasjon = "IndikasjonTestData",
-                            ErPagaendeBehandling = YesNoDontKnow.Nei,
-                            Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
+                            DrugId = "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C",
+                            Role = LegemiddelRolle.Samtidig,
+                            Indication = "IndikasjonTestData",
+                            StillInUse = YesNoDontKnow.No,
+                            Dosage = new DrugSideEffectsDosagePart
                             {
-                                Doseringstekst = "1000mg per dag",
-                                Startdato = "1990",
-                                Sluttdato = "1994-05-24",
-                                Batchnummer = "Batchnummer A412"
+                                DosageDescription = "1000mg per dag",
+                                StartDate = "1990",
+                                EndDate = "1994-05-24",
+                                BatchLotNumber = "Batchnummer A412"
                             },
-                            PreparatNavn = "Painkillers",
-                            ErVaksine = false
+                            DrugName = "Painkillers",
+                            IsVaccine = false
                         },
-                        new LegemiddelBivirkningLegemidlerPart
+                        new DrugSideEffectsDrugPart
                         {
-                            MerkevareId = "ID_7C25C265-6B8D-4E66-8832-D514BE638BF2",
-                            Rolle = LegemiddelRolle.Mistenkt,
-                            Indikasjon = "",
-                            ErPagaendeBehandling = YesNoDontKnow.Ja,
-                            Dosering = new LegemiddelBivirkningLegemiddelDoseringPart
+                            DrugId = "ID_7C25C265-6B8D-4E66-8832-D514BE638BF2",
+                            Role = LegemiddelRolle.Mistenkt,
+                            Indication = "",
+                            StillInUse = YesNoDontKnow.Yes,
+                            Dosage = new DrugSideEffectsDosagePart
                             {
-                                Startdato = "1994-05-23",
-                                Tidspunkt = "23:05",
-                                Batchnummer = "Batchnummer #R1195",
-                                Administrasjonssted = LegemiddelAdministrasjonssted.HoyreArm,
-                                Dosenummer = Dosenummer.To
+                                StartDate = "1994-05-23",
+                                VaccineTime = "23:05",
+                                BatchLotNumber = "Batchnummer #R1195",
+                                AdministrationRoute = AdministrationRoute.RightArm,
+                                DoseNumber = DoseNumber.Two
                             },
-                            PreparatNavn = "Supervax",
-                            ErVaksine = true
+                            DrugName = "Supervax",
+                            IsVaccine = true
                         }
                     },
-                    Symptom = new List<LegemiddelBivirkningSymptomPart>
+                    Symptoms = new List<DrugSideEffectsSymptomsPart>
                     {
-                        new LegemiddelBivirkningSymptomPart
+                        new DrugSideEffectsSymptomsPart
                         {
-                            Beskrivelse = "Blodtrykksfall",
-                            Startdato = "1994-05-24",
-                            Sluttdato = "1994-05-25",
-                            PågårFortsatt = YesNo.Nei,
+                            Description = "Blodtrykksfall",
+                            StartDate = "1994-05-24",
+                            EndDate = "1994-05-25",
+                            Ongoing = YesNo.No,
                         },
-                        new LegemiddelBivirkningSymptomPart
+                        new DrugSideEffectsSymptomsPart
                         {
-                            Beskrivelse = "Stor trang til å teste APIer",
-                            Startdato = "1994-05-24",
-                            Sluttdato = "1994-05-25",
-                            PågårFortsatt = YesNo.Nei,
-                            Utfall = BivirkningUtfall.RestituertMenMedEttervirkninger
+                            Description = "Stor trang til å teste APIer",
+                            StartDate = "1994-05-24",
+                            EndDate = "1994-05-25",
+                            Ongoing = YesNo.No,
+                            Outcome = SideEffectOutcome.RecoveredWithSymptoms
                         }
                     },
-                    AnnenInformasjon = new LegemiddelBivirkningAnnenInformasjonPart
+                    OtherInformation = new DrugSideEffectsOtherInformationPart
                     {
-                        Alvorlighet = new List<BivirkningAlvorlighet>
-                        {BivirkningAlvorlighet.Livstruende, BivirkningAlvorlighet.AnomaliFodselsdefekt},
+                        Severity = new List<SideEffectSeverity>
+                        {
+                            SideEffectSeverity.LifeThreatening,
+                            SideEffectSeverity.AnomalyOrBirthDefect
+                        }
                     }
                 }
             };

@@ -2,8 +2,8 @@
   "x-generator": "NSwag v13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
-    "title": "Melde.no API - External/v1",
-    "description": "<p>API for innmelding av uønsket hendelser og bivirkninger på legemidler og vaksiner.</p>\r\n<p>Eksempler på bruk av API finnes i <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">vårt eksempel-repo</a></p>\r\n",
+    "title": "Melde API - External/v1",
+    "description": "<p>API for reporting adverse incidents</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
     "contact": {
       "name": "Norsk helsenett",
       "url": "https://www.nhn.no",
@@ -17,20 +17,20 @@
     }
   ],
   "paths": {
-    "/api/ekstern/v1/uonskethendelse/legemiddel-bivirkning": {
+    "/api/v1/report/drug-side-effects": {
       "post": {
         "tags": [
           "EksternUonsketHendelse"
         ],
-        "summary": "Meld om bivirkning på et legemiddel eller vaksine. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
-        "description": "Man må enten oppgi pasientens fødselsnummer eller fødselsdato og kjønn.\nVed bruk av et personlig HelseId-token vil fødselsnummer bli hentet derfra.",
+        "summary": "Report an adverse indicent related to drug or vaccine side effect.",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
         "operationId": "EksternUonsketHendelse_LegemiddelBivirkning",
         "requestBody": {
           "x-name": "lbr",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LegemiddelBivirkningRequest"
+                "$ref": "#/components/schemas/DrugSideEffectsRequest"
               }
             }
           },
@@ -39,7 +39,7 @@
         },
         "responses": {
           "200": {
-            "description": "En melding har blitt oppdatert.",
+            "description": "A report has been updated in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -49,7 +49,7 @@
             }
           },
           "201": {
-            "description": "En melding har blitt opprettet.",
+            "description": "A new report has been created in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -59,7 +59,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -70,7 +70,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -81,7 +81,7 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
@@ -93,20 +93,20 @@
         }
       }
     },
-    "/api/ekstern/v1/uonskethendelse/alvorlig-hendelse": {
+    "/api/v1/report/serious-incident": {
       "post": {
         "tags": [
           "EksternUonsketHendelse"
         ],
-        "summary": "Meld om en alvorlig hendelse. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
-        "description": "Man må enten oppgi pasientens fødselsnummer eller fødselsdato og kjønn.\nVed bruk av et personlig HelseId-token vil fødselsnummer bli hentet derfra.",
+        "summary": "Report a serious incicent",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
         "operationId": "EksternUonsketHendelse_AlvorligHendelse",
         "requestBody": {
           "x-name": "ahr",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlvorligHendelseRequest"
+                "$ref": "#/components/schemas/SeriousIncidentRequest"
               }
             }
           },
@@ -115,7 +115,7 @@
         },
         "responses": {
           "200": {
-            "description": "En melding har blitt oppdatert.",
+            "description": "A report has been updated in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -125,7 +125,7 @@
             }
           },
           "201": {
-            "description": "En melding har blitt opprettet.",
+            "description": "A new report has been created in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -135,7 +135,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -146,7 +146,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -157,7 +157,7 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
@@ -169,20 +169,20 @@
         }
       }
     },
-    "/api/ekstern/v1/uonskethendelse/kosmetikk-bivirkning": {
+    "/api/v1/report/cosmetics": {
       "post": {
         "tags": [
           "EksternUonsketHendelse"
         ],
-        "summary": "Meld om bivirkning av kosmetikk. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
-        "description": "Man må enten oppgi pasientens fødselsnummer eller fødselsdato og kjønn.\nVed bruk av et personlig HelseId-token vil fødselsnummer bli hentet derfra.",
+        "summary": "Report an adverse indicent cosmetics.",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
         "operationId": "EksternUonsketHendelse_Kosmetikk",
         "requestBody": {
           "x-name": "kos",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/KosmetikkRequest"
+                "$ref": "#/components/schemas/CosmeticsRequest"
               }
             }
           },
@@ -191,7 +191,7 @@
         },
         "responses": {
           "200": {
-            "description": "En melding har blitt oppdatert.",
+            "description": "A report has been updated in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -201,7 +201,7 @@
             }
           },
           "201": {
-            "description": "En melding har blitt opprettet.",
+            "description": "A new report has been created in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -211,7 +211,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -222,7 +222,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -233,7 +233,7 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
@@ -245,20 +245,20 @@
         }
       }
     },
-    "/api/ekstern/v1/uonskethendelse/kosttilskudd-bivirkning": {
+    "/api/v1/report/dietary-supplements": {
       "post": {
         "tags": [
           "EksternUonsketHendelse"
         ],
-        "summary": "Meld om bivirkning av kosttilskudd. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
-        "description": "Man må enten oppgi pasientens fødselsnummer eller fødselsdato og kjønn.\nVed bruk av et personlig HelseId-token vil fødselsnummer bli hentet derfra.",
+        "summary": "Report an adverse indicent related to dietary supplements.",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
         "operationId": "EksternUonsketHendelse_Kosttilskudd",
         "requestBody": {
           "x-name": "kos",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/KosttilskuddRequest"
+                "$ref": "#/components/schemas/DietarySupplementsRequest"
               }
             }
           },
@@ -267,7 +267,7 @@
         },
         "responses": {
           "200": {
-            "description": "En melding har blitt oppdatert.",
+            "description": "A report has been updated in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -277,7 +277,7 @@
             }
           },
           "201": {
-            "description": "En melding har blitt opprettet.",
+            "description": "A new report has been created in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -287,7 +287,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -298,7 +298,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -309,7 +309,7 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
@@ -321,12 +321,13 @@
         }
       }
     },
-    "/api/ekstern/v1/uonskethendelse/biovigilans": {
+    "/api/v1/report/biovigilance": {
       "post": {
         "tags": [
           "EksternUonsketHendelse"
         ],
-        "summary": "Meld om en uønsket hendelse ifbm. biovigilans. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
+        "summary": "Report an adverse indicent related to biovigilance.",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
         "operationId": "EksternUonsketHendelse_Biovigilans",
         "requestBody": {
           "x-name": "req",
@@ -334,7 +335,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/BiovigilansRequest"
+                "$ref": "#/components/schemas/BiovigilanceRequest"
               }
             }
           },
@@ -343,7 +344,7 @@
         },
         "responses": {
           "200": {
-            "description": "En melding har blitt oppdatert.",
+            "description": "A report has been updated in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -353,7 +354,7 @@
             }
           },
           "201": {
-            "description": "En melding har blitt opprettet.",
+            "description": "A new report has been created in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -363,7 +364,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -374,7 +375,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -385,7 +386,7 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
@@ -397,12 +398,13 @@
         }
       }
     },
-    "/api/ekstern/v1/uonskethendelse/medisinsk-utstyr": {
+    "/api/v1/report/medical-equipment": {
       "post": {
         "tags": [
           "EksternUonsketHendelse"
         ],
-        "summary": "Meld om en uønsket hendelse ifbm. medisinsk utstyr. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
+        "summary": "Report an adverse indicent related to medical equipment.",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
         "operationId": "EksternUonsketHendelse_MedisinskUtstyr",
         "requestBody": {
           "x-name": "req",
@@ -410,7 +412,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MedisinskUtstyrRequest"
+                "$ref": "#/components/schemas/MedicalEquipmentRequest"
               }
             }
           },
@@ -419,7 +421,7 @@
         },
         "responses": {
           "200": {
-            "description": "En melding har blitt oppdatert.",
+            "description": "A report has been updated in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -429,7 +431,7 @@
             }
           },
           "201": {
-            "description": "En melding har blitt opprettet.",
+            "description": "A new report has been created in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -439,7 +441,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -450,7 +452,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -461,7 +463,7 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
@@ -473,12 +475,13 @@
         }
       }
     },
-    "/api/ekstern/v1/uonskethendelse": {
+    "/api/v1/report/adverse-incident": {
       "post": {
         "tags": [
           "EksternUonsketHendelse"
         ],
-        "summary": "Meld om en uønsket hendelse til flere meldeordninger samtidig, der det er relevant. Vil resultere i enten en opprettelse eller oppdatering av en melding.",
+        "summary": "Report an adverse indicent. This endpoint supports multiple report areas in the same report (combined reporting).",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
         "operationId": "EksternUonsketHendelse_UonsketHendelse",
         "requestBody": {
           "x-name": "req",
@@ -486,7 +489,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UonsketHendelseRequest"
+                "$ref": "#/components/schemas/AdverseIncidentRequest"
               }
             }
           },
@@ -495,7 +498,7 @@
         },
         "responses": {
           "200": {
-            "description": "En melding har blitt oppdatert.",
+            "description": "A report has been updated in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -505,7 +508,7 @@
             }
           },
           "201": {
-            "description": "En melding har blitt opprettet.",
+            "description": "A new report has been created in Melde",
             "content": {
               "application/json": {
                 "schema": {
@@ -515,7 +518,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -526,7 +529,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -537,7 +540,7 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
@@ -886,69 +889,69 @@
           }
         }
       },
-      "LegemiddelBivirkningRequest": {
+      "DrugSideEffectsRequest": {
         "type": "object",
-        "description": "LegemiddelBivirkning DTO",
+        "description": "Drug side effects DTO",
         "additionalProperties": false,
         "required": [
-          "Hode",
-          "Melding"
+          "Header",
+          "Report"
         ],
         "properties": {
-          "Hode": {
-            "description": "Meldingshode",
+          "Header": {
+            "description": "Header",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelBivirkningHodePart"
+                "$ref": "#/components/schemas/DrugSideEffectsHeaderPart"
               }
             ]
           },
-          "Melding": {
-            "description": "Meldingsinnhold",
+          "Report": {
+            "description": "Report",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelBivirkningMeldingPart"
+                "$ref": "#/components/schemas/DrugSideEffectsReportPart"
               }
             ]
           }
         }
       },
-      "LegemiddelBivirkningHodePart": {
+      "DrugSideEffectsHeaderPart": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/HodePartBase"
+            "$ref": "#/components/schemas/HeaderPartBase"
           },
           {
             "type": "object",
-            "description": "Hode",
+            "description": "Header part",
             "additionalProperties": false,
             "required": [
-              "Melder",
-              "Pasient",
-              "Hendelse"
+              "Reporter",
+              "Patient",
+              "Incident"
             ],
             "properties": {
-              "Melder": {
-                "description": "Melder",
+              "Reporter": {
+                "description": "Reporter part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/LegemiddelBivirkningMelderPart"
+                    "$ref": "#/components/schemas/DrugSideEffectsReporterPart"
                   }
                 ]
               },
-              "Pasient": {
-                "description": "Pasient",
+              "Patient": {
+                "description": "Patient part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/LegemiddelBivirkningPasientPart"
+                    "$ref": "#/components/schemas/DrugSideEffectsPatientPart"
                   }
                 ]
               },
-              "Hendelse": {
-                "description": "Hendelse",
+              "Incident": {
+                "description": "Incident",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/LegemiddelBivirkningHendelsePart"
+                    "$ref": "#/components/schemas/DrugSideEffectsIncidentPart"
                   }
                 ]
               }
@@ -956,198 +959,207 @@
           }
         ]
       },
-      "LegemiddelBivirkningMelderPart": {
+      "DrugSideEffectsReporterPart": {
         "type": "object",
-        "description": "Melders opplysninger.",
+        "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "Fødselsnummer",
-          "Organisasjonsnummer",
-          "Epost",
-          "Telefon"
+          "SSN",
+          "OrganizationNumber",
+          "Email",
+          "Phone"
         ],
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Melders fødselsnummer. Brukes i maskin til maskin HelseId.",
+            "description": "Social security number",
             "minLength": 1,
             "pattern": "^\\d{11}$",
             "example": "13065906141"
           },
-          "Organisasjonsnummer": {
+          "OrganizationNumber": {
             "type": "string",
-            "description": "Melders organisasjonsnummer.",
+            "description": "Organization number",
             "minLength": 1,
             "pattern": "^\\d{9}$",
             "example": "883974832"
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Melders e-post.",
+            "description": "E-mail address",
             "format": "email",
             "minLength": 1,
             "example": "TestData@melde.no"
           },
-          "Telefon": {
+          "Phone": {
             "type": "string",
-            "description": "Melders telefonnummer.",
+            "description": "Phone number",
             "format": "phone",
             "minLength": 1,
             "example": "99999999"
           }
         }
       },
-      "LegemiddelBivirkningPasientPart": {
+      "DrugSideEffectsPatientPart": {
         "type": "object",
-        "description": "Pasientopplysninger.",
+        "description": "Patient part",
         "additionalProperties": false,
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Pasientens fødselsnummer. Påkrevd, eller pasientens kjønn og fødselsdato.",
+            "description": "Social security number",
             "pattern": "^\\d{11}$",
             "nullable": true,
             "example": 15037104229
           },
-          "Kjønn": {
-            "description": "Pasientens kjønn. Påkrevd om ikke fødselsnummer er lagt inn.",
+          "Gender": {
+            "description": "Gender",
             "nullable": true,
             "example": "Mann",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientensKjonn"
+                "$ref": "#/components/schemas/Gender"
               }
             ]
           },
-          "Fødselsdato": {
+          "DateOfBirth": {
             "type": "string",
-            "description": "Pasientens fødselsdato. Påkrevd om ikke fødselsnummer er lagt inn.",
+            "description": "Date of birth",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
             "nullable": true,
             "example": "1980-05-25"
           }
         }
       },
-      "PasientensKjonn": {
+      "Gender": {
         "type": "string",
         "description": "Pasientens kjønn (OID=3101)\nSe kodeverk 3101 på volven: https://volven.no/produkt.asp?id=382591&catID=3&subID=8.",
         "x-enumNames": [
           "IkkeKjent",
+          "NotKnown",
+          "Male",
           "Mann",
+          "Female",
           "Kvinne",
+          "NotSpecified",
           "IkkeSpesifisert"
         ],
         "enum": [
-          "IkkeKjent",
+          "NotKnown",
+          "NotKnown",
+          "Mann",
           "Mann",
           "Kvinne",
-          "IkkeSpesifisert"
+          "Kvinne",
+          "NotSpecified",
+          "NotSpecified"
         ]
       },
-      "LegemiddelBivirkningHendelsePart": {
+      "DrugSideEffectsIncidentPart": {
         "type": "object",
-        "description": "Informasjon om hendelsen",
+        "description": "Incident part",
         "additionalProperties": false,
         "required": [
-          "HvaSkjedde"
+          "IncidentDescription"
         ],
         "properties": {
-          "HvaSkjedde": {
+          "IncidentDescription": {
             "type": "string",
-            "description": "Tekstlig beskrivelse av hva som skjedde.",
+            "description": "Incident description",
             "minLength": 1,
             "example": "Det er mange opplysninger, men de har vi ikke."
           }
         }
       },
-      "HodePartBase": {
+      "HeaderPartBase": {
         "type": "object",
-        "description": "Baseklasse for alle Hode-parts",
+        "description": "Base class for all header parts",
         "x-abstract": true,
         "additionalProperties": false,
         "required": [
-          "EksternSaksId"
+          "ExternalCaseId"
         ],
         "properties": {
-          "EksternSaksId": {
+          "ExternalCaseId": {
             "type": "string",
-            "description": "Påkrevd. Skal unikt identifisere meldingen i eksternt system, for eksempel AVVIK123. Maksimalt 100 tegn.",
+            "description": "Unique report identifier in the external system.",
             "maxLength": 100,
             "minLength": 1,
             "example": "MYSYS-REF8345"
           }
         }
       },
-      "LegemiddelBivirkningMeldingPart": {
+      "DrugSideEffectsReportPart": {
         "type": "object",
+        "description": "Report part",
         "additionalProperties": false,
         "required": [
-          "Legemidler",
-          "Symptom"
+          "Drugs",
+          "Symptoms"
         ],
         "properties": {
-          "Legemidler": {
+          "Drugs": {
             "type": "array",
-            "description": "Liste over hvilke legemidler Pasient bruker og som kan være relevant.",
+            "description": "Drug parts",
             "items": {
-              "$ref": "#/components/schemas/LegemiddelBivirkningLegemidlerPart"
+              "$ref": "#/components/schemas/DrugSideEffectsDrugPart"
             }
           },
-          "Symptom": {
+          "Symptoms": {
             "type": "array",
-            "description": "Liste over symptomer Pasient opplever.",
+            "description": "Symptom parts",
             "items": {
-              "$ref": "#/components/schemas/LegemiddelBivirkningSymptomPart"
+              "$ref": "#/components/schemas/DrugSideEffectsSymptomsPart"
             }
           },
-          "AnnenInformasjon": {
-            "description": "Annen relevant informarsjon knyttet til meldingen.",
+          "OtherInformation": {
+            "description": "Other information part",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelBivirkningAnnenInformasjonPart"
+                "$ref": "#/components/schemas/DrugSideEffectsOtherInformationPart"
               }
             ]
           },
-          "Vedlegg": {
+          "Attachments": {
             "type": "array",
-            "description": "Vedlagte filer av relevans.",
+            "description": "Attachments",
             "maxItems": 5,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/VedleggPart"
+              "$ref": "#/components/schemas/AttachmentPart"
             }
           }
         }
       },
-      "LegemiddelBivirkningLegemidlerPart": {
+      "DrugSideEffectsDrugPart": {
         "type": "object",
-        "description": "Informasjon om legemiddel.",
+        "description": "Drug part",
         "additionalProperties": false,
         "required": [
-          "Rolle",
-          "Dosering"
+          "Role",
+          "Dosage"
         ],
         "properties": {
-          "MerkevareId": {
+          "DrugId": {
             "type": "string",
-            "description": "Legemidlet Id, benyttes til beriking av legemiddel. Påkrevd.",
+            "description": "Drug id",
             "maxLength": 64,
             "nullable": true,
             "example": "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C"
           },
-          "ErVaksine": {
+          "IsVaccine": {
             "type": "boolean",
-            "description": "Hvis merkevare id er ukjent må det oppgis om legemiddelet er en vaksine eller ikke",
+            "description": "Is vaccine.\nRequired if drug id is empty",
             "nullable": true
           },
-          "PreparatNavn": {
+          "DrugName": {
             "type": "string",
-            "description": "Hvis merkevare id en ukjent, må navn på preparat oppgis her.",
+            "description": "Drug name.\nRequired if drug id is empty",
             "nullable": true
           },
-          "Rolle": {
-            "description": "Hvilken relasjon har legemidlet til andre legemidler og den uønskede hendelsen. Påkrevd.",
+          "Role": {
+            "description": "Drug role",
             "example": "Samtidig",
             "oneOf": [
               {
@@ -1155,15 +1167,14 @@
               }
             ]
           },
-          "Indikasjon": {
+          "Indication": {
             "type": "string",
-            "description": "Indikasjon eller bruksområde, feks: Hypertensjon.",
+            "description": "Indication.",
             "maxLength": 64,
-            "nullable": true,
-            "example": "IndikasjonTestData"
+            "nullable": true
           },
-          "ErPagaendeBehandling": {
-            "description": "Er legemidlet i aktivt bruk i dag?",
+          "StillInUse": {
+            "description": "StillInUse",
             "nullable": true,
             "example": "Ja",
             "oneOf": [
@@ -1172,11 +1183,11 @@
               }
             ]
           },
-          "Dosering": {
-            "description": "Informasjon om legemiddel dosering.",
+          "Dosage": {
+            "description": "Dosage part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelBivirkningLegemiddelDoseringPart"
+                "$ref": "#/components/schemas/DrugSideEffectsDosagePart"
               }
             ]
           }
@@ -1201,140 +1212,168 @@
         "description": "",
         "x-enumNames": [
           "Ja",
+          "Yes",
+          "No",
           "Nei",
+          "DontKnow",
           "VetIkke"
         ],
         "enum": [
           "Ja",
-          "Nei",
-          "VetIkke"
+          "Ja",
+          "No",
+          "No",
+          "DontKnow",
+          "DontKnow"
         ]
       },
-      "LegemiddelBivirkningLegemiddelDoseringPart": {
+      "DrugSideEffectsDosagePart": {
         "type": "object",
-        "description": "Doseringinformasjon om et legemiddel.",
+        "description": "Dosage part",
         "additionalProperties": false,
         "properties": {
-          "Doseringstekst": {
+          "DosageDescription": {
             "type": "string",
-            "description": "Hvordan legemiddelet doseres, eks: 1 tablett, 2 ganger om dagen.",
+            "description": "Dosage description",
             "maxLength": 64,
             "nullable": true,
             "example": "1000mg per dag"
           },
-          "Startdato": {
+          "StartDate": {
             "type": "string",
-            "description": "Oppstart for bruk av legemidlet. Årstall er påkrevd.",
+            "description": "Dosage start date. At least year must be specified.",
             "nullable": true,
             "example": "1996-01-04"
           },
-          "Sluttdato": {
+          "EndDate": {
             "type": "string",
-            "description": "Sluttdato for bruk av legemidlet. Årstall er påkrevd.",
+            "description": "Dosage end date. At least year must be specified.",
             "nullable": true,
             "example": "1996-01-04"
           },
-          "Tidspunkt": {
+          "VaccineTime": {
             "type": "string",
-            "description": "Tidspunkt for når en vaksine ble satt. Blir kun hensyntatt om det er en vaksine.",
+            "description": "Vaccine time. Only applicable for vaccines",
             "nullable": true,
             "example": "23:05"
           },
-          "Batchnummer": {
+          "BatchLotNumber": {
             "type": "string",
-            "description": "Batch- og LOT-nummer for legemidlet.",
+            "description": "Batch/lot number",
             "maxLength": 64,
             "nullable": true,
             "example": "Batchnummer #R1195"
           },
-          "Administrasjonssted": {
-            "description": "Hvordan legemidlet/vaksinen ble gitt.\nSe LegemiddelAdministrasjonssted for gyldige verdier. Andre verdier vil tolkes som \"annet\" (fritekstfelt).",
+          "AdministrationRoute": {
+            "description": "Administration route.\nWhere was the drug taken/injected.",
             "nullable": true,
             "example": "HoyreLar",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelAdministrasjonssted"
+                "$ref": "#/components/schemas/AdministrationRoute"
               }
             ]
           },
-          "Dosenummer": {
-            "description": "Hvilket dosenummer i serie.  Blir kun hensyntatt om det er en vaksine.",
+          "DoseNumber": {
+            "description": "Dose number",
             "nullable": true,
             "example": "To",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Dosenummer"
+                "$ref": "#/components/schemas/DoseNumber"
               }
             ]
           }
         }
       },
-      "LegemiddelAdministrasjonssted": {
+      "AdministrationRoute": {
         "type": "string",
         "description": "Legemiddelrolle",
         "x-enumNames": [
           "HoyreArm",
+          "RightArm",
+          "LeftArm",
           "VenstreArm",
+          "RightThigh",
           "HoyreLar",
+          "LeftThigh",
           "VenstreLar",
+          "Oral",
           "Oralt",
+          "Other",
           "Annet"
         ],
         "enum": [
           "HoyreArm",
-          "VenstreArm",
+          "HoyreArm",
+          "LeftArm",
+          "LeftArm",
           "HoyreLar",
-          "VenstreLar",
-          "Oralt",
-          "Annet"
+          "HoyreLar",
+          "LeftThigh",
+          "LeftThigh",
+          "Oral",
+          "Oral",
+          "Other",
+          "Other"
         ]
       },
-      "Dosenummer": {
+      "DoseNumber": {
         "type": "string",
-        "description": "Dosenummer",
+        "description": "Dose number",
         "x-enumNames": [
           "En",
+          "One",
+          "Two",
           "To",
+          "Three",
           "Tre",
+          "Four",
           "Fire",
+          "NotInSeries",
           "IkkeISerie"
         ],
         "enum": [
-          "En",
-          "To",
-          "Tre",
+          "One",
+          "One",
+          "Two",
+          "Two",
+          "Three",
+          "Three",
           "Fire",
-          "IkkeISerie"
+          "Fire",
+          "NotInSeries",
+          "NotInSeries"
         ]
       },
-      "LegemiddelBivirkningSymptomPart": {
+      "DrugSideEffectsSymptomsPart": {
         "type": "object",
-        "description": "Symptominformasjon for bivirkning.",
+        "description": "Symptom part",
         "additionalProperties": false,
         "required": [
-          "Beskrivelse"
+          "Description"
         ],
         "properties": {
-          "Beskrivelse": {
+          "Description": {
             "type": "string",
-            "description": "Bivirkningssymptom, beskrivelse av symptomet. Påkrevd.",
+            "description": "Symptom description",
             "minLength": 1,
             "example": "Blodtrykksfall"
           },
-          "Startdato": {
+          "StartDate": {
             "type": "string",
-            "description": "Bivirkningssymptomets startdato.",
+            "description": "Symptom start date",
             "nullable": true,
             "example": "1996-01-04"
           },
-          "Sluttdato": {
+          "EndDate": {
             "type": "string",
-            "description": "Bivirkningssymptomets sluttdato.",
+            "description": "Symptom end date",
             "nullable": true,
             "example": "1996-01-04"
           },
-          "PågårFortsatt": {
-            "description": "Pågår symptomet fortsatt hos pasient.",
+          "Ongoing": {
+            "description": "Ongioing. Is the symptom still there?",
             "nullable": true,
             "example": "Nei",
             "oneOf": [
@@ -1343,13 +1382,13 @@
               }
             ]
           },
-          "Utfall": {
-            "description": "Konsekvens eller utfall av bivirkningssymptom.",
+          "Outcome": {
+            "description": "Outcome",
             "nullable": true,
             "example": "RestituertMenMedEttervirkninger",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BivirkningUtfall"
+                "$ref": "#/components/schemas/SideEffectOutcome"
               }
             ]
           }
@@ -1360,41 +1399,57 @@
         "description": "",
         "x-enumNames": [
           "Ja",
+          "Yes",
+          "No",
           "Nei"
         ],
         "enum": [
-          "Ja",
-          "Nei"
+          "Yes",
+          "Yes",
+          "No",
+          "No"
         ]
       },
-      "BivirkningUtfall": {
+      "SideEffectOutcome": {
         "type": "string",
-        "description": "Bivirkningens utfall\nSe kodeverk 7469 på volven: https://volven.no/produkt.asp?id=382526&catID=3&subID=8.",
+        "description": "Side effect outcome\nRef kodeverk 7469 at volven: https://volven.no/produkt.asp?id=382526&catID=3&subID=8.",
         "x-enumNames": [
           "RestituertUtenEttervirkninger",
+          "FullyRecovered",
+          "Improvement",
           "BedringMenIkkeFullstendigRestituert",
+          "NoImprovement",
           "IngenBedring",
+          "RecoveredWithSymptoms",
           "RestituertMenMedEttervirkninger",
+          "Death",
           "Dod",
+          "Unknown",
           "Ukjent"
         ],
         "enum": [
           "RestituertUtenEttervirkninger",
-          "BedringMenIkkeFullstendigRestituert",
+          "RestituertUtenEttervirkninger",
+          "Improvement",
+          "Improvement",
           "IngenBedring",
-          "RestituertMenMedEttervirkninger",
-          "Dod",
-          "Ukjent"
+          "IngenBedring",
+          "RecoveredWithSymptoms",
+          "RecoveredWithSymptoms",
+          "Death",
+          "Death",
+          "Unknown",
+          "Unknown"
         ]
       },
-      "LegemiddelBivirkningAnnenInformasjonPart": {
+      "DrugSideEffectsOtherInformationPart": {
         "type": "object",
-        "description": "Annen relevant informasjon.",
+        "description": "Other information part",
         "additionalProperties": false,
         "properties": {
-          "Alvorlighet": {
+          "Severity": {
             "type": "array",
-            "description": "Bivirkningens alvorlighet(er).",
+            "description": "Severity",
             "maxItems": 5,
             "nullable": true,
             "example": [
@@ -1402,113 +1457,125 @@
               "AnomaliFodselsdefekt"
             ],
             "items": {
-              "$ref": "#/components/schemas/BivirkningAlvorlighet"
+              "$ref": "#/components/schemas/SideEffectSeverity"
             }
           }
         }
       },
-      "BivirkningAlvorlighet": {
+      "SideEffectSeverity": {
         "type": "string",
         "description": "Bivirkningens alvorlighet\nSe kodeverk 7468 på volven: https://volven.no/produkt.asp?id=382525&catID=3&subID=8.",
         "x-enumNames": [
           "ResulterteIDod",
+          "Death",
+          "LifeThreatening",
           "Livstruende",
+          "Hospitalization",
           "SykehusinnleggelseForlengetOpphold",
+          "PersistentDisability",
           "VedvarendeUforhetNedsattFunksjonsevne",
+          "AnomalyOrBirthDefect",
           "AnomaliFodselsdefekt",
+          "Other",
           "Annet"
         ],
         "enum": [
           "ResulterteIDod",
-          "Livstruende",
+          "ResulterteIDod",
+          "LifeThreatening",
+          "LifeThreatening",
           "SykehusinnleggelseForlengetOpphold",
-          "VedvarendeUforhetNedsattFunksjonsevne",
-          "AnomaliFodselsdefekt",
-          "Annet"
+          "SykehusinnleggelseForlengetOpphold",
+          "PersistentDisability",
+          "PersistentDisability",
+          "AnomalyOrBirthDefect",
+          "AnomalyOrBirthDefect",
+          "Other",
+          "Other"
         ]
       },
-      "VedleggPart": {
+      "AttachmentPart": {
         "type": "object",
-        "description": "Vedlegg, følgende filtyper er støttet: .jpeg, .png, .tiff, pdf, .rtf, .docx.",
+        "description": "Attachment part",
         "additionalProperties": false,
         "properties": {
-          "Navn": {
+          "Name": {
             "type": "string",
-            "description": "Vedleggets filnavn, eks: test.png.",
+            "description": "Attachment name (i.e. file name)",
             "nullable": true,
             "example": "bilde123.jpg"
           },
-          "Innhold": {
+          "Content": {
             "type": "string",
-            "description": "Vedleggets innhold, base64 kodet string.",
+            "description": "Attachment content.\nBase64 encoded. May be prefixed by for instance 'data:image/jpeg;base64,'",
             "nullable": true,
             "example": "77+977+977+977+9ABBKRklGAAEBAAABAAEAAO+/ve+/vQDvv70ACQYHEhASFRASEA8QDxAQEA8PDxAPEA8QEA8VERYWFREVFRgdKCAYGiUbFRUhMSElKSsuLi4XHzM4My03KC0uKwEgICAOIA4XEBAXKx0dHS0tLS0tLS0rKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLTc3LS0tLS0rKysr77+977+9ABEIAO+/vQEVAwEiAAIRAQMRAe+/ve+/vQAbAAACAwEBAQAAAAAAAAAAAAACAwABBAUGB++/ve+/vQA5EAACAQIDBgQEBQMDBQAAAAAAAQIDEQQhMQUSQVFhcQYi77+977+9EzLvv73vv71CUmJy77+9FCPvv70k77+977+9M0NU77+977+977+977+9ABkBAQADAQEAAAAAAAAAAAAAAAIAAQMEBe+/ve+/vQAiEQEBAAICAgICAwAAAAAAAAAAAQIRAyEEMRJBInEyQlHvv73vv70ADAMBAAIRAxEAPwDvv71pBu+/ve+/ve+/ve+/vQ9R77+9YwLvv70LGi3vv73vv73vv71L77+9S2Xvv70G77+9ZO+/ve+/vSkLZe+/vUY177+9YDgG77+9Z1Hvv71NIO+/vSrvv73vv73vv73vv70l77+9Eu+/ve+/vSAsLe+/ve+/vdyrIBLvv73vv70J77+977+977+9X++/ve+/vQlTd++/ve+/vUpQ77+977+9FQdu77+9Ae+/vT5hIhEZGu+/vRXvv73GnHfvv7191a3vv71g77+9Ke+/ve+/vTww77+9XUPvv71uR++/ve+/ve+/ve+/ve+/vWob77+9TWU277+977+977+9Y++/ve+/ve+/vVFb77+977+9178eZwZebe+/vVHvv708XGTvv73vv70qJ++/vU7vv70P77+9f1cl77+977+9fU7vv73vv73vv73vv70r77+9R++/vV5j77+9yrbvv71R77+9XBjvv70AWu+/vUTvv73vv70B77+977+9aO+/vWTVru+/vS3vv73vv73vv70y77+977+9XO+/ve+/ve+/ve+/ve+/ve+/vRvvv71i77+9QNyM77+977+9Ju+/ve+/vUQpBO+/vQUFcWnvv73vv70o77+977+9Qe+/vUIy77+92pti77+9dO+/ve+/ve+/vXjvv73vv70a77+9O0dpOe+/ve+/vUTvv73vv73vv70DJU3vv73vv73RtO+/vXBnGzDvv71j77+977+9KUMw6KyL77+9HXvvv73vv73vv73vv73vv70Q0bnvv71mJnBFLe+/ve+/vTDvv71oNhQt77+9d++/vRgsFhHvv73vv73vv70/Qu+/vSTvv73vv70qQTg8Qkjvv71tHHbvv71cUu+/vXln77+9Nu+/vW9kcXbvv716d9yLe++/ve+/ve+/vTzvv703O++/ve+/vXfvv71477+977+9Xj9q1ZTvv73vv70M77+977+9Rhd777+9XyPvv73vv73vv71C77+9aQ7vv73vv73vv73vv71HNx8d77+9Tk7vv73vv71hRlLvv70vTkPvv70JRV7vv73vv70z77+90aUV77+9SH1cOmrvv71k77+977+9FSA877+977+977+9LhNSTe+/ve+/vWrvv700e++/vSvvv73vv73vv73vv70jIO+/vVNc77+977+977+9fQbvv73vv71W77+977+977+9b++/ve+/vVsc77+977+9SDjvv70o77+9NRPvv73vv71B77+977+9VUJ677+9WO+/ve+/vWRBQjco77+9Xe+/vUXvv71y77+9XWbvv73vv73vv713Ku+/vRMo77+977+977+9dO+/vcOc77+9BF3vv71HYO+/vXYhcXYm77+9dSjvv73vv73vv73vv73vv71J77+9xLzCiu+/ve+/vXTvv70U77+977+9acSq77+977+9V++/vQFS77+9Wlg677+977+977+9RiBQE3cbTu+/vdCmOu+/ve+/ve+/vTTvv73vv70+Au+/vRcdIBPvv73vv70B26Iz77+977+9FSjvv73vv73vv73vv71HQ++/vSfvv73vv71xMu+/ve+/vQl7BO+/vRI8bipN15Pvv71O3Y9pKO+/ve+/ve+/vQPvv73vv71x77+9ee+/ve+/ve+/ve+/vWdy77+9eC9WOe+/ve+/vQlqMwvvv73vv73vv73vv73vv73vv71J77+9J27vv70VGk7vv73fqe+/vWzvv73vv70AURjvv702S++/vQNMMXDvv73vv70Za1Dvv73vv71L77+977+9YO+/vXDvv705b28uTX8m77+92JXvv71oUt6o77+977+977+93qfvv73vv73vv71J77+9SXsj77+9Tu+/vVXvv70n77+977+9Le+/vdeH77+977+9M04p77+9VzczQu+/vS4x77+9Z++/ve+/vWpR77+9dUcoXe+/vT/vv73vv73vv70x77+9TS9TPO+/ve+/ve+/vUY5FVYjKSzvv73vv73vv73Vsirvv73vv73vv70X77+9QSAsEhFVbO+/vTZCdu+/vVUi77+9LiHvv73vv71gGwLvv73vv70Q77+9MiJQSO+/vUoAKe+/ve+/vSLvv70h77+9OU0u77+9IGwGwrTvv73vv70DC1Dvv71L77+9BVwq77+977+9JO+/ve+/ve+/vSZx77+9Ie+/vde477+977+9UGEFd++/vVQzVu+/vRzvv73vv73vv70TOnBLK++/vS1cRyVu77+9VO+/vX7vv712Ei7vv73vv71277+977+977+977+9dgLvv73vv71E77+9ajfvv73vv73vv71Y77+977+9MD5nOO+/vSvvv73vv71zdjk877+9LlJp77+9eO+/ve+/vRlx77+924FbMTHvv73vv70R77+9Ee+/ve+/ve+/vWXvv73vv70uSu+/veWbje+/vQBPQUVN77+9RWt677+9bRrvv71deO+/vTjvv73vv71277+9M3dpWe+/ve+/ve+/vQ45Wz0g77+9QVop77+9cu+/ve+/vQlk77+9Mzrvv70XQu+/ve+/vXtmPhDvv73vv73Hj9uT77+9Le+/vVnvv73vv71ebEPvv73vv70277+9ZtqfLwMY77+9VO+/ve+/vQXvv70S77+977+977+977+977+977+977+9Uu+/vT7vv70BFgNILe+/ve+/vXIp77+9RTLvv73vv70o77+9VO+/vUZCbU7vv70dSu+/ve+/ve+/ve+/vVnvv73vv71I77+9dADvv70U77+977+977+9L++/vUbvv73vv73vv71cyLIkLkbvv70477+975maZFgZTO+/ve+/vVbvv73vv71tWe+/ve+/vUrvv70A77+9e++/vQXvv71JagPvv73vv73vv71pUirdjO+/vRrvv73vv71c77+9YRLvv73vv71ECO+/vdmVOV8wGyrvv73vv71TKhDvv70Oy5rvv70Y77+9RS4e77+977+9Fypc77+9Tu+/ve+/vVVPRu+/ve+/vXPvv70re++/ve+/vT7vv71baWHvv70k77+9ACzvv71f77+9Oe+/ve+/ve+/vdGdXe+/vVXvv71zVjnvv73vv73vv73vv70b77+977+977+977+9cjRg77+9Ee+/ve+/vXd277+9J++/vXPvv71GKuusl++/ve+/vUbvv73vv71IZu+/ve+/ve+/vTTvv71B77+9dd2EE3nvv70a77+9OO+/vTbCoTjGplHvv73vv70Zcno0zrU677+9Su+/vXFp77+9TO+/vV04Mu+/vWvvv73vv73vv70477+977+9Uirvv73vv73vv73vv73vv71JRTDvv73vv70I77+9UHUE77+977+9Nu+/vRDLhmXvv70M77+9Yu+/ve+/ve+/vRTvv71RyJVMUkDvv70rU++/veu4hkDvv71o77+977+977+977+977+9VO+/ve+/vXTvv70jJTka1I7vv70a77+9Eu+/vU48ECvvv73vv73vv73vv71wKu+/vVV3eXoZZO+/vWwZMu+/vRTvv73vv71/A++/vQbvv73vv73vv73vv73vv73vv73ShO+/vQ/vv70JYe+/vTRo77+977+9fUHvv73vv73vv73vv71h77+9cjPvv70777+977+9Dte6NO+/ve+/vXvvv73vv73vv73vv73vv70z77+977+9ZO+/vSDvv702Ju+/vXUdWg5V77+977+977+9AO+/ve+/ve+/vVIqOu+/ve+/vXI277+977+9I01qeV3vv73vv715Se+/vRbvv71y5pGk77+977+9e3ljIO+/ve+/vR3vv73vv73vv73vv71I77+977+977+9UNqyc15r3avvv73vv73vv70x77+9E3F2a3I/77+9be+/ve+/vTHvv73vv71r77+9M++/vRtScu+/vd2S77+9Nxfvv70877+9Tw91c1zvv73vv73vv73vv73vv71J77+9G9G7X1BxFe+/ve+/ve+/vVvvv71a77+977+90K/vv73vv73vv71sOe+/vXVL77+977+977+977+9N++/ve+/ve+/vUk877+9HF3vv70AczJg77+9Dlnvv73vv73Lme+/vShBQXJJfSB477+977+977+9NzTvv71H77+977+977+9Uu+/vT5p77+93azvv70rQ2tV77+977+977+9SXLvv73vv73vv73vv73vv71L77+977+9du+/vWHvv73vv73vv70U77+977+977+9Du+/vXogHizvv73vv73vv73vv71O77+9Lxk+Kizvv73MljPvv71YXzfRqHjCk++/ve+/vW7vv73vv73vv73vv73vv70g77+9Ku+/vV0b77+977+9VDIVGu+/vWkz77+977+9R9mp77+9We+/vXtoH++/ve+/vXg/B++/vXcZ77+9U++/ve+/vTzvv73vv71I77+9IEbvv73vv70377+9P++/vV/vv71/77+977+9Vu+/ve+/vTUuA++/vVgFRe+/vW/vv73vv73Stu+/vWVJ77+9SyDvv71G77+977+9QBZAWQtT77+9GRrvv73vv73vv70M77+9Je+/ve+/vU/vv71OCe+/ve+/vQFCNyBa77+9BO+/ve+/vUbvv71LK2hlB++/ve+/vTzvv71MTh/vv73vv71+Ye+/ve+/ve+/vTzvv71g77+9fR/vv70l77+977+9QM2+YO+/vRcn77+977+9MTVlZe+/vQPvv73vv73vv71Geu+/vXZ577+9O1pI77+977+9I8e6NO+/ve+/ve+/ve+/ve+/ve+/ve+/ve+/ve+/ve+/vUnvv70277+977+977+9GkLvv71G77+977+977+9Hirvv70vLe+/ve+/ve+/vQzvv71WUs2zLO+/vVJgWO+/vS5bHTnvv70z77+977+977+977+977+977+9W++/ve+/vV/vv73vv73vv71POu+/ve+/vcWLcnZX77+9fe+/vQDvv70177+945WPRRZr77+977+977+977+977+977+977+9FWs477+977+9chNPBVXvv71KbS1877+9FV4xUu+/ve+/veKTsu+/ve+/ve+/vW0g77+977+977+9VDbvv73vv73vv73vv73vv71/77+9E2pt77+9Km4OFe+/vUnvv73vv73vv73vv73vv70MRTXvv718ZTfvv73vv71/77+977+9H++/ve+/ve+/vRkpZO+/ve+/ve+/ve+/ve+/vVkG77+977+9Se+/ve+/ve+/ve+/vRYAUCHvv73vv73vv71I77+977+9MO+/vRcdQu+/ve+/vS4p77+9IFd2Se+/vWnvv71W77+977+9FUhG77+977+9UVLvv70fH++/vSvvv73vv70Q77+977+977+977+977+977+9HO+/ve+/ve+/ve+/vSBY77+977+977+9Ymvvv73vv73vv70na3A2Gjrvv709Be+/ve+/vW7vv73vv73vv70hbO+/vRdqTu+/vcWHKu+/ve+/ve+/ve+/vTfYjjHvv73vv71x77+9Vwbvv71cbDFBcUgfJe+/vRjvv73vv71k77+977+977+9UlwsZO+/vVtbRh9A77+9bkJp77+9bX7vv71GMu+/vdewbVjvv73vv73vv70qVu+/ve+/vVzvv70Tcu+/vQ9gWnIO77+9Vu+/vQjvv71raBzUue+/vWEV77+977+977+977+977+9WkfPvHcLVU/vv70X77+977+9AO+/ve+/ve+/vR7vv73Gr3rvv73vv70sV9Wz77+9SO+/ve+/ve+/vWTvv73vv70VIiACD++/ve+/ve+/vTcb77+977+977+977+977+977+977+9Xzx/dH7vv717fQ7vv73vv71Q77+977+977+91YtZ77+9ae+/vXjvv71W77+9OSDvv70Xy4/vv71/fE9LWu+/ve+/vW1G77+977+9L++/ve+/vTjvv73vv73vv71677+977+9z7Pvv73Rru+/vW7KhiJvTG0Zfuijn++/vWdR77+9TlLvv71JWe+/vXbvv73vv7001ac/xYDvv73vv70Aaznvv73vv71JRe+/vQDvv73vv70d77+9a++/vWo5Eijvv73vv73vv71k77+9AO+/vWzvv73vv73vv70U77+9VRhNAO+/vWUs77+9eR3vv70gbWdC77+977+977+9J2ku77+977+9CMi7Dxrvv71fYk0077+90aTvv70OP++/ve+/ve+/vcag77+9357vv73vv73vv73vv73vv73vv70377+977+977+9Ae+/vSnvv70FN++/vQTvv73vv70WypNRZll1EyEF77+9FgwgDu+/vV1N77+9JSNNKTtzM0si77+9Vu+/ve+/vQXvv73vv73vv70s77+9Ve+/ve+/ve+/ve+/ve+/vR/vv70e77+9KxPvv73vv70577+9IFvvv70f77+9LThcd++/vS9xcu+/ve+/ve+/vRrvv73vv73vv70377+9aULvv70pcl7vv73vv71Sa0Qc77+9Znxdbci5cEnvv73Sj++/vXjvv73vv73vv73vv73vv71KX0Pvv71VyZ0977+977+9dWpKd9W7fe+/vVTvv73Hne+/vUZES++/vVxg77+9SV3vv73vv70+77+9Pwbvv73vv73vv73vv71l77+9G++/ve+/vXXvv73vv73vv71Cy53Tt3MqRe+/ve+/ve+/ve+/ve+/vVjvv71y77+977+977+9Ju+/vVxh77+9XO+/vRxK77+977+98aWKp++/vXrvv71GW++/ve+/ve+/vVRy77+9du+/ve+/vUNlWu+/ve+/ve+/vdGfeO+/vW3vv73vv70XUw9877+977+9Ie+/ve+/vRXvv73vv703Xe+/ve+/ve+/ve+/vXxN77+9eO+/ve+/ve+/vVTvv70AajJjFUUX77+977+977+977+9FmZ277+977+9M++/ve+/ve+/ve+/vVbvv71KV++/vXI477+9edmrdDseG35m77+977+977+9Fu+/vQPvv71+Xe+/ve+/vdiUHwcfVmHvv70bCUIOce+/ve+/vVrvv73vv73vv71X77+977+977+9U24SVu+/vTRJXVfvv70bHiBIU++/vdGI77+977+977+9Vmbvv73vv70W77+9GU1RXDTvv70iEu+/ve+/vWDvv73vv70lF++/ve+/vRVrVXFv77+9y6o977+9Pk3vv71x77+977+977+9OO+/vUou77+977+977+977+977+9xr041Ivvv71n77+977+9R0Y177+977+9emMp77+977+977+9Ye+/vTJJ77+977+977+9cyEHTu+/vRLvv71qyYtManzvv70277+9CO+/ve+/vTZr77+9FO+/vRknEO+/vWFs77+9Wu+/vWHvv70q77+9PlYGVgZL77+9Kkvvv70gIu+/vRbvv73vv70vUAJK77+977+977+9QinTku+/ve+/vU/vv73vv70gHN2377+977+9Gm3vv73vv71s77+977+9K++/vWLvv71e77+9w7pya++/ve+/ve+/vWJm3adbfk3fizDus47vv70rG++/vUbLniJb77+977+977+9bk3vv70keu+/vQ7Fo0Hvv71J77+977+9FnllFO+/vV/vv71w77+9SlLvv70u77+9bXPvv73vv73vv71h1a7vv70sJO+/ve+/vVtW77+9NQbvv71J77+977+9M++/vcmr77+9e2xkFO+/ve+/vSTvv73vv73vv70Weu+/vWHvv73vv73vv71z77+977+92oxq77+9Xk/vv73vv70J77+9GO+/vSwM77+977+9Vi5RUu+/ve+/vUlTW++/vTjvv70jVh/vv70bNe+/vTFa77+9EO+/ve+/ve+/ve+/ve+/vUPvv71sCe+/vRbvv73Vrwfvv73vv73RpjUn77+9ce+/ve+/vUkkFO+/vXbvv71sNO+/ve+/ve+/vTzvv70p77+9Te+/vW9177+9a++/vRjEpu+/vScU77+9dhfvv73vv73vv73vv73vv71jH++/vWsc77+9Te+/vd6u77+9Ru+/vV4yWU3vv73vv71jbe+/vW5877+9Ze+/vTcn77+9dnlr77+977+9eGxsd3VFfO+/ve+/ve+/vTnvv715zaLvv73vv73vv73vv73vv73vv71R77+977+9FSUpNu+/vRM7Nu+/vdOH77+977+9PO+/ve+/ve+/vSELce+/ve+/vQvvv71O77+977+977+9DO+/vVnvv73vv71L77+93bkqdRUm77+9Ce+/vVnvv73vv70p77+9NjUb77+9Ke+/ve+/vUkXK++/ve+/vWVTWRdj77+9Ku+/ve+/vS7vv70g77+9cO+/vU1D77+977+977+905jvv71TQe+/vUVxWu+/vSd+S++/vV1b77+9Xu+/ve+/vVXvv73vv70d77+9LMuk77+9MGcw77+9PO+/vVrvv73vv73vv73vv70gSe+/vX7vv71vZ++/vVTvv71S1b7vv70/YXfvv70ybADvv70E77+977+9GW0XKu+/ve+/vX5Y77+9z6JNHzHvv71WBnTvv73vv73vv71lN3g+aMuTejxcbDzvv73Nq++/vR3vv73vv73vv73vv70reVN6IzTvv71F77+9S++/ve+/ve+/vVt177+9bStJK++/vV5Hau+/vUTvv70z77+9Ve+/ve+/ve+/vXN9IO+/ve+/ve+/ve+/vSDvv70477+977+977+977+9HiFFPeyVn++/ve+/vVXvv71zdu+/ve+/vQfvv73vv73vv73vv73vv70jLRfvv73vv73Plzl677+9R++/ve+/ve+/vSDvv73vv73vv71l77+977+977+977+977+9X8uEfu+/vT3vv73vv70A77+9C++/vXsn77+977+934EP77+9Su+/ve+/vRXvv73vv702VGbvv73vv71Q77+977+9FToR44Sa77+9MF0oLWjvv70h77+9TO+/ve+/vQli77+977+977+9EO+/ve+/vW0o77+9Vj/vv73vv70c77+977+977+977+977+977+9c++/ve+/vWfvv70zFWV177+91Kjvv70mJjIVZe+/ve+/vV7vv71c77+9Se+/vVYO77+9cO+/ve+/vXHvv71CcBXvv73vv73vv73vv73boe+/ve+/ve+/vT/vv70qc2leWV8hY++/ve+/vVXvv73vv73vv70U77+9bXLvv73vv70i77+977+9PmPvv73Jnu+/ve+/ve+/vX3vv73vv71cIO+/ve+/vXRH77+9Tu+/ve+/ve+/vXwT77+977+9Om5yVnNq77+934ULDu+/vd6qAQEQ0bDvv70WUQsT77+9Ve+/ve+/vVXvv73vv71a77+9VzFV77+9XO+/vSVCLmjvv73vv70s77+9LXHvv73vv70ZLO+/vUDvv70k77+9ZCFfS1Hvv73vv71OCVbvv70r77+9OC3vv73vv73vv70gaUfvv73vv70zVs+lBu+/veSbte+/vW9SEO+/vc+q77+9Me+/vWzvv71ZLhczV++/vUvvv70IVBzvv73vv73vv73vv73vv73vv73vv70hC++/ve+/vW0X77+9V++/vRzWvzM0Ye+/ve+/vcqtde+/vQhpSjQsNO+/vVfvv73vv71vD13vv71fLu+/vVco77+977+9HO+/vWYe77+9c3Vvf9KOZO+/ve+/vW7vv70hWO+/vRzvv73vv71CzKrvv71FWWTvv73vv70IOxnvv73vv713PCHvv71w77+9Q++/ve+/vQfZou+/vVTvv73vv73vv73vv73vv73vv70gVRfvv73vv705d++/vTFV77+9El/vv73vv73vv73vv73vv70Q77+977+9aNGC77+977+9Gu+/ve+/vWkr77+9cu+/ve+/ve+/vUUs77+977+9YhBz77+9OjLvv71CAu+/vUIWL++/vQ=="
           }
         }
       },
-      "AlvorligHendelseRequest": {
+      "SeriousIncidentRequest": {
         "type": "object",
-        "description": "AlvorligHendelse DTO",
+        "description": "Serious Incident DTO",
         "additionalProperties": false,
         "required": [
-          "Hode",
-          "Melding"
+          "Header",
+          "Report"
         ],
         "properties": {
-          "Hode": {
-            "description": "Meldingshode",
+          "Header": {
+            "description": "Report header",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/AlvorligHendelseHodePart"
+                "$ref": "#/components/schemas/SeriousIncidentHeaderPart"
               }
             ]
           },
-          "Melding": {
-            "description": "Meldingsinnhold",
+          "Report": {
+            "description": "Report",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/AlvorligHendelseMeldingPart"
+                "$ref": "#/components/schemas/SeriousIncidentReportPart"
               }
             ]
           }
         }
       },
-      "AlvorligHendelseHodePart": {
+      "SeriousIncidentHeaderPart": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/HodePartBase"
+            "$ref": "#/components/schemas/HeaderPartBase"
           },
           {
             "type": "object",
-            "description": "Hode",
+            "description": "Header part",
             "additionalProperties": false,
             "required": [
-              "Melder",
-              "Pasient",
-              "Hendelse"
+              "Reporter",
+              "Patient",
+              "Incident"
             ],
             "properties": {
-              "Melder": {
-                "description": "Melder",
+              "Reporter": {
+                "description": "Reporter part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/AlvorligHendelseMelderPart"
+                    "$ref": "#/components/schemas/SeriousIncidentReporterPart"
                   }
                 ]
               },
-              "Pasient": {
-                "description": "Pasient",
+              "Patient": {
+                "description": "Patient part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/AlvorligHendelsePasientPart"
+                    "$ref": "#/components/schemas/SeriousIncidentPatientPart"
                   }
                 ]
               },
-              "Hendelse": {
-                "description": "Hendelse",
+              "Incident": {
+                "description": "Incident part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/AlvorligHendelseHendelsePart"
+                    "$ref": "#/components/schemas/SeriousIncidentIncidentPart"
                   }
                 ]
               }
@@ -1516,392 +1583,379 @@
           }
         ]
       },
-      "AlvorligHendelseMelderPart": {
+      "SeriousIncidentReporterPart": {
         "type": "object",
-        "description": "Melders opplysninger.",
+        "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "Fødselsnummer",
-          "Organisasjonsnummer",
-          "Epost",
-          "Telefon",
-          "Rolle",
-          "Stilling"
+          "SSN",
+          "OrganizationNumber",
+          "Email",
+          "Phone",
+          "Role",
+          "Position"
         ],
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Melders fødselsnummer. Brukes i maskin til maskin HelseId.",
+            "description": "Social security number",
             "minLength": 1,
             "pattern": "^\\d{11}$",
             "example": "13065906141"
           },
-          "Organisasjonsnummer": {
+          "OrganizationNumber": {
             "type": "string",
-            "description": "Melders organisasjonsnummer.",
+            "description": "Organization number",
             "minLength": 1,
             "pattern": "^\\d{9}$",
             "example": "883974832"
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Melders e-post.",
+            "description": "Email address",
             "format": "email",
             "minLength": 1,
             "example": "TestData@melde.no"
           },
-          "Telefon": {
+          "Phone": {
             "type": "string",
-            "description": "Melders telefonnummer.",
+            "description": "Phone number",
             "format": "phone",
             "minLength": 1,
             "example": "99999999"
           },
-          "Rolle": {
-            "description": "Melder's rolle",
+          "Role": {
+            "description": "Reporter's role",
             "example": "Behandler",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MelderRolle"
+                "$ref": "#/components/schemas/ReporterRole"
               }
             ]
           },
-          "Stilling": {
+          "Position": {
             "type": "string",
-            "description": "Melder's stilling",
+            "description": "Reporter's position",
             "maxLength": 32,
             "minLength": 1,
             "example": "Lege"
           }
         }
       },
-      "MelderRolle": {
-        "type": "integer",
-        "description": "Lovlige verdier for rolle som melder kan ha",
+      "ReporterRole": {
+        "type": "string",
+        "description": "Avaliable reporter roles",
         "x-enumNames": [
           "DefaultNull",
+          "Manager",
           "Leder",
+          "Treator",
           "Behandler",
-          "ØvrigAnsatt",
+          "OtherEmployee",
+          "OvrigAnsatt",
+          "Other",
           "Annet",
+          "PatientUser",
           "PasientBruker",
+          "NextOfKin",
           "NarmesteParorende",
+          "OtherRelative",
           "AnnenParorende"
         ],
         "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          10,
-          11,
-          12
+          "DefaultNull",
+          "Manager",
+          "Manager",
+          "Treator",
+          "Treator",
+          "OtherEmployee",
+          "OtherEmployee",
+          "Other",
+          "Other",
+          "PatientUser",
+          "PatientUser",
+          "NextOfKin",
+          "NextOfKin",
+          "OtherRelative",
+          "OtherRelative"
         ]
       },
-      "AlvorligHendelsePasientPart": {
+      "SeriousIncidentPatientPart": {
         "type": "object",
-        "description": "Pasientopplysninger.",
+        "description": "Patient part",
         "additionalProperties": false,
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Pasientens fødselsnummer. Påkrevd, eller pasientens navn, kjønn, fødselsdato og nasjonalitet.",
+            "description": "Social security number.\nRequired if patient's name, gender date of birth and nationality is not set.",
             "pattern": "^\\d{11}$",
             "nullable": true,
             "example": 15037104229
           },
-          "Navn": {
+          "Name": {
             "type": "string",
-            "description": "Pasientens navn. Påkrevet om ikke fødselsnummer er satt.",
+            "description": "Name.\nRequired if SSN is not set",
             "maxLength": 64,
             "nullable": true
           },
-          "Kjønn": {
-            "description": "Pasientens kjønn. Påkrevet om ikke fødselsnummer er satt.",
+          "Gender": {
+            "description": "Gender.\nRequired if SSN is not set",
             "nullable": true,
             "example": "Mann",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientensKjonn"
+                "$ref": "#/components/schemas/Gender"
               }
             ]
           },
-          "Fødselsdato": {
+          "DateOfBirth": {
             "type": "string",
-            "description": "Pasientens fødselsdato. Påkrevet om ikke fødselsnummer er satt.",
+            "description": "Date og birth.\nRequired if SSN is not set",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
             "nullable": true,
             "example": "1990-03-15"
           },
-          "Nasjonalitet": {
+          "Nationality": {
             "type": "string",
-            "description": "Pasientens nasjonalitet. Påkrevet om ikke fødselsnummer er satt.",
+            "description": "Nationality.\nRequired if SSN is not set",
             "maxLength": 64,
             "nullable": true
           }
         }
       },
-      "AlvorligHendelseHendelsePart": {
+      "SeriousIncidentIncidentPart": {
         "type": "object",
-        "description": "Informasjon om hendelsen.",
+        "description": "Incident part",
         "additionalProperties": false,
         "required": [
-          "HvaSkjedde",
-          "UsikkerDato"
+          "IncidentDescription",
+          "DateUnknown"
         ],
         "properties": {
-          "HvaSkjedde": {
+          "IncidentDescription": {
             "type": "string",
-            "description": "Tekstlig beskrivelse av hva som skjedde.",
+            "description": "Textual description of what happened.",
             "minLength": 1
           },
-          "Dato": {
+          "IncidentDate": {
             "type": "string",
-            "description": "Tidspunkt for hendelsen, dvs dato",
+            "description": "Incident date",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
             "nullable": true,
             "example": "2021-04-14"
           },
-          "UsikkerDato": {
+          "DateUnknown": {
             "type": "boolean",
-            "description": "Flagg for å indikere at dato er usikker"
+            "description": "Incident date not known"
           }
         }
       },
-      "AlvorligHendelseMeldingPart": {
+      "SeriousIncidentReportPart": {
         "type": "object",
+        "description": "Report part",
         "additionalProperties": false,
         "required": [
-          "Kontaktpersoner"
+          "ContactPersons"
         ],
         "properties": {
-          "Kontaktpersoner": {
+          "ContactPersons": {
             "type": "array",
-            "description": "Kontaktpersoner for meldingen",
+            "description": "Contact persons for this report",
             "items": {
-              "$ref": "#/components/schemas/AlvorligHendelseKontaktperson"
+              "$ref": "#/components/schemas/SeriousIncidentContactPerson"
             }
           },
-          "Parorende": {
+          "NextOfKin": {
             "type": "array",
-            "description": "Pårørende til den det varsles for.",
+            "description": "Next of kin",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/AlvorligHendelseParorende"
+              "$ref": "#/components/schemas/SeriousIncidentNextOfKin"
             }
-          },
-          "AnnenInformasjon": {
-            "description": "Annen informasjon, som om det er blitt varslet før med mere.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/AlvorligHendelseAnnenInformasjon"
-              }
-            ]
           }
         }
       },
-      "AlvorligHendelseKontaktperson": {
+      "SeriousIncidentContactPerson": {
         "type": "object",
-        "description": "Kontaktperson",
+        "description": "Contact person",
         "additionalProperties": false,
         "required": [
-          "Navn",
-          "Epost",
-          "Telefon"
+          "Name",
+          "Email",
+          "Phone"
         ],
         "properties": {
-          "Navn": {
+          "Name": {
             "type": "string",
-            "description": "Navn til kontaktperson",
+            "description": "Name",
             "maxLength": 64,
             "minLength": 1
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Epost til kontaktperson",
+            "description": "E-mail address",
             "format": "email",
             "maxLength": 64,
             "minLength": 1
           },
-          "Telefon": {
+          "Phone": {
             "type": "string",
-            "description": "Telefon til kontaktperson",
+            "description": "Phone number",
             "format": "phone",
             "maxLength": 20,
             "minLength": 1
           },
-          "Stilling": {
+          "Position": {
             "type": "string",
-            "description": "Stilling til kontaktperson, for eksempel sykepleier.",
+            "description": "Contact person's position",
             "maxLength": 64,
             "nullable": true
           },
-          "Arbeidssted": {
+          "Employer": {
             "type": "string",
-            "description": "Arbeidssted til kontaktperson",
+            "description": "Employer",
             "maxLength": 64,
             "nullable": true
           }
         }
       },
-      "AlvorligHendelseParorende": {
+      "SeriousIncidentNextOfKin": {
         "type": "object",
-        "description": "Pårørende",
+        "description": "Next of kin",
         "additionalProperties": false,
         "properties": {
-          "Foedselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Fodselsnummer til pårørende",
+            "description": "Social security number",
             "pattern": "^\\d{11}$",
             "nullable": true
           },
-          "Navn": {
+          "Name": {
             "type": "string",
-            "description": "Navn til pårørende",
+            "description": "Name",
             "maxLength": 64,
             "nullable": true
           },
-          "Relasjon": {
+          "Ralation": {
             "type": "string",
-            "description": "Relasjon til pårørende",
+            "description": "Ralation to patient",
             "maxLength": 64,
             "nullable": true
           },
-          "NarmesteParorende": {
-            "type": "boolean",
-            "description": "NarmesteParorende til pårørende",
-            "nullable": true
-          },
-          "Adresse": {
-            "type": "string",
-            "description": "Adresse til pårørende",
+          "IcClosestNextOfKin": {
+            "description": "Is closest next of kin",
             "maxLength": 64,
-            "nullable": true
-          },
-          "Postnummer": {
-            "type": "string",
-            "description": "Postnummer til pårørende",
-            "maxLength": 4,
-            "pattern": "^\\d{4}$",
-            "nullable": true
-          },
-          "Poststed": {
-            "type": "string",
-            "description": "Poststed til pårørende",
-            "maxLength": 64,
-            "nullable": true
-          },
-          "Epost": {
-            "type": "string",
-            "description": "Epost til pårørende",
-            "format": "email",
-            "maxLength": 64,
-            "nullable": true
-          },
-          "Telefon": {
-            "type": "string",
-            "description": "Telefon til pårørende",
-            "format": "phone",
-            "maxLength": 20,
-            "nullable": true
-          },
-          "Merknad": {
-            "type": "string",
-            "description": "Fritekst felt for ev. merknad",
-            "maxLength": 256,
-            "nullable": true
-          }
-        }
-      },
-      "AlvorligHendelseAnnenInformasjon": {
-        "type": "object",
-        "description": "Annen informasjon",
-        "additionalProperties": false,
-        "required": [
-          "VarsletTilStatsforvalter"
-        ],
-        "properties": {
-          "VarsletTilStatsforvalter": {
-            "description": "Er statsforvalter varslet?",
+            "nullable": true,
             "oneOf": [
               {
                 "$ref": "#/components/schemas/YesNoDontKnow"
               }
             ]
           },
-          "VarsletStatsforvalter": {
+          "Address": {
             "type": "string",
-            "description": "Navn på statsforvalter som evt er blitt varslet - eksemplel \"Statsforvalteren i Viken\".\nPåkrevet hvis VarsletTilStatsforvalter er Ja",
+            "description": "Address",
             "maxLength": 64,
+            "nullable": true
+          },
+          "ZipCode": {
+            "type": "string",
+            "description": "Zip code",
+            "maxLength": 4,
+            "pattern": "^\\d{4}$",
+            "nullable": true
+          },
+          "City": {
+            "type": "string",
+            "description": "City",
+            "maxLength": 64,
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "description": "E-mail address",
+            "format": "email",
+            "maxLength": 64,
+            "nullable": true
+          },
+          "Phone": {
+            "type": "string",
+            "description": "Phone number",
+            "format": "phone",
+            "maxLength": 20,
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
+            "description": "Notes",
+            "maxLength": 256,
             "nullable": true
           }
         }
       },
-      "KosmetikkRequest": {
+      "CosmeticsRequest": {
         "type": "object",
-        "description": "Kosmetikk DTO",
+        "description": "Cosmetics DTO",
         "additionalProperties": false,
         "required": [
-          "Hode",
-          "Melding"
+          "Header",
+          "Report"
         ],
         "properties": {
-          "Hode": {
-            "description": "Meldingshode",
+          "Header": {
+            "description": "Header",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkHodePart"
+                "$ref": "#/components/schemas/CosmeticsHeaderPart"
               }
             ]
           },
-          "Melding": {
-            "description": "Melding",
+          "Report": {
+            "description": "Report",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkMeldingPart"
+                "$ref": "#/components/schemas/CosmeticsReportPart"
               }
             ]
           }
         }
       },
-      "KosmetikkHodePart": {
+      "CosmeticsHeaderPart": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/HodePartBase"
+            "$ref": "#/components/schemas/HeaderPartBase"
           },
           {
             "type": "object",
-            "description": "Hode",
+            "description": "Header part",
             "additionalProperties": false,
             "required": [
-              "Melder",
-              "Pasient",
-              "Hendelse"
+              "Reporter",
+              "Patient",
+              "Incident"
             ],
             "properties": {
-              "Melder": {
-                "description": "Melder",
+              "Reporter": {
+                "description": "Reporter part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/KosmetikkMelderPart"
+                    "$ref": "#/components/schemas/CosmeticsReporterPart"
                   }
                 ]
               },
-              "Pasient": {
-                "description": "Pasient",
+              "Patient": {
+                "description": "Patient part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/KosmetikkPasientPart"
+                    "$ref": "#/components/schemas/CosmeticsPatientPart"
                   }
                 ]
               },
-              "Hendelse": {
-                "description": "Hendelse",
+              "Incident": {
+                "description": "Incident part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/KosmetikkHendelsePart"
+                    "$ref": "#/components/schemas/CosmeticsIncidentPart"
                   }
                 ]
               }
@@ -1909,356 +1963,406 @@
           }
         ]
       },
-      "KosmetikkMelderPart": {
+      "CosmeticsReporterPart": {
         "type": "object",
-        "description": "Melders opplysninger.",
+        "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "Fødselsnummer",
-          "Organisasjonsnummer",
-          "Epost",
-          "Telefon"
+          "SSN",
+          "OrganizationNumber",
+          "Email",
+          "Phone"
         ],
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Melders fødselsnummer. Brukes i maskin til maskin HelseId.",
+            "description": "Social securrity number",
             "minLength": 1,
             "pattern": "^\\d{11}$",
             "example": "13065906141"
           },
-          "Organisasjonsnummer": {
+          "OrganizationNumber": {
             "type": "string",
-            "description": "Melders organisasjonsnummer.",
+            "description": "Organization number",
             "minLength": 1,
             "pattern": "^\\d{9}$",
             "example": "883974832"
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Melders e-post.",
+            "description": "E-mail address",
             "format": "email",
             "minLength": 1,
             "example": "TestData@melde.no"
           },
-          "Telefon": {
+          "Phone": {
             "type": "string",
-            "description": "Melders telefonnummer.",
+            "description": "Phone number",
             "format": "phone",
             "minLength": 1,
             "example": "99999999"
           }
         }
       },
-      "KosmetikkPasientPart": {
+      "CosmeticsPatientPart": {
         "type": "object",
-        "description": "Informasjon om pasienten som ble påvirket av hendelsen, om noen.",
+        "description": "Patient part",
         "additionalProperties": false,
         "required": [
-          "Kjønn",
-          "Fødselsår"
+          "Gender",
+          "YearOfBirth"
         ],
         "properties": {
-          "Kjønn": {
-            "description": "Kjønn",
+          "Gender": {
+            "description": "Gender",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientensKjonn"
+                "$ref": "#/components/schemas/Gender"
               }
             ]
           },
-          "Fødselsår": {
+          "YearOfBirth": {
             "type": "integer",
-            "description": "Pasientens fødselsår",
+            "description": "Year of birth",
             "format": "int32",
             "maximum": 2100.0,
             "minimum": 1900.0
           }
         }
       },
-      "KosmetikkHendelsePart": {
+      "CosmeticsIncidentPart": {
         "type": "object",
-        "description": "Informasjon om hendelsen.",
+        "description": "Incident part",
         "additionalProperties": false,
         "required": [
-          "HvaSkjedde"
+          "IncidentDescription"
         ],
         "properties": {
-          "HvaSkjedde": {
+          "IncidentDescription": {
             "type": "string",
-            "description": "Tekstlig beskrivelse av hva som skjedde. Må oppgis",
+            "description": "Incident description",
             "minLength": 1
           }
         }
       },
-      "KosmetikkMeldingPart": {
+      "CosmeticsReportPart": {
         "type": "object",
+        "description": "Cosmetics part",
         "additionalProperties": false,
         "required": [
-          "Bivirkning"
+          "SideEffects"
         ],
         "properties": {
-          "Bivirkning": {
-            "description": "Beskriver bivirkningen.",
+          "SideEffects": {
+            "description": "Side effects part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkBivirkningPart"
+                "$ref": "#/components/schemas/CosmeticsSideEffectsPart"
               }
             ]
           },
-          "RelevanteOpplysninger": {
-            "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+          "RelevantInformation": {
+            "description": "Relevant information part",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkRelevanteOpplysningerPart"
+                "$ref": "#/components/schemas/CosmeticsRelevantInformationPart"
               }
             ]
           },
-          "Produkter": {
+          "Products": {
             "type": "array",
-            "description": "Beskriver legemidler. Minst ett må oppgis. Maksimalt fire kan oppgis.",
+            "description": "Products part",
             "maxItems": 4,
             "minItems": 1,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/KosmetikkProduktPart"
-            }
-          },
-          "Vedlegg": {
-            "type": "array",
-            "description": "Vedlegg",
-            "maxItems": 5,
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/VedleggPart"
+              "$ref": "#/components/schemas/CosmeticsProductPart"
             }
           }
         }
       },
-      "KosmetikkBivirkningPart": {
+      "CosmeticsSideEffectsPart": {
         "type": "object",
-        "description": "Informasjon om bivirkninger av kosmetikk",
+        "description": "Side effects part",
         "additionalProperties": false,
         "properties": {
-          "BivirkningHvorPaKroppen": {
+          "AffectedSkinAreas": {
             "type": "array",
-            "description": "Påkrevd. Hvor på kroppen oppstod bivirkningen? Flere alternativer er mulig.\nSe HvorPaKroppen for definerte steder. Andre steder vil bli AnnetSted, fritekst.",
+            "description": "Affected skin areas\nWhere on the body showed side effects?",
             "maxItems": 10,
             "minItems": 1,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HvorPaKroppen"
+              "$ref": "#/components/schemas/BodyLocation"
             }
           },
-          "Reaksjon": {
+          "Reactions": {
             "type": "array",
-            "description": "Påkrevd. Hvilke type bivirkningssymptom? Flere alternativer er mulig.\nSe Reaksjon for definerte reaksjoner. Andre reaksjoner vil bli annet, fritekst.",
+            "description": "Reactions.\nWhich reactions happened?",
             "maxItems": 10,
             "minItems": 1,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Reaksjon"
+              "$ref": "#/components/schemas/Reaction"
             }
           },
-          "Reaksjonstid": {
-            "description": "Hvor lang tid etter bruken av produktet oppstod bivirkningen?",
+          "ReactionDelay": {
+            "description": "Reaction delay.\nHow long after the use did the reactions show up?",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Reaksjonstid"
+                "$ref": "#/components/schemas/ReactionDelay"
               }
             ]
           },
-          "ReaksjonstidSpesifisert": {
+          "ReactionDelayDescription": {
             "type": "string",
-            "description": "Nærmere beskrivelse av reaksjonstid",
+            "description": "Reaction delay description",
             "maxLength": 32,
             "nullable": true
           },
-          "BivirkningVarighet": {
+          "SideEffectDuration": {
             "type": "string",
-            "description": "Hvor lenge bivirkningen varte.",
+            "description": "Side effect duration",
             "maxLength": 64,
             "nullable": true
           }
         }
       },
-      "HvorPaKroppen": {
+      "BodyLocation": {
         "type": "string",
         "description": "Hvor på kroppen",
         "x-enumNames": [
-          "Ansikt",
-          "Oye",
-          "OyelokkOmradeRundtOyet",
-          "Lepper",
-          "Nese",
-          "Munnhule",
-          "TennerTannkjott",
-          "Tunge",
-          "Har",
-          "Hodebunn",
-          "NakkeHals",
-          "Bryst",
-          "Mage",
-          "Rumpe",
-          "Rygg",
+          "Face",
+          "Eye",
+          "EyeLidEyeArea",
+          "Lips",
+          "Nose",
+          "OralCavity",
+          "TeethGums",
+          "Tounge",
+          "Hair",
+          "Scalp",
+          "NeckThroat",
+          "Chest",
+          "Stomach",
+          "Rump",
+          "Back",
           "Arm",
-          "Armhule",
-          "Albue",
+          "Armpit",
+          "Elbow",
           "Hand",
-          "Ben",
-          "Fot",
-          "OmradeRundtAnusKjonnsorgan",
-          "Negler",
-          "HeleKroppen",
-          "AnnetSted"
+          "Leg",
+          "Foot",
+          "AnusGenitals",
+          "Nail",
+          "WholeBody",
+          "OtherPlace"
         ],
         "enum": [
-          "Ansikt",
-          "Oye",
-          "OyelokkOmradeRundtOyet",
-          "Lepper",
-          "Nese",
-          "Munnhule",
-          "TennerTannkjott",
-          "Tunge",
-          "Har",
-          "Hodebunn",
-          "NakkeHals",
-          "Bryst",
-          "Mage",
-          "Rumpe",
-          "Rygg",
+          "Face",
+          "Eye",
+          "EyeLidEyeArea",
+          "Lips",
+          "Nose",
+          "OralCavity",
+          "TeethGums",
+          "Tounge",
+          "Hair",
+          "Scalp",
+          "NeckThroat",
+          "Chest",
+          "Stomach",
+          "Rump",
+          "Back",
           "Arm",
-          "Armhule",
-          "Albue",
+          "Armpit",
+          "Elbow",
           "Hand",
-          "Ben",
-          "Fot",
-          "OmradeRundtAnusKjonnsorgan",
-          "Negler",
-          "HeleKroppen",
-          "AnnetSted"
+          "Leg",
+          "Foot",
+          "AnusGenitals",
+          "Nail",
+          "WholeBody",
+          "OtherPlace"
         ]
       },
-      "Reaksjon": {
+      "Reaction": {
         "type": "string",
-        "description": "Hva slags reaksjon som har oppstått",
+        "description": "What kind og reaction occured",
         "x-enumNames": [
           "EksemUtslett",
+          "EczemaRash",
+          "HivesUrticaria",
           "ElveblestUrticaria",
+          "Swelling",
           "Hevelse",
+          "Blisters",
           "Blemmer",
+          "Nubs",
           "NupperIHuden",
+          "BurningSensation",
           "SvieBrennendeFolelse",
+          "Itch",
           "Kloe",
+          "Redness",
           "Rodhet",
+          "FlakingDrySkin",
           "FlassingTorrHud",
+          "Pimples",
           "AkneKviser",
+          "WateryEyes",
           "RennendeOyne",
+          "RunnyNose",
           "RennendeNese",
+          "OverUnderPigmentation",
           "OverUnderpigmenteringIHuden",
+          "HairLoss",
           "Hartap",
+          "Dizziness",
           "Svimmelhet",
+          "Nausea",
           "Kvalme",
+          "Pain",
           "Smerter",
+          "AnaphylaxisAllergicShock",
           "AnafylaksiAllergiskSjokk",
+          "Other",
           "Annet"
         ],
         "enum": [
-          "EksemUtslett",
+          "EczemaRash",
+          "EczemaRash",
+          "ElveblestUrticaria",
           "ElveblestUrticaria",
           "Hevelse",
-          "Blemmer",
-          "NupperIHuden",
-          "SvieBrennendeFolelse",
+          "Hevelse",
+          "Blisters",
+          "Blisters",
+          "Nubs",
+          "Nubs",
+          "BurningSensation",
+          "BurningSensation",
+          "Kloe",
           "Kloe",
           "Rodhet",
-          "FlassingTorrHud",
-          "AkneKviser",
-          "RennendeOyne",
+          "Rodhet",
+          "FlakingDrySkin",
+          "FlakingDrySkin",
+          "Pimples",
+          "Pimples",
+          "WateryEyes",
+          "WateryEyes",
+          "RennendeNese",
           "RennendeNese",
           "OverUnderpigmenteringIHuden",
-          "Hartap",
-          "Svimmelhet",
-          "Kvalme",
+          "OverUnderpigmenteringIHuden",
+          "HairLoss",
+          "HairLoss",
+          "Dizziness",
+          "Dizziness",
+          "Nausea",
+          "Nausea",
+          "Smerter",
           "Smerter",
           "AnafylaksiAllergiskSjokk",
-          "Annet"
+          "AnafylaksiAllergiskSjokk",
+          "Other",
+          "Other"
         ]
       },
-      "Reaksjonstid": {
+      "ReactionDelay": {
         "type": "string",
-        "description": "Hvor lang tid etter bruken av produktet bivirkningen oppstod",
+        "description": "How long time after exposure did the reaction show",
         "x-enumNames": [
           "Innen30Min",
+          "WithinHalfHour",
+          "HalfHourToOneHour",
           "Innen30MinTil1Time",
+          "Within24Hours",
           "Innen24Timer",
+          "MoreThan24Hours",
           "MerEnn1Dogn",
+          "Other",
           "Annet",
+          "Unknown",
           "VetIkke"
         ],
         "enum": [
           "Innen30Min",
-          "Innen30MinTil1Time",
+          "Innen30Min",
+          "HalfHourToOneHour",
+          "HalfHourToOneHour",
           "Innen24Timer",
-          "MerEnn1Dogn",
-          "Annet",
-          "VetIkke"
+          "Innen24Timer",
+          "MoreThan24Hours",
+          "MoreThan24Hours",
+          "Other",
+          "Other",
+          "Unknown",
+          "Unknown"
         ]
       },
-      "KosmetikkRelevanteOpplysningerPart": {
+      "CosmeticsRelevantInformationPart": {
         "type": "object",
-        "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+        "description": "Relevant information part",
         "additionalProperties": false,
         "properties": {
-          "BivirkningerVedTidligereBruk": {
-            "description": "Om det har oppstått bivirkninger ved tidligere bruk av det aktuelle produktet/de aktuelle produktene eller lignende produkter.",
+          "SideEffectsOnPreviousUse": {
+            "description": "Side effects on previous use of this product",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BivirkningVedTidligereBruk"
+                "$ref": "#/components/schemas/YesNoPartialDontKnow"
               }
             ]
           },
-          "TidligereBrukSpesifisert": {
+          "PreviousUseDescription": {
             "type": "string",
-            "description": "Beskrivelse av tidligere bruk.",
+            "description": "Previous use description",
             "maxLength": 128,
             "nullable": true
           },
-          "TilstandBerortOmradeForBruk": {
+          "ConditionOfSkinAreaBeforeUse": {
             "type": "array",
-            "description": "Tilstanden til berørt hudområde før bruk av produktet.\nSe Tilstand for definerte tilstander. Andre tilstander vil bli Annet, fritekst.",
+            "description": "Condition of affected skin area before use of the products",
             "maxItems": 10,
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/Tilstand"
             }
           },
-          "AllergiEllerHudlidelse": {
+          "AllergiesOrSkinDiseases": {
             "type": "string",
-            "description": "Om personen har allergi eller annen hudlidelse, beskriv hva slags type allergi eller hudlidelse dette er.",
+            "description": "Any allergies or skin diseases",
             "maxLength": 64,
             "nullable": true
           }
         }
       },
-      "BivirkningVedTidligereBruk": {
+      "YesNoPartialDontKnow": {
         "type": "string",
-        "description": "Om bivirkning har oppstått ved tidligere bruk av produkt eller lignende produkter",
+        "description": "",
         "x-enumNames": [
           "Ja",
+          "Yes",
+          "No",
           "Nei",
+          "Partial",
           "Delvis",
+          "DontKnow",
           "VetIkke"
         ],
         "enum": [
-          "Ja",
+          "Yes",
+          "Yes",
+          "Nei",
           "Nei",
           "Delvis",
-          "VetIkke"
+          "Delvis",
+          "DontKnow",
+          "DontKnow"
         ]
       },
       "Tilstand": {
@@ -2277,64 +2381,64 @@
           "Annet"
         ]
       },
-      "KosmetikkProduktPart": {
+      "CosmeticsProductPart": {
         "type": "object",
-        "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+        "description": "Product part",
         "additionalProperties": false,
         "required": [
-          "Produktinformasjon"
+          "ProductInformation"
         ],
         "properties": {
-          "Produktinformasjon": {
-            "description": "Beskrivelse av produktet.",
+          "ProductInformation": {
+            "description": "Product information part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkProduktinformasjonPart"
+                "$ref": "#/components/schemas/CosmeticsProductInformationPart"
               }
             ]
           },
-          "BrukAvProduktet": {
-            "description": "Beskrivelse av bruk av produktet.",
+          "ProductUsage": {
+            "description": "Product usage part",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkBrukAvProduktetPart"
+                "$ref": "#/components/schemas/CosmeticsProductUsagePart"
               }
             ]
           }
         }
       },
-      "KosmetikkProduktinformasjonPart": {
+      "CosmeticsProductInformationPart": {
         "type": "object",
-        "description": "Beskriver et kosmetisk produkt",
+        "description": "Product information part",
         "additionalProperties": false,
         "required": [
-          "ProduktNavn",
-          "ProduktType"
+          "ProductName",
+          "ProductType"
         ],
         "properties": {
-          "ProduktNavn": {
+          "ProductName": {
             "type": "string",
-            "description": "Navnet på produktet. Påkrevet",
+            "description": "Product name",
             "maxLength": 128,
             "minLength": 1
           },
-          "ProduktType": {
-            "description": "Type produkt. Påkrevet\nSe Produkttype for definerte produkttyper. Hvis ikke definert, vil det bli tolket som annet, fritekst.",
+          "ProductType": {
+            "description": "Product type",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/Produkttype"
               }
             ]
           },
-          "LeverandorProdusent": {
+          "VendorOrManufacturer": {
             "type": "string",
-            "description": "Navnet på leverandøren eller produsenten av produktet.",
+            "description": "Vendor or manufacturer",
             "maxLength": 64,
             "nullable": true
           },
-          "ErProduktUtgattPaHoldbarhetsdato": {
-            "description": "Om produktet har gått ut på dato",
+          "BestBeforeDateExpired": {
+            "description": "Best before date expired",
             "nullable": true,
             "oneOf": [
               {
@@ -2342,38 +2446,38 @@
               }
             ]
           },
-          "HvorProduktetErKjopt": {
-            "description": "Hvor produktet er kjøpt.",
+          "PurchaseLocation": {
+            "description": "Where is the product purchased",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkKjopssted"
+                "$ref": "#/components/schemas/PurchaseLocation"
               }
             ]
           },
-          "Salgskanal": {
-            "description": "Hva slags sted produktet er kjøpt.",
+          "SalesChannel": {
+            "description": "Sales channel",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Salgskanal"
+                "$ref": "#/components/schemas/SalesChannel"
               }
             ]
           },
-          "Netthandel": {
-            "description": "Hvis produktet er kjøpt på nett, hva slags nettsted produktet er kjøpt på.",
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/NettHandel"
-              }
-            ]
-          },
-          "BatchLotNummer": {
+          "BatchLotNumber": {
             "type": "string",
-            "description": "Batchnummer på produktet.",
+            "description": "Product batch/lot number",
             "maxLength": 64,
             "nullable": true
+          },
+          "Attachments": {
+            "type": "array",
+            "description": "Attachments",
+            "maxItems": 5,
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AttachmentPart"
+            }
           }
         }
       },
@@ -2415,151 +2519,149 @@
           "Annet"
         ]
       },
-      "KosmetikkKjopssted": {
+      "PurchaseLocation": {
         "type": "string",
-        "description": "Kjøpssted",
+        "description": "Purchase location",
         "x-enumNames": [
           "UtsalgsstedINorge",
-          "UtsalgsstedIEtAnnetLand",
-          "Netthandel",
+          "NorwegianDealer",
+          "ForeignDealer",
+          "UtsalgsstedIUtlandet",
+          "NorwegianWebShop",
+          "NetthandelINorge",
+          "ForeignWebShop",
+          "NetthandelIUtlandet",
+          "Unknown",
           "VetIkke"
         ],
         "enum": [
-          "UtsalgsstedINorge",
-          "UtsalgsstedIEtAnnetLand",
-          "Netthandel",
-          "VetIkke"
+          "NorwegianDealer",
+          "NorwegianDealer",
+          "ForeignDealer",
+          "ForeignDealer",
+          "NorwegianWebShop",
+          "NorwegianWebShop",
+          "NetthandelIUtlandet",
+          "NetthandelIUtlandet",
+          "Unknown",
+          "Unknown"
         ]
       },
-      "Salgskanal": {
+      "SalesChannel": {
         "type": "string",
-        "description": "Typer utsalgssted",
+        "description": "Sales channel",
         "x-enumNames": [
-          "Apotek",
-          "Parfymeri",
-          "Frisorsalong",
-          "Hudpleiesalong",
-          "Helsekostbutikk",
-          "Matvarebutikk",
-          "TaxFree",
-          "Annet"
+          "Pharmacy",
+          "Perfumery",
+          "Hairdresser",
+          "SkinCareSalon",
+          "HealthFoodStore",
+          "GroceryStore",
+          "TaxFreeShop",
+          "Other"
         ],
         "enum": [
-          "Apotek",
-          "Parfymeri",
-          "Frisorsalong",
-          "Hudpleiesalong",
-          "Helsekostbutikk",
-          "Matvarebutikk",
-          "TaxFree",
-          "Annet"
+          "Pharmacy",
+          "Perfumery",
+          "Hairdresser",
+          "SkinCareSalon",
+          "HealthFoodStore",
+          "GroceryStore",
+          "TaxFreeShop",
+          "Other"
         ]
       },
-      "NettHandel": {
-        "type": "string",
-        "description": "Netthandel, om norsk eller utenlandsk",
-        "x-enumNames": [
-          "NorskNettside",
-          "UtenlandskNettside",
-          "VetIkke"
-        ],
-        "enum": [
-          "NorskNettside",
-          "UtenlandskNettside",
-          "VetIkke"
-        ]
-      },
-      "KosmetikkBrukAvProduktetPart": {
+      "CosmeticsProductUsagePart": {
         "type": "object",
-        "description": "Beskriver bruk av et kosmetisk produkt",
+        "description": "Product usage part",
         "additionalProperties": false,
         "properties": {
-          "ProduktetBruktHvorPaKroppen": {
+          "BodyLocations": {
             "type": "array",
-            "description": "Hvor på kroppen har produktet blitt brukt? Flere alternativer er mulig.\nSe HvorPaKroppen for definerte steder. Andre steder vil bli AnnetSted, fritekst.",
+            "description": "Where on the body is the product used",
             "maxItems": 10,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/HvorPaKroppen"
+              "$ref": "#/components/schemas/BodyLocation"
             }
           },
-          "LengdeBruk": {
+          "UsageDuration": {
             "type": "string",
-            "description": "Hvor lenge produktet har blitt brukt",
+            "description": "For how long was the product used",
             "maxLength": 64,
             "nullable": true
           },
-          "BeskrivelseAvBruk": {
+          "UsageDescription": {
             "type": "string",
-            "description": "Mer informasjon om bruken av produktet",
+            "description": "Usage description",
             "maxLength": 256,
             "nullable": true
           }
         }
       },
-      "KosttilskuddRequest": {
+      "DietarySupplementsRequest": {
         "type": "object",
-        "description": "Kosttilskudd DTO",
+        "description": "Diatary supplements DTO",
         "additionalProperties": false,
         "required": [
-          "Hode",
-          "Melding"
+          "Header",
+          "Report"
         ],
         "properties": {
-          "Hode": {
-            "description": "Meldingshode",
+          "Header": {
+            "description": "Header part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosttilskuddHodePart"
+                "$ref": "#/components/schemas/DietarySupplementsHeaderPart"
               }
             ]
           },
-          "Melding": {
-            "description": "Melding",
+          "Report": {
+            "description": "Report part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosttilskuddMeldingPart"
+                "$ref": "#/components/schemas/DietarySupplementsReportPart"
               }
             ]
           }
         }
       },
-      "KosttilskuddHodePart": {
+      "DietarySupplementsHeaderPart": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/HodePartBase"
+            "$ref": "#/components/schemas/HeaderPartBase"
           },
           {
             "type": "object",
-            "description": "Hode",
+            "description": "Header part",
             "additionalProperties": false,
             "required": [
-              "Melder",
-              "Pasient",
-              "Hendelse"
+              "Reporter",
+              "Patient",
+              "Incident"
             ],
             "properties": {
-              "Melder": {
-                "description": "Melder",
+              "Reporter": {
+                "description": "Reporter part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/KosttilskuddMelderPart"
+                    "$ref": "#/components/schemas/DietarySupplementsReporterPart"
                   }
                 ]
               },
-              "Pasient": {
-                "description": "Pasient",
+              "Patient": {
+                "description": "Patient part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/KosttilskuddPasientPart"
+                    "$ref": "#/components/schemas/DietarySupplementsPatientPart"
                   }
                 ]
               },
-              "Hendelse": {
-                "description": "Hendelse",
+              "Incident": {
+                "description": "Incident part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/KosttilskuddHendelsePart"
+                    "$ref": "#/components/schemas/DietarySupplementsIncidentPart"
                   }
                 ]
               }
@@ -2567,123 +2669,124 @@
           }
         ]
       },
-      "KosttilskuddMelderPart": {
+      "DietarySupplementsReporterPart": {
         "type": "object",
-        "description": "Melders opplysninger.",
+        "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "Fødselsnummer",
-          "Organisasjonsnummer",
-          "Epost",
-          "Telefon"
+          "SSN",
+          "OrganizationNumber",
+          "Email",
+          "Phone"
         ],
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Melders fødselsnummer. Brukes i maskin til maskin HelseId.",
+            "description": "Social security number",
             "minLength": 1,
             "pattern": "^\\d{11}$",
             "example": "13065906141"
           },
-          "Organisasjonsnummer": {
+          "OrganizationNumber": {
             "type": "string",
-            "description": "Melders organisasjonsnummer.",
+            "description": "Organization number",
             "minLength": 1,
             "pattern": "^\\d{9}$",
             "example": "883974832"
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Melders e-post.",
+            "description": "E-mail address",
             "format": "email",
             "minLength": 1,
             "example": "TestData@melde.no"
           },
-          "Telefon": {
+          "Phone": {
             "type": "string",
-            "description": "Melders telefonnummer.",
+            "description": "Phone number",
             "format": "phone",
             "minLength": 1,
             "example": "99999999"
           }
         }
       },
-      "KosttilskuddPasientPart": {
+      "DietarySupplementsPatientPart": {
         "type": "object",
-        "description": "Informasjon om pasienten som ble påvirket av hendelsen, om noen.",
+        "description": "Patient part",
         "additionalProperties": false,
         "required": [
-          "Kjønn",
-          "Fødselsår"
+          "Gender",
+          "YearOfBirth"
         ],
         "properties": {
-          "Kjønn": {
-            "description": "Kjønn",
+          "Gender": {
+            "description": "Gender",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientensKjonn"
+                "$ref": "#/components/schemas/Gender"
               }
             ]
           },
-          "Fødselsår": {
+          "YearOfBirth": {
             "type": "integer",
-            "description": "Pasientens alder i år",
+            "description": "Year of birth",
             "format": "int32",
             "maximum": 2100.0,
             "minimum": 1900.0
           }
         }
       },
-      "KosttilskuddHendelsePart": {
+      "DietarySupplementsIncidentPart": {
         "type": "object",
-        "description": "Informasjon om hendelsen.",
+        "description": "Incident part",
         "additionalProperties": false,
         "required": [
-          "HvaSkjedde"
+          "IncidentDescription"
         ],
         "properties": {
-          "HvaSkjedde": {
+          "IncidentDescription": {
             "type": "string",
-            "description": "Tekstlig beskrivelse av hva som skjedde.",
+            "description": "Incident description",
             "minLength": 1
           }
         }
       },
-      "KosttilskuddMeldingPart": {
+      "DietarySupplementsReportPart": {
         "type": "object",
+        "description": "Report part",
         "additionalProperties": false,
         "required": [
-          "Bivirkning"
+          "SideEffect"
         ],
         "properties": {
-          "Bivirkning": {
-            "description": "Beskriver bivirkningen.",
+          "SideEffect": {
+            "description": "Side effects part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosttilskuddBivirkningPart"
+                "$ref": "#/components/schemas/DietarySupplementsSideEffectsPart"
               }
             ]
           },
-          "Produkter": {
+          "Products": {
             "type": "array",
-            "description": "Beskriver kosttilskudd. Minst ett må oppgis. Maksimalt fire kan oppgis.",
+            "description": "Products part",
             "maxItems": 4,
             "minItems": 1,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/KosttilskuddProduktPart"
+              "$ref": "#/components/schemas/DietarySupplementsProductPart"
             }
           }
         }
       },
-      "KosttilskuddBivirkningPart": {
+      "DietarySupplementsSideEffectsPart": {
         "type": "object",
-        "description": "Informasjon om bivirkninger av kosmetikk",
+        "description": "Dietary supplements side effects part",
         "additionalProperties": false,
         "properties": {
-          "Reaksjoner": {
+          "Reactions": {
             "type": "array",
-            "description": "Påkrevd. Hvilke type bivirkningssymptom? Flere alternativer er mulig.\nSe Reaksjon for definerte reaksjoner. Andre reaksjoner vil bli annet, fritekst.",
+            "description": "Reactions.\nWhich reactions happened?",
             "maxItems": 10,
             "minItems": 1,
             "nullable": true,
@@ -2691,38 +2794,38 @@
               "type": "string"
             }
           },
-          "Reaksjonstid": {
+          "ReactionDelay": {
             "type": "string",
-            "description": "Hvor lang tid etter bruken av produktet oppstod bivirkningen?",
+            "description": "Reaction delay.\nHow long after the use did the reactions show up?",
             "maxLength": 64,
             "nullable": true
           },
-          "ReaksjonstidTekst": {
+          "ReactionDelayDescription": {
             "type": "string",
-            "description": "Spesifikasjon av reaksjonstid",
+            "description": "Reaction delay description",
             "maxLength": 64,
             "nullable": true
           },
-          "FolgerAvBivirkning": {
+          "Outcome": {
             "type": "string",
-            "description": "Om personen ble sykemeldt, midlertidig arbeidsufør, osv.\nSe FolgerAvBivirkning for definerte følger. Andre verdier vil bli annet, fritekst.",
+            "description": "Outcome",
             "maxLength": 64,
             "nullable": true
           },
-          "FolgerAvBivirkningTekst": {
+          "OutcomeDescription": {
             "type": "string",
-            "description": "Evt. beskrivelse av følgene av bivirkningen",
+            "description": "Outcome description",
             "maxLength": 64,
             "nullable": true
           },
-          "BivirkningVarighet": {
+          "SideEffectDuration": {
             "type": "string",
-            "description": "Hvor lenge bivirkningen varte.",
+            "description": "Side effect duration",
             "maxLength": 64,
             "nullable": true
           },
-          "PaagaarFortsatt": {
-            "description": "Pågår bivirkningen fortsatt",
+          "Ongoing": {
+            "description": "Ongoing. Is the symptom still there?",
             "nullable": true,
             "oneOf": [
               {
@@ -2730,8 +2833,8 @@
               }
             ]
           },
-          "BivirkningerVedTidligereBruk": {
-            "description": "Om det har oppstått bivirkninger ved tidligere bruk av det aktuelle produktet/de aktuelle produktene eller lignende produkter.",
+          "SideEffectsOnPreviousUse": {
+            "description": "Side effects on previous use",
             "nullable": true,
             "oneOf": [
               {
@@ -2739,26 +2842,27 @@
               }
             ]
           },
-          "BivirkningerVedTidligereBrukTekst": {
+          "SideEffectsOnPreviousUseDescription": {
             "type": "string",
-            "description": "Beskrivelse av evt. tidligere bivirkninger",
+            "description": "Side effects on previous use description",
+            "maxLength": 256,
             "nullable": true
           },
-          "AllergiEllerAnnenPaavirkendeFaktor": {
-            "description": "Om personen har allergi eller annet som kan påvirke produktets virkning.",
+          "AnyAllergiesOrInfluencingIssues": {
+            "description": "Any allergies or influencing issues",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/YesNoDontKnow"
               }
             ]
           },
-          "AllergiEllerAnnenPaavirkendeFaktorTekst": {
+          "AnyAllergiesOrInfluencingIssuesDescription": {
             "type": "string",
-            "description": "Beskrivelse av evt. allergier eller andre påvirkende faktorer",
+            "description": "Any allergies or influencing issues description.\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
             "nullable": true
           },
-          "HarUnderliggendeSykdom": {
-            "description": "Har personen underliggende sykdom",
+          "AnyUnderlyingDiseases": {
+            "description": "Any underlying diseases",
             "nullable": true,
             "oneOf": [
               {
@@ -2766,8 +2870,8 @@
               }
             ]
           },
-          "KanUnderliggendeSykdomVareArsak": {
-            "description": "Kan underliggende sykdom være årsak til bivirkning?",
+          "CanDiseaseBeTheCause": {
+            "description": "Can underlying diseases be the cause?\nRequired when AnyUnderlyingDiseases is Yes",
             "nullable": true,
             "oneOf": [
               {
@@ -2777,164 +2881,142 @@
           }
         }
       },
-      "KosttilskuddProduktPart": {
+      "DietarySupplementsProductPart": {
         "type": "object",
-        "description": "Om produktet er brukt tidligere, om bivirkninger har oppstått tidligere, om man har kjent allergi eller annen hudlidelse, og så videre.",
+        "description": "Product part",
         "additionalProperties": false,
         "required": [
-          "Produktinformasjon",
-          "BrukAvProduktet"
+          "ProductInformation",
+          "ProductUsage"
         ],
         "properties": {
-          "Produktinformasjon": {
-            "description": "Beskrivelse av produktet.",
+          "ProductInformation": {
+            "description": "Product information part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosttilskuddProduktinformasjonPart"
+                "$ref": "#/components/schemas/DietarySupplementsProductInformationPart"
               }
             ]
           },
-          "BrukAvProduktet": {
-            "description": "Beskrivelse av bruk av produktet.",
+          "ProductUsage": {
+            "description": "Product usage part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosttilskuddBrukAvProduktetPart"
+                "$ref": "#/components/schemas/DietarySupplementsProductUsagePart"
               }
             ]
           }
         }
       },
-      "KosttilskuddProduktinformasjonPart": {
+      "DietarySupplementsProductInformationPart": {
         "type": "object",
-        "description": "Beskriver et kosttilskudd",
+        "description": "Product information part",
         "additionalProperties": false,
         "required": [
-          "ProduktNavn",
-          "Ingredienser",
-          "LeverandorProdusent",
-          "Holdbarhetsdato",
-          "ErBivirkningMeldtTilLeverandorEllerProdusent",
-          "HvorProduktetErKjopt"
+          "ProductName",
+          "Ingredients",
+          "VendorOrManufacturer",
+          "BestBeforeDate",
+          "ReportedToVendorOrProducer",
+          "PurchaseLocation"
         ],
         "properties": {
-          "ProduktNavn": {
+          "ProductName": {
             "type": "string",
-            "description": "Navnet på produktet",
+            "description": "Product name",
             "maxLength": 128,
             "minLength": 1
           },
-          "Ingredienser": {
+          "Ingredients": {
             "type": "string",
-            "description": "Ingredienser/virkestoff i produktet",
+            "description": "Ingredients",
             "maxLength": 256,
             "minLength": 1
           },
-          "LeverandorProdusent": {
+          "VendorOrManufacturer": {
             "type": "string",
-            "description": "Navnet på leverandøren eller produsenten av produktet.",
+            "description": "Vendor or manufacturer",
             "maxLength": 64,
             "minLength": 1
           },
-          "Holdbarhetsdato": {
+          "BestBeforeDate": {
             "type": "string",
-            "description": "Holdbarhetsdato",
+            "description": "Best before date",
             "minLength": 1,
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
           },
-          "ErBivirkningMeldtTilLeverandorEllerProdusent": {
-            "description": "Er bivirkningen meldt til produsent fra før av?",
+          "ReportedToVendorOrProducer": {
+            "description": "Reported to vendor or producer?",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/YesNoDontKnow"
               }
             ]
           },
-          "HvorProduktetErKjopt": {
+          "PurchaseLocation": {
             "type": "string",
-            "description": "Hvor produktet er kjøpt.",
+            "description": "Purchase location",
             "maxLength": 64,
             "minLength": 1
           },
-          "ButikkNavn": {
+          "ShopName": {
             "type": "string",
-            "description": "Navn på butikken",
+            "description": "Shop name",
             "maxLength": 64,
             "nullable": true
           },
-          "BatchLotNummer": {
+          "BatchLotNumber": {
             "type": "string",
-            "description": "Batchnummer på produktet.",
+            "description": "Batch/lot number",
             "maxLength": 64,
             "nullable": true
           },
-          "Vedlegg": {
+          "Attachments": {
             "type": "array",
-            "description": "Eventuelle vedlegg",
+            "description": "Attachments",
             "maxItems": 5,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Vedlegg"
+              "$ref": "#/components/schemas/AttachmentPart"
             }
           }
         }
       },
-      "Vedlegg": {
+      "DietarySupplementsProductUsagePart": {
         "type": "object",
-        "description": "Vedlegg.",
+        "description": "Product usage part",
         "additionalProperties": false,
         "required": [
-          "Innhold",
-          "Navn"
+          "AmountOfIngredientsInDailyDose",
+          "RecommendedDailyDose"
         ],
         "properties": {
-          "Innhold": {
+          "AmountOfIngredientsInDailyDose": {
             "type": "string",
-            "description": "Filinnhold. Base 64 enkodet string.",
-            "minLength": 1
-          },
-          "Navn": {
-            "type": "string",
-            "description": "Filnavn.",
-            "maxLength": 64,
-            "minLength": 1
-          }
-        }
-      },
-      "KosttilskuddBrukAvProduktetPart": {
-        "type": "object",
-        "description": "Beskriver bruk av et kosttilskudd",
-        "additionalProperties": false,
-        "required": [
-          "MengdeIngredienserEllerVirkestoffPrDagligDose",
-          "AnbefaltDagligDose"
-        ],
-        "properties": {
-          "MengdeIngredienserEllerVirkestoffPrDagligDose": {
-            "type": "string",
-            "description": "Mengde ingredienser/virkestoff pr. daglig dose",
+            "description": "Amount of ingredients per daily dose",
             "maxLength": 64,
             "minLength": 1
           },
-          "AnbefaltDagligDose": {
+          "RecommendedDailyDose": {
             "type": "string",
-            "description": "Anbefalt døgndose",
+            "description": "Recommended daily dose",
             "maxLength": 64,
             "minLength": 1
           },
-          "FaktiskInntattDagligDose": {
+          "ActualDailyDoseTaken": {
             "type": "string",
-            "description": "Faktisk inntatt daglig dose ",
+            "description": "Actual daily dose taken",
             "maxLength": 64,
             "nullable": true
           },
-          "BruksPeriode": {
+          "UsageDuration": {
             "type": "string",
-            "description": "Hvor lenge produktet har blitt brukt",
+            "description": "For how long was the product used",
             "maxLength": 64,
             "nullable": true
           },
-          "LegemidlerSamtidigSomKosttilskudd": {
-            "description": "Ble det tatt legemidler samtidig",
+          "AnyDrugsTakenAtSameTime": {
+            "description": "Any drugs taken at the same time?",
             "nullable": true,
             "oneOf": [
               {
@@ -2942,9 +3024,9 @@
               }
             ]
           },
-          "HvilkeLegemiderErTattSamtidig": {
+          "DrugsTakenAtSameTime": {
             "type": "array",
-            "description": "Hvilke legemidler er tatt samtidig som kosttilskuddet",
+            "description": "Which drugs. Required if AnyDrugsTakenAtSameTime is yes.",
             "nullable": true,
             "items": {
               "type": "string"
@@ -2952,69 +3034,69 @@
           }
         }
       },
-      "BiovigilansRequest": {
+      "BiovigilanceRequest": {
         "type": "object",
-        "description": "Biovigilans DTO",
+        "description": "Biovigilance request DTO",
         "additionalProperties": false,
         "required": [
-          "Hode",
-          "Melding"
+          "Header",
+          "Report"
         ],
         "properties": {
-          "Hode": {
-            "description": "Meldingshode",
+          "Header": {
+            "description": "Report header part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BiovigilansHodePart"
+                "$ref": "#/components/schemas/BiovigilansHeaderPart"
               }
             ]
           },
-          "Melding": {
-            "description": "Melding",
+          "Report": {
+            "description": "Report part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BiovigilansMeldingPart"
+                "$ref": "#/components/schemas/BiovigilanceReportPart"
               }
             ]
           }
         }
       },
-      "BiovigilansHodePart": {
+      "BiovigilansHeaderPart": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/HodePartBase"
+            "$ref": "#/components/schemas/HeaderPartBase"
           },
           {
             "type": "object",
-            "description": "Hode",
+            "description": "Header part",
             "additionalProperties": false,
             "required": [
-              "Melder",
-              "Pasient",
-              "Hendelse"
+              "Reporter",
+              "Patient",
+              "Incident"
             ],
             "properties": {
-              "Melder": {
-                "description": "Melder",
+              "Reporter": {
+                "description": "Reporter part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/BiovigilansMelderPart"
+                    "$ref": "#/components/schemas/BiovigilanceReporterPart"
                   }
                 ]
               },
-              "Pasient": {
-                "description": "Pasient",
+              "Patient": {
+                "description": "Patient part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/BiovigilansPasientPart"
+                    "$ref": "#/components/schemas/BiovigilancePatientPart"
                   }
                 ]
               },
-              "Hendelse": {
-                "description": "Hendelse",
+              "Incident": {
+                "description": "Incident part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/BiovigilansHendelsePart"
+                    "$ref": "#/components/schemas/BiovigilanceIncidentPart"
                   }
                 ]
               }
@@ -3022,106 +3104,107 @@
           }
         ]
       },
-      "BiovigilansMelderPart": {
+      "BiovigilanceReporterPart": {
         "type": "object",
-        "description": "Melders opplysninger.",
+        "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "Fødselsnummer",
-          "Organisasjonsnummer",
-          "Epost"
+          "SSN",
+          "OrganizationNumber",
+          "Email"
         ],
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Melders fødselsnummer. Brukes i maskin til maskin HelseId.",
+            "description": "Social security number",
             "minLength": 1,
             "pattern": "^\\d{11}$",
             "example": "13065906141"
           },
-          "Organisasjonsnummer": {
+          "OrganizationNumber": {
             "type": "string",
-            "description": "Melders organisasjonsnummer.",
+            "description": "Organization number",
             "minLength": 1,
             "pattern": "^\\d{9}$",
             "example": "883974832"
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Melders e-post.",
+            "description": "E-mail address",
             "format": "email",
             "minLength": 1,
             "example": "TestData@melde.no"
           }
         }
       },
-      "BiovigilansPasientPart": {
+      "BiovigilancePatientPart": {
         "type": "object",
-        "description": "Pasientopplysninger.",
+        "description": "Patient part.",
         "additionalProperties": false,
         "properties": {
-          "Fødselsår": {
+          "YearOfBirth": {
             "type": "integer",
-            "description": "Pasientens fødselsår. Valgfritt",
+            "description": "Year of birth",
             "format": "int32",
             "maximum": 2100.0,
             "minimum": 1900.0,
             "nullable": true,
             "example": 1991
           },
-          "Kjønn": {
-            "description": "Pasientens kjønn. Valgfritt",
+          "Gender": {
+            "description": "Gender",
             "nullable": true,
             "example": "Mann",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientensKjonn"
+                "$ref": "#/components/schemas/Gender"
               }
             ]
           }
         }
       },
-      "BiovigilansHendelsePart": {
+      "BiovigilanceIncidentPart": {
         "type": "object",
         "description": "Informasjon om hendelsen.",
         "additionalProperties": false,
         "required": [
-          "HvaSkjedde",
-          "Dato"
+          "IncidentDescription",
+          "IncidentDate"
         ],
         "properties": {
-          "HvaSkjedde": {
+          "IncidentDescription": {
             "type": "string",
-            "description": "Tekstlig beskrivelse av hva som skjedde.",
+            "description": "Textual description of what happened.",
             "minLength": 1
           },
-          "Dato": {
+          "IncidentDate": {
             "type": "string",
-            "description": "Tidspunkt for hendelsen, dvs dato",
+            "description": "Incident date",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
           }
         }
       },
-      "BiovigilansMeldingPart": {
+      "BiovigilanceReportPart": {
         "type": "object",
+        "description": "Biovigilance report part",
         "additionalProperties": false,
         "required": [
-          "Biovigilans"
+          "Biovigilance"
         ],
         "properties": {
-          "Biovigilans": {
-            "description": "Meldinger om uønsket hendelse på blod eller celler og vev, eller organer",
+          "Biovigilance": {
+            "description": "Report for incidents related to blood or cells and tissue, or organs (biovigilance)",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BiovigilansPart"
+                "$ref": "#/components/schemas/BiovigilancePart"
               }
             ]
           }
         }
       },
-      "BiovigilansPart": {
+      "BiovigilancePart": {
         "type": "object",
-        "description": "Biovigilans melding",
+        "description": "Biovigilance part",
         "additionalProperties": false,
         "required": [
           "StedForHendelsen",
@@ -3411,60 +3494,60 @@
           }
         }
       },
-      "MedisinskUtstyrRequest": {
+      "MedicalEquipmentRequest": {
         "type": "object",
-        "description": "Medisinsk utstyr DTO",
+        "description": "Medical equipment DTO",
         "additionalProperties": false,
         "required": [
-          "Hode",
-          "Melding"
+          "Header",
+          "Report"
         ],
         "properties": {
-          "Hode": {
-            "description": "Meldingshode",
+          "Header": {
+            "description": "Header part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MedisinskUtstyrHodePart"
+                "$ref": "#/components/schemas/MedicalEquipmentHeaderPart"
               }
             ]
           },
-          "Melding": {
-            "description": "Melding",
+          "Report": {
+            "description": "Report part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MedisinskUtstyrMeldingPart"
+                "$ref": "#/components/schemas/MedicalEquipmentReportPart"
               }
             ]
           }
         }
       },
-      "MedisinskUtstyrHodePart": {
+      "MedicalEquipmentHeaderPart": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/HodePartBase"
+            "$ref": "#/components/schemas/HeaderPartBase"
           },
           {
             "type": "object",
-            "description": "Hode",
+            "description": "Header part",
             "additionalProperties": false,
             "required": [
-              "Melder",
-              "Hendelse"
+              "Reporter",
+              "Incident"
             ],
             "properties": {
-              "Melder": {
-                "description": "Melder",
+              "Reporter": {
+                "description": "Reporter part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/MedisinskUtstyrMelderPart"
+                    "$ref": "#/components/schemas/MedicalEquipmentReporterPart"
                   }
                 ]
               },
-              "Hendelse": {
-                "description": "Hendelse",
+              "Incident": {
+                "description": "Incident part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/MedisinskUtstyrHendelsePart"
+                    "$ref": "#/components/schemas/MedicalEquipmentIncidentPart"
                   }
                 ]
               }
@@ -3472,189 +3555,190 @@
           }
         ]
       },
-      "MedisinskUtstyrMelderPart": {
+      "MedicalEquipmentReporterPart": {
         "type": "object",
-        "description": "Melders opplysninger.",
+        "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "Fødselsnummer",
-          "Organisasjonsnummer",
-          "Epost",
-          "Telefon"
+          "SSN",
+          "OrganizationNumber",
+          "Email",
+          "Phone"
         ],
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Melders fødselsnummer. Brukes i maskin til maskin HelseId.",
+            "description": "Social security number",
             "minLength": 1,
             "pattern": "^\\d{11}$",
             "example": "13065906141"
           },
-          "Organisasjonsnummer": {
+          "OrganizationNumber": {
             "type": "string",
-            "description": "Melders organisasjonsnummer.",
+            "description": "Organization number",
             "minLength": 1,
             "pattern": "^\\d{9}$",
             "example": "883974832"
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Melders e-post.",
+            "description": "E-mail address",
             "format": "email",
             "minLength": 1,
             "example": "TestData@melde.no"
           },
-          "Telefon": {
+          "Phone": {
             "type": "string",
-            "description": "Melders telefonnummer.",
+            "description": "Phone number",
             "format": "phone",
             "minLength": 1,
             "example": "99999999"
           }
         }
       },
-      "MedisinskUtstyrHendelsePart": {
+      "MedicalEquipmentIncidentPart": {
         "type": "object",
-        "description": "Informasjon om hendelsen.",
+        "description": "Incident part",
         "additionalProperties": false,
         "required": [
-          "HvaSkjedde",
-          "Dato"
+          "IncidentDescription",
+          "IncidentDate"
         ],
         "properties": {
-          "HvaSkjedde": {
+          "IncidentDescription": {
             "type": "string",
-            "description": "Tekstlig beskrivelse av hva som skjedde. Påkrevet.",
+            "description": "Incident description",
             "minLength": 1
           },
-          "Dato": {
+          "IncidentDate": {
             "type": "string",
-            "description": "Tidspunkt for hendelsen, dvs dato. Påkrevet",
+            "description": "Incident date",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
             "example": "2021-04-14"
           }
         }
       },
-      "MedisinskUtstyrMeldingPart": {
+      "MedicalEquipmentReportPart": {
         "type": "object",
+        "description": "Medical equipment report part",
         "additionalProperties": false,
         "required": [
-          "MedisinskUtstyr"
+          "MedicalEquipment"
         ],
         "properties": {
-          "MedisinskUtstyr": {
-            "description": "Meldinger om uønsket hendelse på blod eller celler og vev, eller organer",
+          "MedicalEquipment": {
+            "description": "Medical equipment part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MedisinskUtstyrPart"
+                "$ref": "#/components/schemas/MedicalEquipmentPart"
               }
             ]
           }
         }
       },
-      "MedisinskUtstyrPart": {
+      "MedicalEquipmentPart": {
         "type": "object",
-        "description": "Informasjon om medisinsk utstyr og legemidler",
+        "description": "Medical equipment part",
         "additionalProperties": false,
         "required": [
-          "Handelsnavn",
-          "Produsent",
-          "NkknGruppe",
-          "NkknKategori",
-          "HvorErUtstyret",
-          "KlassifikasjonAvHendelsen"
+          "EquipmentName",
+          "Manufacturer",
+          "NkknGroup",
+          "NkknCategory",
+          "EquipmentLocation",
+          "IncidentClassification"
         ],
         "properties": {
-          "NkknTypeKode": {
+          "NkknTypeCode": {
             "type": "integer",
-            "description": "Kode for type utstyr i NKKN",
+            "description": "NKKN type code",
             "format": "int32",
             "nullable": true
           },
-          "Handelsnavn": {
+          "EquipmentName": {
             "type": "string",
-            "description": "Navn på utstyret. Påkrevd.",
+            "description": "Equipment name",
             "minLength": 1
           },
-          "Produsent": {
+          "Manufacturer": {
             "type": "string",
-            "description": "Produsent av utstyret. Påkrevd.",
+            "description": "Manufacturer",
             "minLength": 1
           },
-          "Modell": {
+          "ModelName": {
             "type": "string",
-            "description": "Modellnavn",
+            "description": "Model name",
             "maxLength": 64,
             "nullable": true
           },
-          "NkknGruppe": {
-            "description": "Utstyrsgruppe i NKKN. Utstyrsgruppe er mellomste nivået",
+          "NkknGroup": {
+            "description": "NKKN equipment group",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/IdNavn"
               }
             ]
           },
-          "NkknKategori": {
-            "description": "Utstyrskategori i NKKN. Påkrevd. Utstyrskategori er øverste nivået.",
+          "NkknCategory": {
+            "description": "NKKN equipment category",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/NkknKategori"
+                "$ref": "#/components/schemas/NkknCategory"
               }
             ]
           },
-          "Serienummer": {
+          "SerialNumber": {
             "type": "string",
-            "description": "Utstyrets serienummer",
+            "description": "Serial number",
             "maxLength": 64,
             "nullable": true
           },
-          "BatchLotNummer": {
+          "BatchLotNumber": {
             "type": "string",
-            "description": "Utstyrets batchnummer",
+            "description": "Batch/lot number",
             "maxLength": 64,
             "nullable": true
           },
-          "Produksjonsdato": {
+          "ProductionDate": {
             "type": "string",
-            "description": "Når utstyret ble produsert. Man kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
+            "description": "Production date",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
             "nullable": true
           },
-          "Utlopsdato": {
+          "ExpirationDate": {
             "type": "string",
-            "description": "Når utstyret går ut på dato. Man kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-            "nullable": true
+            "description": "Equipment expiration date.\nYear only or year and month are also accepted",
+            "nullable": true,
+            "example": "2021-10-23 or 2021-10 og 2021"
           },
-          "HvorErUtstyret": {
-            "description": "Hvor utstyret befinner seg. Påkrevd.",
+          "EquipmentLocation": {
+            "description": "Equipment location",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/HvorErUtstyret"
+                "$ref": "#/components/schemas/EquipmentLocation"
               }
             ]
           },
           "Distributor": {
             "type": "string",
-            "description": "Distributør av utstyret.",
+            "description": "Distributor",
             "maxLength": 64,
             "nullable": true
           },
-          "KlassifikasjonAvHendelsen": {
-            "description": "Klassifikasjon av hendelsen. Påkrevd.",
+          "IncidentClassification": {
+            "description": "Incident classification",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KlassifikasjonAvHendelsen"
+                "$ref": "#/components/schemas/IncidentClassification"
               }
             ]
           },
           "ImplantatInformasjon": {
-            "description": "Dersom implantat: Informasjon om når implantatet ble operert inn og ut",
+            "description": "Implant information (if applicable)",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MedisinskUtstyrImplantatInformasjon"
+                "$ref": "#/components/schemas/MedicalEquipmentImplantInformation"
               }
             ]
           }
@@ -3677,175 +3761,221 @@
           }
         }
       },
-      "NkknKategori": {
+      "NkknCategory": {
         "type": "string",
-        "description": "Kategori medisinsk utstyr",
+        "description": "Medical equipment category",
         "x-enumNames": [
           "AktivtImplanterbartUtstyr",
+          "ActiveImplantableEquipment",
+          "AnesthesiologicalAndRespiratoryEquipment",
           "AnestesiologiskOgRespiratoriskUtstyr",
+          "DentalEquipment",
           "DentaltUtstyr",
+          "ElectroMechanicEquipment",
           "ElektromekaniskUtstyr",
+          "HospitalEquipmentEquipment",
           "Sykehusutrustning",
+          "InVitroDiagnosticEquipment",
           "InVitroDiagnostiskUtstyr",
+          "PassiveImplantableEquipment",
           "PassivtImplanterbartUtstyr",
+          "OphthalmologicalAndOpticalEquipment",
           "OftalmologiskOgOptiskUtstyr",
+          "ReusableEquipment",
           "Flergangsutstyr",
+          "DisposeableEquipment",
           "Engangsutstyr",
+          "TechnicalAid",
           "TekniskeHjelpemidler",
+          "DiagnosticAndTherapeuticRadiationEquipment",
           "DiagnostiskOgTerapeutiskStralegivendeUtstyr"
         ],
         "enum": [
           "AktivtImplanterbartUtstyr",
-          "AnestesiologiskOgRespiratoriskUtstyr",
+          "AktivtImplanterbartUtstyr",
+          "AnesthesiologicalAndRespiratoryEquipment",
+          "AnesthesiologicalAndRespiratoryEquipment",
           "DentaltUtstyr",
-          "ElektromekaniskUtstyr",
-          "Sykehusutrustning",
+          "DentaltUtstyr",
+          "ElectroMechanicEquipment",
+          "ElectroMechanicEquipment",
+          "HospitalEquipmentEquipment",
+          "HospitalEquipmentEquipment",
           "InVitroDiagnostiskUtstyr",
-          "PassivtImplanterbartUtstyr",
-          "OftalmologiskOgOptiskUtstyr",
+          "InVitroDiagnostiskUtstyr",
+          "PassiveImplantableEquipment",
+          "PassiveImplantableEquipment",
+          "OphthalmologicalAndOpticalEquipment",
+          "OphthalmologicalAndOpticalEquipment",
           "Flergangsutstyr",
-          "Engangsutstyr",
-          "TekniskeHjelpemidler",
-          "DiagnostiskOgTerapeutiskStralegivendeUtstyr"
+          "Flergangsutstyr",
+          "DisposeableEquipment",
+          "DisposeableEquipment",
+          "TechnicalAid",
+          "TechnicalAid",
+          "DiagnosticAndTherapeuticRadiationEquipment",
+          "DiagnosticAndTherapeuticRadiationEquipment"
         ]
       },
-      "HvorErUtstyret": {
+      "EquipmentLocation": {
         "type": "string",
         "description": "Hvor utstyret befinner seg på innsendingstidspunktet",
         "x-enumNames": [
           "Helseforetak",
+          "Healhcare",
+          "PatientOrClient",
           "PasientBruker",
+          "SentToManufacturer",
           "PaVeiTilProdusent",
+          "Manufacturer",
           "Produsent",
+          "DistributorVendor",
           "DistributorForhandlerOmsetter",
+          "Discarded",
           "Kastet",
+          "StillImplanted",
           "FortsattImplantert",
+          "Unknown",
           "Ukjent"
         ],
         "enum": [
-          "Helseforetak",
+          "Healhcare",
+          "Healhcare",
+          "PasientBruker",
           "PasientBruker",
           "PaVeiTilProdusent",
+          "PaVeiTilProdusent",
+          "Produsent",
           "Produsent",
           "DistributorForhandlerOmsetter",
+          "DistributorForhandlerOmsetter",
+          "Kastet",
           "Kastet",
           "FortsattImplantert",
-          "Ukjent"
+          "FortsattImplantert",
+          "Unknown",
+          "Unknown"
         ]
       },
-      "KlassifikasjonAvHendelsen": {
+      "IncidentClassification": {
         "type": "string",
         "description": "Klassifikasjon av hendelse",
         "x-enumNames": [
           "Dodsfall",
+          "Death",
+          "SeriousDeterioration",
           "AlvorligForverringAvHelsetilstand",
+          "MayHaveCausedDeathOrSeriousDeterioration",
           "KunneHaFortTilDodEllerForverring"
         ],
         "enum": [
           "Dodsfall",
-          "AlvorligForverringAvHelsetilstand",
-          "KunneHaFortTilDodEllerForverring"
+          "Dodsfall",
+          "SeriousDeterioration",
+          "SeriousDeterioration",
+          "MayHaveCausedDeathOrSeriousDeterioration",
+          "MayHaveCausedDeathOrSeriousDeterioration"
         ]
       },
-      "MedisinskUtstyrImplantatInformasjon": {
+      "MedicalEquipmentImplantInformation": {
         "type": "object",
         "description": "MedisinskUtstyrImplantatInformasjon",
         "additionalProperties": false,
         "properties": {
-          "ImplantertDato": {
+          "ImplantDate": {
             "type": "string",
-            "description": "Når implantatet ble operert inn.\nMan kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-            "nullable": true
+            "description": "Implant date.\nYear only or year and month are also accepted",
+            "nullable": true,
+            "example": "2021-10-23 or 2021-10 og 2021"
           },
-          "EksplantertDato": {
+          "ExplantDate": {
             "type": "string",
-            "description": "Når implantatet ble operert ut.\nMan kan bruke delvis presisjon, men om man oppgir noe, må man ha minst år. Man kan bare oppgi dato om man har måned også.",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-            "nullable": true
+            "description": "Explant date\nYear only or year and month are also accepted",
+            "nullable": true,
+            "example": "2021-10-23 or 2021-10 og 2021"
           }
         }
       },
-      "UonsketHendelseRequest": {
+      "AdverseIncidentRequest": {
         "type": "object",
-        "description": "UonsketHendelse DTO",
+        "description": "Adverse incident DTO",
         "additionalProperties": false,
         "required": [
-          "Hode",
-          "Meldinger"
+          "Header",
+          "Report"
         ],
         "properties": {
-          "Hode": {
-            "description": "Meldingshode",
+          "Header": {
+            "description": "Header part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/UonsketHendelseHodePart"
+                "$ref": "#/components/schemas/AdverseIncidentHeaderPart"
               }
             ]
           },
-          "Meldinger": {
-            "description": "Meldinger",
+          "Report": {
+            "description": "Report part",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/UonsketHendelseMeldingerPart"
+                "$ref": "#/components/schemas/AdverseIncidentReportPart"
               }
             ]
           },
-          "Meldeordninger": {
+          "ReportAreas": {
             "type": "array",
             "description": "Returere en liste med meldeordninger i denne meldingen",
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Meldeordning"
+              "$ref": "#/components/schemas/ReportArea"
             }
           }
         }
       },
-      "UonsketHendelseHodePart": {
+      "AdverseIncidentHeaderPart": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/HodePartBase"
+            "$ref": "#/components/schemas/HeaderPartBase"
           },
           {
             "type": "object",
-            "description": "Hode part",
+            "description": "Header part",
             "additionalProperties": false,
             "required": [
-              "Melder",
-              "Pasient",
-              "Hendelse",
-              "Meldingstyper"
+              "Reporter",
+              "Patient",
+              "Incident",
+              "ReportAreas"
             ],
             "properties": {
-              "Melder": {
-                "description": "Melder",
+              "Reporter": {
+                "description": "Reporter part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/UonsketHendelseMelderPart"
+                    "$ref": "#/components/schemas/AdverseIncidentReporterPart"
                   }
                 ]
               },
-              "Pasient": {
-                "description": "Pasient",
+              "Patient": {
+                "description": "Patient part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/UonsketHendelsePasientPart"
+                    "$ref": "#/components/schemas/AdverseIncidentPatientPart"
                   }
                 ]
               },
-              "Hendelse": {
-                "description": "Hendelse",
+              "Incident": {
+                "description": "Incident part",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/UonsketHendelseHendelsePart"
+                    "$ref": "#/components/schemas/AdverseIncidentIncidentPart"
                   }
                 ]
               },
-              "Meldingstyper": {
-                "description": "Meldeordninger i denne meldingen",
+              "ReportAreas": {
+                "description": "Report areas",
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/UonsketHendelseMeldingstyperPart"
+                    "$ref": "#/components/schemas/AdverseIncidentReportAreasPart"
                   }
                 ]
               }
@@ -3853,236 +3983,255 @@
           }
         ]
       },
-      "UonsketHendelseMelderPart": {
+      "AdverseIncidentReporterPart": {
         "type": "object",
-        "description": "UonsketHendelseMelderPart",
+        "description": "Adverse incident part",
         "additionalProperties": false,
         "required": [
-          "Fødselsnummer",
-          "Organisasjonsnummer",
-          "Epost"
+          "SSN",
+          "OrganizationNumber",
+          "Email"
         ],
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Fødselsnummer",
+            "description": "Social security number",
             "minLength": 1,
             "pattern": "^\\d{11}$"
           },
-          "Organisasjonsnummer": {
+          "OrganizationNumber": {
             "type": "string",
-            "description": "Organisasjonsnummer",
+            "description": "Orgaization number",
             "minLength": 1,
             "pattern": "^\\d{9}$"
           },
-          "Epost": {
+          "Email": {
             "type": "string",
-            "description": "Epost",
+            "description": "E-mail address",
             "format": "email",
             "minLength": 1
           },
-          "Telefon": {
+          "Phone": {
             "type": "string",
-            "description": "Telefon",
+            "description": "Phone number.\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
             "format": "phone",
             "nullable": true
           },
-          "Rolle": {
-            "description": "Rolle",
+          "Role": {
+            "description": "Role. Required for report area serious incident",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MelderRolle"
+                "$ref": "#/components/schemas/ReporterRole"
               }
             ]
           },
-          "Stilling": {
+          "Position": {
             "type": "string",
-            "description": "Stilling",
+            "description": "Position. Required for report area serious incident",
             "maxLength": 64,
             "nullable": true
           }
         }
       },
-      "UonsketHendelsePasientPart": {
+      "AdverseIncidentPatientPart": {
         "type": "object",
         "description": "UonsketHendelsePasientPart",
         "additionalProperties": false,
         "properties": {
-          "Fødselsnummer": {
+          "SSN": {
             "type": "string",
-            "description": "Fødselsnummer",
+            "description": "Social security number.\nRequired for report area drug side effects if date of birth and gender is not set.\nRequired for report area serious incident if name, gender, date of birth and nationality is not set",
             "pattern": "^\\d{11}$",
             "nullable": true
           },
-          "Fødselsdato": {
+          "DateOfBirth": {
             "type": "string",
-            "description": "Fødselsdato",
+            "description": "Date of birth.\nRequired for report areas drug side effects and serious incident if SSN is not set",
             "nullable": true
           },
-          "Kjønn": {
-            "description": "Kjønn",
+          "Gender": {
+            "description": "Gender.\nRequired for report areas drug side effects, serious incident, cosmetics and diatary supplements if SSN is not set",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PasientensKjonn"
+                "$ref": "#/components/schemas/Gender"
               }
             ]
           },
-          "Fødselsår": {
+          "YearOfBirth": {
             "type": "integer",
-            "description": "Fødselsår",
+            "description": "Year of birth.\nRequired for report areas cosmetics and diatary supplements if SSN is not set",
             "format": "int32",
             "nullable": true
           },
-          "Navn": {
+          "Name": {
             "type": "string",
-            "description": "Navn",
+            "description": "Name\nRequired for report area drug serious incidentif SSN is not set",
             "nullable": true
           },
-          "Nasjonalitet": {
+          "Nationality": {
             "type": "string",
-            "description": "Nasjonalitet",
+            "description": "Natinality\nRequired for report area drug serious incidentif SSN is not set",
             "nullable": true
           }
         }
       },
-      "UonsketHendelseHendelsePart": {
+      "AdverseIncidentIncidentPart": {
         "type": "object",
-        "description": "UonsketHendelseHendelsePart",
+        "description": "Adverse incident part",
         "additionalProperties": false,
         "required": [
-          "HvaSkjedde"
+          "IncidentDescription"
         ],
         "properties": {
-          "HvaSkjedde": {
+          "IncidentDescription": {
             "type": "string",
-            "description": "HvaSkjedde",
+            "description": "Indicent description",
             "minLength": 1
           },
-          "Dato": {
+          "IncidentDate": {
             "type": "string",
-            "description": "Dato",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Incident date. Required for report area medical equipment",
             "nullable": true
           },
-          "UsikkerDato": {
+          "DateUnknown": {
             "type": "boolean",
-            "description": "UsikkerDato"
+            "description": "Date unknown. Required for report area serious incident"
           }
         }
       },
-      "UonsketHendelseMeldingstyperPart": {
+      "AdverseIncidentReportAreasPart": {
         "type": "object",
-        "description": "Meldeordninger",
+        "description": "Report areas",
         "additionalProperties": false,
         "properties": {
-          "AlvorligHendelse": {
+          "SeriousIncident": {
             "type": "boolean"
           },
-          "LegemiddelBivirkning": {
+          "DrugSideEffects": {
             "type": "boolean"
           },
-          "Biovigilans": {
+          "Biovigilance": {
             "type": "boolean"
           },
-          "Kosmetikk": {
+          "Cosmetics": {
             "type": "boolean"
           },
-          "Kosttilskudd": {
+          "DietarySupplements": {
             "type": "boolean"
           },
-          "MedisinskUtstyr": {
+          "MedicalEquipment": {
             "type": "boolean"
           }
         }
       },
-      "UonsketHendelseMeldingerPart": {
+      "AdverseIncidentReportPart": {
         "type": "object",
-        "description": "Meldinger",
+        "description": "Report part",
         "additionalProperties": false,
         "properties": {
-          "AlvorligHendelse": {
+          "SeriousIncident": {
             "description": "AlvorligHendelse",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/AlvorligHendelseMeldingPart"
+                "$ref": "#/components/schemas/SeriousIncidentReportPart"
               }
             ]
           },
-          "LegemiddelBivirkning": {
+          "DrugSideEffects": {
             "description": "LegemiddelBivirkning",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/LegemiddelBivirkningMeldingPart"
+                "$ref": "#/components/schemas/DrugSideEffectsReportPart"
               }
             ]
           },
-          "Biovigilans": {
+          "Biovigilance": {
             "description": "Biovigilans",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/BiovigilansMeldingPart"
+                "$ref": "#/components/schemas/BiovigilanceReportPart"
               }
             ]
           },
-          "Kosmetikk": {
+          "Cosmetics": {
             "description": "Kosmetikk",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosmetikkMeldingPart"
+                "$ref": "#/components/schemas/CosmeticsReportPart"
               }
             ]
           },
-          "Kosttilskudd": {
+          "DietarySupplements": {
             "description": "Kosttilskudd",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/KosttilskuddMeldingPart"
+                "$ref": "#/components/schemas/DietarySupplementsReportPart"
               }
             ]
           },
-          "MedisinskUtstyr": {
+          "MedicalEquipment": {
             "description": "MedisinskUtstyr",
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/MedisinskUtstyrMeldingPart"
+                "$ref": "#/components/schemas/MedicalEquipmentReportPart"
               }
             ]
           }
         }
       },
-      "Meldeordning": {
+      "ReportArea": {
         "type": "integer",
         "description": "",
         "x-enumNames": [
           "Legemiddelbivirkning",
+          "DrugSideEffects",
+          "Cosmetics",
           "Kosmetikkbivirkning",
+          "DietarySupplements",
           "Kosttilskuddbivirkning",
+          "VaccineSideEffects",
           "Vaksinebivirkning",
+          "MedicalEquipment",
           "MedisinskUtstyr",
+          "SeriousIncident",
           "Varselordningen33A",
+          "InvestigationBoard",
           "Undersokelseskommisjonen",
+          "Biovigilance",
           "Biovigilans",
+          "PPSeriousIncident",
           "PPAlvorligHendelse",
+          "PPSideEffects",
           "PPBivirkning",
           "SmokeTest"
         ],
         "enum": [
           2,
+          2,
+          4,
           4,
           5,
+          5,
+          6,
           6,
           7,
+          7,
+          8,
           8,
           9,
+          9,
+          10,
           10,
           100,
+          100,
+          101,
           101,
           999
         ]

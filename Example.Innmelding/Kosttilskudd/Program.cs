@@ -31,81 +31,81 @@ namespace Example.Kosmetikk
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             //// Fill out request data
-            var requestData = new KosttilskuddRequest()
+            var requestData = new DietarySupplementsRequest()
             {
-                Hode = new KosttilskuddHodePart
+                Header = new DietarySupplementsHeaderPart
                 {
-                    EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new KosttilskuddMelderPart
+                    ExternalCaseId = Guid.NewGuid().ToString(),
+                    Reporter = new DietarySupplementsReporterPart
                     {
-                        Fødselsnummer = "13075706604",
-                        Epost = "TestData@melde.no",
-                        Telefon = "99887766",
-                        Organisasjonsnummer = "883974832"
+                        SSN = "13075706604",
+                        Email = "TestData@melde.no",
+                        Phone = "99887766",
+                        OrganizationNumber = "883974832"
                     },
-                    Hendelse = new KosttilskuddHendelsePart
+                    Incident = new DietarySupplementsIncidentPart
                     {
-                        HvaSkjedde = "Fikk utslett av såpe",
+                        IncidentDescription = "Fikk utslett av såpe",
                     },
-                    Pasient = new KosttilskuddPasientPart
+                    Patient = new DietarySupplementsPatientPart
                     {
-                        Kjønn = PasientensKjonn.Mann,
-                        Fødselsår = 1982
+                        Gender = Gender.Male,
+                        YearOfBirth = 1982
                     },
                 },
-                Melding = new KosttilskuddMeldingPart
+                Report = new DietarySupplementsReportPart
                 {
-                    Bivirkning = new KosttilskuddBivirkningPart
+                    SideEffect = new DietarySupplementsSideEffectsPart
                     {
-                        Reaksjoner = new List<string>()
+                        Reactions = new List<string>()
                         {
-                            Reaksjon.EksemUtslett.ToString(),
-                            Reaksjon.Hevelse.ToString()
+                            Reaction.EczemaRash.ToString(),
+                            Reaction.Swelling.ToString()
                         },
-                        Reaksjonstid = "ReakTid",
-                        ReaksjonstidTekst = "ReakTidTekst",
-                        FolgerAvBivirkning = "Folger",
-                        FolgerAvBivirkningTekst = "FolgerTekst",
-                        BivirkningVarighet = "BivVarighet",
-                        PaagaarFortsatt = YesNo.Ja,
-                        BivirkningerVedTidligereBruk = YesNoDontKnow.VetIkke,
-                        BivirkningerVedTidligereBrukTekst = "BivTidBrukTekst",
-                        AllergiEllerAnnenPaavirkendeFaktor = YesNoDontKnow.Ja,
-                        AllergiEllerAnnenPaavirkendeFaktorTekst = "AllergiTekst",
-                        HarUnderliggendeSykdom = YesNoDontKnow.Ja,
-                        KanUnderliggendeSykdomVareArsak = YesNoDontKnow.Nei
+                        ReactionDelay = "ReakTid",
+                        ReactionDelayDescription = "ReakTidTekst",
+                        Outcome = "Folger",
+                        OutcomeDescription = "FolgerTekst",
+                        SideEffectDuration = "BivVarighet",
+                        Ongoing = YesNo.Yes,
+                        SideEffectsOnPreviousUse = YesNoDontKnow.DontKnow,
+                        SideEffectsOnPreviousUseDescription = "BivTidBrukTekst",
+                        AnyAllergiesOrInfluencingIssues = YesNoDontKnow.Yes,
+                        AnyAllergiesOrInfluencingIssuesDescription = "AllergiTekst",
+                        AnyUnderlyingDiseases = YesNoDontKnow.Yes,
+                        CanDiseaseBeTheCause = YesNoDontKnow.No
                     },
-                    Produkter = new[]
+                    Products = new[]
                     {
-                        new KosttilskuddProduktPart
+                        new DietarySupplementsProductPart
                         {
-                            Produktinformasjon = new KosttilskuddProduktinformasjonPart
+                            ProductInformation = new DietarySupplementsProductInformationPart
                             {
-                                ProduktNavn = "ProdNavn",
-                                Ingredienser = "Ingr",
-                                LeverandorProdusent = "LevProdusent",
-                                Holdbarhetsdato = "2022-12-02",
-                                ErBivirkningMeldtTilLeverandorEllerProdusent = YesNoDontKnow.VetIkke,
-                                HvorProduktetErKjopt = "Hvor",
-                                ButikkNavn = "Butikknavn",
-                                BatchLotNummer = "Batch",
-                                Vedlegg = new []
+                                ProductName = "ProdNavn",
+                                Ingredients = "Ingr",
+                                VendorOrManufacturer = "LevProdusent",
+                                BestBeforeDate = "2022-12-02",
+                                ReportedToVendorOrProducer = YesNoDontKnow.DontKnow,
+                                PurchaseLocation = "Hvor",
+                                ShopName = "Butikknavn",
+                                BatchLotNumber = "Batch",
+                                Attachments = new []
                                 {
-                                    new Vedlegg
+                                    new AttachmentPart
                                     {
-                                        Navn = "Test.txt",
-                                        Innhold = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
+                                        Name = "Test.txt",
+                                        Content = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
                                     }
                                 }
                             },
-                            BrukAvProduktet = new KosttilskuddBrukAvProduktetPart
+                            ProductUsage = new DietarySupplementsProductUsagePart
                             {
-                                MengdeIngredienserEllerVirkestoffPrDagligDose = "Mengde",
-                                AnbefaltDagligDose = "DglDose",
-                                FaktiskInntattDagligDose = "FaktiskDose",
-                                BruksPeriode = "Periode",
-                                LegemidlerSamtidigSomKosttilskudd = YesNoDontKnow.Ja,
-                                HvilkeLegemiderErTattSamtidig = new [] { "Dundersalt" },
+                                AmountOfIngredientsInDailyDose = "Mengde",
+                                RecommendedDailyDose = "DglDose",
+                                ActualDailyDoseTaken = "FaktiskDose",
+                                UsageDuration = "Periode",
+                                AnyDrugsTakenAtSameTime = YesNoDontKnow.Yes,
+                                DrugsTakenAtSameTime = new [] { "Dundersalt" },
 
                             }
                         }

@@ -31,67 +31,67 @@ namespace Example.Kosmetikk
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
             //// Fill out request data
-            var requestData = new KosmetikkRequest
+            var requestData = new CosmeticsRequest
             {
-                Hode = new KosmetikkHodePart
+                Header = new CosmeticsHeaderPart
                 {
-                    EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new KosmetikkMelderPart
+                    ExternalCaseId = Guid.NewGuid().ToString(),
+                    Reporter = new CosmeticsReporterPart
                     {
-                        Fødselsnummer = "13075706604",
-                        Epost = "TestData@melde.no",
-                        Telefon = "99887766",
-                        Organisasjonsnummer = "883974832",
+                        SSN = "13075706604",
+                        Email = "TestData@melde.no",
+                        Phone = "99887766",
+                        OrganizationNumber = "883974832",
                         
                     },
-                    Hendelse = new KosmetikkHendelsePart
+                    Incident = new CosmeticsIncidentPart
                     {
-                        HvaSkjedde = "Fikk utslett av såpe",
+                        IncidentDescription = "Fikk utslett av såpe",
                     },
-                    Pasient = new KosmetikkPasientPart
+                    Patient = new CosmeticsPatientPart
                     {
-                        Kjønn = PasientensKjonn.Mann,
-                        Fødselsår = 1982
+                        Gender = Gender.Male,
+                        YearOfBirth = 1982
                     },
                 },
-                Melding = new KosmetikkMeldingPart
+                Report = new CosmeticsReportPart
                 {
-                    Bivirkning = new KosmetikkBivirkningPart
+                    SideEffects = new CosmeticsSideEffectsPart
                     {
-                        BivirkningHvorPaKroppen = new List<HvorPaKroppen>
+                        AffectedSkinAreas = new List<BodyLocation>
                         {
-                            HvorPaKroppen.Ansikt,
-                            HvorPaKroppen.Mage,
+                            BodyLocation.Face,
+                            BodyLocation.Stomach,
                         },
-                        Reaksjon = new List<Reaksjon>
+                        Reactions = new List<Reaction>
                         {
-                            Reaksjon.EksemUtslett,
-                            Reaksjon.Hevelse
+                            Reaction.EczemaRash,
+                            Reaction.Swelling
                         },
-                        Reaksjonstid = Reaksjonstid.Innen30Min,
+                        ReactionDelay = ReactionDelay.WithinHalfHour,
                     },
-                    RelevanteOpplysninger = new KosmetikkRelevanteOpplysningerPart
+                    RelevantInformation = new CosmeticsRelevantInformationPart
                     {
-                        BivirkningerVedTidligereBruk = BivirkningVedTidligereBruk.Delvis
+                        SideEffectsOnPreviousUse = YesNoPartialDontKnow.Partial
                     },
-                    Produkter = new List<KosmetikkProduktPart>
+                    Products = new List<CosmeticsProductPart>
                     {
-                        new KosmetikkProduktPart
+                        new CosmeticsProductPart
                         {
-                            Produktinformasjon = new KosmetikkProduktinformasjonPart
+                            ProductInformation = new CosmeticsProductInformationPart
                             {
-                                ProduktNavn = "Lano",
-                                ProduktType = Produkttype.Sape,
-                                Salgskanal = Salgskanal.Matvarebutikk
+                                ProductName = "Lano",
+                                ProductType = Produkttype.Sape,
+                                SalesChannel = SalesChannel.GroceryStore
                             },
-                            BrukAvProduktet = new KosmetikkBrukAvProduktetPart
+                            ProductUsage = new CosmeticsProductUsagePart
                             {
-                                ProduktetBruktHvorPaKroppen = new List<HvorPaKroppen>
+                                BodyLocations = new List<BodyLocation>
                                 {
-                                    HvorPaKroppen.Ansikt,
-                                    HvorPaKroppen.Mage
+                                    BodyLocation.Face,
+                                    BodyLocation.Stomach
                                 },
-                                BeskrivelseAvBruk = "Vårrengjøring"
+                                UsageDescription = "Vårrengjøring"
                             }
                         }
                     }

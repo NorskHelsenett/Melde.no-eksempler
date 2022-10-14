@@ -78,31 +78,31 @@ namespace Example.Biovigilans
             }
 
             //// Fill out request data
-            var requestData = new BiovigilansRequest
+            var requestData = new BiovigilanceRequest
             {
-                Hode = new BiovigilansHodePart
+                Header = new BiovigilansHeaderPart
                 {
-                    EksternSaksId = Guid.NewGuid().ToString(),
-                    Melder = new BiovigilansMelderPart
+                    ExternalCaseId = Guid.NewGuid().ToString(),
+                    Reporter = new BiovigilanceReporterPart
                     {
-                        Fødselsnummer = "13075706604",
-                        Epost = "TestData@melde.no",
-                        Organisasjonsnummer = "883974832",
+                        SSN = "13075706604",
+                        Email = "TestData@melde.no",
+                        OrganizationNumber = "883974832",
                     },
-                    Hendelse = new BiovigilansHendelsePart
+                    Incident= new BiovigilanceIncidentPart
                     {
-                        HvaSkjedde = "Datt på rattata",
-                        Dato = "2021-07-13"
+                        IncidentDescription = "Datt på rattata",
+                        IncidentDate = "2021-07-13"
                     },
-                    Pasient = new BiovigilansPasientPart
+                    Patient = new BiovigilancePatientPart
                     {
-                        Fødselsår = 1990,
-                        Kjønn = PasientensKjonn.Mann,
+                        YearOfBirth = 1990,
+                        Gender = Gender.Male,
                     },
                 },
-                Melding = new BiovigilansMeldingPart
+                Report = new BiovigilanceReportPart
                 {
-                    Biovigilans = new BiovigilansPart
+                    Biovigilance = new BiovigilancePart
                     {
                         StedForHendelsen = "1.1",
                         Hendelsestype = hendelsestype,
