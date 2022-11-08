@@ -54,7 +54,7 @@ namespace Example.Kosmetikk
                     {
                         EquipmentName = "Storz 488 B",
                         Manufacturer = "Storz",
-                        EquipmentLocation = EquipmentLocation.Healhcare,
+                        EquipmentLocation = EquipmentLocation.Healthcare,
                         NkknCategory = NkknCategory.ActiveImplantableEquipment,
                         IncidentClassification = IncidentClassification.MayHaveCausedDeathOrSeriousDeterioration,
                     }
@@ -67,7 +67,7 @@ namespace Example.Kosmetikk
             Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}-------------------------------------------------{Environment.NewLine}{Environment.NewLine}");
 
             //call API, wait for response
-            var apiClient = new EksternUonsketHendelseClient(httpClient);
+            var apiClient = new AdverseIncidentClient(httpClient);
             var response = await apiClient.MedisinskUtstyrAsync(requestData);
 
             // If the call was succesful write out response

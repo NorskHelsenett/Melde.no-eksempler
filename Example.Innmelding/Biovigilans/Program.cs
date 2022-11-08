@@ -123,7 +123,7 @@ namespace Example.Biovigilans
             Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}-------------------------------------------------{Environment.NewLine}{Environment.NewLine}");
 
             //call API, wait for response
-            var apiClient = new EksternUonsketHendelseClient(httpClient);
+            var apiClient = new AdverseIncidentClient(httpClient);
             var response = await apiClient.BiovigilansAsync(requestData);
 
             // If the call was succesful write out response

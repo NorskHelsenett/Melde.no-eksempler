@@ -2,7 +2,7 @@
   "x-generator": "NSwag v13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
-    "title": "Melde API - External/v1",
+    "title": "Melde API - Report/v1",
     "description": "<p>API for reporting adverse incidents</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
     "contact": {
       "name": "Norsk helsenett",
@@ -20,11 +20,11 @@
     "/api/v1/report/drug-side-effects": {
       "post": {
         "tags": [
-          "EksternUonsketHendelse"
+          "AdverseIncident"
         ],
         "summary": "Report an adverse indicent related to drug or vaccine side effect.",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "operationId": "EksternUonsketHendelse_LegemiddelBivirkning",
+        "operationId": "AdverseIncident_LegemiddelBivirkning",
         "requestBody": {
           "x-name": "lbr",
           "content": {
@@ -96,11 +96,11 @@
     "/api/v1/report/serious-incident": {
       "post": {
         "tags": [
-          "EksternUonsketHendelse"
+          "AdverseIncident"
         ],
         "summary": "Report a serious incicent",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "operationId": "EksternUonsketHendelse_AlvorligHendelse",
+        "operationId": "AdverseIncident_AlvorligHendelse",
         "requestBody": {
           "x-name": "ahr",
           "content": {
@@ -172,11 +172,11 @@
     "/api/v1/report/cosmetics": {
       "post": {
         "tags": [
-          "EksternUonsketHendelse"
+          "AdverseIncident"
         ],
         "summary": "Report an adverse indicent cosmetics.",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "operationId": "EksternUonsketHendelse_Kosmetikk",
+        "operationId": "AdverseIncident_Kosmetikk",
         "requestBody": {
           "x-name": "kos",
           "content": {
@@ -248,11 +248,11 @@
     "/api/v1/report/dietary-supplements": {
       "post": {
         "tags": [
-          "EksternUonsketHendelse"
+          "AdverseIncident"
         ],
         "summary": "Report an adverse indicent related to dietary supplements.",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "operationId": "EksternUonsketHendelse_Kosttilskudd",
+        "operationId": "AdverseIncident_Kosttilskudd",
         "requestBody": {
           "x-name": "kos",
           "content": {
@@ -324,11 +324,11 @@
     "/api/v1/report/biovigilance": {
       "post": {
         "tags": [
-          "EksternUonsketHendelse"
+          "AdverseIncident"
         ],
         "summary": "Report an adverse indicent related to biovigilance.",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "operationId": "EksternUonsketHendelse_Biovigilans",
+        "operationId": "AdverseIncident_Biovigilans",
         "requestBody": {
           "x-name": "req",
           "description": "Request object",
@@ -401,11 +401,11 @@
     "/api/v1/report/medical-equipment": {
       "post": {
         "tags": [
-          "EksternUonsketHendelse"
+          "AdverseIncident"
         ],
         "summary": "Report an adverse indicent related to medical equipment.",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "operationId": "EksternUonsketHendelse_MedisinskUtstyr",
+        "operationId": "AdverseIncident_MedisinskUtstyr",
         "requestBody": {
           "x-name": "req",
           "description": "Request object",
@@ -478,11 +478,11 @@
     "/api/v1/report/adverse-incident": {
       "post": {
         "tags": [
-          "EksternUonsketHendelse"
+          "AdverseIncident"
         ],
         "summary": "Report an adverse indicent. This endpoint supports multiple report areas in the same report (combined reporting).",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "operationId": "EksternUonsketHendelse_UonsketHendelse",
+        "operationId": "AdverseIncident_UonsketHendelse",
         "requestBody": {
           "x-name": "req",
           "description": "Request object",
@@ -552,7 +552,7 @@
         }
       }
     },
-    "/api/ekstern/v1/nokup/lookup": {
+    "/api/v1/nokup/lookup": {
       "get": {
         "tags": [
           "Nokup"
@@ -573,7 +573,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Vellykket forespørsel",
+            "description": "Successful request",
             "content": {
               "application/json": {
                 "schema": {
@@ -586,7 +586,7 @@
             }
           },
           "400": {
-            "description": "Feil i forespørselen, mest sannsynlig ved validering av dataen.",
+            "description": "Bad request, most probably a validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -597,7 +597,7 @@
             }
           },
           "401": {
-            "description": "Autorisasjon feilet, sjekk at du bruker et gyldig token med rette tilganger.",
+            "description": "Authorization failed, check for valid scopes in the access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -608,14 +608,11 @@
             }
           },
           "500": {
-            "description": "Oops, en intern feil har oppstått. Vi beklager, men du får nesten bare prøve på nytt.",
+            "description": "Internal error",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/NokupLookupResult"
-                  }
+                  "$ref": "#/components/schemas/KvitteringsMelding"
                 }
               }
             }
@@ -1035,23 +1032,15 @@
         "type": "string",
         "description": "Pasientens kjønn (OID=3101)\nSe kodeverk 3101 på volven: https://volven.no/produkt.asp?id=382591&catID=3&subID=8.",
         "x-enumNames": [
-          "IkkeKjent",
           "NotKnown",
           "Male",
-          "Mann",
           "Female",
-          "Kvinne",
-          "NotSpecified",
-          "IkkeSpesifisert"
+          "NotSpecified"
         ],
         "enum": [
           "NotKnown",
-          "NotKnown",
-          "Mann",
-          "Mann",
-          "Kvinne",
-          "Kvinne",
-          "NotSpecified",
+          "Male",
+          "Female",
           "NotSpecified"
         ]
       },
@@ -1211,19 +1200,13 @@
         "type": "string",
         "description": "",
         "x-enumNames": [
-          "Ja",
           "Yes",
           "No",
-          "Nei",
-          "DontKnow",
-          "VetIkke"
+          "DontKnow"
         ],
         "enum": [
-          "Ja",
-          "Ja",
+          "Yes",
           "No",
-          "No",
-          "DontKnow",
           "DontKnow"
         ]
       },
@@ -1290,31 +1273,19 @@
         "type": "string",
         "description": "Legemiddelrolle",
         "x-enumNames": [
-          "HoyreArm",
           "RightArm",
           "LeftArm",
-          "VenstreArm",
           "RightThigh",
-          "HoyreLar",
           "LeftThigh",
-          "VenstreLar",
-          "Oral",
-          "Oralt",
-          "Other",
-          "Annet"
+          "Orally",
+          "Other"
         ],
         "enum": [
-          "HoyreArm",
-          "HoyreArm",
+          "RightArm",
           "LeftArm",
-          "LeftArm",
-          "HoyreLar",
-          "HoyreLar",
+          "RightThigh",
           "LeftThigh",
-          "LeftThigh",
-          "Oral",
-          "Oral",
-          "Other",
+          "Orally",
           "Other"
         ]
       },
@@ -1322,27 +1293,17 @@
         "type": "string",
         "description": "Dose number",
         "x-enumNames": [
-          "En",
           "One",
           "Two",
-          "To",
           "Three",
-          "Tre",
           "Four",
-          "Fire",
-          "NotInSeries",
-          "IkkeISerie"
+          "NotInSeries"
         ],
         "enum": [
           "One",
-          "One",
-          "Two",
           "Two",
           "Three",
-          "Three",
-          "Fire",
-          "Fire",
-          "NotInSeries",
+          "Four",
           "NotInSeries"
         ]
       },
@@ -1398,15 +1359,11 @@
         "type": "string",
         "description": "",
         "x-enumNames": [
-          "Ja",
           "Yes",
-          "No",
-          "Nei"
+          "No"
         ],
         "enum": [
           "Yes",
-          "Yes",
-          "No",
           "No"
         ]
       },
@@ -1414,31 +1371,19 @@
         "type": "string",
         "description": "Side effect outcome\nRef kodeverk 7469 at volven: https://volven.no/produkt.asp?id=382526&catID=3&subID=8.",
         "x-enumNames": [
-          "RestituertUtenEttervirkninger",
           "FullyRecovered",
           "Improvement",
-          "BedringMenIkkeFullstendigRestituert",
           "NoImprovement",
-          "IngenBedring",
           "RecoveredWithSymptoms",
-          "RestituertMenMedEttervirkninger",
           "Death",
-          "Dod",
-          "Unknown",
-          "Ukjent"
+          "Unknown"
         ],
         "enum": [
-          "RestituertUtenEttervirkninger",
-          "RestituertUtenEttervirkninger",
+          "FullyRecovered",
           "Improvement",
-          "Improvement",
-          "IngenBedring",
-          "IngenBedring",
-          "RecoveredWithSymptoms",
+          "NoImprovement",
           "RecoveredWithSymptoms",
           "Death",
-          "Death",
-          "Unknown",
           "Unknown"
         ]
       },
@@ -1466,31 +1411,19 @@
         "type": "string",
         "description": "Bivirkningens alvorlighet\nSe kodeverk 7468 på volven: https://volven.no/produkt.asp?id=382525&catID=3&subID=8.",
         "x-enumNames": [
-          "ResulterteIDod",
           "Death",
           "LifeThreatening",
-          "Livstruende",
           "Hospitalization",
-          "SykehusinnleggelseForlengetOpphold",
           "PersistentDisability",
-          "VedvarendeUforhetNedsattFunksjonsevne",
           "AnomalyOrBirthDefect",
-          "AnomaliFodselsdefekt",
-          "Other",
-          "Annet"
+          "Other"
         ],
         "enum": [
-          "ResulterteIDod",
-          "ResulterteIDod",
+          "Death",
           "LifeThreatening",
-          "LifeThreatening",
-          "SykehusinnleggelseForlengetOpphold",
-          "SykehusinnleggelseForlengetOpphold",
-          "PersistentDisability",
+          "Hospitalization",
           "PersistentDisability",
           "AnomalyOrBirthDefect",
-          "AnomalyOrBirthDefect",
-          "Other",
           "Other"
         ]
       },
@@ -1648,35 +1581,21 @@
         "x-enumNames": [
           "DefaultNull",
           "Manager",
-          "Leder",
           "Treator",
-          "Behandler",
           "OtherEmployee",
-          "OvrigAnsatt",
           "Other",
-          "Annet",
           "PatientUser",
-          "PasientBruker",
           "NextOfKin",
-          "NarmesteParorende",
-          "OtherRelative",
-          "AnnenParorende"
+          "OtherRelative"
         ],
         "enum": [
           "DefaultNull",
           "Manager",
-          "Manager",
-          "Treator",
           "Treator",
           "OtherEmployee",
-          "OtherEmployee",
-          "Other",
           "Other",
           "PatientUser",
-          "PatientUser",
           "NextOfKin",
-          "NextOfKin",
-          "OtherRelative",
           "OtherRelative"
         ]
       },
@@ -2192,83 +2111,45 @@
         "type": "string",
         "description": "What kind og reaction occured",
         "x-enumNames": [
-          "EksemUtslett",
           "EczemaRash",
           "HivesUrticaria",
-          "ElveblestUrticaria",
           "Swelling",
-          "Hevelse",
           "Blisters",
-          "Blemmer",
           "Nubs",
-          "NupperIHuden",
           "BurningSensation",
-          "SvieBrennendeFolelse",
           "Itch",
-          "Kloe",
           "Redness",
-          "Rodhet",
           "FlakingDrySkin",
-          "FlassingTorrHud",
           "Pimples",
-          "AkneKviser",
           "WateryEyes",
-          "RennendeOyne",
           "RunnyNose",
-          "RennendeNese",
           "OverUnderPigmentation",
-          "OverUnderpigmenteringIHuden",
           "HairLoss",
-          "Hartap",
           "Dizziness",
-          "Svimmelhet",
           "Nausea",
-          "Kvalme",
           "Pain",
-          "Smerter",
           "AnaphylaxisAllergicShock",
-          "AnafylaksiAllergiskSjokk",
-          "Other",
-          "Annet"
+          "Other"
         ],
         "enum": [
           "EczemaRash",
-          "EczemaRash",
-          "ElveblestUrticaria",
-          "ElveblestUrticaria",
-          "Hevelse",
-          "Hevelse",
-          "Blisters",
+          "HivesUrticaria",
+          "Swelling",
           "Blisters",
           "Nubs",
-          "Nubs",
           "BurningSensation",
-          "BurningSensation",
-          "Kloe",
-          "Kloe",
-          "Rodhet",
-          "Rodhet",
-          "FlakingDrySkin",
+          "Itch",
+          "Redness",
           "FlakingDrySkin",
           "Pimples",
-          "Pimples",
           "WateryEyes",
-          "WateryEyes",
-          "RennendeNese",
-          "RennendeNese",
-          "OverUnderpigmenteringIHuden",
-          "OverUnderpigmenteringIHuden",
-          "HairLoss",
+          "RunnyNose",
+          "OverUnderPigmentation",
           "HairLoss",
           "Dizziness",
-          "Dizziness",
           "Nausea",
-          "Nausea",
-          "Smerter",
-          "Smerter",
-          "AnafylaksiAllergiskSjokk",
-          "AnafylaksiAllergiskSjokk",
-          "Other",
+          "Pain",
+          "AnaphylaxisAllergicShock",
           "Other"
         ]
       },
@@ -2276,31 +2157,19 @@
         "type": "string",
         "description": "How long time after exposure did the reaction show",
         "x-enumNames": [
-          "Innen30Min",
           "WithinHalfHour",
           "HalfHourToOneHour",
-          "Innen30MinTil1Time",
           "Within24Hours",
-          "Innen24Timer",
           "MoreThan24Hours",
-          "MerEnn1Dogn",
           "Other",
-          "Annet",
-          "Unknown",
-          "VetIkke"
+          "Unknown"
         ],
         "enum": [
-          "Innen30Min",
-          "Innen30Min",
+          "WithinHalfHour",
           "HalfHourToOneHour",
-          "HalfHourToOneHour",
-          "Innen24Timer",
-          "Innen24Timer",
-          "MoreThan24Hours",
+          "Within24Hours",
           "MoreThan24Hours",
           "Other",
-          "Other",
-          "Unknown",
           "Unknown"
         ]
       },
@@ -2345,23 +2214,15 @@
         "type": "string",
         "description": "",
         "x-enumNames": [
-          "Ja",
           "Yes",
           "No",
-          "Nei",
           "Partial",
-          "Delvis",
-          "DontKnow",
-          "VetIkke"
+          "DontKnow"
         ],
         "enum": [
           "Yes",
-          "Yes",
-          "Nei",
-          "Nei",
-          "Delvis",
-          "Delvis",
-          "DontKnow",
+          "No",
+          "Partial",
           "DontKnow"
         ]
       },
@@ -2523,27 +2384,17 @@
         "type": "string",
         "description": "Purchase location",
         "x-enumNames": [
-          "UtsalgsstedINorge",
           "NorwegianDealer",
           "ForeignDealer",
-          "UtsalgsstedIUtlandet",
           "NorwegianWebShop",
-          "NetthandelINorge",
           "ForeignWebShop",
-          "NetthandelIUtlandet",
-          "Unknown",
-          "VetIkke"
+          "Unknown"
         ],
         "enum": [
           "NorwegianDealer",
-          "NorwegianDealer",
-          "ForeignDealer",
           "ForeignDealer",
           "NorwegianWebShop",
-          "NorwegianWebShop",
-          "NetthandelIUtlandet",
-          "NetthandelIUtlandet",
-          "Unknown",
+          "ForeignWebShop",
           "Unknown"
         ]
       },
@@ -3765,115 +3616,69 @@
         "type": "string",
         "description": "Medical equipment category",
         "x-enumNames": [
-          "AktivtImplanterbartUtstyr",
           "ActiveImplantableEquipment",
           "AnesthesiologicalAndRespiratoryEquipment",
-          "AnestesiologiskOgRespiratoriskUtstyr",
           "DentalEquipment",
-          "DentaltUtstyr",
           "ElectroMechanicEquipment",
-          "ElektromekaniskUtstyr",
           "HospitalEquipmentEquipment",
-          "Sykehusutrustning",
           "InVitroDiagnosticEquipment",
-          "InVitroDiagnostiskUtstyr",
           "PassiveImplantableEquipment",
-          "PassivtImplanterbartUtstyr",
           "OphthalmologicalAndOpticalEquipment",
-          "OftalmologiskOgOptiskUtstyr",
           "ReusableEquipment",
-          "Flergangsutstyr",
           "DisposeableEquipment",
-          "Engangsutstyr",
           "TechnicalAid",
-          "TekniskeHjelpemidler",
-          "DiagnosticAndTherapeuticRadiationEquipment",
-          "DiagnostiskOgTerapeutiskStralegivendeUtstyr"
+          "DiagnosticAndTherapeuticRadiationEquipment"
         ],
         "enum": [
-          "AktivtImplanterbartUtstyr",
-          "AktivtImplanterbartUtstyr",
+          "ActiveImplantableEquipment",
           "AnesthesiologicalAndRespiratoryEquipment",
-          "AnesthesiologicalAndRespiratoryEquipment",
-          "DentaltUtstyr",
-          "DentaltUtstyr",
-          "ElectroMechanicEquipment",
+          "DentalEquipment",
           "ElectroMechanicEquipment",
           "HospitalEquipmentEquipment",
-          "HospitalEquipmentEquipment",
-          "InVitroDiagnostiskUtstyr",
-          "InVitroDiagnostiskUtstyr",
-          "PassiveImplantableEquipment",
+          "InVitroDiagnosticEquipment",
           "PassiveImplantableEquipment",
           "OphthalmologicalAndOpticalEquipment",
-          "OphthalmologicalAndOpticalEquipment",
-          "Flergangsutstyr",
-          "Flergangsutstyr",
-          "DisposeableEquipment",
+          "ReusableEquipment",
           "DisposeableEquipment",
           "TechnicalAid",
-          "TechnicalAid",
-          "DiagnosticAndTherapeuticRadiationEquipment",
           "DiagnosticAndTherapeuticRadiationEquipment"
         ]
       },
       "EquipmentLocation": {
         "type": "string",
-        "description": "Hvor utstyret befinner seg på innsendingstidspunktet",
+        "description": "Where is the equipment located at the time of reporting",
         "x-enumNames": [
-          "Helseforetak",
-          "Healhcare",
+          "Healthcare",
           "PatientOrClient",
-          "PasientBruker",
           "SentToManufacturer",
-          "PaVeiTilProdusent",
           "Manufacturer",
-          "Produsent",
           "DistributorVendor",
-          "DistributorForhandlerOmsetter",
           "Discarded",
-          "Kastet",
           "StillImplanted",
-          "FortsattImplantert",
-          "Unknown",
-          "Ukjent"
+          "Unknown"
         ],
         "enum": [
-          "Healhcare",
-          "Healhcare",
-          "PasientBruker",
-          "PasientBruker",
-          "PaVeiTilProdusent",
-          "PaVeiTilProdusent",
-          "Produsent",
-          "Produsent",
-          "DistributorForhandlerOmsetter",
-          "DistributorForhandlerOmsetter",
-          "Kastet",
-          "Kastet",
-          "FortsattImplantert",
-          "FortsattImplantert",
-          "Unknown",
+          "Healthcare",
+          "PatientOrClient",
+          "SentToManufacturer",
+          "Manufacturer",
+          "DistributorVendor",
+          "Discarded",
+          "StillImplanted",
           "Unknown"
         ]
       },
       "IncidentClassification": {
         "type": "string",
-        "description": "Klassifikasjon av hendelse",
+        "description": "Incident classification",
         "x-enumNames": [
-          "Dodsfall",
           "Death",
           "SeriousDeterioration",
-          "AlvorligForverringAvHelsetilstand",
-          "MayHaveCausedDeathOrSeriousDeterioration",
-          "KunneHaFortTilDodEllerForverring"
+          "MayHaveCausedDeathOrSeriousDeterioration"
         ],
         "enum": [
-          "Dodsfall",
-          "Dodsfall",
+          "Death",
           "SeriousDeterioration",
-          "SeriousDeterioration",
-          "MayHaveCausedDeathOrSeriousDeterioration",
           "MayHaveCausedDeathOrSeriousDeterioration"
         ]
       },
@@ -3942,7 +3747,6 @@
             "additionalProperties": false,
             "required": [
               "Reporter",
-              "Patient",
               "Incident",
               "ReportAreas"
             ],
@@ -3956,7 +3760,8 @@
                 ]
               },
               "Patient": {
-                "description": "Patient part",
+                "description": "Patient part. Required for all report areas except Medical equipment",
+                "nullable": true,
                 "oneOf": [
                   {
                     "$ref": "#/components/schemas/AdverseIncidentPatientPart"
@@ -4018,7 +3823,7 @@
             "nullable": true
           },
           "Role": {
-            "description": "Role. Required for report area serious incident",
+            "description": "Role. Required for report area Serious incident",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/ReporterRole"
@@ -4027,7 +3832,7 @@
           },
           "Position": {
             "type": "string",
-            "description": "Position. Required for report area serious incident",
+            "description": "Position. Required for report area Serious incident",
             "maxLength": 64,
             "nullable": true
           }
@@ -4040,17 +3845,17 @@
         "properties": {
           "SSN": {
             "type": "string",
-            "description": "Social security number.\nRequired for report area drug side effects if date of birth and gender is not set.\nRequired for report area serious incident if name, gender, date of birth and nationality is not set",
+            "description": "Social security number.\nRequired for report area Drug side effects if date of birth and gender is not set.\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
             "pattern": "^\\d{11}$",
             "nullable": true
           },
           "DateOfBirth": {
             "type": "string",
-            "description": "Date of birth.\nRequired for report areas drug side effects and serious incident if SSN is not set",
+            "description": "Date of birth.\nRequired for report areas Drug side effects and Serious incident if SSN is not set",
             "nullable": true
           },
           "Gender": {
-            "description": "Gender.\nRequired for report areas drug side effects, serious incident, cosmetics and diatary supplements if SSN is not set",
+            "description": "Gender.\nRequired for report areas Drug side effects, Serious incident, Cosmetics and Diatary supplements if SSN is not set",
             "nullable": true,
             "oneOf": [
               {
@@ -4060,18 +3865,18 @@
           },
           "YearOfBirth": {
             "type": "integer",
-            "description": "Year of birth.\nRequired for report areas cosmetics and diatary supplements if SSN is not set",
+            "description": "Year of birth.\nRequired for report areas Cosmetics and Diatary supplements if SSN is not set",
             "format": "int32",
             "nullable": true
           },
           "Name": {
             "type": "string",
-            "description": "Name\nRequired for report area drug serious incidentif SSN is not set",
+            "description": "Name.\nRequired for report area Serious incident if SSN is not set",
             "nullable": true
           },
           "Nationality": {
             "type": "string",
-            "description": "Natinality\nRequired for report area drug serious incidentif SSN is not set",
+            "description": "Nationality.\nRequired for report area Serious incident if SSN is not set",
             "nullable": true
           }
         }
@@ -4091,12 +3896,12 @@
           },
           "IncidentDate": {
             "type": "string",
-            "description": "Incident date. Required for report area medical equipment",
+            "description": "Incident date. Required for report area Medical equipment",
             "nullable": true
           },
           "DateUnknown": {
             "type": "boolean",
-            "description": "Date unknown. Required for report area serious incident"
+            "description": "Date unknown flag. Required for report area Serious incident"
           }
         }
       },
@@ -4106,22 +3911,28 @@
         "additionalProperties": false,
         "properties": {
           "SeriousIncident": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if a Serious incident report is included in this request"
           },
           "DrugSideEffects": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if a Drug side effects report is included in this request"
           },
           "Biovigilance": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if a Biovigilance report is included in this request"
           },
           "Cosmetics": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if a Cosmetics report is included in this request"
           },
           "DietarySupplements": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if a Dietary supplements report is included in this request"
           },
           "MedicalEquipment": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if a Medical equipment report is included in this request"
           }
         }
       },
@@ -4131,7 +3942,7 @@
         "additionalProperties": false,
         "properties": {
           "SeriousIncident": {
-            "description": "AlvorligHendelse",
+            "description": "Serious incident report",
             "nullable": true,
             "oneOf": [
               {
@@ -4140,7 +3951,7 @@
             ]
           },
           "DrugSideEffects": {
-            "description": "LegemiddelBivirkning",
+            "description": "Drug side effects report",
             "nullable": true,
             "oneOf": [
               {
@@ -4149,7 +3960,7 @@
             ]
           },
           "Biovigilance": {
-            "description": "Biovigilans",
+            "description": "Biovigilance report",
             "nullable": true,
             "oneOf": [
               {
@@ -4158,7 +3969,7 @@
             ]
           },
           "Cosmetics": {
-            "description": "Kosmetikk",
+            "description": "Cosmetice report",
             "nullable": true,
             "oneOf": [
               {
@@ -4167,7 +3978,7 @@
             ]
           },
           "DietarySupplements": {
-            "description": "Kosttilskudd",
+            "description": "Dietary supplements report",
             "nullable": true,
             "oneOf": [
               {
@@ -4176,7 +3987,7 @@
             ]
           },
           "MedicalEquipment": {
-            "description": "MedisinskUtstyr",
+            "description": "Medical equipment report",
             "nullable": true,
             "oneOf": [
               {

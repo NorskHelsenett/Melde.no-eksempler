@@ -45,8 +45,7 @@ namespace Example.LegemiddelBivirkning
                     },
                     Patient = new DrugSideEffectsPatientPart
                     {
-                        DateOfBirth = "1990-03-07",
-                        Gender = Gender.Male
+                        SSN = "25868998388"
                     },
                     Incident = new DrugSideEffectsIncidentPart
                     {
@@ -126,7 +125,7 @@ namespace Example.LegemiddelBivirkning
             Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}-------------------------------------------------{Environment.NewLine}{Environment.NewLine}");
 
             // Call the API and wait for response
-            var apiClient = new EksternUonsketHendelseClient(httpClient);
+            var apiClient = new AdverseIncidentClient(httpClient);
             var response = await apiClient.LegemiddelBivirkningAsync(requestData);
 
             // If the call was succesful write out response
