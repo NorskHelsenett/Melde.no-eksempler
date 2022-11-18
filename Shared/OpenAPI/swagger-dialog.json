@@ -2,8 +2,8 @@
   "x-generator": "NSwag v13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
-    "title": "Melde.no API - ExternalDialog/v1",
-    "description": "<p>API for innmelding av uønsket hendelser og bivirkninger på legemidler og vaksiner.</p>\r\n<p>Eksempler på bruk av API finnes i <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">vårt eksempel-repo</a></p>\r\n",
+    "title": "Melde API - Dialog/v1",
+    "description": "<p>API for dialog handling</p>\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\n",
     "contact": {
       "name": "Norsk helsenett",
       "url": "https://www.nhn.no",
@@ -17,16 +17,16 @@
     }
   ],
   "paths": {
-    "/api/ekstern/v1/dialog": {
+    "/api/v1/dialog": {
       "post": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Oppretter en dialog for en gitt uønsket hendelse, meldeordning og pålogget saksbehandler.",
-        "operationId": "EksternDialog_StartDialog",
+        "summary": "Create a new dialog for the specified report, report area and authenticated process handler.",
+        "operationId": "Dialog_StartDialog",
         "requestBody": {
           "x-name": "payload",
-          "description": "Informasjon om hvilken uønsket hendelse og hvilken meldeordning man vil opprette dialog for",
+          "description": "Information specifying report reference and report area to associate the dialog with",
           "content": {
             "application/json": {
               "schema": {
@@ -39,7 +39,7 @@
         },
         "responses": {
           "201": {
-            "description": "Opprettet dialog",
+            "description": "Dialog created",
             "content": {
               "application/json": {
                 "schema": {
@@ -49,7 +49,7 @@
             }
           },
           "400": {
-            "description": "Dialog eksisterte, eller feil i meldingen, for eksempel påkrevde felt mangler",
+            "description": "Dialog already exists, request error or validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -60,7 +60,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -71,7 +71,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -82,7 +82,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -97,13 +97,13 @@
     "/api/ekstern/dialog": {
       "post": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Oppretter en dialog for en gitt uønsket hendelse, meldeordning og pålogget saksbehandler.",
-        "operationId": "EksternDialog_StartDialog2",
+        "summary": "Create a new dialog for the specified report, report area and authenticated process handler.",
+        "operationId": "Dialog_StartDialog2",
         "requestBody": {
           "x-name": "payload",
-          "description": "Informasjon om hvilken uønsket hendelse og hvilken meldeordning man vil opprette dialog for",
+          "description": "Information specifying report reference and report area to associate the dialog with",
           "content": {
             "application/json": {
               "schema": {
@@ -116,7 +116,7 @@
         },
         "responses": {
           "201": {
-            "description": "Opprettet dialog",
+            "description": "Dialog created",
             "content": {
               "application/json": {
                 "schema": {
@@ -126,7 +126,7 @@
             }
           },
           "400": {
-            "description": "Dialog eksisterte, eller feil i meldingen, for eksempel påkrevde felt mangler",
+            "description": "Dialog already exists, request error or validation error",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -137,7 +137,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -148,7 +148,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -159,7 +159,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -171,16 +171,16 @@
         }
       }
     },
-    "/api/ekstern/v1/dialog/message": {
+    "/api/v1/dialog/message": {
       "post": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Oppretter en ny melding i en gitt dialog.",
-        "operationId": "EksternDialog_SendMessage",
+        "summary": "Send a dialog message",
+        "operationId": "Dialog_SendMessage",
         "requestBody": {
           "x-name": "payload",
-          "description": "Hvilken dialog man vil opprette en ny melding i, og hvilken tekst det skal stå i meldingen",
+          "description": "Information needed to send a message",
           "content": {
             "application/json": {
               "schema": {
@@ -193,7 +193,7 @@
         },
         "responses": {
           "200": {
-            "description": "Opprettet dialogmelding",
+            "description": "Dialog message sent",
             "content": {
               "application/json": {
                 "schema": {
@@ -203,7 +203,7 @@
             }
           },
           "404": {
-            "description": "Finner ikke dialog",
+            "description": "Dialog not found",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -214,7 +214,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -225,7 +225,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -236,7 +236,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -251,13 +251,13 @@
     "/api/ekstern/dialog/message": {
       "post": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Oppretter en ny melding i en gitt dialog.",
-        "operationId": "EksternDialog_SendMessage2",
+        "summary": "Send a dialog message",
+        "operationId": "Dialog_SendMessage2",
         "requestBody": {
           "x-name": "payload",
-          "description": "Hvilken dialog man vil opprette en ny melding i, og hvilken tekst det skal stå i meldingen",
+          "description": "Information needed to send a message",
           "content": {
             "application/json": {
               "schema": {
@@ -270,7 +270,7 @@
         },
         "responses": {
           "200": {
-            "description": "Opprettet dialogmelding",
+            "description": "Dialog message sent",
             "content": {
               "application/json": {
                 "schema": {
@@ -280,7 +280,7 @@
             }
           },
           "404": {
-            "description": "Finner ikke dialog",
+            "description": "Dialog not found",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -291,7 +291,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -302,7 +302,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -313,7 +313,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -325,19 +325,19 @@
         }
       }
     },
-    "/api/ekstern/v1/dialog/{reportRef}": {
+    "/api/v1/dialog/{reportRef}": {
       "get": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Henter dialog info ut fra uønsket hendelse referansenummer.",
-        "operationId": "EksternDialog_GetDialogInfo",
+        "summary": "Get dialog reference for specified report and authenticated user.",
+        "operationId": "Dialog_GetDialogInfo",
         "parameters": [
           {
             "name": "reportRef",
             "in": "path",
             "required": true,
-            "description": "Referansenummer til uønsket hendelse. Format 'Uxxx...' eller 'Vxxx...'",
+            "description": "Report reference. Format [Uxxxx]' or [Vxxxx]",
             "schema": {
               "type": "string",
               "nullable": true
@@ -347,7 +347,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Uleste meldinger",
+            "description": "Dialog found",
             "content": {
               "application/json": {
                 "schema": {
@@ -357,7 +357,7 @@
             }
           },
           "404": {
-            "description": "Finner ikke dialog",
+            "description": "Dialog not found",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -368,7 +368,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -379,7 +379,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -390,7 +390,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -405,16 +405,16 @@
     "/api/ekstern/dialog/{reportRef}": {
       "get": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Henter dialog info ut fra uønsket hendelse referansenummer.",
-        "operationId": "EksternDialog_GetDialogInfo2",
+        "summary": "Get dialog reference for specified report and authenticated user.",
+        "operationId": "Dialog_GetDialogInfo2",
         "parameters": [
           {
             "name": "reportRef",
             "in": "path",
             "required": true,
-            "description": "Referansenummer til uønsket hendelse. Format 'Uxxx...' eller 'Vxxx...'",
+            "description": "Report reference. Format [Uxxxx]' or [Vxxxx]",
             "schema": {
               "type": "string",
               "nullable": true
@@ -424,7 +424,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Uleste meldinger",
+            "description": "Dialog found",
             "content": {
               "application/json": {
                 "schema": {
@@ -434,7 +434,7 @@
             }
           },
           "404": {
-            "description": "Finner ikke dialog",
+            "description": "Dialog not found",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -445,7 +445,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -456,7 +456,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -467,7 +467,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -479,19 +479,19 @@
         }
       }
     },
-    "/api/ekstern/v1/dialog/{dialogRef}/message": {
+    "/api/v1/dialog/{dialogRef}/message": {
       "get": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Henter ut alle uleste meldinger i angitt dialog",
-        "operationId": "EksternDialog_GetUnreadMessages",
+        "summary": "Get all unread messages in specified dialog",
+        "operationId": "Dialog_GetUnreadMessages",
         "parameters": [
           {
             "name": "dialogRef",
             "in": "path",
             "required": true,
-            "description": "Dialogreferanse. Formatet 'Dxxx...'",
+            "description": "Dialog reference. Format [Dxxxx]",
             "schema": {
               "type": "string",
               "nullable": true
@@ -501,7 +501,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Uleste meldinger",
+            "description": "Unread messages returned",
             "content": {
               "application/json": {
                 "schema": {
@@ -511,7 +511,7 @@
             }
           },
           "404": {
-            "description": "Finner ikke dialog",
+            "description": "Dialog not found",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -522,7 +522,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -533,7 +533,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -544,7 +544,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -559,16 +559,16 @@
     "/api/ekstern/dialog/{dialogRef}/message": {
       "get": {
         "tags": [
-          "EksternDialog"
+          "Dialog"
         ],
-        "summary": "Henter ut alle uleste meldinger i angitt dialog",
-        "operationId": "EksternDialog_GetUnreadMessages2",
+        "summary": "Get all unread messages in specified dialog",
+        "operationId": "Dialog_GetUnreadMessages2",
         "parameters": [
           {
             "name": "dialogRef",
             "in": "path",
             "required": true,
-            "description": "Dialogreferanse. Formatet 'Dxxx...'",
+            "description": "Dialog reference. Format [Dxxxx]",
             "schema": {
               "type": "string",
               "nullable": true
@@ -578,7 +578,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Uleste meldinger",
+            "description": "Unread messages returned",
             "content": {
               "application/json": {
                 "schema": {
@@ -588,7 +588,7 @@
             }
           },
           "404": {
-            "description": "Finner ikke dialog",
+            "description": "Dialog not found",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -599,7 +599,7 @@
             }
           },
           "401": {
-            "description": "Autentisering feilet",
+            "description": "Authentication failed",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -610,7 +610,7 @@
             }
           },
           "403": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "description": "Authorization failed. Check for valid scopes in access token",
             "content": {
               "application/octet-stream": {
                 "schema": {
@@ -621,7 +621,7 @@
             }
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
@@ -877,13 +877,13 @@
         "properties": {
           "ReportRef": {
             "type": "string",
-            "description": "Report reference number",
+            "description": "Reference to the report that this dialog is associated with, on the format [Uxxxx] or [Vxxxx]",
             "minLength": 1,
             "pattern": "^(U|V)[a-zA-Z0-9]{2,15}$"
           },
           "ReportArea": {
             "type": "integer",
-            "description": "Report area (Meldeordning)",
+            "description": "Report area id. Assigned by NHN when the API is activated.",
             "format": "int32"
           }
         }
@@ -918,30 +918,30 @@
         "properties": {
           "DialogRef": {
             "type": "string",
-            "description": "Dialog reference number",
+            "description": "Dialog reference for this message, on the format [Dxxxx]",
             "minLength": 1,
             "pattern": "^D[a-zA-Z0-9]{2,15}$"
           },
           "MessageText": {
             "type": "string",
-            "description": "Message text",
+            "description": "Message text. HTML formatting may be used if the receiving system supports it. Melde.no does.",
             "maxLength": 1048576,
             "minLength": 1
           },
           "SenderName": {
             "type": "string",
-            "description": "Sender name. If not specified, the client name will be used as sender name",
+            "description": "Sender name. For instance case manager name.\nIf not specified, the name of the client is used.",
             "maxLength": 64,
             "nullable": true
           },
           "NotifyRecipient": {
             "type": "boolean",
-            "description": "If false, do not notify receipient by email. Default is true",
+            "description": "Flag to control receiver notification.\nIf false, the receiver will not receive a notification (often email) about the new message.\nIf true, the receiver is notified.\nDefault is true.",
             "nullable": true
           },
           "Attachments": {
             "type": "array",
-            "description": "Vedlegg",
+            "description": "Message attachments. Max 5.",
             "maxItems": 5,
             "nullable": true,
             "items": {
@@ -960,6 +960,11 @@
             "description": "Attachment name",
             "nullable": true
           },
+          "AttachmentType": {
+            "type": "string",
+            "description": "Type of attachment (mime type)",
+            "nullable": true
+          },
           "Content": {
             "type": "string",
             "description": "Attachment content (base64 encoded)",
@@ -974,19 +979,19 @@
         "properties": {
           "DialogRef": {
             "type": "string",
-            "description": "Message reference number. Format 'Dxxx...'",
+            "description": "Dialog reference",
             "nullable": true
           }
         }
       },
       "GetUnreadMessagesResponse": {
         "type": "object",
-        "description": "GetUnreadMessagesResponse class",
+        "description": "Respons som inneholder en liste med uleste meldinger",
         "additionalProperties": false,
         "properties": {
           "Messages": {
             "type": "array",
-            "description": "List of messages",
+            "description": "Liste med meldinger",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/Message"
@@ -998,20 +1003,25 @@
         "type": "object",
         "description": "Message class",
         "additionalProperties": false,
+        "required": [
+          "MessageRef",
+          "ReceivedTime",
+          "ReportRef"
+        ],
         "properties": {
           "MessageRef": {
             "type": "string",
-            "description": "Message reference number. Format 'Mxxx...'",
-            "nullable": true
+            "description": "Referanse til melding på formatet [Mxxxx]",
+            "minLength": 1
           },
           "MessageText": {
             "type": "string",
-            "description": "Message text",
+            "description": "Meldingstekst",
             "nullable": true
           },
           "Attachments": {
             "type": "array",
-            "description": "Attachments",
+            "description": "Liste med vedlegg",
             "nullable": true,
             "items": {
               "$ref": "#/components/schemas/Attachment"
@@ -1019,13 +1029,14 @@
           },
           "ReceivedTime": {
             "type": "string",
-            "description": "Message received by Melde timestamp. ISO date time format in UTC\nExample. '2022-07-13T05:20:01.908Z'",
-            "format": "date-time"
+            "description": "Tidspunkt når meldingen ble mottatt av Melde. ISO datoformat i UTC.\nEksempel. '2022-07-13T05:20:01.908Z'",
+            "format": "date-time",
+            "minLength": 1
           },
           "ReportRef": {
             "type": "string",
-            "description": "Report reference number. Format 'Uxxx...' or 'Vxxx...'",
-            "nullable": true
+            "description": "Referanse til den uønskede hendelsen denne dialogmeldingen tilhører, på formatet [Uxxxx] eller [Vxxxx]",
+            "minLength": 1
           }
         }
       }

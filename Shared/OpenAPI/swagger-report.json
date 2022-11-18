@@ -3,7 +3,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Melde API - Report/v1",
-    "description": "<p>API for reporting adverse incidents</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
+    "description": "<p>API for reporting adverse incidents</p>\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\n",
     "contact": {
       "name": "Norsk helsenett",
       "url": "https://www.nhn.no",

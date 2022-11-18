@@ -34,7 +34,7 @@ namespace Example.Toveisdialog
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
-            var dialogClient = new EksternDialogClient(httpClient);
+            var dialogClient = new DialogClient(httpClient);
 
             //
             // Check wether dialog exists
