@@ -38,10 +38,10 @@ namespace Example.AlvorligHendelse
                     ExternalCaseId = Guid.NewGuid().ToString(),
                     Reporter = new SeriousIncidentReporterPart
                     {
-                        SSN = "13075706604",
+                        Nin = "13075706604",
                         Email = "TestData@melde.no",
                         Phone = "99999999",
-                        OrganizationNumber = "883974832",
+                        Organization = new OrganizationPart { OrgNumber = "883974832" },
                         Role = ReporterRole.Treator,
                         Position = "Lege"
                     },
@@ -54,7 +54,7 @@ namespace Example.AlvorligHendelse
                     {
                         //DateOfBirth = "1990-07-13",
                         //Gender = Gender.Male,
-                        SSN = "13075706604",
+                        Nin = "13075706604",
                     },
                 },
                 Report = new SeriousIncidentReportPart

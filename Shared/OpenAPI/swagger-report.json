@@ -1,9 +1,9 @@
 {
-  "x-generator": "NSwag v13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Melde API - Report/v1",
-    "description": "<p>API for reporting adverse incidents</p>\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\n",
+    "description": "<p>API for reporting adverse incidents</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
     "contact": {
       "name": "Norsk helsenett",
       "url": "https://www.nhn.no",
@@ -859,19 +859,9 @@
             "description": "Hva slags type feil det gjelder",
             "nullable": true
           },
-          "Source": {
-            "type": "string",
-            "description": "Hvilken klasse feilen oppsto i",
-            "nullable": true
-          },
           "CorrelationId": {
             "type": "string",
             "description": "KorrelasjonsId fra kallet som feilen oppsto i",
-            "nullable": true
-          },
-          "StackTrace": {
-            "type": "string",
-            "description": "Fylles bare ut i testmiljø - hvor i koden feilen oppsto",
             "nullable": true
           },
           "InnerException": {
@@ -961,25 +951,33 @@
         "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "SSN",
-          "OrganizationNumber",
+          "Organization",
           "Email",
           "Phone"
         ],
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number",
-            "minLength": 1,
+            "description": "National id number",
             "pattern": "^\\d{11}$",
+            "nullable": true,
             "example": "13065906141"
           },
-          "OrganizationNumber": {
-            "type": "string",
-            "description": "Organization number",
-            "minLength": 1,
-            "pattern": "^\\d{9}$",
-            "example": "883974832"
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "nullable": true
+          },
+          "Organization": {
+            "description": "Organization",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
           },
           "Email": {
             "type": "string",
@@ -988,29 +986,131 @@
             "minLength": 1,
             "example": "TestData@melde.no"
           },
+          "Name": {
+            "type": "string",
+            "description": "Name",
+            "maxLength": 100,
+            "nullable": true
+          },
           "Phone": {
             "type": "string",
             "description": "Phone number",
             "format": "phone",
             "minLength": 1,
             "example": "99999999"
+          },
+          "Qualification": {
+            "description": "Reporter's qualification",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Qualification"
+              }
+            ]
           }
         }
+      },
+      "OrganizationPart": {
+        "type": "object",
+        "description": "Organization part",
+        "additionalProperties": false,
+        "properties": {
+          "OrgNumber": {
+            "type": "string",
+            "description": "Organization number.\nRequired if Name is empty",
+            "pattern": "^\\d{9}$",
+            "nullable": true,
+            "example": 883974832
+          },
+          "Name": {
+            "type": "string",
+            "description": "Organization name.\nRequired if OrgNumber is empty",
+            "maxLength": 250,
+            "nullable": true,
+            "example": "ST. OLAVS HOSPITAL HF"
+          },
+          "Address": {
+            "type": "string",
+            "description": "Organization address",
+            "maxLength": 250,
+            "nullable": true,
+            "example": "SykehusGaten 5"
+          },
+          "ZipCode": {
+            "type": "string",
+            "description": "Organization zip code",
+            "maxLength": 10,
+            "nullable": true,
+            "example": "0424"
+          },
+          "City": {
+            "type": "string",
+            "description": "Organization city",
+            "maxLength": 250,
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Municipality": {
+            "type": "string",
+            "description": "Organization municipality",
+            "maxLength": 64,
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Institution": {
+            "type": "string",
+            "description": "Institution",
+            "maxLength": 250,
+            "nullable": true
+          },
+          "Department": {
+            "type": "string",
+            "description": "Department",
+            "maxLength": 250,
+            "nullable": true
+          },
+          "LocalReferenceNumber": {
+            "type": "string",
+            "description": "Local reference number if applicable",
+            "maxLength": 100,
+            "nullable": true,
+            "example": "ATL-123321"
+          }
+        }
+      },
+      "Qualification": {
+        "type": "string",
+        "description": "A person's qualification",
+        "x-enumNames": [
+          "Physician",
+          "Pharmacist",
+          "Other"
+        ],
+        "enum": [
+          "Lege",
+          "Farmasøyt",
+          "Annet"
+        ]
       },
       "DrugSideEffectsPatientPart": {
         "type": "object",
         "description": "Patient part",
         "additionalProperties": false,
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number",
+            "description": "National id number",
             "pattern": "^\\d{11}$",
             "nullable": true,
             "example": 15037104229
           },
+          "Initials": {
+            "type": "string",
+            "description": "Patient's initials",
+            "nullable": true
+          },
           "Gender": {
-            "description": "Gender",
+            "description": "Gender.\nRequired if Nin is not set",
             "nullable": true,
             "example": "Mann",
             "oneOf": [
@@ -1021,10 +1121,26 @@
           },
           "DateOfBirth": {
             "type": "string",
-            "description": "Date of birth",
+            "description": "Date of birth.\nRequired if Nin is not set",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
             "nullable": true,
             "example": "1980-05-25"
+          },
+          "Height": {
+            "type": "integer",
+            "description": "Height, in cm",
+            "format": "int32",
+            "maximum": 300.0,
+            "minimum": 1.0,
+            "nullable": true
+          },
+          "Weight": {
+            "type": "integer",
+            "description": "Weight, in kg",
+            "format": "int32",
+            "maximum": 250.0,
+            "minimum": 30.0,
+            "nullable": true
           }
         }
       },
@@ -1038,10 +1154,10 @@
           "NotSpecified"
         ],
         "enum": [
-          "NotKnown",
-          "Male",
-          "Female",
-          "NotSpecified"
+          "IkkeKjent",
+          "Mann",
+          "Kvinne",
+          "IkkeSpesifisert"
         ]
       },
       "DrugSideEffectsIncidentPart": {
@@ -1075,8 +1191,44 @@
             "maxLength": 100,
             "minLength": 1,
             "example": "MYSYS-REF8345"
+          },
+          "Language": {
+            "description": "Language. Default Norwegian",
+            "nullable": true,
+            "example": "English",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              }
+            ]
+          },
+          "ExternalMessageId": {
+            "type": "string",
+            "description": "External message id",
+            "format": "guid",
+            "nullable": true
           }
         }
+      },
+      "Language": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Unknown",
+          "Default",
+          "Norwegian",
+          "Norsk",
+          "English",
+          "Engelsk"
+        ],
+        "enum": [
+          "Unknown",
+          "Norwegian",
+          "Norwegian",
+          "Norwegian",
+          "English",
+          "English"
+        ]
       },
       "DrugSideEffectsReportPart": {
         "type": "object",
@@ -1205,9 +1357,9 @@
           "DontKnow"
         ],
         "enum": [
-          "Yes",
-          "No",
-          "DontKnow"
+          "Ja",
+          "Nei",
+          "VetIkke"
         ]
       },
       "DrugSideEffectsDosagePart": {
@@ -1281,12 +1433,12 @@
           "Other"
         ],
         "enum": [
-          "RightArm",
-          "LeftArm",
-          "RightThigh",
-          "LeftThigh",
-          "Orally",
-          "Other"
+          "HøyreArm",
+          "VenstreArm",
+          "HøyreLår",
+          "VenstreLår",
+          "Oralt",
+          "Annet"
         ]
       },
       "DoseNumber": {
@@ -1300,11 +1452,11 @@
           "NotInSeries"
         ],
         "enum": [
-          "One",
-          "Two",
-          "Three",
-          "Four",
-          "NotInSeries"
+          "En",
+          "To",
+          "Tre",
+          "Fire",
+          "IkkeISerie"
         ]
       },
       "DrugSideEffectsSymptomsPart": {
@@ -1363,8 +1515,8 @@
           "No"
         ],
         "enum": [
-          "Yes",
-          "No"
+          "Ja",
+          "Nei"
         ]
       },
       "SideEffectOutcome": {
@@ -1379,12 +1531,12 @@
           "Unknown"
         ],
         "enum": [
-          "FullyRecovered",
-          "Improvement",
-          "NoImprovement",
-          "RecoveredWithSymptoms",
-          "Death",
-          "Unknown"
+          "RestituertUtenEttervirkninger",
+          "BedringMenIkkeFullstendigRestituert",
+          "IngenBedring",
+          "RestituertMenMedEttervirkninger",
+          "Dod",
+          "Ukjent"
         ]
       },
       "DrugSideEffectsOtherInformationPart": {
@@ -1419,12 +1571,12 @@
           "Other"
         ],
         "enum": [
-          "Death",
-          "LifeThreatening",
-          "Hospitalization",
-          "PersistentDisability",
-          "AnomalyOrBirthDefect",
-          "Other"
+          "ResulterteIDod",
+          "Livstruende",
+          "SykehusinnleggelseForlengetOpphold",
+          "VedvarendeUforhetNedsattFunksjonsevne",
+          "AnomaliFodselsdefekt",
+          "Annet"
         ]
       },
       "AttachmentPart": {
@@ -1521,27 +1673,44 @@
         "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "SSN",
-          "OrganizationNumber",
+          "Organization",
           "Email",
           "Phone",
           "Role",
           "Position"
         ],
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number",
-            "minLength": 1,
+            "description": "National id number",
             "pattern": "^\\d{11}$",
+            "nullable": true,
             "example": "13065906141"
           },
-          "OrganizationNumber": {
-            "type": "string",
-            "description": "Organization number",
-            "minLength": 1,
-            "pattern": "^\\d{9}$",
-            "example": "883974832"
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "nullable": true
+          },
+          "Organization": {
+            "description": "Organization",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
+          },
+          "IncidentOrganization": {
+            "description": "Use if the incident occurred in an other organization",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
           },
           "Email": {
             "type": "string",
@@ -1590,10 +1759,10 @@
         ],
         "enum": [
           "DefaultNull",
-          "Manager",
-          "Treator",
-          "OtherEmployee",
-          "Other",
+          "Leder",
+          "Behandler",
+          "ØvrigAnsatt",
+          "Annet",
           "PatientUser",
           "NextOfKin",
           "OtherRelative"
@@ -1604,21 +1773,21 @@
         "description": "Patient part",
         "additionalProperties": false,
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number.\nRequired if patient's name, gender date of birth and nationality is not set.",
+            "description": "National id number\nRequired if patient's name, gender date of birth and nationality is not set.",
             "pattern": "^\\d{11}$",
             "nullable": true,
             "example": 15037104229
           },
           "Name": {
             "type": "string",
-            "description": "Name.\nRequired if SSN is not set",
+            "description": "Name.\nRequired if Nin is not set",
             "maxLength": 64,
             "nullable": true
           },
           "Gender": {
-            "description": "Gender.\nRequired if SSN is not set",
+            "description": "Gender.\nRequired if Nin is not set",
             "nullable": true,
             "example": "Mann",
             "oneOf": [
@@ -1629,14 +1798,14 @@
           },
           "DateOfBirth": {
             "type": "string",
-            "description": "Date og birth.\nRequired if SSN is not set",
+            "description": "Date og birth.\nRequired if Nin is not set",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
             "nullable": true,
             "example": "1990-03-15"
           },
           "Nationality": {
             "type": "string",
-            "description": "Nationality.\nRequired if SSN is not set",
+            "description": "Nationality.\nRequired if Nin is not set",
             "maxLength": 64,
             "nullable": true
           }
@@ -1729,12 +1898,6 @@
             "description": "Contact person's position",
             "maxLength": 64,
             "nullable": true
-          },
-          "Employer": {
-            "type": "string",
-            "description": "Employer",
-            "maxLength": 64,
-            "nullable": true
           }
         }
       },
@@ -1743,9 +1906,9 @@
         "description": "Next of kin",
         "additionalProperties": false,
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number",
+            "description": "National id number",
             "pattern": "^\\d{11}$",
             "nullable": true
           },
@@ -1755,13 +1918,13 @@
             "maxLength": 64,
             "nullable": true
           },
-          "Ralation": {
+          "Relation": {
             "type": "string",
-            "description": "Ralation to patient",
+            "description": "Relation to patient",
             "maxLength": 64,
             "nullable": true
           },
-          "IcClosestNextOfKin": {
+          "IsClosestNextOfKin": {
             "description": "Is closest next of kin",
             "maxLength": 64,
             "nullable": true,
@@ -1887,25 +2050,33 @@
         "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "SSN",
-          "OrganizationNumber",
+          "Organization",
           "Email",
           "Phone"
         ],
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social securrity number",
-            "minLength": 1,
+            "description": "National id number",
             "pattern": "^\\d{11}$",
+            "nullable": true,
             "example": "13065906141"
           },
-          "OrganizationNumber": {
-            "type": "string",
-            "description": "Organization number",
-            "minLength": 1,
-            "pattern": "^\\d{9}$",
-            "example": "883974832"
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "nullable": true
+          },
+          "Organization": {
+            "description": "Organization",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
           },
           "Email": {
             "type": "string",
@@ -2013,7 +2184,7 @@
             "minItems": 1,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/BodyLocation"
+              "type": "string"
             }
           },
           "Reactions": {
@@ -2023,7 +2194,7 @@
             "minItems": 1,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/Reaction"
+              "type": "string"
             }
           },
           "ReactionDelay": {
@@ -2049,110 +2220,6 @@
           }
         }
       },
-      "BodyLocation": {
-        "type": "string",
-        "description": "Hvor på kroppen",
-        "x-enumNames": [
-          "Face",
-          "Eye",
-          "EyeLidEyeArea",
-          "Lips",
-          "Nose",
-          "OralCavity",
-          "TeethGums",
-          "Tounge",
-          "Hair",
-          "Scalp",
-          "NeckThroat",
-          "Chest",
-          "Stomach",
-          "Rump",
-          "Back",
-          "Arm",
-          "Armpit",
-          "Elbow",
-          "Hand",
-          "Leg",
-          "Foot",
-          "AnusGenitals",
-          "Nail",
-          "WholeBody",
-          "OtherPlace"
-        ],
-        "enum": [
-          "Face",
-          "Eye",
-          "EyeLidEyeArea",
-          "Lips",
-          "Nose",
-          "OralCavity",
-          "TeethGums",
-          "Tounge",
-          "Hair",
-          "Scalp",
-          "NeckThroat",
-          "Chest",
-          "Stomach",
-          "Rump",
-          "Back",
-          "Arm",
-          "Armpit",
-          "Elbow",
-          "Hand",
-          "Leg",
-          "Foot",
-          "AnusGenitals",
-          "Nail",
-          "WholeBody",
-          "OtherPlace"
-        ]
-      },
-      "Reaction": {
-        "type": "string",
-        "description": "What kind og reaction occured",
-        "x-enumNames": [
-          "EczemaRash",
-          "HivesUrticaria",
-          "Swelling",
-          "Blisters",
-          "Nubs",
-          "BurningSensation",
-          "Itch",
-          "Redness",
-          "FlakingDrySkin",
-          "Pimples",
-          "WateryEyes",
-          "RunnyNose",
-          "OverUnderPigmentation",
-          "HairLoss",
-          "Dizziness",
-          "Nausea",
-          "Pain",
-          "AnaphylaxisAllergicShock",
-          "Other"
-        ],
-        "enum": [
-          "EczemaRash",
-          "HivesUrticaria",
-          "Swelling",
-          "Blisters",
-          "Nubs",
-          "BurningSensation",
-          "Itch",
-          "Redness",
-          "FlakingDrySkin",
-          "Pimples",
-          "WateryEyes",
-          "RunnyNose",
-          "OverUnderPigmentation",
-          "HairLoss",
-          "Dizziness",
-          "Nausea",
-          "Pain",
-          "AnaphylaxisAllergicShock",
-          "Other"
-        ]
-      },
       "ReactionDelay": {
         "type": "string",
         "description": "How long time after exposure did the reaction show",
@@ -2165,12 +2232,12 @@
           "Unknown"
         ],
         "enum": [
-          "WithinHalfHour",
-          "HalfHourToOneHour",
-          "Within24Hours",
-          "MoreThan24Hours",
-          "Other",
-          "Unknown"
+          "Innen30Min",
+          "Innen30MinTil1Time",
+          "Innen24Timer",
+          "MerEnn1Døgn",
+          "Annet",
+          "VetIkke"
         ]
       },
       "CosmeticsRelevantInformationPart": {
@@ -2202,6 +2269,12 @@
               "$ref": "#/components/schemas/Tilstand"
             }
           },
+          "ConditionOfSkinAreaBeforeUseDescription": {
+            "type": "string",
+            "description": "Condition of affected skin area before use of the products",
+            "maxLength": 250,
+            "nullable": true
+          },
           "AllergiesOrSkinDiseases": {
             "type": "string",
             "description": "Any allergies or skin diseases",
@@ -2220,10 +2293,10 @@
           "DontKnow"
         ],
         "enum": [
-          "Yes",
-          "No",
-          "Partial",
-          "DontKnow"
+          "Ja",
+          "Nei",
+          "Delvis",
+          "VetIkke"
         ]
       },
       "Tilstand": {
@@ -2275,7 +2348,8 @@
         "additionalProperties": false,
         "required": [
           "ProductName",
-          "ProductType"
+          "ProductType",
+          "ReportedToVendorOrManufacturer"
         ],
         "properties": {
           "ProductName": {
@@ -2297,6 +2371,14 @@
             "description": "Vendor or manufacturer",
             "maxLength": 64,
             "nullable": true
+          },
+          "ReportedToVendorOrManufacturer": {
+            "description": "Reported to vendor or producer?",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNoDontKnow"
+              }
+            ]
           },
           "BestBeforeDateExpired": {
             "description": "Best before date expired",
@@ -2391,11 +2473,11 @@
           "Unknown"
         ],
         "enum": [
-          "NorwegianDealer",
-          "ForeignDealer",
-          "NorwegianWebShop",
-          "ForeignWebShop",
-          "Unknown"
+          "UtsalgsstedINorge",
+          "UtsalgsstedIUtlandet",
+          "NetthandelINorge",
+          "NetthandelIUtlandet",
+          "VetIkke"
         ]
       },
       "SalesChannel": {
@@ -2412,14 +2494,14 @@
           "Other"
         ],
         "enum": [
-          "Pharmacy",
-          "Perfumery",
-          "Hairdresser",
-          "SkinCareSalon",
-          "HealthFoodStore",
-          "GroceryStore",
-          "TaxFreeShop",
-          "Other"
+          "Apotek",
+          "Perfymeri",
+          "Frisørsalong",
+          "Hudpleiesalong",
+          "Helsekostbutikk",
+          "Matvarebutikk",
+          "Taxfree",
+          "Annet"
         ]
       },
       "CosmeticsProductUsagePart": {
@@ -2449,6 +2531,64 @@
             "nullable": true
           }
         }
+      },
+      "BodyLocation": {
+        "type": "string",
+        "description": "Hvor på kroppen",
+        "x-enumNames": [
+          "Face",
+          "Eye",
+          "EyeLidEyeArea",
+          "Lips",
+          "Nose",
+          "OralCavity",
+          "TeethGums",
+          "Tounge",
+          "Hair",
+          "Scalp",
+          "NeckThroat",
+          "Chest",
+          "Stomach",
+          "Rump",
+          "Back",
+          "Arm",
+          "Armpit",
+          "Elbow",
+          "Hand",
+          "Leg",
+          "Foot",
+          "AnusGenitals",
+          "Nail",
+          "WholeBody",
+          "OtherPlace"
+        ],
+        "enum": [
+          "Ansikt",
+          "Øye",
+          "ØyelokkOmrådeRundtØyet",
+          "Lepper",
+          "Nese",
+          "Munnhule",
+          "TennerTannkjøtt",
+          "Tunge",
+          "Hår",
+          "Hodebunn",
+          "NakkeHals",
+          "Bryst",
+          "Mage",
+          "Rumpe",
+          "Rygg",
+          "Arm",
+          "Armhule",
+          "Albue",
+          "Hånd",
+          "Ben",
+          "Fot",
+          "OmrådeRundtAnusKjønnsorgan",
+          "Negler",
+          "HeleKroppen",
+          "AnnetSted"
+        ]
       },
       "DietarySupplementsRequest": {
         "type": "object",
@@ -2525,25 +2665,33 @@
         "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "SSN",
-          "OrganizationNumber",
+          "Organization",
           "Email",
           "Phone"
         ],
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number",
-            "minLength": 1,
+            "description": "National id number",
             "pattern": "^\\d{11}$",
+            "nullable": true,
             "example": "13065906141"
           },
-          "OrganizationNumber": {
-            "type": "string",
-            "description": "Organization number",
-            "minLength": 1,
-            "pattern": "^\\d{9}$",
-            "example": "883974832"
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "nullable": true
+          },
+          "Organization": {
+            "description": "Organization",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
           },
           "Email": {
             "type": "string",
@@ -2768,7 +2916,7 @@
           "Ingredients",
           "VendorOrManufacturer",
           "BestBeforeDate",
-          "ReportedToVendorOrProducer",
+          "ReportedToVendorOrManufacturer",
           "PurchaseLocation"
         ],
         "properties": {
@@ -2796,7 +2944,7 @@
             "minLength": 1,
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
           },
-          "ReportedToVendorOrProducer": {
+          "ReportedToVendorOrManufacturer": {
             "description": "Reported to vendor or producer?",
             "oneOf": [
               {
@@ -2960,24 +3108,32 @@
         "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "SSN",
-          "OrganizationNumber",
+          "Organization",
           "Email"
         ],
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number",
-            "minLength": 1,
+            "description": "National id number",
             "pattern": "^\\d{11}$",
+            "nullable": true,
             "example": "13065906141"
           },
-          "OrganizationNumber": {
-            "type": "string",
-            "description": "Organization number",
-            "minLength": 1,
-            "pattern": "^\\d{9}$",
-            "example": "883974832"
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "nullable": true
+          },
+          "Organization": {
+            "description": "Organization",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
           },
           "Email": {
             "type": "string",
@@ -3040,48 +3196,30 @@
         "description": "Biovigilance report part",
         "additionalProperties": false,
         "required": [
-          "Biovigilance"
+          "IncidentLocation",
+          "TypeOfIncident",
+          "ContributingFactors",
+          "Preventability",
+          "ActualConsequenceForPatient",
+          "Frequency",
+          "PossibleConsequenceOnRepetition"
         ],
         "properties": {
-          "Biovigilance": {
-            "description": "Report for incidents related to blood or cells and tissue, or organs (biovigilance)",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/BiovigilancePart"
-              }
-            ]
-          }
-        }
-      },
-      "BiovigilancePart": {
-        "type": "object",
-        "description": "Biovigilance part",
-        "additionalProperties": false,
-        "required": [
-          "StedForHendelsen",
-          "Hendelsestype",
-          "MedvirkendeFaktorer",
-          "Forebyggbarhet",
-          "FaktiskKonsekvensForPasient",
-          "Hyppighet",
-          "MuligKonsekvensVedGjentakelse"
-        ],
-        "properties": {
-          "StedForHendelsen": {
+          "IncidentLocation": {
             "type": "string",
             "description": "Sted for hendelsen kode (1.x...). Obligatorisk",
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": "1.6.4"
           },
-          "Hendelsestype": {
+          "TypeOfIncident": {
             "type": "string",
             "description": "Hendelsestype kode (2.x...). Obligatorisk",
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": "2.10.1.1.1"
           },
-          "MedvirkendeFaktorer": {
+          "ContributingFactors": {
             "type": "array",
             "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\nReturnerer en liste med valgte koder.",
             "pattern": "^([0-9.])+$",
@@ -3093,77 +3231,77 @@
               "type": "string"
             }
           },
-          "Forebyggbarhet": {
+          "Preventability": {
             "type": "string",
             "description": "Forebuggbarhet kode (4.x...). Obligatorisk",
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 4.3
           },
-          "FaktiskKonsekvensForPasient": {
+          "ActualConsequenceForPatient": {
             "type": "string",
             "description": "Faktisk konsekvens for pasient kode (5.x...). Obligatorisk",
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 5.2
           },
-          "Hyppighet": {
+          "Frequency": {
             "type": "string",
             "description": "Hyppighet kode (6.x...). Obligatorisk",
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 6.3
           },
-          "MuligKonsekvensVedGjentakelse": {
+          "PossibleConsequenceOnRepetition": {
             "type": "string",
             "description": "Mulig konsekvens ved gjentakelse kode (7.x...). Obligatorisk",
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 7.4
           },
-          "Antistoff": {
+          "AntiSubstance": {
             "type": "string",
             "description": "Tilleggsinfo: Antistoff tekst",
             "maxLength": 300,
             "nullable": true,
             "example": "Anti-D"
           },
-          "AutologKode": {
+          "AutologousCode": {
             "type": "string",
             "description": "Tilleggsinfo: AutologKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 3
           },
-          "AvdelingKode": {
+          "DepartmentCode": {
             "type": "string",
             "description": "Tilleggsinfo: AvdelingsKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 5
           },
-          "AvregistreringKode": {
+          "DeregistrationCode": {
             "type": "string",
             "description": "Tilleggsinfo: AvregistreringKode",
             "pattern": "^\\d$",
             "nullable": true,
             "example": 1
           },
-          "BlodproduktKode": {
+          "BloodProductCode": {
             "type": "string",
             "description": "Tilleggsinfo: BlodproduktKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 2
           },
-          "CellerOgVevDefinisjonKode": {
+          "CellsAndTissuesDefinitionCode": {
             "type": "string",
             "description": "Tilleggsinfo: CellerOgVevDefinisjonKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 4
           },
-          "CellerOgVevKode": {
+          "CellsAndTissuesCode": {
             "type": "array",
             "description": "Tilleggsinfo: CellerOgVevKode",
             "pattern": "^\\d{1,2}$",
@@ -3176,28 +3314,28 @@
               "type": "string"
             }
           },
-          "DefinisjonKode": {
+          "DefinitionCode": {
             "type": "string",
             "description": "Tilleggsinfo: DefinisjonKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 1
           },
-          "DonorlandKode": {
+          "DonorCountyCode": {
             "type": "string",
             "description": "Tilleggsinfo: DonorlandKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 1
           },
-          "GivererfaringKode": {
+          "DonorExperienceCode": {
             "type": "string",
             "description": "Tilleggsinfo: GivererfaringKode",
             "pattern": "^\\d$",
             "nullable": true,
             "example": 2
           },
-          "HvaGikkGaltKode": {
+          "WhatWentWrongCode": {
             "type": "array",
             "description": "Tilleggsinfo: HvaGikkGaltKode",
             "pattern": "^\\d{1,2}$",
@@ -3210,21 +3348,21 @@
               "type": "string"
             }
           },
-          "OppdagetKode": {
+          "DiscoveredCode": {
             "type": "string",
             "description": "Tilleggsinfo: OppdagetKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 3
           },
-          "OrganDefinisjonKode": {
+          "OrganDefinitionCode": {
             "type": "string",
             "description": "Tilleggsinfo: OrganDefinisjonKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 1
           },
-          "OrganKode": {
+          "OrganCode": {
             "type": "array",
             "description": "Tilleggsinfo: OrganKode",
             "pattern": "^\\d{1,2}$",
@@ -3237,28 +3375,28 @@
               "type": "string"
             }
           },
-          "ReaksjonStartetHvorKode": {
+          "ReactionStartedLocationCode": {
             "type": "string",
             "description": "Tilleggsinfo: ReaksjonStartetHvorKode",
             "pattern": "^\\d$",
             "nullable": true,
             "example": 3
           },
-          "ReaksjonsvarighetKode": {
+          "ReactionDurationCode": {
             "type": "string",
             "description": "Tilleggsinfo: ReaksjonsvarighetKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 4
           },
-          "SykemeldingKode": {
+          "SickLeaveCode": {
             "type": "string",
             "description": "Tilleggsinfo: SykemeldingKode",
             "pattern": "^\\d$",
             "nullable": true,
             "example": 2
           },
-          "SymptomKode": {
+          "SymptomsCode": {
             "type": "array",
             "description": "Tilleggsinfo: SymptomKode",
             "pattern": "^\\d{1,2}$",
@@ -3271,21 +3409,21 @@
               "type": "string"
             }
           },
-          "TappetypeKode": {
+          "TapTypeCode": {
             "type": "string",
             "description": "Tilleggsinfo: TappetypeKode",
             "pattern": "^\\d{1,2}$",
             "nullable": true,
             "example": 2
           },
-          "TidTilReaksjonKode": {
+          "TimeBeforeReactionCode": {
             "type": "string",
             "description": "Tilleggsinfo: TidTilReaksjonKode",
             "pattern": "^\\d$",
             "nullable": true,
             "example": 3
           },
-          "TilleggsinfoBlodproduktKode": {
+          "AdditionalBloodProductCode": {
             "type": "array",
             "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
             "pattern": "^\\d$",
@@ -3298,7 +3436,7 @@
               "type": "string"
             }
           },
-          "TiltakKode": {
+          "MeasuresCode": {
             "type": "array",
             "description": "Tilleggsinfo: TiltakKode",
             "pattern": "^\\d$",
@@ -3311,33 +3449,33 @@
               "type": "string"
             }
           },
-          "TransfusjonsindikasjonKode": {
+          "TransfusionCode": {
             "type": "string",
             "description": "Tilleggsinfo: TransfusjonsindikasjonKode",
             "pattern": "^\\d$",
             "nullable": true,
             "example": 2
           },
-          "AarsakssammenhengKode": {
+          "CausationCode": {
             "type": "string",
             "description": "Tilleggsinfo: AarsakssammenhengKode",
             "pattern": "^\\d$",
             "nullable": true,
             "example": 3
           },
-          "ISBT128Produktkode": {
+          "ISBT128ProductCode": {
             "type": "string",
             "description": "ISBT128Produktkode tekst",
             "maxLength": 150,
             "nullable": true
           },
-          "ScandiatransplantNummer": {
+          "ScandiaTransplantNumber": {
             "type": "string",
             "description": "ScandiatransplantNummer tekst",
             "maxLength": 300,
             "nullable": true
           },
-          "Smittestoff": {
+          "InfectiousSubstance": {
             "type": "string",
             "description": "Smittestoff tekst",
             "maxLength": 300,
@@ -3411,25 +3549,33 @@
         "description": "Reporter part",
         "additionalProperties": false,
         "required": [
-          "SSN",
-          "OrganizationNumber",
+          "Organization",
           "Email",
           "Phone"
         ],
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number",
-            "minLength": 1,
+            "description": "National id number",
             "pattern": "^\\d{11}$",
+            "nullable": true,
             "example": "13065906141"
           },
-          "OrganizationNumber": {
-            "type": "string",
-            "description": "Organization number",
-            "minLength": 1,
-            "pattern": "^\\d{9}$",
-            "example": "883974832"
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "nullable": true
+          },
+          "Organization": {
+            "description": "Organization",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
           },
           "Email": {
             "type": "string",
@@ -3472,24 +3618,6 @@
       "MedicalEquipmentReportPart": {
         "type": "object",
         "description": "Medical equipment report part",
-        "additionalProperties": false,
-        "required": [
-          "MedicalEquipment"
-        ],
-        "properties": {
-          "MedicalEquipment": {
-            "description": "Medical equipment part",
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/MedicalEquipmentPart"
-              }
-            ]
-          }
-        }
-      },
-      "MedicalEquipmentPart": {
-        "type": "object",
-        "description": "Medical equipment part",
         "additionalProperties": false,
         "required": [
           "EquipmentName",
@@ -3605,7 +3733,7 @@
             "description": "Generert ID i En Vei Inn sin database",
             "format": "int64"
           },
-          "Navn": {
+          "Name": {
             "type": "string",
             "description": "Name of the item",
             "nullable": true
@@ -3630,18 +3758,18 @@
           "DiagnosticAndTherapeuticRadiationEquipment"
         ],
         "enum": [
-          "ActiveImplantableEquipment",
-          "AnesthesiologicalAndRespiratoryEquipment",
-          "DentalEquipment",
-          "ElectroMechanicEquipment",
-          "HospitalEquipmentEquipment",
-          "InVitroDiagnosticEquipment",
-          "PassiveImplantableEquipment",
-          "OphthalmologicalAndOpticalEquipment",
-          "ReusableEquipment",
-          "DisposeableEquipment",
-          "TechnicalAid",
-          "DiagnosticAndTherapeuticRadiationEquipment"
+          "AktivtImplanterbartUtstyr",
+          "AnestesiologiskOgRespiratoriskUtstyr",
+          "DentaltUtstyr",
+          "ElektromekaniskUtstyr",
+          "Sykehusutrustning",
+          "InVitroDiagnostiskUtstyr",
+          "PassivtImplanterbartUtstyr",
+          "OftalmologiskOgOptiskUtstyr",
+          "Flergangsutstyr",
+          "Engangsutstyr",
+          "TekniskeHjelpemidler",
+          "DiagnostiskOgTerapeutiskStralegivendeUtstyr"
         ]
       },
       "EquipmentLocation": {
@@ -3658,14 +3786,14 @@
           "Unknown"
         ],
         "enum": [
-          "Healthcare",
-          "PatientOrClient",
-          "SentToManufacturer",
-          "Manufacturer",
-          "DistributorVendor",
-          "Discarded",
-          "StillImplanted",
-          "Unknown"
+          "Helseforetak",
+          "PasientBruker",
+          "PaVeiTilProdusent",
+          "Produsent",
+          "DistributorForhandlerOmsetter",
+          "Kastet",
+          "FortsattImplantert",
+          "Ukjent"
         ]
       },
       "IncidentClassification": {
@@ -3677,9 +3805,9 @@
           "MayHaveCausedDeathOrSeriousDeterioration"
         ],
         "enum": [
-          "Death",
-          "SeriousDeterioration",
-          "MayHaveCausedDeathOrSeriousDeterioration"
+          "Dodsfall",
+          "AlvorligForverringAvHelsetilstand",
+          "KunneHaFortTilDodEllerForverring"
         ]
       },
       "MedicalEquipmentImplantInformation": {
@@ -3691,13 +3819,13 @@
             "type": "string",
             "description": "Implant date.\nYear only or year and month are also accepted",
             "nullable": true,
-            "example": "2021-10-23 or 2021-10 og 2021"
+            "example": "2021-10-23 or 2021-10 or 2021"
           },
           "ExplantDate": {
             "type": "string",
             "description": "Explant date\nYear only or year and month are also accepted",
             "nullable": true,
-            "example": "2021-10-23 or 2021-10 og 2021"
+            "example": "2021-10-23 or 2021-10 or 2021"
           }
         }
       },
@@ -3725,14 +3853,6 @@
                 "$ref": "#/components/schemas/AdverseIncidentReportPart"
               }
             ]
-          },
-          "ReportAreas": {
-            "type": "array",
-            "description": "Returere en liste med meldeordninger i denne meldingen",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/ReportArea"
-            }
           }
         }
       },
@@ -3793,22 +3913,40 @@
         "description": "Adverse incident part",
         "additionalProperties": false,
         "required": [
-          "SSN",
-          "OrganizationNumber",
+          "Organization",
           "Email"
         ],
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
             "description": "Social security number",
-            "minLength": 1,
-            "pattern": "^\\d{11}$"
+            "pattern": "^\\d{11}$",
+            "nullable": true
           },
-          "OrganizationNumber": {
-            "type": "string",
-            "description": "Orgaization number",
-            "minLength": 1,
-            "pattern": "^\\d{9}$"
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "nullable": true
+          },
+          "Organization": {
+            "description": "Organization",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
+          },
+          "IncidentOrganization": {
+            "description": "Use if the incident occurred in an other organization",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/OrganizationPart"
+              }
+            ]
           },
           "Email": {
             "type": "string",
@@ -3816,11 +3954,26 @@
             "format": "email",
             "minLength": 1
           },
+          "Name": {
+            "type": "string",
+            "description": "Name",
+            "maxLength": 100,
+            "nullable": true
+          },
           "Phone": {
             "type": "string",
             "description": "Phone number.\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
             "format": "phone",
             "nullable": true
+          },
+          "Qualification": {
+            "description": "Reporter's qualification",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Qualification"
+              }
+            ]
           },
           "Role": {
             "description": "Role. Required for report area Serious incident",
@@ -3843,19 +3996,24 @@
         "description": "UonsketHendelsePasientPart",
         "additionalProperties": false,
         "properties": {
-          "SSN": {
+          "Nin": {
             "type": "string",
-            "description": "Social security number.\nRequired for report area Drug side effects if date of birth and gender is not set.\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
+            "description": "National is number.\nRequired for report area Drug side effects if date of birth and gender is not set.\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
             "pattern": "^\\d{11}$",
+            "nullable": true
+          },
+          "Initials": {
+            "type": "string",
+            "description": "Patient's initials",
             "nullable": true
           },
           "DateOfBirth": {
             "type": "string",
-            "description": "Date of birth.\nRequired for report areas Drug side effects and Serious incident if SSN is not set",
+            "description": "Date of birth.\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
             "nullable": true
           },
           "Gender": {
-            "description": "Gender.\nRequired for report areas Drug side effects, Serious incident, Cosmetics and Diatary supplements if SSN is not set",
+            "description": "Gender.\nRequired for report areas Drug side effects, Serious incident, Cosmetics and Diatary supplements if Nin is not set",
             "nullable": true,
             "oneOf": [
               {
@@ -3865,18 +4023,34 @@
           },
           "YearOfBirth": {
             "type": "integer",
-            "description": "Year of birth.\nRequired for report areas Cosmetics and Diatary supplements if SSN is not set",
+            "description": "Year of birth.\nRequired for report areas Cosmetics and Diatary supplements if Nin is not set",
             "format": "int32",
             "nullable": true
           },
           "Name": {
             "type": "string",
-            "description": "Name.\nRequired for report area Serious incident if SSN is not set",
+            "description": "Name.\nRequired for report area Serious incident if Nin is not set",
             "nullable": true
           },
           "Nationality": {
             "type": "string",
-            "description": "Nationality.\nRequired for report area Serious incident if SSN is not set",
+            "description": "Nationality.\nRequired for report area Serious incident if Nin is not set",
+            "nullable": true
+          },
+          "Height": {
+            "type": "integer",
+            "description": "Height, in cm",
+            "format": "int32",
+            "maximum": 300.0,
+            "minimum": 1.0,
+            "nullable": true
+          },
+          "Weight": {
+            "type": "integer",
+            "description": "Weight, in kg",
+            "format": "int32",
+            "maximum": 250.0,
+            "minimum": 30.0,
             "nullable": true
           }
         }
@@ -3996,56 +4170,6 @@
             ]
           }
         }
-      },
-      "ReportArea": {
-        "type": "integer",
-        "description": "",
-        "x-enumNames": [
-          "Legemiddelbivirkning",
-          "DrugSideEffects",
-          "Cosmetics",
-          "Kosmetikkbivirkning",
-          "DietarySupplements",
-          "Kosttilskuddbivirkning",
-          "VaccineSideEffects",
-          "Vaksinebivirkning",
-          "MedicalEquipment",
-          "MedisinskUtstyr",
-          "SeriousIncident",
-          "Varselordningen33A",
-          "InvestigationBoard",
-          "Undersokelseskommisjonen",
-          "Biovigilance",
-          "Biovigilans",
-          "PPSeriousIncident",
-          "PPAlvorligHendelse",
-          "PPSideEffects",
-          "PPBivirkning",
-          "SmokeTest"
-        ],
-        "enum": [
-          2,
-          2,
-          4,
-          4,
-          5,
-          5,
-          6,
-          6,
-          7,
-          7,
-          8,
-          8,
-          9,
-          9,
-          10,
-          10,
-          100,
-          100,
-          101,
-          101,
-          999
-        ]
       },
       "NokupLookupResult": {
         "type": "object",

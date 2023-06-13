@@ -37,10 +37,10 @@ namespace Example.Kosmetikk
                     ExternalCaseId = Guid.NewGuid().ToString(),
                     Reporter = new MedicalEquipmentReporterPart
                     {
-                        SSN = "13075706604",
+                        Nin = "13075706604",
                         Email = "TestData@melde.no",
                         Phone = "99999999",
-                        OrganizationNumber = "883974832"
+                        Organization = new OrganizationPart { OrgNumber = "883974832" },
                     },
                     Incident = new MedicalEquipmentIncidentPart
                     {
@@ -50,14 +50,11 @@ namespace Example.Kosmetikk
                 },
                 Report = new MedicalEquipmentReportPart
                 {
-                    MedicalEquipment = new MedicalEquipmentPart
-                    {
-                        EquipmentName = "Storz 488 B",
-                        Manufacturer = "Storz",
-                        EquipmentLocation = EquipmentLocation.Healthcare,
-                        NkknCategory = NkknCategory.ActiveImplantableEquipment,
-                        IncidentClassification = IncidentClassification.MayHaveCausedDeathOrSeriousDeterioration,
-                    }
+                    EquipmentName = "Storz 488 B",
+                    Manufacturer = "Storz",
+                    EquipmentLocation = EquipmentLocation.Healthcare,
+                    NkknCategory = NkknCategory.ActiveImplantableEquipment,
+                    IncidentClassification = IncidentClassification.MayHaveCausedDeathOrSeriousDeterioration,
                 }
             };
 

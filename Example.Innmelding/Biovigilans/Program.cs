@@ -85,9 +85,9 @@ namespace Example.Biovigilans
                     ExternalCaseId = Guid.NewGuid().ToString(),
                     Reporter = new BiovigilanceReporterPart
                     {
-                        SSN = "13075706604",
+                        Nin = "13075706604",
                         Email = "TestData@melde.no",
-                        OrganizationNumber = "883974832",
+                        Organization = new OrganizationPart { OrgNumber = "883974832" },
                     },
                     Incident= new BiovigilanceIncidentPart
                     {
@@ -102,18 +102,15 @@ namespace Example.Biovigilans
                 },
                 Report = new BiovigilanceReportPart
                 {
-                    Biovigilance = new BiovigilancePart
-                    {
-                        StedForHendelsen = "1.1",
-                        Hendelsestype = hendelsestype,
-                        MedvirkendeFaktorer = new string[] { "3.2.1" },
-                        Forebyggbarhet = "4.1",
-                        FaktiskKonsekvensForPasient = "5.2",
-                        Hyppighet = "6.2",
-                        MuligKonsekvensVedGjentakelse = "7.3",
-                        DefinisjonKode = definisjonKode,
-                        OppdagetKode = oppdagetKode
-                    }
+                    IncidentLocation = "1.1",
+                    TypeOfIncident = hendelsestype,
+                    ContributingFactors = new string[] { "3.2.1" },
+                    Preventability = "4.1",
+                    ActualConsequenceForPatient = "5.2",
+                    Frequency = "6.2",
+                    PossibleConsequenceOnRepetition = "7.3",
+                    DefinitionCode = definisjonKode,
+                    DiscoveredCode = oppdagetKode
                 }
             };
 

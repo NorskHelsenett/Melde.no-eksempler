@@ -19,7 +19,7 @@ namespace Example.Varselordningen
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/uonskethendelse" }, Config.ClientType);
+                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/report/send" }, Config.ClientType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();
@@ -34,10 +34,10 @@ namespace Example.Varselordningen
                     ExternalCaseId = Guid.NewGuid().ToString(),
                     Reporter = new AdverseIncidentReporterPart
                     {
-                        SSN = "13075706604",
+                        Nin = "13075706604",
                         Email = "TestData@melde.no",
                         Phone = "99999999",
-                        OrganizationNumber = "883974832",
+                        Organization = new OrganizationPart { OrgNumber = "883974832" },
                         Role = ReporterRole.Treator,
                         Position = "Lege"
                     },
@@ -50,12 +50,13 @@ namespace Example.Varselordningen
                     {
                         //DateOfBirth = "1990-07-13",
                         //Gender = Gender.Male,
-                        SSN = "13075706604"
+                        Nin = "13075706604"
                     },
                     ReportAreas = new AdverseIncidentReportAreasPart
                     {
                         SeriousIncident = true,
-                        DietarySupplements = true
+                        DietarySupplements = true,
+                        Biovigilance = true
                     },
                 },
                 Report = new AdverseIncidentReportPart
@@ -86,8 +87,8 @@ namespace Example.Varselordningen
                         {
                             Reactions = new List<string>()
                             {
-                                Reaction.EczemaRash.ToString(),
-                                Reaction.Swelling.ToString()
+                                "EczemaRash",
+                                "Swelling"
                             },
                             ReactionDelay = "ReakTid",
                             ReactionDelayDescription = "ReakTidTekst",
@@ -112,7 +113,7 @@ namespace Example.Varselordningen
                                     Ingredients = "Ingr",
                                     VendorOrManufacturer = "LevProdusent",
                                     BestBeforeDate = "2022-12-02",
-                                    ReportedToVendorOrProducer = YesNoDontKnow.DontKnow,
+                                    ReportedToVendorOrManufacturer = YesNoDontKnow.DontKnow,
                                     PurchaseLocation = "Hvor",
                                     ShopName = "Butikknavn",
                                     BatchLotNumber = "Batch",
@@ -137,6 +138,18 @@ namespace Example.Varselordningen
                                 }
                             }
                         }
+                    },
+                    Biovigilance = new BiovigilanceReportPart
+                    {
+                        IncidentLocation = "1.1",
+                        TypeOfIncident = "2.10.1.1.1",
+                        ContributingFactors = new string[] { "3.2.1" },
+                        Preventability = "4.1",
+                        ActualConsequenceForPatient = "5.2",
+                        Frequency = "6.2",
+                        PossibleConsequenceOnRepetition = "7.3",
+                        DefinitionCode = "3",
+                        DiscoveredCode = "2"
                     }
                 }
             };

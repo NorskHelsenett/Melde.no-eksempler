@@ -38,11 +38,11 @@ namespace Example.Kosmetikk
                     ExternalCaseId = Guid.NewGuid().ToString(),
                     Reporter = new CosmeticsReporterPart
                     {
-                        SSN = "13075706604",
+                        Nin = "13075706604",
                         Email = "TestData@melde.no",
                         Phone = "99887766",
-                        OrganizationNumber = "883974832",
-                        
+                        Organization = new OrganizationPart { OrgNumber = "883974832" },
+
                     },
                     Incident = new CosmeticsIncidentPart
                     {
@@ -58,15 +58,15 @@ namespace Example.Kosmetikk
                 {
                     SideEffects = new CosmeticsSideEffectsPart
                     {
-                        AffectedSkinAreas = new List<BodyLocation>
+                        AffectedSkinAreas = new List<string>
                         {
-                            BodyLocation.Face,
-                            BodyLocation.Stomach,
+                            "Face",
+                            "Stomach",
                         },
-                        Reactions = new List<Reaction>
+                        Reactions = new List<string>
                         {
-                            Reaction.EczemaRash,
-                            Reaction.Swelling
+                            "EczemaRash",
+                            "Swelling"
                         },
                         ReactionDelay = ReactionDelay.WithinHalfHour,
                     },

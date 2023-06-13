@@ -38,14 +38,14 @@ namespace Example.LegemiddelBivirkning
                     ExternalCaseId = Guid.NewGuid().ToString(),
                     Reporter = new DrugSideEffectsReporterPart
                     {
-                        SSN = "13065906141",
-                        OrganizationNumber = "883974832",
+                        Nin = "13065906141",
+                        Organization = new OrganizationPart { OrgNumber = "883974832" },
                         Email = "TestData@melde.no",
                         Phone = "99999999"
                     },
                     Patient = new DrugSideEffectsPatientPart
                     {
-                        SSN = "25868998388"
+                        Nin = "25868998388"
                     },
                     Incident = new DrugSideEffectsIncidentPart
                     {

@@ -38,10 +38,10 @@ namespace Example.Kosmetikk
                     ExternalCaseId = Guid.NewGuid().ToString(),
                     Reporter = new DietarySupplementsReporterPart
                     {
-                        SSN = "13075706604",
+                        Nin = "13075706604",
                         Email = "TestData@melde.no",
                         Phone = "99887766",
-                        OrganizationNumber = "883974832"
+                        Organization = new OrganizationPart { OrgNumber = "883974832" },
                     },
                     Incident = new DietarySupplementsIncidentPart
                     {
@@ -59,8 +59,8 @@ namespace Example.Kosmetikk
                     {
                         Reactions = new List<string>()
                         {
-                            Reaction.EczemaRash.ToString(),
-                            Reaction.Swelling.ToString()
+                            "EczemaRash",
+                            "Swelling"
                         },
                         ReactionDelay = "ReakTid",
                         ReactionDelayDescription = "ReakTidTekst",
@@ -85,7 +85,7 @@ namespace Example.Kosmetikk
                                 Ingredients = "Ingr",
                                 VendorOrManufacturer = "LevProdusent",
                                 BestBeforeDate = "2022-12-02",
-                                ReportedToVendorOrProducer = YesNoDontKnow.DontKnow,
+                                ReportedToVendorOrManufacturer = YesNoDontKnow.DontKnow,
                                 PurchaseLocation = "Hvor",
                                 ShopName = "Butikknavn",
                                 BatchLotNumber = "Batch",
