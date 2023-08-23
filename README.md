@@ -1,5 +1,9 @@
-# Melde.no eksempler
+# Melde.no API client examples
 
-Dette repoet inneholder to eksempel-prosjekt som viser hvordan man implementerer klienter for API-ene for innmelding av uønskede hendelser og toveis dialog i Melde.
+This repo contains two example projects which show how to implement clients for the Melde APIs.
 
-For å kunne kjøre disse trenger man en JSON Web Key (JWK). Ta kontakt med NHN for dette.
+- Example.Reporting: Shows how to report an adverse incident
+- Example.Dialog: Shows how to handle dialog creation and dialog message send
+
+The APIs are protected by HelseId. This requires a HelseId client definition, which can be established in NHN's self service portal.
+Please contact NHN.
