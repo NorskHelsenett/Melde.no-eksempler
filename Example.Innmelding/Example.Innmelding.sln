@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\Shared\Shared.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kosttilskudd", "Kosttilskudd\Kosttilskudd.csproj", "{8B3333E4-E9F8-4A89-93DD-1B370C07790A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UonsketHendelse_Generisk", "UonsketHendelse_Generisk\UonsketHendelse_Generisk.csproj", "{611E318C-6719-4B5B-A59E-6A1118022EF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdverseIncident", "AdverseIncident\AdverseIncident.csproj", "{611E318C-6719-4B5B-A59E-6A1118022EF8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
