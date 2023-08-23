@@ -90,7 +90,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/report/serious-incident": {
@@ -166,7 +171,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/report/cosmetics": {
@@ -242,7 +252,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/report/dietary-supplements": {
@@ -318,7 +333,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/report/biovigilance": {
@@ -395,7 +415,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/report/medical-equipment": {
@@ -472,7 +497,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/report/adverse-incident": {
@@ -549,7 +579,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/nokup/lookup": {
@@ -617,7 +652,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     }
   },
@@ -1007,6 +1047,15 @@
                 "$ref": "#/components/schemas/Qualification"
               }
             ]
+          },
+          "IsOnBehalfOf": {
+            "description": "True if reporter is reporting on behalf of someone else",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -1090,6 +1139,18 @@
           "Lege",
           "Farmasøyt",
           "Annet"
+        ]
+      },
+      "YesNo": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Yes",
+          "No"
+        ],
+        "enum": [
+          "Ja",
+          "Nei"
         ]
       },
       "DrugSideEffectsPatientPart": {
@@ -1206,7 +1267,8 @@
             "type": "string",
             "description": "External message id",
             "format": "guid",
-            "nullable": true
+            "nullable": true,
+            "example": "8c3d9d5d-bf98-4ca7-8406-8df657ae3a82"
           }
         }
       },
@@ -1290,9 +1352,13 @@
             "example": "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C"
           },
           "IsVaccine": {
-            "type": "boolean",
             "description": "Is vaccine.\nRequired if drug id is empty",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           },
           "DrugName": {
             "type": "string",
@@ -1323,6 +1389,46 @@
                 "$ref": "#/components/schemas/YesNoDontKnow"
               }
             ]
+          },
+          "UnsureDrugFormOrStrength": {
+            "description": "Unsure about drug form or strength",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "DrugSideEffectsAction": {
+            "description": "What did the user do when side the effects started",
+            "example": "DosenRedusert",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LegemiddelBivirkningsHandling"
+              }
+            ]
+          },
+          "SideEffectsReoccured": {
+            "description": "Did the side effects reoccure when treatment was stopped and then started again?\nSet this when DrugSideEffectsAction is set to 'SluttetÅTaLegemiddelet'",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNoDontKnow"
+              }
+            ]
+          },
+          "SalesChannel": {
+            "description": "Where is the drug purchased?",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Kjøpssted"
+              }
+            ]
+          },
+          "SalesChannelDescription": {
+            "type": "string",
+            "description": "Additional info about the sales channel",
+            "nullable": true
           },
           "Dosage": {
             "description": "Dosage part",
@@ -1362,6 +1468,48 @@
           "VetIkke"
         ]
       },
+      "LegemiddelBivirkningsHandling": {
+        "type": "integer",
+        "description": "Hva gjorde bruker når bivirkning oppstod",
+        "x-enumNames": [
+          "IkkeSatt",
+          "SluttetÅTaLegemiddelet",
+          "DosenRedusert",
+          "DosenØkt",
+          "IngenEndring",
+          "VetIkke"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "Kjøpssted": {
+        "type": "string",
+        "description": "Mulige valg for hvor legemiddelet ble kjøpt",
+        "x-enumNames": [
+          "IkkeSatt",
+          "ApotekUtenResept",
+          "ApotekMedResept",
+          "ButikkKioskBensinstasjon",
+          "Internett",
+          "UtlevertHosLege",
+          "Annet"
+        ],
+        "enum": [
+          "IkkeSatt",
+          "ApotekUtenResept",
+          "ApotekMedResept",
+          "ButikkKioskBensinstasjon",
+          "Internett",
+          "UtlevertHosLege",
+          "Annet"
+        ]
+      },
       "DrugSideEffectsDosagePart": {
         "type": "object",
         "description": "Dosage part",
@@ -1380,17 +1528,17 @@
             "nullable": true,
             "example": "1996-01-04"
           },
+          "StartTimeOfDay": {
+            "type": "string",
+            "description": "Time of day when the patient started using the drug.",
+            "nullable": true,
+            "example": "14:13"
+          },
           "EndDate": {
             "type": "string",
             "description": "Dosage end date. At least year must be specified.",
             "nullable": true,
             "example": "1996-01-04"
-          },
-          "VaccineTime": {
-            "type": "string",
-            "description": "Vaccine time. Only applicable for vaccines",
-            "nullable": true,
-            "example": "23:05"
           },
           "BatchLotNumber": {
             "type": "string",
@@ -1402,12 +1550,18 @@
           "AdministrationRoute": {
             "description": "Administration route.\nWhere was the drug taken/injected.",
             "nullable": true,
-            "example": "HoyreLar",
+            "example": "HøyreLår",
             "oneOf": [
               {
                 "$ref": "#/components/schemas/AdministrationRoute"
               }
             ]
+          },
+          "AdministrationRouteOther": {
+            "type": "string",
+            "description": "Administration route other.\nWhere was the drug taken/injected.",
+            "nullable": true,
+            "example": "Other administration route"
           },
           "DoseNumber": {
             "description": "Dose number",
@@ -1475,13 +1629,13 @@
           },
           "StartDate": {
             "type": "string",
-            "description": "Symptom start date",
+            "description": "Symptom start date. Supports only year or year and month as well",
             "nullable": true,
             "example": "1996-01-04"
           },
           "EndDate": {
             "type": "string",
-            "description": "Symptom end date",
+            "description": "Symptom end date. Supports only year or year and month as well",
             "nullable": true,
             "example": "1996-01-04"
           },
@@ -1495,6 +1649,11 @@
               }
             ]
           },
+          "SideEffectsDelay": {
+            "type": "string",
+            "description": "How long it took from the first use of the drug to side effects occured",
+            "nullable": true
+          },
           "Outcome": {
             "description": "Outcome",
             "nullable": true,
@@ -1506,18 +1665,6 @@
             ]
           }
         }
-      },
-      "YesNo": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Yes",
-          "No"
-        ],
-        "enum": [
-          "Ja",
-          "Nei"
-        ]
       },
       "SideEffectOutcome": {
         "type": "string",
@@ -1583,17 +1730,22 @@
         "type": "object",
         "description": "Attachment part",
         "additionalProperties": false,
+        "required": [
+          "Name",
+          "Content"
+        ],
         "properties": {
           "Name": {
             "type": "string",
             "description": "Attachment name (i.e. file name)",
-            "nullable": true,
+            "maxLength": 300,
+            "minLength": 1,
             "example": "bilde123.jpg"
           },
           "Content": {
             "type": "string",
             "description": "Attachment content.\nBase64 encoded. May be prefixed by for instance 'data:image/jpeg;base64,'",
-            "nullable": true,
+            "minLength": 1,
             "example": "77+977+977+977+9ABBKRklGAAEBAAABAAEAAO+/ve+/vQDvv70ACQYHEhASFRASEA8QDxAQEA8PDxAPEA8QEA8VERYWFREVFRgdKCAYGiUbFRUhMSElKSsuLi4XHzM4My03KC0uKwEgICAOIA4XEBAXKx0dHS0tLS0tLS0rKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0rLS0tLTc3LS0tLS0rKysr77+977+9ABEIAO+/vQEVAwEiAAIRAQMRAe+/ve+/vQAbAAACAwEBAQAAAAAAAAAAAAACAwABBAUGB++/ve+/vQA5EAACAQIDBgQEBQMDBQAAAAAAAQIDEQQhMQUSQVFhcQYi77+977+9EzLvv73vv71CUmJy77+9FCPvv70k77+977+9M0NU77+977+977+977+9ABkBAQADAQEAAAAAAAAAAAAAAAIAAQMEBe+/ve+/vQAiEQEBAAICAgICAwAAAAAAAAAAAQIRAyEEMRJBInEyQlHvv73vv70ADAMBAAIRAxEAPwDvv71pBu+/ve+/ve+/ve+/vQ9R77+9YwLvv70LGi3vv73vv73vv71L77+9S2Xvv70G77+9ZO+/ve+/vSkLZe+/vUY177+9YDgG77+9Z1Hvv71NIO+/vSrvv73vv73vv73vv70l77+9Eu+/ve+/vSAsLe+/ve+/vdyrIBLvv73vv70J77+977+977+9X++/ve+/vQlTd++/ve+/vUpQ77+977+9FQdu77+9Ae+/vT5hIhEZGu+/vRXvv73GnHfvv7191a3vv71g77+9Ke+/ve+/vTww77+9XUPvv71uR++/ve+/ve+/ve+/ve+/vWob77+9TWU277+977+977+9Y++/ve+/ve+/vVFb77+977+9178eZwZebe+/vVHvv708XGTvv73vv70qJ++/vU7vv70P77+9f1cl77+977+9fU7vv73vv73vv73vv70r77+9R++/vV5j77+9yrbvv71R77+9XBjvv70AWu+/vUTvv73vv70B77+977+9aO+/vWTVru+/vS3vv73vv73vv70y77+977+9XO+/ve+/ve+/ve+/ve+/ve+/vRvvv71i77+9QNyM77+977+9Ju+/ve+/vUQpBO+/vQUFcWnvv73vv70o77+977+9Qe+/vUIy77+92pti77+9dO+/ve+/ve+/vXjvv73vv70a77+9O0dpOe+/ve+/vUTvv73vv73vv70DJU3vv73vv73RtO+/vXBnGzDvv71j77+977+9KUMw6KyL77+9HXvvv73vv73vv73vv73vv70Q0bnvv71mJnBFLe+/ve+/vTDvv71oNhQt77+9d++/vRgsFhHvv73vv73vv70/Qu+/vSTvv73vv70qQTg8Qkjvv71tHHbvv71cUu+/vXln77+9Nu+/vW9kcXbvv716d9yLe++/ve+/ve+/vTzvv703O++/ve+/vXfvv71477+977+9Xj9q1ZTvv73vv70M77+977+9Rhd777+9XyPvv73vv73vv71C77+9aQ7vv73vv73vv73vv71HNx8d77+9Tk7vv73vv71hRlLvv70vTkPvv70JRV7vv73vv70z77+90aUV77+9SH1cOmrvv71k77+977+9FSA877+977+977+9LhNSTe+/ve+/vWrvv700e++/vSvvv73vv73vv73vv70jIO+/vVNc77+977+977+9fQbvv73vv71W77+977+977+9b++/ve+/vVsc77+977+9SDjvv70o77+9NRPvv73vv71B77+977+9VUJ677+9WO+/ve+/vWRBQjco77+9Xe+/vUXvv71y77+9XWbvv73vv73vv713Ku+/vRMo77+977+977+9dO+/vcOc77+9BF3vv71HYO+/vXYhcXYm77+9dSjvv73vv73vv73vv73vv71J77+9xLzCiu+/ve+/vXTvv70U77+977+9acSq77+977+9V++/vQFS77+9Wlg677+977+977+9RiBQE3cbTu+/vdCmOu+/ve+/ve+/vTTvv73vv70+Au+/vRcdIBPvv73vv70B26Iz77+977+9FSjvv73vv73vv73vv71HQ++/vSfvv73vv71xMu+/ve+/vQl7BO+/vRI8bipN15Pvv71O3Y9pKO+/ve+/ve+/vQPvv73vv71x77+9ee+/ve+/ve+/ve+/vWdy77+9eC9WOe+/ve+/vQlqMwvvv73vv73vv73vv73vv73vv71J77+9J27vv70VGk7vv73fqe+/vWzvv73vv70AURjvv702S++/vQNMMXDvv73vv70Za1Dvv73vv71L77+977+9YO+/vXDvv705b28uTX8m77+92JXvv71oUt6o77+977+977+93qfvv73vv73vv71J77+9SXsj77+9Tu+/vVXvv70n77+977+9Le+/vdeH77+977+9M04p77+9VzczQu+/vS4x77+9Z++/ve+/vWpR77+9dUcoXe+/vT/vv73vv73vv70x77+9TS9TPO+/ve+/ve+/vUY5FVYjKSzvv73vv73vv73Vsirvv73vv73vv70X77+9QSAsEhFVbO+/vTZCdu+/vVUi77+9LiHvv73vv71gGwLvv73vv70Q77+9MiJQSO+/vUoAKe+/ve+/vSLvv70h77+9OU0u77+9IGwGwrTvv73vv70DC1Dvv71L77+9BVwq77+977+9JO+/ve+/ve+/vSZx77+9Ie+/vde477+977+9UGEFd++/vVQzVu+/vRzvv73vv73vv70TOnBLK++/vS1cRyVu77+9VO+/vX7vv712Ei7vv73vv71277+977+977+977+9dgLvv73vv71E77+9ajfvv73vv73vv71Y77+977+9MD5nOO+/vSvvv73vv71zdjk877+9LlJp77+9eO+/ve+/vRlx77+924FbMTHvv73vv70R77+9Ee+/ve+/ve+/vWXvv73vv70uSu+/veWbje+/vQBPQUVN77+9RWt677+9bRrvv71deO+/vTjvv73vv71277+9M3dpWe+/ve+/ve+/vQ45Wz0g77+9QVop77+9cu+/ve+/vQlk77+9Mzrvv70XQu+/ve+/vXtmPhDvv73vv73Hj9uT77+9Le+/vVnvv73vv71ebEPvv73vv70277+9ZtqfLwMY77+9VO+/ve+/vQXvv70S77+977+977+977+977+977+977+9Uu+/vT7vv70BFgNILe+/ve+/vXIp77+9RTLvv73vv70o77+9VO+/vUZCbU7vv70dSu+/ve+/ve+/ve+/vVnvv73vv71I77+9dADvv70U77+977+977+9L++/vUbvv73vv73vv71cyLIkLkbvv70477+975maZFgZTO+/ve+/vVbvv73vv71tWe+/ve+/vUrvv70A77+9e++/vQXvv71JagPvv73vv73vv71pUirdjO+/vRrvv73vv71c77+9YRLvv73vv71ECO+/vdmVOV8wGyrvv73vv71TKhDvv70Oy5rvv70Y77+9RS4e77+977+9Fypc77+9Tu+/ve+/vVVPRu+/ve+/vXPvv70re++/ve+/vT7vv71baWHvv70k77+9ACzvv71f77+9Oe+/ve+/ve+/vdGdXe+/vVXvv71zVjnvv73vv73vv73vv70b77+977+977+977+9cjRg77+9Ee+/ve+/vXd277+9J++/vXPvv71GKuusl++/ve+/vUbvv73vv71IZu+/ve+/ve+/vTTvv71B77+9dd2EE3nvv70a77+9OO+/vTbCoTjGplHvv73vv70Zcno0zrU677+9Su+/vXFp77+9TO+/vV04Mu+/vWvvv73vv73vv70477+977+9Uirvv73vv73vv73vv73vv71JRTDvv73vv70I77+9UHUE77+977+9Nu+/vRDLhmXvv70M77+9Yu+/ve+/ve+/vRTvv71RyJVMUkDvv70rU++/veu4hkDvv71o77+977+977+977+977+9VO+/ve+/vXTvv70jJTka1I7vv70a77+9Eu+/vU48ECvvv73vv73vv73vv71wKu+/vVV3eXoZZO+/vWwZMu+/vRTvv73vv71/A++/vQbvv73vv73vv73vv73vv73vv73ShO+/vQ/vv70JYe+/vTRo77+977+9fUHvv73vv73vv73vv71h77+9cjPvv70777+977+9Dte6NO+/ve+/vXvvv73vv73vv73vv73vv70z77+977+9ZO+/vSDvv702Ju+/vXUdWg5V77+977+977+9AO+/ve+/ve+/vVIqOu+/ve+/vXI277+977+9I01qeV3vv73vv715Se+/vRbvv71y5pGk77+977+9e3ljIO+/ve+/vR3vv73vv73vv73vv71I77+977+977+9UNqyc15r3avvv73vv73vv70x77+9E3F2a3I/77+9be+/ve+/vTHvv73vv71r77+9M++/vRtScu+/vd2S77+9Nxfvv70877+9Tw91c1zvv73vv73vv73vv73vv71J77+9G9G7X1BxFe+/ve+/ve+/vVvvv71a77+977+90K/vv73vv73vv71sOe+/vXVL77+977+977+977+9N++/ve+/ve+/vUk877+9HF3vv70AczJg77+9Dlnvv73vv73Lme+/vShBQXJJfSB477+977+977+9NzTvv71H77+977+977+9Uu+/vT5p77+93azvv70rQ2tV77+977+977+9SXLvv73vv73vv73vv73vv71L77+977+9du+/vWHvv73vv73vv70U77+977+977+9Du+/vXogHizvv73vv73vv73vv71O77+9Lxk+Kizvv73MljPvv71YXzfRqHjCk++/ve+/vW7vv73vv73vv73vv73vv70g77+9Ku+/vV0b77+977+9VDIVGu+/vWkz77+977+9R9mp77+9We+/vXtoH++/ve+/vXg/B++/vXcZ77+9U++/ve+/vTzvv73vv71I77+9IEbvv73vv70377+9P++/vV/vv71/77+977+9Vu+/ve+/vTUuA++/vVgFRe+/vW/vv73vv73Stu+/vWVJ77+9SyDvv71G77+977+9QBZAWQtT77+9GRrvv73vv73vv70M77+9Je+/ve+/vU/vv71OCe+/ve+/vQFCNyBa77+9BO+/ve+/vUbvv71LK2hlB++/ve+/vTzvv71MTh/vv73vv71+Ye+/ve+/ve+/vTzvv71g77+9fR/vv70l77+977+9QM2+YO+/vRcn77+977+9MTVlZe+/vQPvv73vv73vv71Geu+/vXZ577+9O1pI77+977+9I8e6NO+/ve+/ve+/ve+/ve+/ve+/ve+/ve+/ve+/ve+/vUnvv70277+977+977+9GkLvv71G77+977+977+9Hirvv70vLe+/ve+/ve+/vQzvv71WUs2zLO+/vVJgWO+/vS5bHTnvv70z77+977+977+977+977+977+9W++/ve+/vV/vv73vv73vv71POu+/ve+/vcWLcnZX77+9fe+/vQDvv70177+945WPRRZr77+977+977+977+977+977+977+9FWs477+977+9chNPBVXvv71KbS1877+9FV4xUu+/ve+/veKTsu+/ve+/ve+/vW0g77+977+977+9VDbvv73vv73vv73vv73vv71/77+9E2pt77+9Km4OFe+/vUnvv73vv73vv73vv73vv70MRTXvv718ZTfvv73vv71/77+977+9H++/ve+/ve+/vRkpZO+/ve+/ve+/ve+/ve+/vVkG77+977+9Se+/ve+/ve+/ve+/vRYAUCHvv73vv73vv71I77+977+9MO+/vRcdQu+/ve+/vS4p77+9IFd2Se+/vWnvv71W77+977+9FUhG77+977+9UVLvv70fH++/vSvvv73vv70Q77+977+977+977+977+977+9HO+/ve+/ve+/ve+/vSBY77+977+977+9Ymvvv73vv73vv70na3A2Gjrvv709Be+/ve+/vW7vv73vv73vv70hbO+/vRdqTu+/vcWHKu+/ve+/ve+/ve+/vTfYjjHvv73vv71x77+9Vwbvv71cbDFBcUgfJe+/vRjvv73vv71k77+977+977+9UlwsZO+/vVtbRh9A77+9bkJp77+9bX7vv71GMu+/vdewbVjvv73vv73vv70qVu+/ve+/vVzvv70Tcu+/vQ9gWnIO77+9Vu+/vQjvv71raBzUue+/vWEV77+977+977+977+977+9WkfPvHcLVU/vv70X77+977+9AO+/ve+/ve+/vR7vv73Gr3rvv73vv70sV9Wz77+9SO+/ve+/ve+/vWTvv73vv70VIiACD++/ve+/ve+/vTcb77+977+977+977+977+977+977+9Xzx/dH7vv717fQ7vv73vv71Q77+977+977+91YtZ77+9ae+/vXjvv71W77+9OSDvv70Xy4/vv71/fE9LWu+/ve+/vW1G77+977+9L++/ve+/vTjvv73vv73vv71677+977+9z7Pvv73Rru+/vW7KhiJvTG0Zfuijn++/vWdR77+9TlLvv71JWe+/vXbvv73vv7001ac/xYDvv73vv70Aaznvv73vv71JRe+/vQDvv73vv70d77+9a++/vWo5Eijvv73vv73vv71k77+9AO+/vWzvv73vv73vv70U77+9VRhNAO+/vWUs77+9eR3vv70gbWdC77+977+977+9J2ku77+977+9CMi7Dxrvv71fYk0077+90aTvv70OP++/ve+/ve+/vcag77+9357vv73vv73vv73vv73vv73vv70377+977+977+9Ae+/vSnvv70FN++/vQTvv73vv70WypNRZll1EyEF77+9FgwgDu+/vV1N77+9JSNNKTtzM0si77+9Vu+/ve+/vQXvv73vv73vv70s77+9Ve+/ve+/ve+/ve+/ve+/vR/vv70e77+9KxPvv73vv70577+9IFvvv70f77+9LThcd++/vS9xcu+/ve+/ve+/vRrvv73vv73vv70377+9aULvv70pcl7vv73vv71Sa0Qc77+9Znxdbci5cEnvv73Sj++/vXjvv73vv73vv73vv73vv71KX0Pvv71VyZ0977+977+9dWpKd9W7fe+/vVTvv73Hne+/vUZES++/vVxg77+9SV3vv73vv70+77+9Pwbvv73vv73vv73vv71l77+9G++/ve+/vXXvv73vv73vv71Cy53Tt3MqRe+/ve+/ve+/ve+/ve+/vVjvv71y77+977+977+9Ju+/vVxh77+9XO+/vRxK77+977+98aWKp++/vXrvv71GW++/ve+/ve+/vVRy77+9du+/ve+/vUNlWu+/ve+/ve+/vdGfeO+/vW3vv73vv70XUw9877+977+9Ie+/ve+/vRXvv73vv703Xe+/ve+/ve+/ve+/vXxN77+9eO+/ve+/ve+/vVTvv70AajJjFUUX77+977+977+977+9FmZ277+977+9M++/ve+/ve+/ve+/vVbvv71KV++/vXI477+9edmrdDseG35m77+977+977+9Fu+/vQPvv71+Xe+/ve+/vdiUHwcfVmHvv70bCUIOce+/ve+/vVrvv73vv73vv71X77+977+977+9U24SVu+/vTRJXVfvv70bHiBIU++/vdGI77+977+977+9Vmbvv73vv70W77+9GU1RXDTvv70iEu+/ve+/vWDvv73vv70lF++/ve+/vRVrVXFv77+9y6o977+9Pk3vv71x77+977+977+9OO+/vUou77+977+977+977+977+9xr041Ivvv71n77+977+9R0Y177+977+9emMp77+977+977+9Ye+/vTJJ77+977+977+9cyEHTu+/vRLvv71qyYtManzvv70277+9CO+/ve+/vTZr77+9FO+/vRknEO+/vWFs77+9Wu+/vWHvv70q77+9PlYGVgZL77+9Kkvvv70gIu+/vRbvv73vv70vUAJK77+977+977+9QinTku+/ve+/vU/vv73vv70gHN2377+977+9Gm3vv73vv71s77+977+9K++/vWLvv71e77+9w7pya++/ve+/ve+/vWJm3adbfk3fizDus47vv70rG++/vUbLniJb77+977+977+9bk3vv70keu+/vQ7Fo0Hvv71J77+977+9FnllFO+/vV/vv71w77+9SlLvv70u77+9bXPvv73vv73vv71h1a7vv70sJO+/ve+/vVtW77+9NQbvv71J77+977+9M++/vcmr77+9e2xkFO+/ve+/vSTvv73vv73vv70Weu+/vWHvv73vv73vv71z77+977+92oxq77+9Xk/vv73vv70J77+9GO+/vSwM77+977+9Vi5RUu+/ve+/vUlTW++/vTjvv70jVh/vv70bNe+/vTFa77+9EO+/ve+/ve+/ve+/ve+/vUPvv71sCe+/vRbvv73Vrwfvv73vv73RpjUn77+9ce+/ve+/vUkkFO+/vXbvv71sNO+/ve+/ve+/vTzvv70p77+9Te+/vW9177+9a++/vRjEpu+/vScU77+9dhfvv73vv73vv73vv73vv71jH++/vWsc77+9Te+/vd6u77+9Ru+/vV4yWU3vv73vv71jbe+/vW5877+9Ze+/vTcn77+9dnlr77+977+9eGxsd3VFfO+/ve+/ve+/vTnvv715zaLvv73vv73vv73vv73vv73vv71R77+977+9FSUpNu+/vRM7Nu+/vdOH77+977+9PO+/ve+/ve+/vSELce+/ve+/vQvvv71O77+977+977+9DO+/vVnvv73vv71L77+93bkqdRUm77+9Ce+/vVnvv73vv70p77+9NjUb77+9Ke+/ve+/vUkXK++/ve+/vWVTWRdj77+9Ku+/ve+/vS7vv70g77+9cO+/vU1D77+977+977+905jvv71TQe+/vUVxWu+/vSd+S++/vV1b77+9Xu+/ve+/vVXvv73vv70d77+9LMuk77+9MGcw77+9PO+/vVrvv73vv73vv73vv70gSe+/vX7vv71vZ++/vVTvv71S1b7vv70/YXfvv70ybADvv70E77+977+9GW0XKu+/ve+/vX5Y77+9z6JNHzHvv71WBnTvv73vv73vv71lN3g+aMuTejxcbDzvv73Nq++/vR3vv73vv73vv73vv70reVN6IzTvv71F77+9S++/ve+/ve+/vVt177+9bStJK++/vV5Hau+/vUTvv70z77+9Ve+/ve+/ve+/vXN9IO+/ve+/ve+/ve+/vSDvv70477+977+977+977+9HiFFPeyVn++/ve+/vVXvv71zdu+/ve+/vQfvv73vv73vv73vv73vv70jLRfvv73vv73Plzl677+9R++/ve+/ve+/vSDvv73vv73vv71l77+977+977+977+977+9X8uEfu+/vT3vv73vv70A77+9C++/vXsn77+977+934EP77+9Su+/ve+/vRXvv73vv702VGbvv73vv71Q77+977+9FToR44Sa77+9MF0oLWjvv70h77+9TO+/ve+/vQli77+977+977+9EO+/ve+/vW0o77+9Vj/vv73vv70c77+977+977+977+977+977+9c++/ve+/vWfvv70zFWV177+91Kjvv70mJjIVZe+/ve+/vV7vv71c77+9Se+/vVYO77+9cO+/ve+/vXHvv71CcBXvv73vv73vv73vv73boe+/ve+/ve+/vT/vv70qc2leWV8hY++/ve+/vVXvv73vv73vv70U77+9bXLvv73vv70i77+977+9PmPvv73Jnu+/ve+/ve+/vX3vv73vv71cIO+/ve+/vXRH77+9Tu+/ve+/ve+/vXwT77+977+9Om5yVnNq77+934ULDu+/vd6qAQEQ0bDvv70WUQsT77+9Ve+/ve+/vVXvv73vv71a77+9VzFV77+9XO+/vSVCLmjvv73vv70s77+9LXHvv73vv70ZLO+/vUDvv70k77+9ZCFfS1Hvv73vv71OCVbvv70r77+9OC3vv73vv73vv70gaUfvv73vv70zVs+lBu+/veSbte+/vW9SEO+/vc+q77+9Me+/vWzvv71ZLhczV++/vUvvv70IVBzvv73vv73vv73vv73vv73vv73vv70hC++/ve+/vW0X77+9V++/vRzWvzM0Ye+/ve+/vcqtde+/vQhpSjQsNO+/vVfvv73vv71vD13vv71fLu+/vVco77+977+9HO+/vWYe77+9c3Vvf9KOZO+/ve+/vW7vv70hWO+/vRzvv73vv71CzKrvv71FWWTvv73vv70IOxnvv73vv713PCHvv71w77+9Q++/ve+/vQfZou+/vVTvv73vv73vv73vv73vv73vv70gVRfvv73vv705d++/vTFV77+9El/vv73vv73vv73vv73vv70Q77+977+9aNGC77+977+9Gu+/ve+/vWkr77+9cu+/ve+/ve+/vUUs77+977+9YhBz77+9OjLvv71CAu+/vUIWL++/vQ=="
           }
         }
@@ -1748,7 +1900,6 @@
         "type": "string",
         "description": "Avaliable reporter roles",
         "x-enumNames": [
-          "DefaultNull",
           "Manager",
           "Treator",
           "OtherEmployee",
@@ -1758,7 +1909,6 @@
           "OtherRelative"
         ],
         "enum": [
-          "DefaultNull",
           "Leder",
           "Behandler",
           "ØvrigAnsatt",
@@ -1833,8 +1983,18 @@
             "example": "2021-04-14"
           },
           "DateUnknown": {
-            "type": "boolean",
-            "description": "Incident date not known"
+            "description": "Incident date not known",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "DateText": {
+            "type": "string",
+            "description": "Date period if no other date is given and DateUnknown is false",
+            "maxLength": 100,
+            "nullable": true
           }
         }
       },
@@ -1842,13 +2002,11 @@
         "type": "object",
         "description": "Report part",
         "additionalProperties": false,
-        "required": [
-          "ContactPersons"
-        ],
         "properties": {
           "ContactPersons": {
             "type": "array",
             "description": "Contact persons for this report",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/SeriousIncidentContactPerson"
             }
@@ -1860,6 +2018,15 @@
             "items": {
               "$ref": "#/components/schemas/SeriousIncidentNextOfKin"
             }
+          },
+          "AdditionalInfo": {
+            "description": "Additional info. Relevant to Helsenorge reports only",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SeriousIncidentAdditionalInfo"
+              }
+            ]
           }
         }
       },
@@ -1876,14 +2043,14 @@
           "Name": {
             "type": "string",
             "description": "Name",
-            "maxLength": 64,
+            "maxLength": 100,
             "minLength": 1
           },
           "Email": {
             "type": "string",
             "description": "E-mail address",
             "format": "email",
-            "maxLength": 64,
+            "maxLength": 100,
             "minLength": 1
           },
           "Phone": {
@@ -1891,12 +2058,13 @@
             "description": "Phone number",
             "format": "phone",
             "maxLength": 20,
-            "minLength": 1
+            "minLength": 1,
+            "example": 12345678
           },
           "Position": {
             "type": "string",
             "description": "Contact person's position",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           }
         }
@@ -1915,18 +2083,17 @@
           "Name": {
             "type": "string",
             "description": "Name",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           },
           "Relation": {
             "type": "string",
             "description": "Relation to patient",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "IsClosestNextOfKin": {
             "description": "Is closest next of kin",
-            "maxLength": 64,
             "nullable": true,
             "oneOf": [
               {
@@ -1937,7 +2104,7 @@
           "Address": {
             "type": "string",
             "description": "Address",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           },
           "ZipCode": {
@@ -1950,14 +2117,14 @@
           "City": {
             "type": "string",
             "description": "City",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "Email": {
             "type": "string",
             "description": "E-mail address",
             "format": "email",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "Phone": {
@@ -1965,13 +2132,29 @@
             "description": "Phone number",
             "format": "phone",
             "maxLength": 20,
-            "nullable": true
+            "nullable": true,
+            "example": 12345678
           },
           "Notes": {
             "type": "string",
             "description": "Notes",
-            "maxLength": 256,
+            "maxLength": 1000,
             "nullable": true
+          }
+        }
+      },
+      "SeriousIncidentAdditionalInfo": {
+        "type": "object",
+        "description": "Additional info. Relevent to Helsenorge reports only",
+        "additionalProperties": false,
+        "properties": {
+          "SendToHtil": {
+            "type": "boolean",
+            "description": "If true, send report to UKOM. Default true"
+          },
+          "SendToUkom": {
+            "type": "boolean",
+            "description": "If true, send report to HTIL. Default true"
           }
         }
       },
@@ -2209,13 +2392,13 @@
           "ReactionDelayDescription": {
             "type": "string",
             "description": "Reaction delay description",
-            "maxLength": 32,
+            "maxLength": 250,
             "nullable": true
           },
           "SideEffectDuration": {
             "type": "string",
             "description": "Side effect duration",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           }
         }
@@ -2257,7 +2440,7 @@
           "PreviousUseDescription": {
             "type": "string",
             "description": "Previous use description",
-            "maxLength": 128,
+            "maxLength": 300,
             "nullable": true
           },
           "ConditionOfSkinAreaBeforeUse": {
@@ -2278,7 +2461,7 @@
           "AllergiesOrSkinDiseases": {
             "type": "string",
             "description": "Any allergies or skin diseases",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           }
         }
@@ -2355,7 +2538,7 @@
           "ProductName": {
             "type": "string",
             "description": "Product name",
-            "maxLength": 128,
+            "maxLength": 150,
             "minLength": 1
           },
           "ProductType": {
@@ -2369,7 +2552,7 @@
           "VendorOrManufacturer": {
             "type": "string",
             "description": "Vendor or manufacturer",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           },
           "ReportedToVendorOrManufacturer": {
@@ -2410,7 +2593,7 @@
           "BatchLotNumber": {
             "type": "string",
             "description": "Product batch/lot number",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "Attachments": {
@@ -2495,7 +2678,7 @@
         ],
         "enum": [
           "Apotek",
-          "Perfymeri",
+          "Parfymeri",
           "Frisørsalong",
           "Hudpleiesalong",
           "Helsekostbutikk",
@@ -2515,80 +2698,16 @@
             "maxItems": 10,
             "nullable": true,
             "items": {
-              "$ref": "#/components/schemas/BodyLocation"
+              "type": "string"
             }
           },
           "UsageDuration": {
             "type": "string",
             "description": "For how long was the product used",
-            "maxLength": 64,
-            "nullable": true
-          },
-          "UsageDescription": {
-            "type": "string",
-            "description": "Usage description",
-            "maxLength": 256,
+            "maxLength": 100,
             "nullable": true
           }
         }
-      },
-      "BodyLocation": {
-        "type": "string",
-        "description": "Hvor på kroppen",
-        "x-enumNames": [
-          "Face",
-          "Eye",
-          "EyeLidEyeArea",
-          "Lips",
-          "Nose",
-          "OralCavity",
-          "TeethGums",
-          "Tounge",
-          "Hair",
-          "Scalp",
-          "NeckThroat",
-          "Chest",
-          "Stomach",
-          "Rump",
-          "Back",
-          "Arm",
-          "Armpit",
-          "Elbow",
-          "Hand",
-          "Leg",
-          "Foot",
-          "AnusGenitals",
-          "Nail",
-          "WholeBody",
-          "OtherPlace"
-        ],
-        "enum": [
-          "Ansikt",
-          "Øye",
-          "ØyelokkOmrådeRundtØyet",
-          "Lepper",
-          "Nese",
-          "Munnhule",
-          "TennerTannkjøtt",
-          "Tunge",
-          "Hår",
-          "Hodebunn",
-          "NakkeHals",
-          "Bryst",
-          "Mage",
-          "Rumpe",
-          "Rygg",
-          "Arm",
-          "Armhule",
-          "Albue",
-          "Hånd",
-          "Ben",
-          "Fot",
-          "OmrådeRundtAnusKjønnsorgan",
-          "Negler",
-          "HeleKroppen",
-          "AnnetSted"
-        ]
       },
       "DietarySupplementsRequest": {
         "type": "object",
@@ -2796,31 +2915,31 @@
           "ReactionDelay": {
             "type": "string",
             "description": "Reaction delay.\nHow long after the use did the reactions show up?",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "ReactionDelayDescription": {
             "type": "string",
             "description": "Reaction delay description",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           },
           "Outcome": {
             "type": "string",
             "description": "Outcome",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "OutcomeDescription": {
             "type": "string",
             "description": "Outcome description",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           },
           "SideEffectDuration": {
             "type": "string",
             "description": "Side effect duration",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "Ongoing": {
@@ -2844,7 +2963,7 @@
           "SideEffectsOnPreviousUseDescription": {
             "type": "string",
             "description": "Side effects on previous use description",
-            "maxLength": 256,
+            "maxLength": 500,
             "nullable": true
           },
           "AnyAllergiesOrInfluencingIssues": {
@@ -2858,6 +2977,7 @@
           "AnyAllergiesOrInfluencingIssuesDescription": {
             "type": "string",
             "description": "Any allergies or influencing issues description.\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
+            "maxLength": 500,
             "nullable": true
           },
           "AnyUnderlyingDiseases": {
@@ -2923,19 +3043,19 @@
           "ProductName": {
             "type": "string",
             "description": "Product name",
-            "maxLength": 128,
+            "maxLength": 150,
             "minLength": 1
           },
           "Ingredients": {
             "type": "string",
             "description": "Ingredients",
-            "maxLength": 256,
+            "maxLength": 500,
             "minLength": 1
           },
           "VendorOrManufacturer": {
             "type": "string",
             "description": "Vendor or manufacturer",
-            "maxLength": 64,
+            "maxLength": 150,
             "minLength": 1
           },
           "BestBeforeDate": {
@@ -2955,19 +3075,19 @@
           "PurchaseLocation": {
             "type": "string",
             "description": "Purchase location",
-            "maxLength": 64,
+            "maxLength": 150,
             "minLength": 1
           },
           "ShopName": {
             "type": "string",
             "description": "Shop name",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           },
           "BatchLotNumber": {
             "type": "string",
             "description": "Batch/lot number",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "Attachments": {
@@ -2993,25 +3113,25 @@
           "AmountOfIngredientsInDailyDose": {
             "type": "string",
             "description": "Amount of ingredients per daily dose",
-            "maxLength": 64,
+            "maxLength": 500,
             "minLength": 1
           },
           "RecommendedDailyDose": {
             "type": "string",
             "description": "Recommended daily dose",
-            "maxLength": 64,
+            "maxLength": 100,
             "minLength": 1
           },
           "ActualDailyDoseTaken": {
             "type": "string",
             "description": "Actual daily dose taken",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "UsageDuration": {
             "type": "string",
             "description": "For how long was the product used",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "AnyDrugsTakenAtSameTime": {
@@ -3208,6 +3328,7 @@
           "IncidentLocation": {
             "type": "string",
             "description": "Sted for hendelsen kode (1.x...). Obligatorisk",
+            "maxLength": 10,
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": "1.6.4"
@@ -3215,6 +3336,7 @@
           "TypeOfIncident": {
             "type": "string",
             "description": "Hendelsestype kode (2.x...). Obligatorisk",
+            "maxLength": 20,
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": "2.10.1.1.1"
@@ -3223,6 +3345,7 @@
             "type": "array",
             "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\nReturnerer en liste med valgte koder.",
             "pattern": "^([0-9.])+$",
+            "maxItems": 10,
             "example": [
               "3.2.2",
               "3.4.3"
@@ -3233,7 +3356,8 @@
           },
           "Preventability": {
             "type": "string",
-            "description": "Forebuggbarhet kode (4.x...). Obligatorisk",
+            "description": "Forebyggbarhet kode (4.x...). Obligatorisk",
+            "maxLength": 10,
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 4.3
@@ -3241,6 +3365,7 @@
           "ActualConsequenceForPatient": {
             "type": "string",
             "description": "Faktisk konsekvens for pasient kode (5.x...). Obligatorisk",
+            "maxLength": 10,
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 5.2
@@ -3248,6 +3373,7 @@
           "Frequency": {
             "type": "string",
             "description": "Hyppighet kode (6.x...). Obligatorisk",
+            "maxLength": 10,
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 6.3
@@ -3255,6 +3381,7 @@
           "PossibleConsequenceOnRepetition": {
             "type": "string",
             "description": "Mulig konsekvens ved gjentakelse kode (7.x...). Obligatorisk",
+            "maxLength": 10,
             "minLength": 1,
             "pattern": "^([0-9.])+$",
             "example": 7.4
@@ -3269,42 +3396,42 @@
           "AutologousCode": {
             "type": "string",
             "description": "Tilleggsinfo: AutologKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^[1-4]$",
             "nullable": true,
             "example": 3
           },
           "DepartmentCode": {
             "type": "string",
             "description": "Tilleggsinfo: AvdelingsKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-8]|99)$",
             "nullable": true,
             "example": 5
           },
           "DeregistrationCode": {
             "type": "string",
             "description": "Tilleggsinfo: AvregistreringKode",
-            "pattern": "^\\d$",
+            "pattern": "^[0-2]$",
             "nullable": true,
             "example": 1
           },
           "BloodProductCode": {
             "type": "string",
             "description": "Tilleggsinfo: BlodproduktKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([0-9]|1[0-1])$",
             "nullable": true,
             "example": 2
           },
           "CellsAndTissuesDefinitionCode": {
             "type": "string",
             "description": "Tilleggsinfo: CellerOgVevDefinisjonKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-4]|99)$",
             "nullable": true,
             "example": 4
           },
           "CellsAndTissuesCode": {
             "type": "array",
             "description": "Tilleggsinfo: CellerOgVevKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-9]|1[0-5]|99)$",
             "nullable": true,
             "example": [
               "7",
@@ -3317,28 +3444,29 @@
           "DefinitionCode": {
             "type": "string",
             "description": "Tilleggsinfo: DefinisjonKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-4]|99)$",
             "nullable": true,
             "example": 1
           },
-          "DonorCountyCode": {
+          "DonorCountryCode": {
             "type": "string",
             "description": "Tilleggsinfo: DonorlandKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-4]|99)$",
             "nullable": true,
             "example": 1
           },
           "DonorExperienceCode": {
             "type": "string",
             "description": "Tilleggsinfo: GivererfaringKode",
-            "pattern": "^\\d$",
+            "pattern": "^[1-2]$",
             "nullable": true,
             "example": 2
           },
           "WhatWentWrongCode": {
             "type": "array",
             "description": "Tilleggsinfo: HvaGikkGaltKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([0-9]|1[0-8])$",
+            "maxItems": 19,
             "nullable": true,
             "example": [
               "11",
@@ -3351,21 +3479,22 @@
           "DiscoveredCode": {
             "type": "string",
             "description": "Tilleggsinfo: OppdagetKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-5]|99)$",
             "nullable": true,
             "example": 3
           },
           "OrganDefinitionCode": {
             "type": "string",
             "description": "Tilleggsinfo: OrganDefinisjonKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-4]|99)$",
             "nullable": true,
             "example": 1
           },
           "OrganCode": {
             "type": "array",
             "description": "Tilleggsinfo: OrganKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-9]|1[0-1]|99)$",
+            "maxItems": 10,
             "nullable": true,
             "example": [
               "7",
@@ -3378,28 +3507,29 @@
           "ReactionStartedLocationCode": {
             "type": "string",
             "description": "Tilleggsinfo: ReaksjonStartetHvorKode",
-            "pattern": "^\\d$",
+            "pattern": "^[1-3]$",
             "nullable": true,
             "example": 3
           },
           "ReactionDurationCode": {
             "type": "string",
             "description": "Tilleggsinfo: ReaksjonsvarighetKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([1-9]|1[0-2])$",
             "nullable": true,
             "example": 4
           },
           "SickLeaveCode": {
             "type": "string",
             "description": "Tilleggsinfo: SykemeldingKode",
-            "pattern": "^\\d$",
+            "pattern": "^[0-5]$",
             "nullable": true,
             "example": 2
           },
           "SymptomsCode": {
             "type": "array",
             "description": "Tilleggsinfo: SymptomKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([0-9]|1[0-9]|2[0-5])$",
+            "maxItems": 15,
             "nullable": true,
             "example": [
               "4",
@@ -3412,21 +3542,22 @@
           "TapTypeCode": {
             "type": "string",
             "description": "Tilleggsinfo: TappetypeKode",
-            "pattern": "^\\d{1,2}$",
+            "pattern": "^([0-3]|99)$",
             "nullable": true,
             "example": 2
           },
           "TimeBeforeReactionCode": {
             "type": "string",
             "description": "Tilleggsinfo: TidTilReaksjonKode",
-            "pattern": "^\\d$",
+            "pattern": "^[1-6]$",
             "nullable": true,
             "example": 3
           },
           "AdditionalBloodProductCode": {
             "type": "array",
             "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
-            "pattern": "^\\d$",
+            "pattern": "^[0-2]$",
+            "maxItems": 3,
             "nullable": true,
             "example": [
               "0",
@@ -3439,7 +3570,8 @@
           "MeasuresCode": {
             "type": "array",
             "description": "Tilleggsinfo: TiltakKode",
-            "pattern": "^\\d$",
+            "pattern": "^[1-6]$",
+            "maxItems": 6,
             "nullable": true,
             "example": [
               "4",
@@ -3452,14 +3584,14 @@
           "TransfusionCode": {
             "type": "string",
             "description": "Tilleggsinfo: TransfusjonsindikasjonKode",
-            "pattern": "^\\d$",
+            "pattern": "^[0-5]$",
             "nullable": true,
             "example": 2
           },
           "CausationCode": {
             "type": "string",
             "description": "Tilleggsinfo: AarsakssammenhengKode",
-            "pattern": "^\\d$",
+            "pattern": "^[1-5]$",
             "nullable": true,
             "example": 3
           },
@@ -3622,7 +3754,7 @@
         "required": [
           "EquipmentName",
           "Manufacturer",
-          "NkknGroup",
+          "ModelName",
           "NkknCategory",
           "EquipmentLocation",
           "IncidentClassification"
@@ -3637,21 +3769,24 @@
           "EquipmentName": {
             "type": "string",
             "description": "Equipment name",
+            "maxLength": 300,
             "minLength": 1
           },
           "Manufacturer": {
             "type": "string",
             "description": "Manufacturer",
+            "maxLength": 300,
             "minLength": 1
           },
           "ModelName": {
             "type": "string",
             "description": "Model name",
-            "maxLength": 64,
-            "nullable": true
+            "maxLength": 300,
+            "minLength": 1
           },
           "NkknGroup": {
             "description": "NKKN equipment group",
+            "nullable": true,
             "oneOf": [
               {
                 "$ref": "#/components/schemas/IdNavn"
@@ -3669,26 +3804,25 @@
           "SerialNumber": {
             "type": "string",
             "description": "Serial number",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "BatchLotNumber": {
             "type": "string",
             "description": "Batch/lot number",
-            "maxLength": 64,
+            "maxLength": 100,
             "nullable": true
           },
           "ProductionDate": {
             "type": "string",
-            "description": "Production date",
-            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Production date.\nYear only or year and month are also accepted",
             "nullable": true
           },
           "ExpirationDate": {
             "type": "string",
             "description": "Equipment expiration date.\nYear only or year and month are also accepted",
             "nullable": true,
-            "example": "2021-10-23 or 2021-10 og 2021"
+            "example": "2021-10-23"
           },
           "EquipmentLocation": {
             "description": "Equipment location",
@@ -3701,7 +3835,7 @@
           "Distributor": {
             "type": "string",
             "description": "Distributor",
-            "maxLength": 64,
+            "maxLength": 150,
             "nullable": true
           },
           "IncidentClassification": {
@@ -3712,7 +3846,7 @@
               }
             ]
           },
-          "ImplantatInformasjon": {
+          "ImplantInformation": {
             "description": "Implant information (if applicable)",
             "nullable": true,
             "oneOf": [
@@ -3817,15 +3951,15 @@
         "properties": {
           "ImplantDate": {
             "type": "string",
-            "description": "Implant date.\nYear only or year and month are also accepted",
+            "description": "Implant date.\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
-            "example": "2021-10-23 or 2021-10 or 2021"
+            "example": "2021-10-23"
           },
           "ExplantDate": {
             "type": "string",
-            "description": "Explant date\nYear only or year and month are also accepted",
+            "description": "Explant date\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
-            "example": "2021-10-23 or 2021-10 or 2021"
+            "example": "2021-10-23"
           }
         }
       },
@@ -3912,10 +4046,6 @@
         "type": "object",
         "description": "Adverse incident part",
         "additionalProperties": false,
-        "required": [
-          "Organization",
-          "Email"
-        ],
         "properties": {
           "Nin": {
             "type": "string",
@@ -3933,6 +4063,7 @@
           },
           "Organization": {
             "description": "Organization",
+            "nullable": true,
             "oneOf": [
               {
                 "$ref": "#/components/schemas/OrganizationPart"
@@ -3952,19 +4083,22 @@
             "type": "string",
             "description": "E-mail address",
             "format": "email",
-            "minLength": 1
+            "maxLength": 150,
+            "nullable": true
           },
           "Name": {
             "type": "string",
             "description": "Name",
-            "maxLength": 100,
+            "maxLength": 150,
             "nullable": true
           },
           "Phone": {
             "type": "string",
             "description": "Phone number.\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
             "format": "phone",
-            "nullable": true
+            "maxLength": 50,
+            "nullable": true,
+            "example": 12345678
           },
           "Qualification": {
             "description": "Reporter's qualification",
@@ -3977,6 +4111,7 @@
           },
           "Role": {
             "description": "Role. Required for report area Serious incident",
+            "nullable": true,
             "oneOf": [
               {
                 "$ref": "#/components/schemas/ReporterRole"
@@ -3988,6 +4123,15 @@
             "description": "Position. Required for report area Serious incident",
             "maxLength": 64,
             "nullable": true
+          },
+          "IsOnBehalfOf": {
+            "description": "True if reporter is reporting on behalf of someone else",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
           }
         }
       },
@@ -4005,6 +4149,7 @@
           "Initials": {
             "type": "string",
             "description": "Patient's initials",
+            "maxLength": 10,
             "nullable": true
           },
           "DateOfBirth": {
@@ -4023,18 +4168,22 @@
           },
           "YearOfBirth": {
             "type": "integer",
-            "description": "Year of birth.\nRequired for report areas Cosmetics and Diatary supplements if Nin is not set",
+            "description": "Year of birth.\nRequired for report areas Cosmetics and Dietary supplements",
             "format": "int32",
+            "maximum": 2100.0,
+            "minimum": 1900.0,
             "nullable": true
           },
           "Name": {
             "type": "string",
             "description": "Name.\nRequired for report area Serious incident if Nin is not set",
+            "maxLength": 150,
             "nullable": true
           },
           "Nationality": {
             "type": "string",
             "description": "Nationality.\nRequired for report area Serious incident if Nin is not set",
+            "maxLength": 150,
             "nullable": true
           },
           "Height": {
@@ -4042,15 +4191,15 @@
             "description": "Height, in cm",
             "format": "int32",
             "maximum": 300.0,
-            "minimum": 1.0,
+            "minimum": 20.0,
             "nullable": true
           },
           "Weight": {
             "type": "integer",
             "description": "Weight, in kg",
             "format": "int32",
-            "maximum": 250.0,
-            "minimum": 30.0,
+            "maximum": 300.0,
+            "minimum": 1.0,
             "nullable": true
           }
         }
@@ -4066,16 +4215,28 @@
           "IncidentDescription": {
             "type": "string",
             "description": "Indicent description",
+            "maxLength": 30000,
             "minLength": 1
           },
           "IncidentDate": {
             "type": "string",
             "description": "Incident date. Required for report area Medical equipment",
-            "nullable": true
+            "nullable": true,
+            "example": "2020-03-12"
           },
           "DateUnknown": {
-            "type": "boolean",
-            "description": "Date unknown flag. Required for report area Serious incident"
+            "description": "Date unknown flag. Required for report area Serious incident",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/YesNo"
+              }
+            ]
+          },
+          "DateText": {
+            "type": "string",
+            "description": "Date period if no other date is given and DateUnknown is false",
+            "maxLength": 250,
+            "nullable": true
           }
         }
       },
@@ -4242,6 +4403,21 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "description": "Put **_ONLY_** your JWT Bearer token on textbox below!",
+        "name": "JWT Authentication",
+        "in": "header",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
 }

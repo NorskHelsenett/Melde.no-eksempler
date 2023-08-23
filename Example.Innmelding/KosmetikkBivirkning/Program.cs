@@ -86,12 +86,12 @@ namespace Example.Kosmetikk
                             },
                             ProductUsage = new CosmeticsProductUsagePart
                             {
-                                BodyLocations = new List<BodyLocation>
+                                BodyLocations = new List<string>
                                 {
-                                    BodyLocation.Face,
-                                    BodyLocation.Stomach
+                                    "Ansikt",
+                                    "Mage"
                                 },
-                                UsageDescription = "Vårrengjøring"
+                                UsageDuration = "En uke"
                             }
                         }
                     }

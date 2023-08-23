@@ -70,7 +70,7 @@ namespace Example.LegemiddelBivirkning
                                 BatchLotNumber = "Batchnummer A412"
                             },
                             DrugName = "Painkillers",
-                            IsVaccine = false
+                            IsVaccine = YesNo.Yes
                         },
                         new DrugSideEffectsDrugPart
                         {
@@ -81,13 +81,13 @@ namespace Example.LegemiddelBivirkning
                             Dosage = new DrugSideEffectsDosagePart
                             {
                                 StartDate = "1994-05-23",
-                                VaccineTime = "23:05",
+                                StartTimeOfDay = "23:05",
                                 BatchLotNumber = "Batchnummer #R1195",
                                 AdministrationRoute = AdministrationRoute.RightArm,
                                 DoseNumber = DoseNumber.Two
                             },
                             DrugName = "Supervax",
-                            IsVaccine = true
+                            IsVaccine = YesNo.Yes
                         }
                     },
                     Symptoms = new List<DrugSideEffectsSymptomsPart>
