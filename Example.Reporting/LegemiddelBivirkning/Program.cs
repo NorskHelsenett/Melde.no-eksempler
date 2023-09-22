@@ -59,7 +59,7 @@ namespace Example.LegemiddelBivirkning
                         new DrugSideEffectsDrugPart
                         {
                             DrugId = "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C",
-                            Role = LegemiddelRolle.Samtidig,
+                            Role = LegemiddelRolle.Parallel,
                             Indication = "IndikasjonTestData",
                             StillInUse = YesNoDontKnow.No,
                             Dosage = new DrugSideEffectsDosagePart
@@ -75,7 +75,7 @@ namespace Example.LegemiddelBivirkning
                         new DrugSideEffectsDrugPart
                         {
                             DrugId = "ID_7C25C265-6B8D-4E66-8832-D514BE638BF2",
-                            Role = LegemiddelRolle.Mistenkt,
+                            Role = LegemiddelRolle.Suspected,
                             Indication = "",
                             StillInUse = YesNoDontKnow.Yes,
                             Dosage = new DrugSideEffectsDosagePart

@@ -1,9 +1,9 @@
 {
-  "x-generator": "NSwag v13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Melde API - Dialog/v1",
-    "description": "<p>API for dialog handling</p>\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\n",
+    "description": "<p>API for dialog handling</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
     "contact": {
       "name": "Norsk helsenett",
       "url": "https://www.nhn.no",
@@ -91,7 +91,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/ekstern/dialog": {
@@ -168,7 +173,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/dialog/message": {
@@ -245,7 +255,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/ekstern/dialog/message": {
@@ -322,7 +337,176 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/dialog/message-pp": {
+      "post": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Send a dialog message. Used by PP",
+        "operationId": "Dialog_SendMessageFromPP",
+        "requestBody": {
+          "x-name": "payload",
+          "description": "Information needed to send a message",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDialogMessageInfoPP"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Dialog message sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DialogMessageCreatedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Dialog not found",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseRespons"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/ekstern/dialog/message-pp": {
+      "post": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Send a dialog message. Used by PP",
+        "operationId": "Dialog_SendMessageFromPP2",
+        "requestBody": {
+          "x-name": "payload",
+          "description": "Information needed to send a message",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDialogMessageInfoPP"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Dialog message sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DialogMessageCreatedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Dialog not found",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseRespons"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/dialog/{reportRef}": {
@@ -399,7 +583,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/ekstern/dialog/{reportRef}": {
@@ -476,7 +665,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/v1/dialog/{dialogRef}/message": {
@@ -553,7 +747,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/api/ekstern/dialog/{dialogRef}/message": {
@@ -630,7 +829,272 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/dialog/search/{reportRef}": {
+      "get": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Search for dialog in the specified report. If no dialog was found for the logged in case worker, the response contains information to make the user able to start a new dialog.",
+        "operationId": "Dialog_SearchCaseWorkerDialog",
+        "parameters": [
+          {
+            "name": "reportRef",
+            "in": "path",
+            "required": true,
+            "description": "Report reference to the wanted report",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dialog info response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchCaseWorkerDialogRespons"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed, check for valid scopes in the access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseRespons"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/ekstern/dialog/search/{reportRef}": {
+      "get": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Search for dialog in the specified report. If no dialog was found for the logged in case worker, the response contains information to make the user able to start a new dialog.",
+        "operationId": "Dialog_SearchCaseWorkerDialog2",
+        "parameters": [
+          {
+            "name": "reportRef",
+            "in": "path",
+            "required": true,
+            "description": "Report reference to the wanted report",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dialog info response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchCaseWorkerDialogRespons"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed, check for valid scopes in the access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseRespons"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/dialog/full/{dialogRef}": {
+      "get": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Returns the complete dialog for the specified dialog reference number",
+        "operationId": "Dialog_Get",
+        "parameters": [
+          {
+            "name": "dialogRef",
+            "in": "path",
+            "required": true,
+            "description": "Dialog reference number. 'Dxxx...'",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dialog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDialogResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No dialog found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDialogResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed, check for valid scopes in the access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseRespons"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/api/ekstern/dialog/full/{dialogRef}": {
+      "get": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Returns the complete dialog for the specified dialog reference number",
+        "operationId": "Dialog_Get2",
+        "parameters": [
+          {
+            "name": "dialogRef",
+            "in": "path",
+            "required": true,
+            "description": "Dialog reference number. 'Dxxx...'",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dialog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDialogResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No dialog found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDialogResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed, check for valid scopes in the access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseRespons"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     }
   },
@@ -839,19 +1303,9 @@
             "description": "Hva slags type feil det gjelder",
             "nullable": true
           },
-          "Source": {
-            "type": "string",
-            "description": "Hvilken klasse feilen oppsto i",
-            "nullable": true
-          },
           "CorrelationId": {
             "type": "string",
             "description": "KorrelasjonsId fra kallet som feilen oppsto i",
-            "nullable": true
-          },
-          "StackTrace": {
-            "type": "string",
-            "description": "Fylles bare ut i testmiljø - hvor i koden feilen oppsto",
             "nullable": true
           },
           "InnerException": {
@@ -885,6 +1339,13 @@
             "type": "integer",
             "description": "Report area id. Assigned by NHN when the API is activated.",
             "format": "int32"
+          },
+          "Email": {
+            "type": "string",
+            "description": "Dialog creator's email address.\nRequired for web frontend only.",
+            "format": "email",
+            "maxLength": 150,
+            "nullable": true
           }
         }
       },
@@ -972,6 +1433,58 @@
           }
         }
       },
+      "CreateDialogMessageInfoPP": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CreateDialogMessageInfo"
+          },
+          {
+            "type": "object",
+            "description": "Create dialog message DTO, from Helsenorge",
+            "additionalProperties": false,
+            "properties": {
+              "HelsenorgeIds": {
+                "description": "Id-s related to Helsenorge",
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/HelsenorgeIds"
+                  }
+                ]
+              },
+              "SenderNin": {
+                "type": "string",
+                "description": "Sender NIN",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "HelsenorgeIds": {
+        "type": "object",
+        "description": "Helsenorge Id-s",
+        "additionalProperties": false,
+        "properties": {
+          "MessageId": {
+            "type": "string",
+            "description": "Message id",
+            "format": "guid"
+          },
+          "DialogId": {
+            "type": "string",
+            "description": "Helsenorge dialog id",
+            "format": "guid",
+            "nullable": true
+          },
+          "PreviousMessageId": {
+            "type": "string",
+            "description": "Previous message id",
+            "format": "guid",
+            "nullable": true
+          }
+        }
+      },
       "GetDialogInfoResponse": {
         "type": "object",
         "description": "Dialog info response",
@@ -1039,7 +1552,241 @@
             "minLength": 1
           }
         }
+      },
+      "SearchCaseWorkerDialogRespons": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseRespons"
+          },
+          {
+            "type": "object",
+            "description": "Case worker dialog search response",
+            "additionalProperties": false,
+            "properties": {
+              "ReporterEmail": {
+                "type": "string",
+                "description": "Reporter's email address",
+                "nullable": true
+              },
+              "ReportAreas": {
+                "type": "array",
+                "description": "Report areas the report has been sent to, except report areas which already have an existing dialog",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/IdNavn"
+                }
+              },
+              "ExistingDialog": {
+                "description": "Dialog info, if a dialog was found. Otherwise null",
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/DialogInfo"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "IdNavn": {
+        "type": "object",
+        "description": "Generic long id + string name",
+        "additionalProperties": false,
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "description": "Generert ID i En Vei Inn sin database",
+            "format": "int64"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name of the item",
+            "nullable": true
+          }
+        }
+      },
+      "DialogInfo": {
+        "type": "object",
+        "description": "Dialog info",
+        "additionalProperties": false,
+        "properties": {
+          "DialogRef": {
+            "type": "string",
+            "description": "Dialog reference number, if a dialog was found",
+            "nullable": true
+          },
+          "ReportArea": {
+            "description": "Report area, if a dialog was found",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/IdNavn"
+              }
+            ]
+          }
+        }
+      },
+      "GetDialogResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseRespons"
+          },
+          {
+            "type": "object",
+            "description": "Kvittering for henting av dialog",
+            "additionalProperties": false,
+            "properties": {
+              "Dialog": {
+                "description": "Dialog med meldinger, om det finnes en hvor pålogget bruker er saksbehandler eller melder.",
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Dialog"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Dialog": {
+        "type": "object",
+        "description": "Informasjon om en dialog.",
+        "additionalProperties": false,
+        "properties": {
+          "ReportRef": {
+            "type": "string",
+            "description": "Report reference",
+            "nullable": true
+          },
+          "DialogRef": {
+            "type": "string",
+            "description": "Dialog reference",
+            "nullable": true
+          },
+          "EmailAddresses": {
+            "description": "Email addresses to the dialog participants",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EmailAddresses"
+              }
+            ]
+          },
+          "ReportArea": {
+            "description": "DIalog report area",
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/IdNavn"
+              }
+            ]
+          },
+          "ReportedByHealthcarePersonell": {
+            "type": "boolean",
+            "description": "True if the report is dispatched by healthcare personnel"
+          },
+          "SupportsAttachments": {
+            "type": "boolean",
+            "description": "True if this report area supports attachments"
+          },
+          "DialogMessages": {
+            "type": "array",
+            "description": "Dialog messages",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/DialogMessage"
+            }
+          }
+        }
+      },
+      "EmailAddresses": {
+        "type": "object",
+        "description": "Dialog email addresses",
+        "additionalProperties": false,
+        "properties": {
+          "ReporterEmail": {
+            "type": "string",
+            "description": "Reporter email address",
+            "nullable": true
+          },
+          "CaseWorkerEmail": {
+            "type": "string",
+            "description": "Case worker email address",
+            "nullable": true
+          }
+        }
+      },
+      "DialogMessage": {
+        "type": "object",
+        "description": "Dialog message",
+        "additionalProperties": false,
+        "properties": {
+          "MessageRef": {
+            "type": "string",
+            "description": "Dialog reference",
+            "nullable": true
+          },
+          "MessageText": {
+            "type": "string",
+            "description": "Message content",
+            "nullable": true
+          },
+          "SenderName": {
+            "type": "string",
+            "description": "Sender's name",
+            "nullable": true
+          },
+          "ReceipientName": {
+            "type": "string",
+            "description": "Receipient name",
+            "nullable": true
+          },
+          "IsRecipient": {
+            "type": "boolean",
+            "description": "True if logged in user is the recipient of this message"
+          },
+          "IsRead": {
+            "type": "boolean",
+            "description": "Read flag"
+          },
+          "SentTime": {
+            "type": "string",
+            "description": "Send timestamp",
+            "format": "date-time"
+          },
+          "ReadTime": {
+            "type": "string",
+            "description": "Read timestamp",
+            "format": "date-time",
+            "nullable": true
+          },
+          "Attachments": {
+            "type": "array",
+            "description": "Attachments",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "description": "Put **_ONLY_** your JWT Bearer token on textbox below!",
+        "name": "JWT Authentication",
+        "in": "header",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
 }

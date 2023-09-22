@@ -505,6 +505,78 @@
         ]
       }
     },
+    "/api/v1/report/validate-adverse-incident": {
+      "post": {
+        "tags": [
+          "AdverseIncident"
+        ],
+        "summary": "Validate an adverse indicent. This endpoint supports multiple report areas in the same report (combined reporting).",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
+        "operationId": "AdverseIncident_ValidateAdverseIncident",
+        "requestBody": {
+          "x-name": "req",
+          "description": "Request object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdverseIncidentRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Validation OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, most probably a validation error",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed, check for valid scopes in the access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/report/adverse-incident": {
       "post": {
         "tags": [
@@ -575,6 +647,52 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/KvitteringsMelding"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "AdverseIncident"
+        ],
+        "summary": "Returns a list of adverse indicents reported by the logged in user.",
+        "description": "Requires authentication via HelseId",
+        "operationId": "AdverseIncident_MyReports",
+        "responses": {
+          "200": {
+            "description": "List of adverse incidents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdverseIncidentListResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed, check for valid scopes in the access token",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseRespons"
                 }
               }
             }
@@ -1390,6 +1508,12 @@
               }
             ]
           },
+          "DrugForm": {
+            "type": "string",
+            "description": "Drig form, i.e. tablet\nRef kodeverk 7448 at Volven: https://volven.no/produkt.asp?id=382962&catID=3&subID=8.",
+            "maxLength": 128,
+            "nullable": true
+          },
           "UnsureDrugFormOrStrength": {
             "description": "Unsure about drug form or strength",
             "nullable": true,
@@ -1444,9 +1568,9 @@
         "type": "string",
         "description": "Legemiddelrolle",
         "x-enumNames": [
-          "Mistenkt",
-          "Samtidig",
-          "Interagerende"
+          "Suspected",
+          "Parallel",
+          "Interactive"
         ],
         "enum": [
           "Mistenkt",
@@ -1472,12 +1596,12 @@
         "type": "integer",
         "description": "Hva gjorde bruker når bivirkning oppstod",
         "x-enumNames": [
-          "IkkeSatt",
-          "SluttetÅTaLegemiddelet",
-          "DosenRedusert",
-          "DosenØkt",
-          "IngenEndring",
-          "VetIkke"
+          "NotSet",
+          "StoppedUsingDrug",
+          "DoseReduced",
+          "DoseIncreased",
+          "NoChange",
+          "DontKnow"
         ],
         "enum": [
           0,
@@ -1492,13 +1616,13 @@
         "type": "string",
         "description": "Mulige valg for hvor legemiddelet ble kjøpt",
         "x-enumNames": [
-          "IkkeSatt",
-          "ApotekUtenResept",
-          "ApotekMedResept",
-          "ButikkKioskBensinstasjon",
-          "Internett",
-          "UtlevertHosLege",
-          "Annet"
+          "NotSet",
+          "PharmacyWithoutPrescription",
+          "PharmacyWithPrescription",
+          "ShopKioskGasStation",
+          "Internet",
+          "DeliveredByDoctor",
+          "Other"
         ],
         "enum": [
           "IkkeSatt",
@@ -4329,6 +4453,88 @@
                 "$ref": "#/components/schemas/MedicalEquipmentReportPart"
               }
             ]
+          }
+        }
+      },
+      "AdverseIncidentListResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseRespons"
+          },
+          {
+            "type": "object",
+            "description": "Informasjon om en uønsket hendelse",
+            "additionalProperties": false,
+            "properties": {
+              "AdverseIncidents": {
+                "type": "array",
+                "description": "List of adverse incidents",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/AdverseIncident"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "AdverseIncident": {
+        "type": "object",
+        "description": "Informasjon om en uønsket hendelse",
+        "additionalProperties": false,
+        "properties": {
+          "ReportRef": {
+            "type": "string",
+            "description": "Report reference number (Uxxx... or Vxxx...)",
+            "nullable": true
+          },
+          "ReportTime": {
+            "type": "string",
+            "description": "Report receive time",
+            "format": "date-time"
+          },
+          "ReportAreas": {
+            "type": "array",
+            "description": "Information about report areas the reporthas been sent to, and information about existing dialogs.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AdverseIncidentReportArea"
+            }
+          }
+        }
+      },
+      "AdverseIncidentReportArea": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Report area name",
+            "nullable": true
+          },
+          "Dialogs": {
+            "type": "array",
+            "description": "Dialogs for this report area.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/AdverseIncidentReportAreaDialog"
+            }
+          }
+        }
+      },
+      "AdverseIncidentReportAreaDialog": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "DialogRef": {
+            "type": "string",
+            "description": "Dialog reference number 'Dxxx...'",
+            "nullable": true
+          },
+          "UnreadMessagesCount": {
+            "type": "integer",
+            "description": "Number of unread messages in dialog",
+            "format": "int32"
           }
         }
       },
