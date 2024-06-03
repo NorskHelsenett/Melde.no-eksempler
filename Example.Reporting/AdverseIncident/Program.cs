@@ -44,7 +44,8 @@ namespace Example.Varselordningen
                     Incident = new AdverseIncidentIncidentPart
                     {
                         IncidentDescription = "Datt på rattata",
-                        IncidentDate = "2021-07-13"
+                        IncidentDate = "2021-07-13",
+                        DateUnknown = YesNo.No
                     },
                     Patient = new AdverseIncidentPatientPart
                     {
