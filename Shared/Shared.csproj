@@ -15,7 +15,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.6" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.6.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="NSwag.ApiDescription.Client" Version="14.0.7">
+		<PackageReference Include="NSwag.ApiDescription.Client" Version="14.1.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -27,7 +27,7 @@
 		<OpenApiReference Include="OpenAPI\swagger-report.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApiReport">
 			<SourceUri>https://api.qa.melde.no/swagger/index.html?url=/swagger/External/v1/swagger.json</SourceUri>
 			<ClassName>{controller}Client</ClassName>
-			<Options>/useBaseUrl:false /output:obj\MeldeClientReport.cs /GenerateClientInterfaces:false</Options>
+			<Options>/useBaseUrl:false /GenerateClientInterfaces:false</Options>
 		</OpenApiReference>
 	</ItemGroup>
 
@@ -35,8 +35,15 @@
 		<OpenApiReference Include="OpenAPI\swagger-dialog.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApiDialog">
 			<SourceUri>https://api.qa.melde.no/swagger/index.html?url=/swagger/ExternalDialog/v1/swagger.json</SourceUri>
 			<ClassName>{controller}Client</ClassName>
-			<Options>/useBaseUrl:false /output:obj\MeldeClientDialog.cs /GenerateClientInterfaces:false /AdditionalNamespaceUsages:MeldeApiReport</Options>
+			<Options>/useBaseUrl:false /GenerateClientInterfaces:false /AdditionalNamespaceUsages:MeldeApiReport</Options>
 		</OpenApiReference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<OpenApiReference Include="OpenAPI\swagger-dialog-vs.json" CodeGenerator="NSwagCSharp" Namespace="MeldeApiDialogVs">
+			<SourceUri>https://api.qa.melde.no/swagger/index.html?url=/swagger/ExternalDialogVs/v1/swagger.json</SourceUri>
+			<ClassName>{controller}Client</ClassName>
+			<Options>/useBaseUrl:false /GenerateClientInterfaces:false /AdditionalNamespaceUsages:MeldeApiReport</Options>
+		</OpenApiReference>
+	</ItemGroup>
 </Project>
