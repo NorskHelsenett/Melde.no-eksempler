@@ -1,9 +1,9 @@
 {
-  "x-generator": "NSwag v14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Melde API - Dialog/v1",
-    "description": "<p>API for dialog handling</p>\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\n",
+    "description": "<p>API for dialog handling</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
     "contact": {
       "name": "Norsk helsenett",
       "url": "https://www.nhn.no",
@@ -13,7 +13,7 @@
   },
   "servers": [
     {
-      "url": "https://api.melde.test.nhn.no"
+      "url": "https://localhost:44342"
     }
   ],
   "paths": {
@@ -24,93 +24,6 @@
         ],
         "summary": "Create a new dialog for the specified report, report area and authenticated process handler.",
         "operationId": "Dialog_StartDialog",
-        "requestBody": {
-          "x-name": "payload",
-          "description": "Information specifying report reference and report area to associate the dialog with",
-          "content": {
-            "application/json": {
-              "schema": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/CreateDialogInfo"
-                  }
-                ]
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "201": {
-            "description": "Dialog created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DialogCreatedResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Dialog already exists, request error or validation error",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication failed",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Authorization failed. Check for valid scopes in access token",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Other error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseRespons"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/ekstern/dialog": {
-      "post": {
-        "tags": [
-          "Dialog"
-        ],
-        "summary": "Create a new dialog for the specified report, report area and authenticated process handler.",
-        "operationId": "Dialog_StartDialog2",
         "requestBody": {
           "x-name": "payload",
           "description": "Information specifying report reference and report area to associate the dialog with",
@@ -278,93 +191,6 @@
         ]
       }
     },
-    "/api/ekstern/dialog/message": {
-      "post": {
-        "tags": [
-          "Dialog"
-        ],
-        "summary": "Send a dialog message",
-        "operationId": "Dialog_SendMessage2",
-        "requestBody": {
-          "x-name": "payload",
-          "description": "Information needed to send a message",
-          "content": {
-            "application/json": {
-              "schema": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/CreateDialogMessageInfo"
-                  }
-                ]
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
-            "description": "Dialog message sent",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DialogMessageCreatedResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Dialog not found",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication failed",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Authorization failed. Check for valid scopes in access token",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Other error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseRespons"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
     "/api/v1/dialog/{reportRef}": {
       "get": {
         "tags": [
@@ -446,87 +272,6 @@
         ]
       }
     },
-    "/api/ekstern/dialog/{reportRef}": {
-      "get": {
-        "tags": [
-          "Dialog"
-        ],
-        "summary": "Get dialog reference for specified report and authenticated user.",
-        "operationId": "Dialog_GetDialogInfo2",
-        "parameters": [
-          {
-            "name": "reportRef",
-            "in": "path",
-            "required": true,
-            "description": "Report reference. Format [Uxxxx]' or [Vxxxx]",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Dialog found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetDialogInfoResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Dialog not found",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication failed",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Authorization failed. Check for valid scopes in access token",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Other error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseRespons"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
     "/api/v1/dialog/{dialogRef}/message": {
       "get": {
         "tags": [
@@ -534,87 +279,6 @@
         ],
         "summary": "Get all unread messages in specified dialog",
         "operationId": "Dialog_GetUnreadMessages",
-        "parameters": [
-          {
-            "name": "dialogRef",
-            "in": "path",
-            "required": true,
-            "description": "Dialog reference. Format [Dxxxx]",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Unread messages returned",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUnreadMessagesResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Dialog not found",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Authentication failed",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Authorization failed. Check for valid scopes in access token",
-            "content": {
-              "application/octet-stream": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Other error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BaseRespons"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/api/ekstern/dialog/{dialogRef}/message": {
-      "get": {
-        "tags": [
-          "Dialog"
-        ],
-        "summary": "Get all unread messages in specified dialog",
-        "operationId": "Dialog_GetUnreadMessages2",
         "parameters": [
           {
             "name": "dialogRef",

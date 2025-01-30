@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.0.3.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Melde API - Report/v1",
@@ -863,15 +863,15 @@
             "type": "integer",
             "description": "Height, in cm",
             "format": "int32",
-            "maximum": 300.0,
-            "minimum": 20.0,
+            "maximum": 250.0,
+            "minimum": 10.0,
             "nullable": true
           },
           "Weight": {
             "type": "integer",
             "description": "Weight, in kg",
             "format": "int32",
-            "maximum": 300.0,
+            "maximum": 650.0,
             "minimum": 1.0,
             "nullable": true
           }
@@ -1322,6 +1322,13 @@
             "nullable": true,
             "example": "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C"
           },
+          "AtcCode": {
+            "type": "string",
+            "description": "Drug ATC code",
+            "maxLength": 20,
+            "nullable": true,
+            "example": "J07BN01"
+          },
           "IsVaccine": {
             "description": "Is vaccine.\nRequired if drug id is empty",
             "nullable": true,
@@ -1690,7 +1697,7 @@
           "Severity": {
             "type": "array",
             "description": "Severity",
-            "maxItems": 5,
+            "maxItems": 6,
             "nullable": true,
             "example": [
               "Livstruende",
@@ -3109,6 +3116,10 @@
         "additionalProperties": false,
         "properties": {
           "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Name": {
             "type": "string",
             "nullable": true
           },

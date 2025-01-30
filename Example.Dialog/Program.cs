@@ -42,7 +42,7 @@ namespace Example.Toveisdialog
             string dialogRef = null;
             try
             {
-                var response = await dialogClient.GetDialogInfo2Async(UONSKET_HENDELSE_REF);
+                var response = await dialogClient.GetDialogInfoAsync(UONSKET_HENDELSE_REF);
                 dialogRef = response.DialogRef;
             }
             catch (ApiException e)
@@ -64,7 +64,7 @@ namespace Example.Toveisdialog
                         ReportArea = MELDEORDNING_ID
                     };
 
-                    var createdResponse = await dialogClient.StartDialog2Async(createPayload);
+                    var createdResponse = await dialogClient.StartDialogAsync(createPayload);
                     dialogRef = createdResponse.DialogRef;
                 }
                 catch (ApiException e)
@@ -159,7 +159,7 @@ namespace Example.Toveisdialog
                     }
                 };
 
-                var messageResponse = await dialogClient.SendMessage2Async(messagePayload);
+                var messageResponse = await dialogClient.SendMessageAsync(messagePayload);
             }
             catch (ApiException e)
             {
@@ -168,12 +168,12 @@ namespace Example.Toveisdialog
             }
 
             // Expected no unread messages at this point
-            var messages = await dialogClient.GetUnreadMessages2Async(dialogRef);
+            var messages = await dialogClient.GetUnreadMessagesAsync(dialogRef);
 
             // Manual work: Reply to message from web
 
             // Expected one or more unread messages at this point
-            var unreadMessages = await dialogClient.GetUnreadMessages2Async(dialogRef);
+            var unreadMessages = await dialogClient.GetUnreadMessagesAsync(dialogRef);
         }
 
         private static string PromptForInput(string message)
