@@ -59,21 +59,21 @@ namespace Example.Varselordningen
                         DietarySupplements = true,
                         Biovigilance = true
                     },
+                    ContactPersons = new List<ContactPersonPart>
+                    {
+                        new ContactPersonPart
+                        {
+                            Name = "VILDE MOEN_BRATLI",
+                            Email = "TestData@melde.no",
+                            Phone = "00000000",
+                            Position = "Doktor"
+                        }
+                    }
                 },
                 Report = new AdverseIncidentReportPart
                 {
                     SeriousIncident = new SeriousIncidentReportPart
                     {
-                        ContactPersons = new List<SeriousIncidentContactPerson>
-                        {
-                            new SeriousIncidentContactPerson
-                            {
-                                Name = "VILDE MOEN_BRATLI",
-                                Email = "TestData@melde.no",
-                                Phone = "00000000",
-                                Position = "Doktor"
-                            }
-                        },
                         NextOfKin = new List<SeriousIncidentNextOfKin>
                         {
                             new SeriousIncidentNextOfKin
