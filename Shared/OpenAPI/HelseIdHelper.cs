@@ -1,61 +1,74 @@
 ﻿using IdentityModel;
-using IdentityModel.Client;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Duende.IdentityModel.Client;
 
 namespace OpenAPI
 {
     public class HelseIdTokenHelper
     {
-        public static async Task<string> GetAccessToken(string stsUrl, string clientId, string jwkPrivateKey, string[] scopes, ClientType clientType, CancellationToken cancellationToken = default)
+        public static async Task<string> GetAccessToken(string stsUrl, string clientId, string jwkPrivateKey, string[] scopes, ClientType clientType, TokenType tokenType, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(stsUrl)) throw new ArgumentException(nameof(stsUrl));
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException(nameof(clientId));
             if (string.IsNullOrEmpty(jwkPrivateKey)) throw new ArgumentException(nameof(jwkPrivateKey));
 
-            // TODO: HttpClientFactory ?
             var c = new HttpClient();
-            var disco = await c.GetDiscoveryDocumentAsync(stsUrl, cancellationToken);
+            var disco = await c.GetDiscoveryDocumentAsync(stsUrl);
             if (disco.IsError)
             {
                 throw new Exception($"Error getting discovery document from HelseId: {disco.Error}, stsUrl: {stsUrl}");
             }
 
-            var accessToken = null as string;
-            if(clientType == ClientType.Machine)
-            {
-                var tokenRequest = new TokenRequest
-                {
-                    Address = disco.TokenEndpoint,
-                    ClientId = clientId,
-                    GrantType = OidcConstants.GrantTypes.ClientCredentials,
-                    ClientAssertion = new ClientAssertion
-                    {
-                        Type = OidcConstants.ClientAssertionTypes.JwtBearer,
-                        Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
-                    },
-                    ClientCredentialStyle = ClientCredentialStyle.PostBody,
-                    Parameters = new Parameters(new Dictionary<string, string>
-                    {
-                        //{ "scope", string.Join(" ", scopes) }
-                    })
-                };
-                var response = await c.RequestTokenAsync(tokenRequest, cancellationToken).ConfigureAwait(false);
+            var useDpop = tokenType == TokenType.DPoPToken;
+            string nonce = null;
+            TokenResponse response = null;
+            string accessToken = "";
 
-                if (response.IsError)
+            if (clientType == ClientType.Machine)
+            {
+                for (int i = 0; i < (useDpop ? 2 : 1); i++)
+                {
+                    var tokenRequest = new ClientCredentialsTokenRequest
+                    {
+                        Address = disco.TokenEndpoint,
+                        ClientId = clientId,
+                        GrantType = OidcConstants.GrantTypes.ClientCredentials,
+                        ClientCredentialStyle = ClientCredentialStyle.PostBody,
+                        ClientAssertion = new ClientAssertion
+                        {
+                            Type = OidcConstants.ClientAssertionTypes.JwtBearer,
+                            Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
+                        },
+                        Scope = string.Join(' ', scopes),
+
+                        // Dpop
+                        DPoPProofToken = useDpop ? new DPoPProofCreator(jwkPrivateKey, SecurityAlgorithms.RsaSha256)
+                            .CreateDPoPProof(disco.TokenEndpoint!, "POST", dPoPNonce: nonce) : null
+                    };
+                    response = await c.RequestTokenAsync(tokenRequest);
+
+                    if (response.IsError && response.Error == "use_dpop_nonce" && !string.IsNullOrEmpty(response.DPoPNonce))
+                    {
+                        nonce = response.DPoPNonce;
+                    }
+                    else
+                        break;
+                }
+
+                if (response!.IsError)
                 {
                     throw new Exception($"Error getting access token from HelseId. {response.Error}, ErrorDescription: {response.ErrorDescription}, stsUrl: {stsUrl}, clientId: {clientId}");
                 }
 
-                accessToken = response.AccessToken;
+                accessToken =  response?.AccessToken;
             }
-            else if(clientType == ClientType.Person)
+            else if (clientType == ClientType.Person)
             {
                 var tokenRequest = new PersonalTokenRequest()
                 {
@@ -66,32 +79,39 @@ namespace OpenAPI
                         Type = OidcConstants.ClientAssertionTypes.JwtBearer,
                         Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
                     },
-                    Scopes = scopes
+                    Scopes = scopes,
+
+                    // Dpop
+                    DPoPProofToken = useDpop ? new DPoPProofCreator(jwkPrivateKey, SecurityAlgorithms.RsaSha256)
+                            .CreateDPoPProof(disco.TokenEndpoint!, "POST", dPoPNonce: nonce) : null
                 };
                 accessToken = await tokenRequest.RequestTokenAsync().ConfigureAwait(false);
             }
+
             return accessToken;
         }
 
         public static string BuildClientAssertion(DiscoveryDocumentResponse disco, string clientId, string jwkPrivateKey)
         {
-            var claims = new List<Claim>
+            var claims = new Dictionary<string, object>
             {
-                new Claim(JwtClaimTypes.Subject, clientId),
-                new Claim(JwtClaimTypes.IssuedAt, DateTimeOffset.Now.ToUnixTimeSeconds().ToString()),
-                new Claim(JwtClaimTypes.JwtId, Guid.NewGuid().ToString("N")),
+                { JwtRegisteredClaimNames.Sub, clientId },
+                { JwtRegisteredClaimNames.Iat, DateTimeOffset.Now.ToUnixTimeSeconds().ToString() },
+                { JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N") }
             };
 
-            var credentials = new JwtSecurityToken(
-                clientId,
-                disco.TokenEndpoint,
-                claims,
-                DateTime.UtcNow,
-                DateTime.UtcNow.AddSeconds(60),
-                GetClientAssertionSigningCredentials(jwkPrivateKey));
+            var credentials = new SecurityTokenDescriptor
+            {
+                Issuer = clientId,
+                Audience = disco.Issuer,
+                Claims = claims,
+                NotBefore = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddSeconds(10),
+                SigningCredentials = GetClientAssertionSigningCredentials(jwkPrivateKey)
+            };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            return tokenHandler.WriteToken(credentials);
+            var tokenHandler = new JsonWebTokenHandler();
+            return tokenHandler.CreateToken(credentials);
         }
 
         private static SigningCredentials GetClientAssertionSigningCredentials(string jwkPrivateKey)

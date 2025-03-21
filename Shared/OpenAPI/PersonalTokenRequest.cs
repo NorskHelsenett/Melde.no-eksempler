@@ -1,12 +1,15 @@
 ﻿using IdentityModel;
-using IdentityModel.Client;
-using IdentityModel.OidcClient;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Duende.IdentityModel.OidcClient;
+using Duende.IdentityModel.Client;
+using Duende.IdentityModel.OidcClient.DPoP;
+using Duende.IdentityModel.OidcClient.Browser;
+using System.Threading;
 
 namespace OpenAPI
 {
@@ -24,6 +27,7 @@ namespace OpenAPI
         public string StsUrl { get; set; }
         public string ClientId { get; set; }
         public string[] Scopes { get; set; }
+        public string DPoPProofToken { get; set; }
         public ClientAssertion ClientAssertion { get; set; }
 
         public async Task<string> RequestTokenAsync()
@@ -43,10 +47,16 @@ namespace OpenAPI
                     RedirectUri = $"{Localhost}{RedirectUrl}",
                     Scope = "openid profile offline_access " + string.Join(" ", Scopes),
                     ClientId = ClientId,
-                    ClientAssertion = ClientAssertion,                   
+                    ClientAssertion = ClientAssertion,
 
-                    Policy = new Policy { ValidateTokenIssuerName = true },                    
+                    //Browser = new SystemBrowser()
+
+                    Policy = new Policy { ValidateTokenIssuerName = true }
                 });
+
+                //var result = await oidcClient.LoginAsync();
+
+                Console.WriteLine();
 
                 var state = await oidcClient.PrepareLoginAsync();
                 var response = await RunLocalWebBrowserUntilCallback(Localhost, RedirectUrl, StartPage, state);
@@ -113,4 +123,47 @@ namespace OpenAPI
             Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
         }
     }
+
+#if false
+    class Briowser : IBrowser
+    {
+        const string Localhost = "http://localhost:8089";
+        const string RedirectUrl = "/callback";
+        const string StartPage = "/start";
+
+        public async Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default)
+        {
+            var result = RunLocalWebBrowserUntilCallback(Localhost, RedirectUrl, StartPage, state);
+
+        }
+
+        private static async Task<string> RunLocalWebBrowserUntilCallback(string localhost, string redirectUrl, string startPage, AuthorizeState state)
+        {
+            // Build a HTML form that does a POST of the data from the url
+            // This is a workaround since the url may be too long to pass to the browser directly
+            var startPageHtml = UrlToHtmlForm.Parse(state.StartUrl);
+
+            // Setup a temporary http server that listens to the given redirect uri and to 
+            // the given start page. At the start page we can publish the html that we
+            // generated from the StartUrl and at the redirect uri we can retrieve the 
+            // authorization code and return it to the application
+            using (var listener = new ContainedHttpServer(localhost, redirectUrl,
+                new Dictionary<string, Action<HttpContext>> {
+                    { startPage, async ctx => await ctx.Response.WriteAsync(startPageHtml)}
+                }))
+            {
+                RunBrowser(localhost + startPage);
+
+                return await listener.WaitForCallbackAsync();
+            }
+        }
+
+        private static void RunBrowser(string url)
+        {
+            // Thanks Brock! https://brockallen.com/2016/09/24/process-start-for-urls-on-net-core/
+            url = url.Replace("&", "^&");
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
+        }
+    }
+#endif
 }

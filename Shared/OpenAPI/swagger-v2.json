@@ -1,0 +1,4947 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Melde API",
+    "description": "<p>API for reporting and handling dialog related to adverse incidents.</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
+    "contact": {
+      "name": "Norsk Helsenett",
+      "url": "https://www.nhn.no",
+      "email": "kundesenter@nhn.no"
+    },
+    "version": "2.0"
+  },
+  "paths": {
+    "/api/v2/report/validate-adverse-incident": {
+      "post": {
+        "tags": [
+          "AdverseIncident"
+        ],
+        "summary": "Validate an adverse indicent. This endpoint supports multiple report areas in the same report (combined reporting).",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
+        "requestBody": {
+          "description": "Request object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "Validation OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, most probably a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ActionResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/report/adverse-incident": {
+      "post": {
+        "tags": [
+          "AdverseIncident"
+        ],
+        "summary": "Report an adverse indicent. This endpoint supports multiple report areas in the same report (combined reporting).",
+        "description": "Requires authentication via HelseId and a valid HPR authorization",
+        "requestBody": {
+          "description": "Request object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ActionResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/dialog": {
+      "post": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Create a new dialog for the specified report, report area and authenticated process handler.",
+        "requestBody": {
+          "description": "Information specifying report reference and report area to associate the dialog with",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Dialog created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogCreatedResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dialog already exists, request error or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.BadRequestObjectResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/dialog/message": {
+      "post": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Send a dialog message",
+        "requestBody": {
+          "description": "Information needed to send a message",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogMessageInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Dialog message sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogCreatedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Dialog not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.NotFoundObjectResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dialog already exists, request error or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.BadRequestObjectResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/dialog/{reportRef}": {
+      "get": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Get dialog reference for specified report and authenticated user.",
+        "parameters": [
+          {
+            "name": "reportRef",
+            "in": "path",
+            "description": "Report reference. Format [Uxxxx]' or [Vxxxx]",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Dialog found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogMessageCreatedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Dialog not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.NotFoundObjectResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/dialog/{dialogRef}/message": {
+      "get": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Get all unread messages in specified dialog",
+        "parameters": [
+          {
+            "name": "dialogRef",
+            "in": "path",
+            "description": "Dialog reference. Format [Dxxxx]",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Unread messages returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetUnreadMessagesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Dialog not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.NotFoundObjectResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/feedback": {
+      "post": {
+        "tags": [
+          "Feedback"
+        ],
+        "summary": "Oppretter en ny tilbakemelding og varsler via epost",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Feedback"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Opprettet tilbakemelding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Feil i meldingen, for eksempel påkrevde felt mangler",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Andre feil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/nokup/lookup/{codes}": {
+      "get": {
+        "tags": [
+          "Nokob"
+        ],
+        "summary": "Lookup one or more Nokup codes",
+        "parameters": [
+          {
+            "name": "codes",
+            "in": "path",
+            "description": "Semicolon separated list of codes",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Hdir.EnVeiInn.Service.Services.NokupLookupResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request, most probably a validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ActionResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization failed, check for valid scopes in the access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.UnauthorizedResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ping": {
+      "get": {
+        "tags": [
+          "Ping"
+        ],
+        "summary": "Ping tjeneste",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DTO.V10.ExternalApi.AdverseIncidentHeaderPart": {
+        "required": [
+          "ExternalCaseId",
+          "Incident",
+          "ReportAreas",
+          "Reporter"
+        ],
+        "type": "object",
+        "properties": {
+          "ExternalCaseId": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Unique report identifier in the external system.",
+            "example": "MYSYS-REF8345"
+          },
+          "Language": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.Language"
+          },
+          "ExternalMessageId": {
+            "type": "string",
+            "description": "External message id",
+            "format": "uuid",
+            "nullable": true,
+            "example": "8c3d9d5d-bf98-4ca7-8406-8df657ae3a82"
+          },
+          "Reporter": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentReporterPart"
+          },
+          "Patient": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentPatientPart"
+          },
+          "Incident": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentIncidentPart"
+          },
+          "ContactPersons": {
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.ContactPersonPart"
+            },
+            "description": "List of contact persons",
+            "nullable": true
+          },
+          "Attachments": {
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+            },
+            "description": "Attachments",
+            "nullable": true
+          },
+          "ReportAreas": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentReportAreasPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Header part"
+      },
+      "DTO.V10.ExternalApi.AdverseIncidentIncidentPart": {
+        "required": [
+          "IncidentDescription"
+        ],
+        "type": "object",
+        "properties": {
+          "IncidentDescription": {
+            "maxLength": 30000,
+            "minLength": 1,
+            "type": "string",
+            "description": "Indicent description"
+          },
+          "IncidentDate": {
+            "type": "string",
+            "description": "Incident date. Required for report area Medical equipment",
+            "nullable": true,
+            "example": "2020-03-12"
+          },
+          "DateUnknown": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+          },
+          "DateText": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Date period if no other date is given and DateUnknown is false",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Adverse incident part"
+      },
+      "DTO.V10.ExternalApi.AdverseIncidentPatientPart": {
+        "type": "object",
+        "properties": {
+          "Nin": {
+            "pattern": "^\\d{11}$",
+            "type": "string",
+            "description": "National is number.\r\nRequired for report area Drug side effects if date of birth and gender is not set.\r\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
+            "nullable": true
+          },
+          "Initials": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Patient's initials",
+            "nullable": true
+          },
+          "DateOfBirth": {
+            "type": "string",
+            "description": "Date of birth.\r\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
+            "nullable": true
+          },
+          "Gender": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Gender"
+          },
+          "YearOfBirth": {
+            "maximum": 2100,
+            "minimum": 1900,
+            "type": "integer",
+            "description": "Year of birth.\r\nRequired for report areas Cosmetics and Dietary supplements",
+            "format": "int32",
+            "nullable": true
+          },
+          "Name": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Name.\r\nRequired for report area Serious incident if Nin is not set",
+            "nullable": true
+          },
+          "Nationality": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Nationality.\r\nRequired for report area Serious incident if Nin is not set",
+            "nullable": true
+          },
+          "Height": {
+            "maximum": 250,
+            "minimum": 10,
+            "type": "integer",
+            "description": "Height, in cm",
+            "format": "int32",
+            "nullable": true
+          },
+          "Weight": {
+            "maximum": 650,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Weight, in kg",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "UonsketHendelsePasientPart"
+      },
+      "DTO.V10.ExternalApi.AdverseIncidentReportAreasPart": {
+        "type": "object",
+        "properties": {
+          "SeriousIncident": {
+            "type": "boolean",
+            "description": "True if a Serious incident report is included in this request"
+          },
+          "DrugSideEffects": {
+            "type": "boolean",
+            "description": "True if a Drug side effects report is included in this request"
+          },
+          "Biovigilance": {
+            "type": "boolean",
+            "description": "True if a Biovigilance report is included in this request"
+          },
+          "Cosmetics": {
+            "type": "boolean",
+            "description": "True if a Cosmetics report is included in this request"
+          },
+          "DietarySupplements": {
+            "type": "boolean",
+            "description": "True if a Dietary supplements report is included in this request"
+          },
+          "MedicalEquipment": {
+            "type": "boolean",
+            "description": "True if a Medical equipment report is included in this request"
+          },
+          "ECigarette": {
+            "type": "boolean",
+            "description": "True if an E-Cigarette report is included in this request"
+          },
+          "Radiation": {
+            "type": "boolean",
+            "description": "True if a Radiation report is included in this request"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report areas"
+      },
+      "DTO.V10.ExternalApi.AdverseIncidentReportPart": {
+        "type": "object",
+        "properties": {
+          "SeriousIncident": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.SeriousIncidentReportPart"
+          },
+          "DrugSideEffects": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsReportPart"
+          },
+          "Biovigilance": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.BiovigilanceReportPart"
+          },
+          "Cosmetics": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsReportPart"
+          },
+          "DietarySupplements": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsReportPart"
+          },
+          "MedicalEquipment": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.MedicalEquipmentReportPart"
+          },
+          "ECigarette": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigaretteReportPart"
+          },
+          "Radiation": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.RadiationReportPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
+      },
+      "DTO.V10.ExternalApi.AdverseIncidentReporterPart": {
+        "type": "object",
+        "properties": {
+          "Nin": {
+            "pattern": "^\\d{11}$",
+            "type": "string",
+            "description": "Social security number",
+            "nullable": true
+          },
+          "HprId": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "nullable": true
+          },
+          "Organization": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.OrganizationPart"
+          },
+          "IncidentOrganization": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.OrganizationPart"
+          },
+          "Email": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "E-mail address",
+            "format": "email",
+            "nullable": true
+          },
+          "Name": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Name",
+            "nullable": true
+          },
+          "Phone": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Phone number.\r\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
+            "format": "tel",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "Qualification": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Qualification"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.ReporterRole"
+          },
+          "Position": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Position. Required for report area Serious incident",
+            "nullable": true
+          },
+          "IsOnBehalfOf": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Adverse incident part"
+      },
+      "DTO.V10.ExternalApi.AdverseIncidentRequest": {
+        "required": [
+          "Header",
+          "Report"
+        ],
+        "type": "object",
+        "properties": {
+          "Header": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentHeaderPart"
+          },
+          "Report": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentReportPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Adverse incident DTO"
+      },
+      "DTO.V10.ExternalApi.BiovigilanceReportPart": {
+        "required": [
+          "ActualConsequenceForPatient",
+          "ContributingFactors",
+          "Frequency",
+          "IncidentLocation",
+          "PossibleConsequenceOnRepetition",
+          "Preventability",
+          "TypeOfIncident"
+        ],
+        "type": "object",
+        "properties": {
+          "IncidentLocation": {
+            "maxLength": 10,
+            "minLength": 1,
+            "pattern": "^([0-9.])+$",
+            "type": "string",
+            "description": "Sted for hendelsen kode (1.x...). Obligatorisk",
+            "example": "1.6.4"
+          },
+          "TypeOfIncident": {
+            "maxLength": 20,
+            "minLength": 1,
+            "pattern": "^([0-9.])+$",
+            "type": "string",
+            "description": "Hendelsestype kode (2.x...). Obligatorisk",
+            "example": "2.10.1.1.1"
+          },
+          "ContributingFactors": {
+            "pattern": "^([0-9.])+$",
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder."
+          },
+          "Preventability": {
+            "maxLength": 10,
+            "minLength": 1,
+            "pattern": "^([0-9.])+$",
+            "type": "string",
+            "description": "Forebyggbarhet kode (4.x...). Obligatorisk",
+            "example": "4.3"
+          },
+          "ActualConsequenceForPatient": {
+            "maxLength": 10,
+            "minLength": 1,
+            "pattern": "^([0-9.])+$",
+            "type": "string",
+            "description": "Faktisk konsekvens for pasient kode (5.x...). Obligatorisk",
+            "example": "5.2"
+          },
+          "Frequency": {
+            "maxLength": 10,
+            "minLength": 1,
+            "pattern": "^([0-9.])+$",
+            "type": "string",
+            "description": "Hyppighet kode (6.x...). Obligatorisk",
+            "example": "6.3"
+          },
+          "PossibleConsequenceOnRepetition": {
+            "maxLength": 10,
+            "minLength": 1,
+            "pattern": "^([0-9.])+$",
+            "type": "string",
+            "description": "Mulig konsekvens ved gjentakelse kode (7.x...). Obligatorisk",
+            "example": "7.4"
+          },
+          "AntiSubstance": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Tilleggsinfo: Antistoff tekst",
+            "nullable": true,
+            "example": "Anti-D"
+          },
+          "AutologousCode": {
+            "pattern": "^[1-4]$",
+            "type": "string",
+            "description": "Tilleggsinfo: AutologKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "DepartmentCode": {
+            "pattern": "^([1-8]|99)$",
+            "type": "string",
+            "description": "Tilleggsinfo: AvdelingsKode",
+            "nullable": true,
+            "example": "5"
+          },
+          "DeregistrationCode": {
+            "pattern": "^[0-2]$",
+            "type": "string",
+            "description": "Tilleggsinfo: AvregistreringKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "BloodProductCode": {
+            "pattern": "^([0-9]|1[0-1])$",
+            "type": "string",
+            "description": "Tilleggsinfo: BlodproduktKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "CellsAndTissuesDefinitionCode": {
+            "pattern": "^([1-4]|99)$",
+            "type": "string",
+            "description": "Tilleggsinfo: CellerOgVevDefinisjonKode",
+            "nullable": true,
+            "example": "4"
+          },
+          "CellsAndTissuesCode": {
+            "pattern": "^([1-9]|1[0-5]|99)$",
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: CellerOgVevKode",
+            "nullable": true
+          },
+          "DefinitionCode": {
+            "pattern": "^([1-4]|99)$",
+            "type": "string",
+            "description": "Tilleggsinfo: DefinisjonKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "DonorCountryCode": {
+            "pattern": "^([1-4]|99)$",
+            "type": "string",
+            "description": "Tilleggsinfo: DonorlandKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "DonorExperienceCode": {
+            "pattern": "^[1-2]$",
+            "type": "string",
+            "description": "Tilleggsinfo: GivererfaringKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "WhatWentWrongCode": {
+            "pattern": "^([0-9]|1[0-8])$",
+            "maxItems": 19,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: HvaGikkGaltKode",
+            "nullable": true
+          },
+          "DiscoveredCode": {
+            "pattern": "^([1-5]|99)$",
+            "type": "string",
+            "description": "Tilleggsinfo: OppdagetKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "OrganDefinitionCode": {
+            "pattern": "^([1-4]|99)$",
+            "type": "string",
+            "description": "Tilleggsinfo: OrganDefinisjonKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "OrganCode": {
+            "pattern": "^([1-9]|1[0-1]|99)$",
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: OrganKode",
+            "nullable": true
+          },
+          "ReactionStartedLocationCode": {
+            "pattern": "^[1-3]$",
+            "type": "string",
+            "description": "Tilleggsinfo: ReaksjonStartetHvorKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "ReactionDurationCode": {
+            "pattern": "^([1-9]|1[0-2])$",
+            "type": "string",
+            "description": "Tilleggsinfo: ReaksjonsvarighetKode",
+            "nullable": true,
+            "example": "4"
+          },
+          "SickLeaveCode": {
+            "pattern": "^[0-5]$",
+            "type": "string",
+            "description": "Tilleggsinfo: SykemeldingKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "SymptomsCode": {
+            "pattern": "^([0-9]|1[0-9]|2[0-5])$",
+            "maxItems": 15,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: SymptomKode",
+            "nullable": true
+          },
+          "TapTypeCode": {
+            "pattern": "^([0-3]|99)$",
+            "type": "string",
+            "description": "Tilleggsinfo: TappetypeKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "TimeBeforeReactionCode": {
+            "pattern": "^[1-6]$",
+            "type": "string",
+            "description": "Tilleggsinfo: TidTilReaksjonKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "AdditionalBloodProductCode": {
+            "pattern": "^[0-2]$",
+            "maxItems": 3,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
+            "nullable": true
+          },
+          "MeasuresCode": {
+            "pattern": "^[1-6]$",
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: TiltakKode",
+            "nullable": true
+          },
+          "TransfusionCode": {
+            "pattern": "^[0-5]$",
+            "type": "string",
+            "description": "Tilleggsinfo: TransfusjonsindikasjonKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "CausationCode": {
+            "pattern": "^[1-5]$",
+            "type": "string",
+            "description": "Tilleggsinfo: AarsakssammenhengKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "ISBT128ProductCode": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "ISBT128Produktkode tekst",
+            "nullable": true
+          },
+          "ScandiaTransplantNumber": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "ScandiatransplantNummer tekst",
+            "nullable": true
+          },
+          "InfectiousSubstance": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Smittestoff tekst",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Biovigilance report part"
+      },
+      "DTO.V10.ExternalApi.CosmeticsProductInformationPart": {
+        "required": [
+          "ProductName",
+          "ProductType",
+          "ReportedToVendorOrManufacturer"
+        ],
+        "type": "object",
+        "properties": {
+          "ProductName": {
+            "maxLength": 150,
+            "minLength": 1,
+            "type": "string",
+            "description": "Product name"
+          },
+          "ProductType": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Product type"
+          },
+          "VendorOrManufacturer": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Vendor or manufacturer",
+            "nullable": true
+          },
+          "ReportedToVendorOrManufacturer": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "BestBeforeDateExpired": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "PurchaseLocation": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.PurchaseLocation"
+          },
+          "SalesChannel": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.SalesChannel"
+          },
+          "BatchLotNumber": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Product batch/lot number",
+            "nullable": true
+          },
+          "Attachments": {
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+            },
+            "description": "Attachments",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product information part"
+      },
+      "DTO.V10.ExternalApi.CosmeticsProductPart": {
+        "required": [
+          "ProductInformation"
+        ],
+        "type": "object",
+        "properties": {
+          "ProductInformation": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsProductInformationPart"
+          },
+          "ProductUsage": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsProductUsagePart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product part"
+      },
+      "DTO.V10.ExternalApi.CosmeticsProductUsagePart": {
+        "type": "object",
+        "properties": {
+          "BodyLocations": {
+            "maxItems": 100,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Where on the body is the product used",
+            "nullable": true
+          },
+          "UsageDuration": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "For how long was the product used",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product usage part"
+      },
+      "DTO.V10.ExternalApi.CosmeticsRelevantInformationPart": {
+        "type": "object",
+        "properties": {
+          "SideEffectsOnPreviousUse": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoPartialDontKnow"
+          },
+          "PreviousUseDescription": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Previous use description",
+            "nullable": true
+          },
+          "ConditionOfSkinAreaBeforeUse": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Tilstand"
+            },
+            "description": "Condition of affected skin area before use of the products",
+            "nullable": true
+          },
+          "ConditionOfSkinAreaBeforeUseDescription": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Condition of affected skin area before use of the products",
+            "nullable": true
+          },
+          "AllergiesOrSkinDiseases": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Any allergies or skin diseases",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Relevant information part"
+      },
+      "DTO.V10.ExternalApi.CosmeticsReportPart": {
+        "required": [
+          "SideEffects"
+        ],
+        "type": "object",
+        "properties": {
+          "SideEffects": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsSideEffectsPart"
+          },
+          "RelevantInformation": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsRelevantInformationPart"
+          },
+          "Products": {
+            "maxItems": 4,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsProductPart"
+            },
+            "description": "Products part",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Cosmetics part"
+      },
+      "DTO.V10.ExternalApi.CosmeticsSideEffectsPart": {
+        "type": "object",
+        "properties": {
+          "AffectedSkinAreas": {
+            "maxItems": 150,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Affected skin areas\r\nWhere on the body showed side effects?",
+            "nullable": true
+          },
+          "Reactions": {
+            "maxItems": 128,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reactions.\r\nWhich reactions happened?",
+            "nullable": true
+          },
+          "ReactionDelay": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.ReactionDelay"
+          },
+          "ReactionDelayDescription": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Reaction delay description",
+            "nullable": true
+          },
+          "SideEffectDuration": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Side effect duration",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Side effects part"
+      },
+      "DTO.V10.ExternalApi.DietarySupplementsProductInformationPart": {
+        "required": [
+          "BestBeforeDate",
+          "Ingredients",
+          "ProductName",
+          "PurchaseLocation",
+          "ReportedToVendorOrManufacturer",
+          "VendorOrManufacturer"
+        ],
+        "type": "object",
+        "properties": {
+          "ProductName": {
+            "maxLength": 150,
+            "minLength": 1,
+            "type": "string",
+            "description": "Product name"
+          },
+          "Ingredients": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string",
+            "description": "Ingredients"
+          },
+          "VendorOrManufacturer": {
+            "maxLength": 150,
+            "minLength": 1,
+            "type": "string",
+            "description": "Vendor or manufacturer"
+          },
+          "BestBeforeDate": {
+            "minLength": 1,
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "type": "string",
+            "description": "Best before date"
+          },
+          "ReportedToVendorOrManufacturer": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "PurchaseLocation": {
+            "maxLength": 150,
+            "minLength": 1,
+            "type": "string",
+            "description": "Purchase location"
+          },
+          "ShopName": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Shop name",
+            "nullable": true
+          },
+          "BatchLotNumber": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Batch/lot number",
+            "nullable": true
+          },
+          "Attachments": {
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+            },
+            "description": "Attachments",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product information part"
+      },
+      "DTO.V10.ExternalApi.DietarySupplementsProductPart": {
+        "required": [
+          "ProductInformation",
+          "ProductUsage"
+        ],
+        "type": "object",
+        "properties": {
+          "ProductInformation": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsProductInformationPart"
+          },
+          "ProductUsage": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsProductUsagePart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product part"
+      },
+      "DTO.V10.ExternalApi.DietarySupplementsProductUsagePart": {
+        "required": [
+          "AmountOfIngredientsInDailyDose",
+          "RecommendedDailyDose"
+        ],
+        "type": "object",
+        "properties": {
+          "AmountOfIngredientsInDailyDose": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string",
+            "description": "Amount of ingredients per daily dose"
+          },
+          "RecommendedDailyDose": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Recommended daily dose"
+          },
+          "ActualDailyDoseTaken": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Actual daily dose taken",
+            "nullable": true
+          },
+          "UsageDuration": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "For how long was the product used",
+            "nullable": true
+          },
+          "AnyDrugsTakenAtSameTime": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "DrugsTakenAtSameTime": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Which drugs. Required if AnyDrugsTakenAtSameTime is yes.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product usage part"
+      },
+      "DTO.V10.ExternalApi.DietarySupplementsReportPart": {
+        "required": [
+          "SideEffect"
+        ],
+        "type": "object",
+        "properties": {
+          "SideEffect": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsSideEffectsPart"
+          },
+          "Products": {
+            "maxItems": 4,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsProductPart"
+            },
+            "description": "Products part",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
+      },
+      "DTO.V10.ExternalApi.DietarySupplementsSideEffectsPart": {
+        "type": "object",
+        "properties": {
+          "Reactions": {
+            "maxItems": 150,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reactions.\r\nWhich reactions happened?",
+            "nullable": true
+          },
+          "ReactionDelay": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Reaction delay.\r\nHow long after the use did the reactions show up?",
+            "nullable": true
+          },
+          "ReactionDelayDescription": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Reaction delay description",
+            "nullable": true
+          },
+          "Outcome": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Outcome",
+            "nullable": true
+          },
+          "OutcomeDescription": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Outcome description",
+            "nullable": true
+          },
+          "SideEffectDuration": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Side effect duration",
+            "nullable": true
+          },
+          "Ongoing": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+          },
+          "SideEffectsOnPreviousUse": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "SideEffectsOnPreviousUseDescription": {
+            "maxLength": 500,
+            "type": "string",
+            "description": "Side effects on previous use description",
+            "nullable": true
+          },
+          "AnyAllergiesOrInfluencingIssues": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "AnyAllergiesOrInfluencingIssuesDescription": {
+            "maxLength": 500,
+            "type": "string",
+            "description": "Any allergies or influencing issues description.\r\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
+            "nullable": true
+          },
+          "AnyUnderlyingDiseases": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "CanDiseaseBeTheCause": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Dietary supplements side effects part"
+      },
+      "DTO.V10.ExternalApi.DrugSideEffectsDosagePart": {
+        "type": "object",
+        "properties": {
+          "DosageDescription": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Dosage description",
+            "nullable": true,
+            "example": "1000mg per dag"
+          },
+          "StartDate": {
+            "type": "string",
+            "description": "Dosage start date. At least year must be specified.",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "StartTimeOfDay": {
+            "type": "string",
+            "description": "Time of day when the patient started using the drug.",
+            "nullable": true,
+            "example": "\"14:13\""
+          },
+          "EndDate": {
+            "type": "string",
+            "description": "Dosage end date. At least year must be specified.",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "BatchLotNumber": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Batch/lot number",
+            "nullable": true,
+            "example": "Batchnummer #R1195"
+          },
+          "AdministrationArea": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.AdministrationArea"
+          },
+          "AdministrationAreaOther": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Administration area other.\r\nWhere was the drug taken/injected.",
+            "nullable": true,
+            "example": "Other administration route"
+          },
+          "DoseNumber": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.DoseNumber"
+          },
+          "AdministrationRoute": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.AdministrationArea"
+          },
+          "AdministrationRouteOther": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Use AdministrationAreaOther instead",
+            "nullable": true,
+            "writeOnly": true,
+            "example": "Obsolete. Use AdministrationAreaOther instead"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Dosage part"
+      },
+      "DTO.V10.ExternalApi.DrugSideEffectsDrugPart": {
+        "required": [
+          "Dosage",
+          "Role"
+        ],
+        "type": "object",
+        "properties": {
+          "DrugId": {
+            "maxLength": 64,
+            "type": "string",
+            "description": "Drug id",
+            "nullable": true,
+            "example": "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C"
+          },
+          "AtcCode": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Drug ATC code",
+            "nullable": true,
+            "example": "J07BN01"
+          },
+          "IsVaccine": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+          },
+          "DrugName": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Drug name.",
+            "nullable": true
+          },
+          "Role": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelRolle"
+          },
+          "Indication": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Indication.",
+            "nullable": true,
+            "example": ""
+          },
+          "AdministrationRoute": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Drug administration route",
+            "nullable": true,
+            "example": "Oralt"
+          },
+          "AreaOfUse": {
+            "type": "string",
+            "description": "AdministrationRoute",
+            "nullable": true,
+            "writeOnly": true,
+            "example": "Obsolete. Use AdministrationRoute instead"
+          },
+          "StillInUse": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "DrugForm": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Drig form, i.e. tablet\r\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
+            "nullable": true
+          },
+          "UnsureDrugFormOrStrength": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+          },
+          "UnsureAreas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.UnsureArea"
+            },
+            "description": "Unsure about what?\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "nullable": true
+          },
+          "UnsureDescription": {
+            "type": "string",
+            "description": "Description of the unsureness\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "nullable": true
+          },
+          "DrugSideEffectsAction": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelBivirkningsHandling"
+          },
+          "SideEffectsReoccured": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "SalesChannel": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Kjøpssted"
+          },
+          "SalesChannelDescription": {
+            "type": "string",
+            "description": "Additional info about the sales channel",
+            "nullable": true
+          },
+          "Dosage": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsDosagePart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Drug part"
+      },
+      "DTO.V10.ExternalApi.DrugSideEffectsOtherInformationPart": {
+        "type": "object",
+        "properties": {
+          "Severity": {
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.SideEffectSeverity"
+            },
+            "description": "Severity",
+            "nullable": true,
+            "example": [
+              "Livstruende",
+              "AnomaliFodselsdefekt"
+            ]
+          },
+          "HospitalName": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Hospital name",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Other information part"
+      },
+      "DTO.V10.ExternalApi.DrugSideEffectsReportPart": {
+        "required": [
+          "Drugs",
+          "Symptoms"
+        ],
+        "type": "object",
+        "properties": {
+          "Drugs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsDrugPart"
+            },
+            "description": "Drug parts"
+          },
+          "Symptoms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsSymptomsPart"
+            },
+            "description": "Symptom parts"
+          },
+          "OtherInformation": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsOtherInformationPart"
+          },
+          "Attachments": {
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+            },
+            "description": "Attachments",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
+      },
+      "DTO.V10.ExternalApi.DrugSideEffectsSymptomsPart": {
+        "required": [
+          "Description"
+        ],
+        "type": "object",
+        "properties": {
+          "Description": {
+            "maxLength": 250,
+            "minLength": 1,
+            "type": "string",
+            "description": "Symptom description",
+            "example": "Blodtrykksfall"
+          },
+          "StartDate": {
+            "type": "string",
+            "description": "Symptom start date. Supports only year or year and month as well",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "EndDate": {
+            "type": "string",
+            "description": "Symptom end date. Supports only year or year and month as well",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "Ongoing": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+          },
+          "SideEffectsDelay": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "How long it took from the first use of the drug to side effects occured",
+            "nullable": true
+          },
+          "Outcome": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.SideEffectOutcome"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Symptom part"
+      },
+      "DTO.V10.ExternalApi.ECigaretteGeneralPart": {
+        "type": "object",
+        "properties": {
+          "HealthcarePersonnelContacted": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+          },
+          "UsageFrequency": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "How often do you use e-cigarettes",
+            "nullable": true
+          },
+          "OtherInformation": {
+            "maxLength": 2500,
+            "type": "string",
+            "description": "Other relevant information",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "General part"
+      },
+      "DTO.V10.ExternalApi.ECigaretteProductPart": {
+        "required": [
+          "MakeAndModel"
+        ],
+        "type": "object",
+        "properties": {
+          "PurchaseTime": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Purchase time",
+            "nullable": true
+          },
+          "PurchaseLocation": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigarettePurchaseLocation"
+          },
+          "PurchaseLocationName": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Name of the shop where the product was purchased",
+            "nullable": true
+          },
+          "PurchaseCountry": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "The purchase country",
+            "nullable": true
+          },
+          "WebShopAddress": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Web shop address",
+            "nullable": true
+          },
+          "MakeAndModel": {
+            "maxLength": 250,
+            "minLength": 1,
+            "type": "string",
+            "description": "Make and model information"
+          },
+          "EcId": {
+            "pattern": "^\\d{5}-\\d{2}-\\d{5}$",
+            "type": "string",
+            "description": "EC id. Format '00000-00-00000'",
+            "nullable": true
+          },
+          "NicotineFluidUsed": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "NicotineStrength": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Nictine fluid strength",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Next of kin"
+      },
+      "DTO.V10.ExternalApi.ECigarettePurchaseLocation": {
+        "enum": [
+          "NorwegianDealer",
+          "ForeignDealer",
+          "WebShop",
+          "Unknown"
+        ],
+        "type": "string",
+        "description": "Purchase location"
+      },
+      "DTO.V10.ExternalApi.ECigaretteReportPart": {
+        "type": "object",
+        "properties": {
+          "General": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigaretteGeneralPart"
+          },
+          "Product": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigaretteProductPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "ECigarette report part"
+      },
+      "DTO.V10.ExternalApi.MedicalEquipmentImplantInformation": {
+        "type": "object",
+        "properties": {
+          "ImplantDate": {
+            "type": "string",
+            "description": "Implant date.\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "nullable": true,
+            "example": "2021-10-23"
+          },
+          "ExplantDate": {
+            "type": "string",
+            "description": "Explant date\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "nullable": true,
+            "example": "2021-10-23"
+          }
+        },
+        "additionalProperties": false,
+        "description": "MedisinskUtstyrImplantatInformasjon"
+      },
+      "DTO.V10.ExternalApi.MedicalEquipmentReportPart": {
+        "required": [
+          "EquipmentLocation",
+          "EquipmentName",
+          "IncidentClassification",
+          "Manufacturer",
+          "NkknCategory"
+        ],
+        "type": "object",
+        "properties": {
+          "NkknTypeCode": {
+            "type": "integer",
+            "description": "NKKN type code",
+            "format": "int32",
+            "nullable": true
+          },
+          "EquipmentName": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string",
+            "description": "Equipment name"
+          },
+          "Manufacturer": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string",
+            "description": "Manufacturer"
+          },
+          "ModelName": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Model name",
+            "nullable": true
+          },
+          "NkknGroup": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.IdNavn"
+          },
+          "NkknCategory": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.NkknCategory"
+          },
+          "SerialNumber": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Serial number",
+            "nullable": true
+          },
+          "BatchLotNumber": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Batch/lot number",
+            "nullable": true
+          },
+          "ProductionDate": {
+            "type": "string",
+            "description": "Production date.\r\nYear only or year and month are also accepted",
+            "nullable": true
+          },
+          "ExpirationDate": {
+            "type": "string",
+            "description": "Equipment expiration date.\r\nYear only or year and month are also accepted",
+            "nullable": true,
+            "example": "2021-10-23"
+          },
+          "EquipmentLocation": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.EquipmentLocation"
+          },
+          "Distributor": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Distributor",
+            "nullable": true
+          },
+          "IncidentClassification": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.IncidentClassification"
+          },
+          "ImplantInformation": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.MedicalEquipmentImplantInformation"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Medical equipment report part"
+      },
+      "DTO.V10.ExternalApi.SeriousIncidentAdditionalInfo": {
+        "type": "object",
+        "properties": {
+          "SendToHtil": {
+            "type": "boolean",
+            "description": "If true, send report to UKOM. Default true"
+          },
+          "SendToUkom": {
+            "type": "boolean",
+            "description": "If true, send report to HTIL. Default true"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Additional info. Relevent to Helsenorge reports only"
+      },
+      "DTO.V10.ExternalApi.SeriousIncidentNextOfKin": {
+        "type": "object",
+        "properties": {
+          "Nin": {
+            "pattern": "^\\d{11}$",
+            "type": "string",
+            "description": "National id number",
+            "nullable": true
+          },
+          "Name": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Name",
+            "nullable": true
+          },
+          "Relation": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Relation to patient",
+            "nullable": true
+          },
+          "IsClosestNextOfKin": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+          },
+          "Address": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Address",
+            "nullable": true
+          },
+          "ZipCode": {
+            "pattern": "^\\d{4}$",
+            "type": "string",
+            "description": "Zip code",
+            "nullable": true
+          },
+          "City": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "City",
+            "nullable": true
+          },
+          "Email": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "E-mail address",
+            "format": "email",
+            "nullable": true
+          },
+          "Phone": {
+            "maxLength": 40,
+            "type": "string",
+            "description": "Phone number",
+            "format": "tel",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "Notes": {
+            "maxLength": 1000,
+            "type": "string",
+            "description": "Notes",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Next of kin"
+      },
+      "DTO.V10.ExternalApi.SeriousIncidentReportPart": {
+        "type": "object",
+        "properties": {
+          "ContactPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.ContactPersonPart"
+            },
+            "description": "Contact persons for this report",
+            "nullable": true
+          },
+          "NextOfKin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DTO.V10.ExternalApi.SeriousIncidentNextOfKin"
+            },
+            "description": "Next of kin",
+            "nullable": true
+          },
+          "AdditionalInfo": {
+            "$ref": "#/components/schemas/DTO.V10.ExternalApi.SeriousIncidentAdditionalInfo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
+      },
+      "Hdir.EnVeiInn.DTO.IdNavn": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "description": "Generert ID i En Vei Inn sin database",
+            "format": "int64"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name of the item",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Generic long id + string name"
+      },
+      "Hdir.EnVeiInn.DTO.Response.BaseRespons": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Generell baseklasse for respons fra APIet. Inneholder statuskode og feilmelding"
+      },
+      "Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel": {
+        "type": "object",
+        "properties": {
+          "Message": {
+            "type": "string",
+            "description": "Feilmeldingsteksten",
+            "nullable": true
+          },
+          "Timestamp": {
+            "type": "string",
+            "description": "Når feilen oppsto",
+            "format": "date-time"
+          },
+          "ExceptionType": {
+            "type": "string",
+            "description": "Hva slags type feil det gjelder",
+            "nullable": true
+          },
+          "CorrelationId": {
+            "type": "string",
+            "description": "KorrelasjonsId fra kallet som feilen oppsto i",
+            "nullable": true
+          },
+          "InnerException": {
+            "type": "string",
+            "description": "Fylles bare ut i testmiljø - indre feilmelding",
+            "nullable": true
+          },
+          "Brukernavn": {
+            "type": "string",
+            "description": "Navn på bruker som kalte funksjonen feilen oppsto i",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Informasjon om feilmeldinger fra APIet"
+      },
+      "Hdir.EnVeiInn.DTO.Response.KvitteringsMelding": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel"
+          },
+          "Id": {
+            "type": "integer",
+            "description": "Generert ID i En Vei Inn sin database",
+            "format": "int64"
+          },
+          "EksterntSaksSystem": {
+            "type": "string",
+            "description": "Eksternt system, for eksempel navn på avvikssystem",
+            "nullable": true
+          },
+          "EksternSaksid": {
+            "type": "string",
+            "description": "Id i eksternt system, for eksempel AVVIK123",
+            "nullable": true
+          },
+          "MeldingsId": {
+            "type": "string",
+            "description": "MeldingsId på meldingen. Oppgitt ved innsending.",
+            "format": "uuid"
+          },
+          "Mottakere": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Liste med navn på meldeordninger som mottar meldingen",
+            "nullable": true
+          },
+          "Referansenummer": {
+            "type": "string",
+            "description": "Menneskelig leselig referansenummer, for eksempel XYZ12",
+            "nullable": true
+          },
+          "MeldersEpost": {
+            "type": "string",
+            "description": "Dersom e-postadresse ble oppgitt, e-postadresse varsling blir sendt til.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Svarmelding uavhengig av om kall til controlleren gikk bra eller ikke. Dersom feil oppstår legges det i Feil-feltet."
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.Attachment": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Attachment name",
+            "nullable": true
+          },
+          "AttachmentType": {
+            "type": "string",
+            "description": "Type of attachment (mime type)",
+            "nullable": true
+          },
+          "Content": {
+            "type": "string",
+            "description": "Attachment content (base64 encoded)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Message attachment"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogInfo": {
+        "required": [
+          "ReportArea",
+          "ReportRef"
+        ],
+        "type": "object",
+        "properties": {
+          "ReportRef": {
+            "minLength": 1,
+            "pattern": "^(U|V)[a-zA-Z0-9]{2,15}$",
+            "type": "string",
+            "description": "Reference to the report that this dialog is associated with, on the format [Uxxxx] or [Vxxxx]"
+          },
+          "ReportArea": {
+            "type": "integer",
+            "description": "Report area id. Assigned by NHN when the API is activated.",
+            "format": "int32"
+          },
+          "Email": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Dialog creator's email address.\r\nRequired for web frontend only.",
+            "format": "email",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Create dialog DTO"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogMessageInfo": {
+        "required": [
+          "MessageText"
+        ],
+        "type": "object",
+        "properties": {
+          "DialogRef": {
+            "pattern": "^D[a-zA-Z0-9]{2,15}$",
+            "type": "string",
+            "description": "Dialog reference for this message, on the format [Dxxxx]",
+            "nullable": true
+          },
+          "MessageText": {
+            "maxLength": 1048576,
+            "minLength": 1,
+            "type": "string",
+            "description": "Message text. HTML formatting may be used if the receiving system supports it. Melde.no does."
+          },
+          "SenderName": {
+            "maxLength": 64,
+            "type": "string",
+            "description": "Sender name. For instance case manager name.\r\nIf not specified, the name of the client is used.",
+            "nullable": true
+          },
+          "NotifyRecipient": {
+            "type": "boolean",
+            "description": "Flag to control receiver notification.\r\nIf false, the receiver will not receive a notification (often email) about the new message.\r\nIf true, the receiver is notified.\r\nDefault is true.",
+            "nullable": true
+          },
+          "Attachments": {
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Attachment"
+            },
+            "description": "Message attachments. Max 5.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Create dialog message DTO"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogCreatedResponse": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel"
+          },
+          "DialogRef": {
+            "type": "string",
+            "description": "Referansenummer til generert dialog i En Vei Inn sin database",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Kvittering for opprettet dialog"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogMessageCreatedResponse": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel"
+          },
+          "MessageRef": {
+            "type": "string",
+            "description": "Referansenummer til generert dialogmelding",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Kvittering for opprettet dialogmelding"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetUnreadMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "Messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetUnreadMessagesResponse+Message"
+            },
+            "description": "Liste med meldinger",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Respons som inneholder en liste med uleste meldinger"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetUnreadMessagesResponse+Message": {
+        "required": [
+          "MessageRef",
+          "ReceivedTime",
+          "ReportRef"
+        ],
+        "type": "object",
+        "properties": {
+          "MessageRef": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Referanse til melding på formatet [Mxxxx]"
+          },
+          "MessageText": {
+            "type": "string",
+            "description": "Meldingstekst",
+            "nullable": true
+          },
+          "Attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Attachment"
+            },
+            "description": "Liste med vedlegg",
+            "nullable": true
+          },
+          "ReceivedTime": {
+            "type": "string",
+            "description": "Tidspunkt når meldingen ble mottatt av Melde. ISO datoformat i UTC.\r\nEksempel. '2022-07-13T05:20:01.908Z'",
+            "format": "date-time"
+          },
+          "ReportRef": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Referanse til den uønskede hendelsen denne dialogmeldingen tilhører, på formatet [Uxxxx] eller [Vxxxx]"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Message class"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.AdministrationArea": {
+        "enum": [
+          "RightArm",
+          "LeftArm",
+          "RightThigh",
+          "LeftThigh",
+          "Orally",
+          "Other"
+        ],
+        "type": "string",
+        "description": "Administration area"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.DoseNumber": {
+        "enum": [
+          "One",
+          "Two",
+          "Three",
+          "Four",
+          "NotInSeries"
+        ],
+        "type": "string",
+        "description": "Dose number"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.EquipmentLocation": {
+        "enum": [
+          "Healthcare",
+          "PatientOrClient",
+          "SentToManufacturer",
+          "Manufacturer",
+          "DistributorVendor",
+          "Discarded",
+          "StillImplanted",
+          "Unknown"
+        ],
+        "type": "string",
+        "description": "Where is the equipment located at the time of reporting"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.Gender": {
+        "enum": [
+          "NotKnown",
+          "Male",
+          "Female",
+          "NotSpecified"
+        ],
+        "type": "string",
+        "description": "Pasientens kjønn (OID=3101)\r\nSe kodeverk 3101 på volven: <URL>https://volven.no/produkt.asp?id=382591&catID=3&subID=8</URL>."
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.IncidentClassification": {
+        "enum": [
+          "Death",
+          "SeriousDeterioration",
+          "MayHaveCausedDeathOrSeriousDeterioration"
+        ],
+        "type": "string",
+        "description": "Incident classification"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.Kjøpssted": {
+        "enum": [
+          "NotSet",
+          "PharmacyWithoutPrescription",
+          "PharmacyWithPrescription",
+          "ShopKioskGasStation",
+          "Internet",
+          "DeliveredByDoctor",
+          "Other"
+        ],
+        "type": "string",
+        "description": "Mulige valg for hvor legemiddelet ble kjøpt"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelBivirkningsHandling": {
+        "enum": [
+          "NotSet",
+          "StoppedUsingDrug",
+          "DoseReduced",
+          "DoseIncreased",
+          "NoChange",
+          "DontKnow"
+        ],
+        "type": "string",
+        "description": "Hva gjorde bruker når bivirkning oppstod"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelRolle": {
+        "enum": [
+          "Suspected",
+          "Parallel",
+          "Interactive"
+        ],
+        "type": "string",
+        "description": "Legemiddelrolle"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.NkknCategory": {
+        "enum": [
+          "ActiveImplantableEquipment",
+          "AnesthesiologicalAndRespiratoryEquipment",
+          "DentalEquipment",
+          "ElectroMechanicEquipment",
+          "HospitalEquipmentEquipment",
+          "InVitroDiagnosticEquipment",
+          "PassiveImplantableEquipment",
+          "OphthalmologicalAndOpticalEquipment",
+          "ReusableEquipment",
+          "DisposeableEquipment",
+          "TechnicalAid",
+          "DiagnosticAndTherapeuticRadiationEquipment"
+        ],
+        "type": "string",
+        "description": "Medical equipment category"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.PurchaseLocation": {
+        "enum": [
+          "NorwegianDealer",
+          "ForeignDealer",
+          "NorwegianWebShop",
+          "ForeignWebShop",
+          "Unknown"
+        ],
+        "type": "string",
+        "description": "Purchase location"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.Qualification": {
+        "enum": [
+          "Physician",
+          "Pharmacist",
+          "Other"
+        ],
+        "type": "string",
+        "description": "A person's qualification"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.ReactionDelay": {
+        "enum": [
+          "WithinHalfHour",
+          "HalfHourToOneHour",
+          "Within24Hours",
+          "MoreThan24Hours",
+          "Other",
+          "Unknown"
+        ],
+        "type": "string",
+        "description": "How long time after exposure did the reaction show"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.ReporterRole": {
+        "enum": [
+          "Manager",
+          "Treator",
+          "OtherEmployee",
+          "Other",
+          "PatientUser",
+          "NextOfKin",
+          "OtherRelative"
+        ],
+        "type": "string",
+        "description": "Avaliable reporter roles"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.SalesChannel": {
+        "enum": [
+          "Pharmacy",
+          "Perfumery",
+          "Hairdresser",
+          "SkinCareSalon",
+          "HealthFoodStore",
+          "GroceryStore",
+          "TaxFreeShop",
+          "Other"
+        ],
+        "type": "string",
+        "description": "Sales channel"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.SideEffectOutcome": {
+        "enum": [
+          "FullyRecovered",
+          "Improvement",
+          "NoImprovement",
+          "RecoveredWithSymptoms",
+          "Death",
+          "Unknown"
+        ],
+        "type": "string",
+        "description": "Side effect outcome\r\nRef kodeverk 7469 at volven: <URL>https://volven.no/produkt.asp?id=382526&catID=3&subID=8</URL>."
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.SideEffectSeverity": {
+        "enum": [
+          "Death",
+          "LifeThreatening",
+          "Hospitalization",
+          "PersistentDisability",
+          "AnomalyOrBirthDefect",
+          "Other"
+        ],
+        "type": "string",
+        "description": "Bivirkningens alvorlighet\r\nSe kodeverk 7468 på volven: <URL>https://volven.no/produkt.asp?id=382525&catID=3&subID=8</URL>."
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.Tilstand": {
+        "enum": [
+          "Normal",
+          "Torr",
+          "Irritert",
+          "Annet"
+        ],
+        "type": "string",
+        "description": "Tilstand til område før et produkt ble brukt"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Enums.UnsureArea": {
+        "enum": [
+          "TradeName",
+          "DosageForm",
+          "Strength",
+          "Other"
+        ],
+        "type": "string",
+        "description": "Legemiddelrolle"
+      },
+      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart": {
+        "required": [
+          "Content",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string",
+            "description": "Attachment name (i.e. file name)",
+            "example": "document.pdf"
+          },
+          "ContentType": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Content type/mime type",
+            "nullable": true,
+            "example": "application/pdf"
+          },
+          "Content": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Attachment content.\r\nBase64 encoded. May be prefixed by for instance 'data:image/jpeg;base64,'",
+            "example": "QSBuaWNlIFBERiBmaWxlCg=="
+          }
+        },
+        "additionalProperties": false,
+        "description": "Attachment part"
+      },
+      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.ContactPersonPart": {
+        "required": [
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Name",
+            "example": "Ola Nordmann"
+          },
+          "Email": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "E-mail address",
+            "format": "email",
+            "nullable": true,
+            "example": "ola@nordmann.email"
+          },
+          "Phone": {
+            "maxLength": 40,
+            "type": "string",
+            "description": "Phone number",
+            "format": "tel",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "Position": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Contact person's position",
+            "nullable": true,
+            "example": "Klossmajor"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Contact persons"
+      },
+      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.OrganizationPart": {
+        "type": "object",
+        "properties": {
+          "OrgNumber": {
+            "pattern": "^\\d{9}$",
+            "type": "string",
+            "description": "Organization number.\r\nRequired if Name is empty",
+            "nullable": true,
+            "example": "883974832"
+          },
+          "Name": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Organization name.\r\nRequired if OrgNumber is empty",
+            "nullable": true,
+            "example": "ST. OLAVS HOSPITAL HF"
+          },
+          "Address": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Organization address",
+            "nullable": true,
+            "example": "SykehusGaten 5"
+          },
+          "ZipCode": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Organization zip code",
+            "nullable": true,
+            "example": "\"0424\""
+          },
+          "City": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Organization city",
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Municipality": {
+            "maxLength": 64,
+            "type": "string",
+            "description": "Organization municipality",
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Institution": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Institution",
+            "nullable": true
+          },
+          "Department": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Department",
+            "nullable": true
+          },
+          "LocalReferenceNumber": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Local reference number if applicable",
+            "nullable": true,
+            "example": "ATL-123321"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Organization part"
+      },
+      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.RadiationReportPart": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Radiation report part. Currently empty, but may be expanded in the future"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Feedback": {
+        "type": "object",
+        "properties": {
+          "ReportAreaName": {
+            "type": "string",
+            "description": "Report area name",
+            "nullable": true
+          },
+          "Content": {
+            "type": "string",
+            "description": "Feedback content",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "User feedback"
+      },
+      "Hdir.EnVeiInn.Felles.Enums.Language": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Hdir.EnVeiInn.Felles.Enums.YesNo": {
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "type": "string"
+      },
+      "Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow": {
+        "enum": [
+          "Yes",
+          "No",
+          "DontKnow"
+        ],
+        "type": "string"
+      },
+      "Hdir.EnVeiInn.Felles.Enums.YesNoPartialDontKnow": {
+        "enum": [
+          "Yes",
+          "No",
+          "Partial",
+          "DontKnow"
+        ],
+        "type": "string"
+      },
+      "Hdir.EnVeiInn.Service.Services.NokupLookupOption": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasChildren": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Hdir.EnVeiInn.Service.Services.NokupLookupResult": {
+        "type": "object",
+        "properties": {
+          "Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "InputType": {
+            "$ref": "#/components/schemas/Hdir.EnVeiInn.Service.Services.OptionType"
+          },
+          "Mandatory": {
+            "type": "boolean"
+          },
+          "MaxLength": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "IsAdditionalInfo": {
+            "type": "boolean"
+          },
+          "IsLeafNokupNode": {
+            "type": "boolean"
+          },
+          "Options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Hdir.EnVeiInn.Service.Services.NokupLookupOption"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Hdir.EnVeiInn.Service.Services.OptionType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Microsoft.AspNetCore.Mvc.ActionResult": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Microsoft.AspNetCore.Mvc.BadRequestObjectResult": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "nullable": true
+          },
+          "Formatters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter"
+            },
+            "nullable": true
+          },
+          "ContentTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "DeclaredType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "StatusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Microsoft.AspNetCore.Mvc.NotFoundObjectResult": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "nullable": true
+          },
+          "Formatters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.Formatters.IOutputFormatter"
+            },
+            "nullable": true
+          },
+          "ContentTypes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "DeclaredType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "StatusCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Microsoft.AspNetCore.Mvc.UnauthorizedResult": {
+        "type": "object",
+        "properties": {
+          "StatusCode": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.IntPtr": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "System.ModuleHandle": {
+        "type": "object",
+        "properties": {
+          "MDStreamVersion": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Net.HttpStatusCode": {
+        "enum": [
+          100,
+          101,
+          102,
+          103,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          226,
+          300,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          308,
+          400,
+          401,
+          402,
+          403,
+          404,
+          405,
+          406,
+          407,
+          408,
+          409,
+          410,
+          411,
+          412,
+          413,
+          414,
+          415,
+          416,
+          417,
+          421,
+          422,
+          423,
+          424,
+          426,
+          428,
+          429,
+          431,
+          451,
+          500,
+          501,
+          502,
+          503,
+          504,
+          505,
+          506,
+          507,
+          508,
+          510,
+          511
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.Assembly": {
+        "type": "object",
+        "properties": {
+          "DefinedTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.TypeInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "ExportedTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Type"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "CodeBase": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true,
+            "deprecated": true
+          },
+          "EntryPoint": {
+            "$ref": "#/components/schemas/System.Reflection.MethodInfo"
+          },
+          "FullName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ImageRuntimeVersion": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsDynamic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "Location": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ReflectionOnly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFullyTrusted": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "EscapedCodeBase": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true,
+            "deprecated": true
+          },
+          "ManifestModule": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "Modules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.Module"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "GlobalAssemblyCache": {
+            "type": "boolean",
+            "readOnly": true,
+            "deprecated": true
+          },
+          "HostContext": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "SecurityRuleSet": {
+            "$ref": "#/components/schemas/System.Security.SecurityRuleSet"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.CallingConventions": {
+        "enum": [
+          1,
+          2,
+          3,
+          32,
+          64
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.ConstructorInfo": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.MethodAttributes"
+          },
+          "MethodImplementationFlags": {
+            "$ref": "#/components/schemas/System.Reflection.MethodImplAttributes"
+          },
+          "CallingConvention": {
+            "$ref": "#/components/schemas/System.Reflection.CallingConventions"
+          },
+          "IsAbstract": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructor": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFinal": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsHideBySig": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsStatic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsVirtual": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamily": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyAndAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyOrAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPrivate": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructedGenericMethod": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethod": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethodDefinition": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "ContainsGenericParameters": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MethodHandle": {
+            "$ref": "#/components/schemas/System.RuntimeMethodHandle"
+          },
+          "IsSecurityCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecuritySafeCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityTransparent": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.CustomAttributeData": {
+        "type": "object",
+        "properties": {
+          "AttributeType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Constructor": {
+            "$ref": "#/components/schemas/System.Reflection.ConstructorInfo"
+          },
+          "ConstructorArguments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeTypedArgument"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "NamedArguments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeNamedArgument"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.CustomAttributeNamedArgument": {
+        "type": "object",
+        "properties": {
+          "MemberInfo": {
+            "$ref": "#/components/schemas/System.Reflection.MemberInfo"
+          },
+          "TypedValue": {
+            "$ref": "#/components/schemas/System.Reflection.CustomAttributeTypedArgument"
+          },
+          "MemberName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsField": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.CustomAttributeTypedArgument": {
+        "type": "object",
+        "properties": {
+          "ArgumentType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Value": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.EventAttributes": {
+        "enum": [
+          0,
+          512,
+          1024
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.EventInfo": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.EventAttributes"
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "AddMethod": {
+            "$ref": "#/components/schemas/System.Reflection.MethodInfo"
+          },
+          "RemoveMethod": {
+            "$ref": "#/components/schemas/System.Reflection.MethodInfo"
+          },
+          "RaiseMethod": {
+            "$ref": "#/components/schemas/System.Reflection.MethodInfo"
+          },
+          "IsMulticast": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "EventHandlerType": {
+            "$ref": "#/components/schemas/System.Type"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.FieldAttributes": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          16,
+          32,
+          64,
+          128,
+          256,
+          512,
+          1024,
+          4096,
+          8192,
+          32768,
+          38144
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.FieldInfo": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.FieldAttributes"
+          },
+          "FieldType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "IsInitOnly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsLiteral": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNotSerialized": {
+            "type": "boolean",
+            "readOnly": true,
+            "deprecated": true
+          },
+          "IsPinvokeImpl": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsStatic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamily": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyAndAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyOrAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPrivate": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecuritySafeCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityTransparent": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "FieldHandle": {
+            "$ref": "#/components/schemas/System.RuntimeFieldHandle"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.GenericParameterAttributes": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          8,
+          16,
+          28,
+          32
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.ICustomAttributeProvider": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "System.Reflection.MemberInfo": {
+        "type": "object",
+        "properties": {
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.MemberTypes": {
+        "enum": [
+          1,
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          191
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.MethodAttributes": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256,
+          512,
+          1024,
+          2048,
+          4096,
+          8192,
+          16384,
+          32768,
+          53248
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.MethodBase": {
+        "type": "object",
+        "properties": {
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.MethodAttributes"
+          },
+          "MethodImplementationFlags": {
+            "$ref": "#/components/schemas/System.Reflection.MethodImplAttributes"
+          },
+          "CallingConvention": {
+            "$ref": "#/components/schemas/System.Reflection.CallingConventions"
+          },
+          "IsAbstract": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructor": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFinal": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsHideBySig": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsStatic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsVirtual": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamily": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyAndAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyOrAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPrivate": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructedGenericMethod": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethod": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethodDefinition": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "ContainsGenericParameters": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MethodHandle": {
+            "$ref": "#/components/schemas/System.RuntimeMethodHandle"
+          },
+          "IsSecurityCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecuritySafeCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityTransparent": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.MethodImplAttributes": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256,
+          512,
+          4096,
+          65535
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.MethodInfo": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.MethodAttributes"
+          },
+          "MethodImplementationFlags": {
+            "$ref": "#/components/schemas/System.Reflection.MethodImplAttributes"
+          },
+          "CallingConvention": {
+            "$ref": "#/components/schemas/System.Reflection.CallingConventions"
+          },
+          "IsAbstract": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructor": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFinal": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsHideBySig": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsStatic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsVirtual": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamily": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyAndAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFamilyOrAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPrivate": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructedGenericMethod": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethod": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethodDefinition": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "ContainsGenericParameters": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MethodHandle": {
+            "$ref": "#/components/schemas/System.RuntimeMethodHandle"
+          },
+          "IsSecurityCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecuritySafeCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityTransparent": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "ReturnParameter": {
+            "$ref": "#/components/schemas/System.Reflection.ParameterInfo"
+          },
+          "ReturnType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReturnTypeCustomAttributes": {
+            "$ref": "#/components/schemas/System.Reflection.ICustomAttributeProvider"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.Module": {
+        "type": "object",
+        "properties": {
+          "Assembly": {
+            "$ref": "#/components/schemas/System.Reflection.Assembly"
+          },
+          "FullyQualifiedName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "MDStreamVersion": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "ModuleVersionId": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "ScopeName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ModuleHandle": {
+            "$ref": "#/components/schemas/System.ModuleHandle"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.ParameterAttributes": {
+        "enum": [
+          0,
+          1,
+          2,
+          4,
+          8,
+          16,
+          4096,
+          8192,
+          16384,
+          32768,
+          61440
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.ParameterInfo": {
+        "type": "object",
+        "properties": {
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.ParameterAttributes"
+          },
+          "Member": {
+            "$ref": "#/components/schemas/System.Reflection.MemberInfo"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ParameterType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Position": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "IsIn": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsLcid": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsOptional": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsOut": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsRetval": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "DefaultValue": {
+            "nullable": true,
+            "readOnly": true
+          },
+          "RawDefaultValue": {
+            "nullable": true,
+            "readOnly": true
+          },
+          "HasDefaultValue": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.PropertyAttributes": {
+        "enum": [
+          0,
+          512,
+          1024,
+          4096,
+          8192,
+          16384,
+          32768,
+          62464
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.PropertyInfo": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "PropertyType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.PropertyAttributes"
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "CanRead": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "CanWrite": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "GetMethod": {
+            "$ref": "#/components/schemas/System.Reflection.MethodInfo"
+          },
+          "SetMethod": {
+            "$ref": "#/components/schemas/System.Reflection.MethodInfo"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Reflection.TypeAttributes": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          16,
+          24,
+          32,
+          128,
+          256,
+          1024,
+          2048,
+          4096,
+          8192,
+          16384,
+          65536,
+          131072,
+          196608,
+          262144,
+          264192,
+          1048576,
+          12582912
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Reflection.TypeInfo": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "Namespace": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "AssemblyQualifiedName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "FullName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "Assembly": {
+            "$ref": "#/components/schemas/System.Reflection.Assembly"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "IsInterface": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNested": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "DeclaringMethod": {
+            "$ref": "#/components/schemas/System.Reflection.MethodBase"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "UnderlyingSystemType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "IsTypeDefinition": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsArray": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsByRef": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPointer": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructedGenericType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericParameter": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericTypeParameter": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethodParameter": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericTypeDefinition": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSZArray": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsVariableBoundArray": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsByRefLike": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFunctionPointer": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsUnmanagedFunctionPointer": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "HasElementType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "GenericTypeArguments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Type"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "GenericParameterPosition": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "GenericParameterAttributes": {
+            "$ref": "#/components/schemas/System.Reflection.GenericParameterAttributes"
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.TypeAttributes"
+          },
+          "IsAbstract": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsImport": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSealed": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedFamANDAssem": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedFamily": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedFamORAssem": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedPrivate": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNotPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAutoLayout": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsExplicitLayout": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsLayoutSequential": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAnsiClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAutoClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsUnicodeClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsCOMObject": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsContextful": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsEnum": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsMarshalByRef": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPrimitive": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsValueType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSignatureType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecuritySafeCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityTransparent": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "StructLayoutAttribute": {
+            "$ref": "#/components/schemas/System.Runtime.InteropServices.StructLayoutAttribute"
+          },
+          "TypeInitializer": {
+            "$ref": "#/components/schemas/System.Reflection.ConstructorInfo"
+          },
+          "TypeHandle": {
+            "$ref": "#/components/schemas/System.RuntimeTypeHandle"
+          },
+          "GUID": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "BaseType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "IsSerializable": {
+            "type": "boolean",
+            "readOnly": true,
+            "deprecated": true
+          },
+          "ContainsGenericParameters": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsVisible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "GenericTypeParameters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Type"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaredConstructors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.ConstructorInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaredEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.EventInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaredFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.FieldInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaredMembers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.MemberInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaredMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.MethodInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaredNestedTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.TypeInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "DeclaredProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.PropertyInfo"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "ImplementedInterfaces": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Type"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Runtime.InteropServices.LayoutKind": {
+        "enum": [
+          0,
+          2,
+          3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Runtime.InteropServices.StructLayoutAttribute": {
+        "type": "object",
+        "properties": {
+          "TypeId": {
+            "nullable": true,
+            "readOnly": true
+          },
+          "Value": {
+            "$ref": "#/components/schemas/System.Runtime.InteropServices.LayoutKind"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.RuntimeFieldHandle": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "$ref": "#/components/schemas/System.IntPtr"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.RuntimeMethodHandle": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "$ref": "#/components/schemas/System.IntPtr"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.RuntimeTypeHandle": {
+        "type": "object",
+        "properties": {
+          "Value": {
+            "$ref": "#/components/schemas/System.IntPtr"
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Security.SecurityRuleSet": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "System.Type": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "CustomAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Reflection.CustomAttributeData"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "IsCollectible": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "MetadataToken": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "MemberType": {
+            "$ref": "#/components/schemas/System.Reflection.MemberTypes"
+          },
+          "Namespace": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "AssemblyQualifiedName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "FullName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "Assembly": {
+            "$ref": "#/components/schemas/System.Reflection.Assembly"
+          },
+          "Module": {
+            "$ref": "#/components/schemas/System.Reflection.Module"
+          },
+          "IsInterface": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNested": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "DeclaringType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "DeclaringMethod": {
+            "$ref": "#/components/schemas/System.Reflection.MethodBase"
+          },
+          "ReflectedType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "UnderlyingSystemType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "IsTypeDefinition": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsArray": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsByRef": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPointer": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsConstructedGenericType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericParameter": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericTypeParameter": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericMethodParameter": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsGenericTypeDefinition": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSZArray": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsVariableBoundArray": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsByRefLike": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsFunctionPointer": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsUnmanagedFunctionPointer": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "HasElementType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "GenericTypeArguments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/System.Type"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "GenericParameterPosition": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "GenericParameterAttributes": {
+            "$ref": "#/components/schemas/System.Reflection.GenericParameterAttributes"
+          },
+          "Attributes": {
+            "$ref": "#/components/schemas/System.Reflection.TypeAttributes"
+          },
+          "IsAbstract": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsImport": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSealed": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSpecialName": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedAssembly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedFamANDAssem": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedFamily": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedFamORAssem": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedPrivate": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNestedPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsNotPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPublic": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAutoLayout": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsExplicitLayout": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsLayoutSequential": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAnsiClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsAutoClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsUnicodeClass": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsCOMObject": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsContextful": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsEnum": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsMarshalByRef": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsPrimitive": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsValueType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSignatureType": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecuritySafeCritical": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsSecurityTransparent": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "StructLayoutAttribute": {
+            "$ref": "#/components/schemas/System.Runtime.InteropServices.StructLayoutAttribute"
+          },
+          "TypeInitializer": {
+            "$ref": "#/components/schemas/System.Reflection.ConstructorInfo"
+          },
+          "TypeHandle": {
+            "$ref": "#/components/schemas/System.RuntimeTypeHandle"
+          },
+          "GUID": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "BaseType": {
+            "$ref": "#/components/schemas/System.Type"
+          },
+          "IsSerializable": {
+            "type": "boolean",
+            "readOnly": true,
+            "deprecated": true
+          },
+          "ContainsGenericParameters": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "IsVisible": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Put **_ONLY_** your JWT Bearer token on textbox below!",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Ping",
+      "description": "Tilbyr tjenester som kan brukes i forbindelse med testing"
+    },
+    {
+      "name": "AdverseIncident",
+      "description": "Adverse incident reporting API version 2 accepts DPoP access tokens only"
+    },
+    {
+      "name": "Dialog",
+      "description": "Dialog API version 2 accepts standard DPoP access tokens only"
+    }
+  ]
+}

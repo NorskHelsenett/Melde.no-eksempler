@@ -1,5 +1,5 @@
 ﻿using Example.Configuration;
-using MeldeApiReport;
+using MeldeV2;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using OpenAPI;
@@ -19,7 +19,7 @@ namespace Example.Varselordningen
             .AddHttpMessageHandler(_ =>
             {
                 // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/report/send" }, Config.ClientType);
+                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/report/send" }, Config.ClientType, Config.TokenType);
             });
 
             var provider = serviceCollection.BuildServiceProvider();
@@ -160,16 +160,11 @@ namespace Example.Varselordningen
             Console.WriteLine(jsonData);
             Console.WriteLine($"{Environment.NewLine}{Environment.NewLine}-------------------------------------------------{Environment.NewLine}{Environment.NewLine}");
 
-            //call API, wait for response
-            var apiClient = new AdverseIncidentClient(httpClient);
-            var response = await apiClient.UonsketHendelseAsync(requestData);
-
-            // If the call was succesful write out response
-            if (response.Status == HttpStatusCode.OK || response.Status == HttpStatusCode.Created)
+            try
             {
-                Console.WriteLine(response.Status == HttpStatusCode.OK
-                    ? "Melding opprettet"
-                    : "Melding oppdatert");
+                //call API, wait for response
+                var apiClient = new Client(httpClient);
+                var response = await apiClient.AdverseIncidentAsync(requestData);
 
                 Console.WriteLine("-- Responsdata");
                 Console.WriteLine($"Melde.no ID: {response.Id}");
@@ -184,13 +179,11 @@ namespace Example.Varselordningen
                     Console.WriteLine($"\t{m}");
                 }
             }
-            else // Write out some error data if unsuccessful
+            catch(ApiException ex)
             {
                 Console.WriteLine("-- Feil");
-                Console.WriteLine($"HTTP statuskode: {response.Status}");
-                Console.WriteLine($"Correlation ID: {response.Feil?.CorrelationId}");
-                Console.WriteLine("Feilemdling:");
-                Console.WriteLine(response.Feil?.Message);
+                Console.WriteLine($"HTTP statuskode: {ex.StatusCode}");
+                Console.WriteLine($"Feilemdling: {ex.Message}");
             }
         }
     }
