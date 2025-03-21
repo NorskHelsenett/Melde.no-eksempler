@@ -223,7 +223,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogCreatedResponse"
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogMessageCreatedResponse"
                 }
               }
             }
@@ -290,7 +290,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogMessageCreatedResponse"
+                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetDialogInfoResponse"
                 }
               }
             }
@@ -2325,6 +2325,18 @@
         },
         "additionalProperties": false,
         "description": "Kvittering for opprettet dialogmelding"
+      },
+      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetDialogInfoResponse": {
+        "type": "object",
+        "properties": {
+          "DialogRef": {
+            "type": "string",
+            "description": "Dialog reference",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Dialog info response"
       },
       "Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetUnreadMessagesResponse": {
         "type": "object",

@@ -3,11 +3,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using OpenAPI;
 using Microsoft.Extensions.DependencyInjection;
-using MeldeApiReport;
-using MeldeApiDialog;
 using Example.Configuration;
 using System.Collections.Generic;
-
+using MeldeV2;
 namespace Example.Toveisdialog
 {
     class Program
@@ -27,14 +25,14 @@ namespace Example.Toveisdialog
                 .AddHttpMessageHandler(_ =>
                 {
                     var scopes = new string[] { "nhn:melde/dialog/opprett", "nhn:melde/dialog/melding" };
-                    return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, Config.ClientType);
+                    return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, Config.ClientType, Config.TokenType);
                 });
 
             var provider = serviceCollection.BuildServiceProvider();
             var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
             using var httpClient = httpClientFactory.CreateClient("MeldeNo");
 
-            var dialogClient = new DialogClient(httpClient);
+            var dialogClient = new Client(httpClient);
 
             //
             // Check wether dialog exists
@@ -42,7 +40,7 @@ namespace Example.Toveisdialog
             string dialogRef = null;
             try
             {
-                var response = await dialogClient.GetDialogInfoAsync(UONSKET_HENDELSE_REF);
+                var response = await dialogClient.DialogGETAsync(UONSKET_HENDELSE_REF);
                 dialogRef = response.DialogRef;
             }
             catch (ApiException e)
@@ -64,7 +62,7 @@ namespace Example.Toveisdialog
                         ReportArea = MELDEORDNING_ID
                     };
 
-                    var createdResponse = await dialogClient.StartDialogAsync(createPayload);
+                    var createdResponse = await dialogClient.DialogPOSTAsync(createPayload);
                     dialogRef = createdResponse.DialogRef;
                 }
                 catch (ApiException e)
@@ -159,7 +157,7 @@ namespace Example.Toveisdialog
                     }
                 };
 
-                var messageResponse = await dialogClient.SendMessageAsync(messagePayload);
+                var messageResponse = await dialogClient.MessagePOSTAsync(messagePayload);
             }
             catch (ApiException e)
             {
@@ -168,12 +166,12 @@ namespace Example.Toveisdialog
             }
 
             // Expected no unread messages at this point
-            var messages = await dialogClient.GetUnreadMessagesAsync(dialogRef);
+            var messages = await dialogClient.MessageGETAsync(dialogRef);
 
             // Manual work: Reply to message from web
 
             // Expected one or more unread messages at this point
-            var unreadMessages = await dialogClient.GetUnreadMessagesAsync(dialogRef);
+            var unreadMessages = await dialogClient.MessageGETAsync(dialogRef);
         }
 
         private static string PromptForInput(string message)

@@ -13,6 +13,9 @@ namespace Example.Configuration
 
         public static ClientType ClientType => ClientType.Person;
 
+        // Currently DPoP tokens are supported for Machine-Machine only
+        public static TokenType TokenType => TokenType.DPoPToken;
+
         public static string ClientId => "<Client id>";
 
         public static Dictionary<string, object> Jwk => new Dictionary<string, object>
