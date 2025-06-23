@@ -104,6 +104,7 @@ namespace OpenAPI
             {
                 Issuer = clientId,
                 Audience = disco.Issuer,
+                TokenType = "client-authentication+jwt",
                 Claims = claims,
                 NotBefore = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.AddSeconds(10),

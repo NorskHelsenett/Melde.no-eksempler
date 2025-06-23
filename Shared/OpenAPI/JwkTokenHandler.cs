@@ -29,7 +29,7 @@ namespace OpenAPI
         private readonly ClientType _clientType;
         private readonly TokenType _tokenType;
 
-        public JwkTokenHandler(string stsUrl, string clientId, Dictionary<string, object> jwtPrivateKey, string[] scopes, ClientType clientType, TokenType tokenType)
+        public JwkTokenHandler(string stsUrl, string clientId, Dictionary<string, object> jwtPrivateKey, string[] scopes, ClientType clientType, TokenType tokenType, HttpClientHandler innerHandler) : base(innerHandler)
         {
             _stsUrl = stsUrl;
             _clientId = clientId;
@@ -43,12 +43,7 @@ namespace OpenAPI
             HttpRequestMessage request,
             CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(_stsUrl))
-            {
-                return await base.SendAsync(request, cancellationToken);
-            }
-
-            string accessToken = await HelseIdTokenHelper.GetAccessToken(_stsUrl, _clientId, _jwtPrivateKey, _scopes, _clientType, _tokenType, cancellationToken);
+            var accessToken = await HelseIdTokenHelper.GetAccessToken(_stsUrl, _clientId, _jwtPrivateKey, _scopes, _clientType, _tokenType, cancellationToken);
 
             if(_tokenType == TokenType.AccessToken)
             {
@@ -58,7 +53,6 @@ namespace OpenAPI
             {
                 var dPopProof = new DPoPProofCreator(_jwtPrivateKey, SecurityAlgorithms.RsaSha256)
                     .CreateDPoPProof(request.RequestUri.AbsoluteUri, request.Method.ToString(), accessToken: accessToken);
-
                 request.SetDPoPToken(accessToken, dPopProof);
             }
 
