@@ -1,6 +1,5 @@
 ﻿using Example.Configuration;
 using MeldeV2;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using OpenAPI;
 
@@ -10,22 +9,6 @@ namespace Example.Varselordningen
     {
         static async Task Main(string[] args)
         {
-            // Setup HTTP client with authentication for HelseId
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddHttpClient("MeldeNo", client =>
-            {
-                client.BaseAddress = Config.ApiUri;
-            })
-            .AddHttpMessageHandler(_ =>
-            {
-                // Auth params can be set in AuthParams.cs
-                return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, new[] { "nhn:melde/report/send" }, Config.ClientType, Config.TokenType);
-            });
-
-            var provider = serviceCollection.BuildServiceProvider();
-            var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
-            using var httpClient = httpClientFactory.CreateClient("MeldeNo");
-
             //// Fill out request data
             var requestData = new AdverseIncidentRequest
             {
@@ -163,7 +146,7 @@ namespace Example.Varselordningen
             try
             {
                 //call API, wait for response
-                var apiClient = new Client(httpClient);
+                var apiClient = CreateClient(["nhn:melde/report/send"]);
                 var response = await apiClient.AdverseIncidentAsync(requestData);
 
                 Console.WriteLine("-- Responsdata");
@@ -185,6 +168,35 @@ namespace Example.Varselordningen
                 Console.WriteLine($"HTTP statuskode: {ex.StatusCode}");
                 Console.WriteLine($"Feilemdling: {ex.Message}");
             }
+        }
+
+        private static Client CreateClient(string[] scopes)
+        {
+            var htHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+                {
+                    // Accept even if the certificate is expired
+                    if (errors == System.Net.Security.SslPolicyErrors.None ||
+                        errors == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
+                        errors == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                },
+
+            };
+
+            var jwtHandler = new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, Config.ClientType, Config.TokenType, htHandler);
+
+            var httpClient = new HttpClient(jwtHandler)
+            {
+                BaseAddress = Config.ApiUri,
+            };
+
+            return new Client(httpClient);
         }
     }
 }
