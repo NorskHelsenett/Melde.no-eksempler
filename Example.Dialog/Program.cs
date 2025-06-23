@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using OpenAPI;
-using Microsoft.Extensions.DependencyInjection;
 using Example.Configuration;
 using System.Collections.Generic;
 using MeldeV2;
@@ -10,29 +9,13 @@ namespace Example.Toveisdialog
 {
     class Program
     {
-        const string    UONSKET_HENDELSE_REF = "Vx5pmxq";
-        const int       MELDEORDNING_ID = 10; //2: bivir,  10:biovig, 8:alvor
-        const bool      CREATE_DIALOG = true;
+        const string UONSKET_HENDELSE_REF = "V2d45";
+        const int MELDEORDNING_ID = 11; //2: bivir,  10:biovig, 8:alvor, 11:radiation, 7: med.equipment
+        const bool CREATE_DIALOG = true;
 
         static async Task Main(string[] args)
         {
-            // Setup HTTP client with authentication for HelseId
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddHttpClient("MeldeNo", client =>
-            {
-                client.BaseAddress = Config.ApiUri;
-            })
-                .AddHttpMessageHandler(_ =>
-                {
-                    var scopes = new string[] { "nhn:melde/dialog/opprett", "nhn:melde/dialog/melding" };
-                    return new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, Config.ClientType, Config.TokenType);
-                });
-
-            var provider = serviceCollection.BuildServiceProvider();
-            var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
-            using var httpClient = httpClientFactory.CreateClient("MeldeNo");
-
-            var dialogClient = new Client(httpClient);
+            var dialogClient = CreateClient(["nhn:melde/dialog/opprett", "nhn:melde/dialog/melding"]);
 
             //
             // Check wether dialog exists
@@ -49,7 +32,7 @@ namespace Example.Toveisdialog
                 Console.WriteLine(e.Message);
             }
 
-            if(CREATE_DIALOG && string.IsNullOrWhiteSpace(dialogRef))
+            if (CREATE_DIALOG && string.IsNullOrWhiteSpace(dialogRef))
             {
                 //
                 // Create dialog if not existing. Will fail if dialog existed
@@ -178,6 +161,35 @@ namespace Example.Toveisdialog
         {
             Console.Write($"{message}: ");
             return Console.ReadLine();
+        }
+
+        private static Client CreateClient(string[] scopes)
+        {
+            var htHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
+                {
+                    // Accept even if the certificate is expired
+                    if (errors == System.Net.Security.SslPolicyErrors.None ||
+                        errors == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
+                        errors == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch)
+                    {
+                        return true;
+                    }
+
+                    return false;
+                },
+
+            };
+
+            var jwtHandler = new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, Config.ClientType, Config.TokenType, htHandler);
+
+            var httpClient = new HttpClient(jwtHandler)
+            {
+                BaseAddress = Config.ApiUri,
+            };
+
+            return new Client(httpClient);
         }
     }
 }
