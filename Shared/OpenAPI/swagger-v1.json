@@ -1,8 +1,8 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.4",
   "info": {
     "title": "Melde API",
-    "description": "<p>API for reporting and handling dialog related to adverse incidents.</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
+    "description": "<p>API for reporting and handling dialog related to adverse incidents.</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n<h1>---------------------| This API version is deprecated |---------------------</h1>\r\n",
     "contact": {
       "name": "Norsk Helsenett",
       "url": "https://www.nhn.no",
@@ -40,7 +40,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -50,7 +50,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
                 }
               }
             }
@@ -60,7 +60,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -97,7 +97,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -107,7 +107,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
                 }
               }
             }
@@ -117,7 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
                 }
               }
             }
@@ -127,7 +127,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -146,7 +146,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogInfo"
+                "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.CreateDialogInfo"
               }
             }
           }
@@ -163,7 +163,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -173,7 +173,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogCreatedResponse"
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogCreatedResponse"
                 }
               }
             }
@@ -183,7 +183,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -202,7 +202,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogMessageInfo"
+                "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.CreateDialogMessageInfo"
               }
             }
           }
@@ -219,7 +219,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -229,7 +229,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogMessageCreatedResponse"
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogMessageCreatedResponse"
                 }
               }
             }
@@ -239,7 +239,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -279,7 +279,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -289,7 +289,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetDialogInfoResponse"
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.GetDialogInfoResponse"
                 }
               }
             }
@@ -299,7 +299,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -336,7 +336,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -346,7 +346,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetUnreadMessagesResponse"
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.GetUnreadMessagesResponse"
                 }
               }
             }
@@ -356,7 +356,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -378,7 +378,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Feedback"
+                "$ref": "#/components/schemas/Melde.DTO.V10.Feedback"
               }
             }
           }
@@ -389,7 +389,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
                 }
               }
             }
@@ -399,7 +399,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
                 }
               }
             }
@@ -419,7 +419,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.KvitteringsMelding"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
                 }
               }
             }
@@ -430,7 +430,7 @@
     "/api/v1/nokup/lookup/{codes}": {
       "get": {
         "tags": [
-          "Nokob"
+          "Nokup"
         ],
         "summary": "Lookup one or more Nokup codes",
         "parameters": [
@@ -456,7 +456,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -468,7 +468,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Hdir.EnVeiInn.Service.Services.NokupLookupResult"
+                    "$ref": "#/components/schemas/Melde.Service.Services.NokupLookupResult"
                   }
                 }
               }
@@ -479,7 +479,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.BaseRespons"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -507,7 +507,7 @@
             "example": "MYSYS-REF8345"
           },
           "Language": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.Language"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.Language"
           },
           "ExternalMessageId": {
             "type": "string",
@@ -529,7 +529,7 @@
             "maxItems": 5,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.ContactPersonPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.ContactPersonPart"
             },
             "description": "List of contact persons",
             "nullable": true
@@ -538,7 +538,7 @@
             "maxItems": 5,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart"
             },
             "description": "Attachments",
             "nullable": true
@@ -569,7 +569,7 @@
             "example": "2020-03-12"
           },
           "DateUnknown": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           },
           "DateText": {
             "maxLength": 250,
@@ -602,7 +602,7 @@
             "nullable": true
           },
           "Gender": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Gender"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Gender"
           },
           "YearOfBirth": {
             "maximum": 2100,
@@ -708,7 +708,7 @@
             "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigaretteReportPart"
           },
           "Radiation": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.RadiationReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.RadiationReportPart"
           }
         },
         "additionalProperties": false,
@@ -732,10 +732,10 @@
             "nullable": true
           },
           "Organization": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.OrganizationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.OrganizationPart"
           },
           "IncidentOrganization": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.OrganizationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.OrganizationPart"
           },
           "Email": {
             "maxLength": 150,
@@ -759,10 +759,10 @@
             "example": "12345678"
           },
           "Qualification": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Qualification"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Qualification"
           },
           "Role": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.ReporterRole"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ReporterRole"
           },
           "Position": {
             "maxLength": 100,
@@ -771,7 +771,7 @@
             "nullable": true
           },
           "IsOnBehalfOf": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           }
         },
         "additionalProperties": false,
@@ -1096,30 +1096,21 @@
             "nullable": true
           },
           "ReportedToVendorOrManufacturer": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "BestBeforeDateExpired": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "PurchaseLocation": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.PurchaseLocation"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.PurchaseLocation"
           },
           "SalesChannel": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.SalesChannel"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SalesChannel"
           },
           "BatchLotNumber": {
             "maxLength": 100,
             "type": "string",
             "description": "Product batch/lot number",
-            "nullable": true
-          },
-          "Attachments": {
-            "maxItems": 5,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
-            },
-            "description": "Attachments",
             "nullable": true
           }
         },
@@ -1168,7 +1159,7 @@
         "type": "object",
         "properties": {
           "SideEffectsOnPreviousUse": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoPartialDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoPartialDontKnow"
           },
           "PreviousUseDescription": {
             "maxLength": 300,
@@ -1180,7 +1171,7 @@
             "maxItems": 10,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Tilstand"
+              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Tilstand"
             },
             "description": "Condition of affected skin area before use of the products",
             "nullable": true
@@ -1251,7 +1242,7 @@
             "nullable": true
           },
           "ReactionDelay": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.ReactionDelay"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ReactionDelay"
           },
           "ReactionDelayDescription": {
             "maxLength": 250,
@@ -1305,7 +1296,7 @@
             "description": "Best before date"
           },
           "ReportedToVendorOrManufacturer": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "PurchaseLocation": {
             "maxLength": 150,
@@ -1323,15 +1314,6 @@
             "maxLength": 100,
             "type": "string",
             "description": "Batch/lot number",
-            "nullable": true
-          },
-          "Attachments": {
-            "maxItems": 5,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
-            },
-            "description": "Attachments",
             "nullable": true
           }
         },
@@ -1387,7 +1369,7 @@
             "nullable": true
           },
           "AnyDrugsTakenAtSameTime": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "DrugsTakenAtSameTime": {
             "type": "array",
@@ -1468,10 +1450,10 @@
             "nullable": true
           },
           "Ongoing": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           },
           "SideEffectsOnPreviousUse": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "SideEffectsOnPreviousUseDescription": {
             "maxLength": 500,
@@ -1480,7 +1462,7 @@
             "nullable": true
           },
           "AnyAllergiesOrInfluencingIssues": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "AnyAllergiesOrInfluencingIssuesDescription": {
             "maxLength": 500,
@@ -1489,10 +1471,10 @@
             "nullable": true
           },
           "AnyUnderlyingDiseases": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "CanDiseaseBeTheCause": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           }
         },
         "additionalProperties": false,
@@ -1534,7 +1516,7 @@
             "example": "Batchnummer #R1195"
           },
           "AdministrationArea": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.AdministrationArea"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.AdministrationArea"
           },
           "AdministrationAreaOther": {
             "maxLength": 100,
@@ -1544,10 +1526,10 @@
             "example": "Other administration route"
           },
           "DoseNumber": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.DoseNumber"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.DoseNumber"
           },
           "AdministrationRoute": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.AdministrationArea"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.AdministrationArea"
           },
           "AdministrationRouteOther": {
             "maxLength": 100,
@@ -1583,7 +1565,10 @@
             "example": "J07BN01"
           },
           "IsVaccine": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "IsActiveIngredient": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           },
           "DrugName": {
             "maxLength": 300,
@@ -1592,7 +1577,7 @@
             "nullable": true
           },
           "Role": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelRolle"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.LegemiddelRolle"
           },
           "Indication": {
             "maxLength": 150,
@@ -1616,7 +1601,7 @@
             "example": "Obsolete. Use AdministrationRoute instead"
           },
           "StillInUse": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "DrugForm": {
             "maxLength": 150,
@@ -1625,12 +1610,12 @@
             "nullable": true
           },
           "UnsureDrugFormOrStrength": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           },
           "UnsureAreas": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.UnsureArea"
+              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.UnsureArea"
             },
             "description": "Unsure about what?\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
             "nullable": true
@@ -1641,13 +1626,13 @@
             "nullable": true
           },
           "DrugSideEffectsAction": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelBivirkningsHandling"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.LegemiddelBivirkningsHandling"
           },
           "SideEffectsReoccured": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "SalesChannel": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.Kjøpssted"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Kjøpssted"
           },
           "SalesChannelDescription": {
             "type": "string",
@@ -1668,7 +1653,7 @@
             "maxItems": 6,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.SideEffectSeverity"
+              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SideEffectSeverity"
             },
             "description": "Severity",
             "nullable": true,
@@ -1710,15 +1695,6 @@
           },
           "OtherInformation": {
             "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsOtherInformationPart"
-          },
-          "Attachments": {
-            "maxItems": 5,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart"
-            },
-            "description": "Attachments",
-            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -1750,7 +1726,7 @@
             "example": "\"1996-01-04\""
           },
           "Ongoing": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           },
           "SideEffectsDelay": {
             "maxLength": 150,
@@ -1759,7 +1735,7 @@
             "nullable": true
           },
           "Outcome": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.SideEffectOutcome"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SideEffectOutcome"
           }
         },
         "additionalProperties": false,
@@ -1769,7 +1745,7 @@
         "type": "object",
         "properties": {
           "HealthcarePersonnelContacted": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNo"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           },
           "UsageFrequency": {
             "maxLength": 250,
@@ -1833,7 +1809,7 @@
             "nullable": true
           },
           "NicotineFluidUsed": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "NicotineStrength": {
             "maxLength": 250,
@@ -1922,10 +1898,10 @@
             "nullable": true
           },
           "NkknGroup": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.IdNavn"
+            "$ref": "#/components/schemas/Melde.DTO.IdNavn"
           },
           "NkknCategory": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.NkknCategory"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.NkknCategory"
           },
           "SerialNumber": {
             "maxLength": 100,
@@ -1951,7 +1927,7 @@
             "example": "2021-10-23"
           },
           "EquipmentLocation": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.EquipmentLocation"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.EquipmentLocation"
           },
           "Distributor": {
             "maxLength": 150,
@@ -1960,7 +1936,7 @@
             "nullable": true
           },
           "IncidentClassification": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Enums.IncidentClassification"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.IncidentClassification"
           },
           "ImplantInformation": {
             "$ref": "#/components/schemas/DTO.V10.ExternalApi.MedicalEquipmentImplantInformation"
@@ -2006,7 +1982,7 @@
             "nullable": true
           },
           "IsClosestNextOfKin": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow"
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
           "Address": {
             "maxLength": 150,
@@ -2054,14 +2030,6 @@
       "DTO.V10.ExternalApi.SeriousIncidentReportPart": {
         "type": "object",
         "properties": {
-          "ContactPersons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.ContactPersonPart"
-            },
-            "description": "Contact persons for this report",
-            "nullable": true
-          },
           "NextOfKin": {
             "type": "array",
             "items": {
@@ -2077,7 +2045,7 @@
         "additionalProperties": false,
         "description": "Report part"
       },
-      "Hdir.EnVeiInn.DTO.IdNavn": {
+      "Melde.DTO.IdNavn": {
         "type": "object",
         "properties": {
           "Id": {
@@ -2094,21 +2062,20 @@
         "additionalProperties": false,
         "description": "Generic long id + string name"
       },
-      "Hdir.EnVeiInn.DTO.Response.BaseRespons": {
+      "Melde.DTO.Response.BaseRespons": {
         "type": "object",
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel",
-			"nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
           }
         },
         "additionalProperties": false,
         "description": "Generell baseklasse for respons fra APIet. Inneholder statuskode og feilmelding"
       },
-      "Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel": {
+      "Melde.DTO.Response.FeilmeldingViewModel": {
         "type": "object",
         "properties": {
           "Message": {
@@ -2145,15 +2112,14 @@
         "additionalProperties": false,
         "description": "Informasjon om feilmeldinger fra APIet"
       },
-      "Hdir.EnVeiInn.DTO.Response.KvitteringsMelding": {
+      "Melde.DTO.Response.KvitteringsMelding": {
         "type": "object",
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel",
-			"nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
           },
           "Id": {
             "type": "integer",
@@ -2197,29 +2163,7 @@
         "additionalProperties": false,
         "description": "Svarmelding uavhengig av om kall til controlleren gikk bra eller ikke. Dersom feil oppstår legges det i Feil-feltet."
       },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.Attachment": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string",
-            "description": "Attachment name",
-            "nullable": true
-          },
-          "ContentType": {
-            "type": "string",
-            "description": "Type of attachment (mime type)",
-            "nullable": true
-          },
-          "Content": {
-            "type": "string",
-            "description": "Attachment content (base64 encoded)",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Message attachment"
-      },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogInfo": {
+      "Melde.DTO.V10.Dialog.CreateDialogInfo": {
         "required": [
           "ReportArea",
           "ReportRef"
@@ -2248,7 +2192,7 @@
         "additionalProperties": false,
         "description": "Create dialog DTO"
       },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.CreateDialogMessageInfo": {
+      "Melde.DTO.V10.Dialog.CreateDialogMessageInfo": {
         "required": [
           "MessageText"
         ],
@@ -2264,12 +2208,12 @@
             "maxLength": 1048576,
             "minLength": 1,
             "type": "string",
-            "description": "Message text. HTML formatting may be used if the receiving system supports it. Melde.no does."
+            "description": "Message text. HTML formatting may be used if the receiving system supports it. Melde does."
           },
           "SenderName": {
             "maxLength": 64,
             "type": "string",
-            "description": "Sender name. For instance case manager name.\r\nIf not specified, the name of the client is used.",
+            "description": "Sender name. For instance case manager name.\r\nIf not specified, the name of the client is used.\r\nNote. If the authenticated user's access token contains a 'name' claim, the claim value will overwrite the senderName.\r\nThis is the case when the user has logged in interactively.",
             "nullable": true
           },
           "NotifyRecipient": {
@@ -2281,7 +2225,7 @@
             "maxItems": 5,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Attachment"
+              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart"
             },
             "description": "Message attachments. Max 5.",
             "nullable": true
@@ -2290,15 +2234,14 @@
         "additionalProperties": false,
         "description": "Create dialog message DTO"
       },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogCreatedResponse": {
+      "Melde.DTO.V10.Dialog.Response.DialogCreatedResponse": {
         "type": "object",
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel",
-			"nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
           },
           "DialogRef": {
             "type": "string",
@@ -2309,15 +2252,14 @@
         "additionalProperties": false,
         "description": "Kvittering for opprettet dialog"
       },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.DialogMessageCreatedResponse": {
+      "Melde.DTO.V10.Dialog.Response.DialogMessageCreatedResponse": {
         "type": "object",
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.Response.FeilmeldingViewModel",
-			"nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
           },
           "MessageRef": {
             "type": "string",
@@ -2328,7 +2270,7 @@
         "additionalProperties": false,
         "description": "Kvittering for opprettet dialogmelding"
       },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetDialogInfoResponse": {
+      "Melde.DTO.V10.Dialog.Response.GetDialogInfoResponse": {
         "type": "object",
         "properties": {
           "DialogRef": {
@@ -2340,13 +2282,13 @@
         "additionalProperties": false,
         "description": "Dialog info response"
       },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.GetUnreadMessagesResponse": {
+      "Melde.DTO.V10.Dialog.Response.GetUnreadMessagesResponse": {
         "type": "object",
         "properties": {
           "Messages": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Response.UnreadMessage"
+              "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.UnreadMessage"
             },
             "description": "Liste med meldinger",
             "nullable": true
@@ -2355,7 +2297,7 @@
         "additionalProperties": false,
         "description": "Respons som inneholder en liste med uleste meldinger"
       },
-      "Hdir.EnVeiInn.DTO.V10.Dialog.Response.UnreadMessage": {
+      "Melde.DTO.V10.Dialog.Response.UnreadMessage": {
         "required": [
           "MessageRef",
           "ReceivedTime",
@@ -2376,7 +2318,7 @@
           "Attachments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.DTO.V10.Dialog.Attachment"
+              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart"
             },
             "description": "Liste med vedlegg",
             "nullable": true
@@ -2395,7 +2337,7 @@
         "additionalProperties": false,
         "description": "UnreadMessage class"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.AdministrationArea": {
+      "Melde.DTO.V10.Enums.AdministrationArea": {
         "enum": [
           "RightArm",
           "LeftArm",
@@ -2407,7 +2349,7 @@
         "type": "string",
         "description": "Administration area"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.DoseNumber": {
+      "Melde.DTO.V10.Enums.DoseNumber": {
         "enum": [
           "One",
           "Two",
@@ -2418,7 +2360,7 @@
         "type": "string",
         "description": "Dose number"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.EquipmentLocation": {
+      "Melde.DTO.V10.Enums.EquipmentLocation": {
         "enum": [
           "Healthcare",
           "PatientOrClient",
@@ -2432,7 +2374,7 @@
         "type": "string",
         "description": "Where is the equipment located at the time of reporting"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.Gender": {
+      "Melde.DTO.V10.Enums.Gender": {
         "enum": [
           "NotKnown",
           "Male",
@@ -2442,7 +2384,7 @@
         "type": "string",
         "description": "Pasientens kjønn (OID=3101)\r\nSe kodeverk 3101 på volven: <URL>https://volven.no/produkt.asp?id=382591&catID=3&subID=8</URL>."
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.IncidentClassification": {
+      "Melde.DTO.V10.Enums.IncidentClassification": {
         "enum": [
           "Death",
           "SeriousDeterioration",
@@ -2451,7 +2393,7 @@
         "type": "string",
         "description": "Incident classification"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.Kjøpssted": {
+      "Melde.DTO.V10.Enums.Kjøpssted": {
         "enum": [
           "NotSet",
           "PharmacyWithoutPrescription",
@@ -2464,7 +2406,7 @@
         "type": "string",
         "description": "Mulige valg for hvor legemiddelet ble kjøpt"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelBivirkningsHandling": {
+      "Melde.DTO.V10.Enums.LegemiddelBivirkningsHandling": {
         "enum": [
           "NotSet",
           "StoppedUsingDrug",
@@ -2476,7 +2418,7 @@
         "type": "string",
         "description": "Hva gjorde bruker når bivirkning oppstod"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.LegemiddelRolle": {
+      "Melde.DTO.V10.Enums.LegemiddelRolle": {
         "enum": [
           "Suspected",
           "Parallel",
@@ -2485,7 +2427,7 @@
         "type": "string",
         "description": "Legemiddelrolle"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.NkknCategory": {
+      "Melde.DTO.V10.Enums.NkknCategory": {
         "enum": [
           "ActiveImplantableEquipment",
           "AnesthesiologicalAndRespiratoryEquipment",
@@ -2503,7 +2445,7 @@
         "type": "string",
         "description": "Medical equipment category"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.PurchaseLocation": {
+      "Melde.DTO.V10.Enums.PurchaseLocation": {
         "enum": [
           "NorwegianDealer",
           "ForeignDealer",
@@ -2514,7 +2456,7 @@
         "type": "string",
         "description": "Purchase location"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.Qualification": {
+      "Melde.DTO.V10.Enums.Qualification": {
         "enum": [
           "Physician",
           "Pharmacist",
@@ -2523,7 +2465,7 @@
         "type": "string",
         "description": "A person's qualification"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.ReactionDelay": {
+      "Melde.DTO.V10.Enums.ReactionDelay": {
         "enum": [
           "WithinHalfHour",
           "HalfHourToOneHour",
@@ -2535,7 +2477,7 @@
         "type": "string",
         "description": "How long time after exposure did the reaction show"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.ReporterRole": {
+      "Melde.DTO.V10.Enums.ReporterRole": {
         "enum": [
           "Manager",
           "Treator",
@@ -2548,7 +2490,7 @@
         "type": "string",
         "description": "Avaliable reporter roles"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.SalesChannel": {
+      "Melde.DTO.V10.Enums.SalesChannel": {
         "enum": [
           "Pharmacy",
           "Perfumery",
@@ -2562,7 +2504,7 @@
         "type": "string",
         "description": "Sales channel"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.SideEffectOutcome": {
+      "Melde.DTO.V10.Enums.SideEffectOutcome": {
         "enum": [
           "FullyRecovered",
           "Improvement",
@@ -2574,7 +2516,7 @@
         "type": "string",
         "description": "Side effect outcome\r\nRef kodeverk 7469 at volven: <URL>https://volven.no/produkt.asp?id=382526&catID=3&subID=8</URL>."
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.SideEffectSeverity": {
+      "Melde.DTO.V10.Enums.SideEffectSeverity": {
         "enum": [
           "Death",
           "LifeThreatening",
@@ -2586,7 +2528,7 @@
         "type": "string",
         "description": "Bivirkningens alvorlighet\r\nSe kodeverk 7468 på volven: <URL>https://volven.no/produkt.asp?id=382525&catID=3&subID=8</URL>."
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.Tilstand": {
+      "Melde.DTO.V10.Enums.Tilstand": {
         "enum": [
           "Normal",
           "Torr",
@@ -2596,7 +2538,7 @@
         "type": "string",
         "description": "Tilstand til område før et produkt ble brukt"
       },
-      "Hdir.EnVeiInn.DTO.V10.Enums.UnsureArea": {
+      "Melde.DTO.V10.Enums.UnsureArea": {
         "enum": [
           "TradeName",
           "DosageForm",
@@ -2606,7 +2548,7 @@
         "type": "string",
         "description": "Legemiddelrolle"
       },
-      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.AttachmentPart": {
+      "Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart": {
         "required": [
           "Content",
           "Name"
@@ -2621,23 +2563,24 @@
             "example": "document.pdf"
           },
           "ContentType": {
-            "maxLength": 50,
+            "maxLength": 100,
             "type": "string",
             "description": "Content type/mime type",
             "nullable": true,
             "example": "application/pdf"
           },
           "Content": {
+            "maxLength": 6993600,
             "minLength": 1,
             "type": "string",
-            "description": "Attachment content.\r\nBase64 encoded. May be prefixed by for instance 'data:image/jpeg;base64,'",
+            "description": "Attachment content.\r\nBase64 encoded.",
             "example": "QSBuaWNlIFBERiBmaWxlCg=="
           }
         },
         "additionalProperties": false,
         "description": "Attachment part"
       },
-      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.ContactPersonPart": {
+      "Melde.DTO.V10.ExternalAPI.Parts.ContactPersonPart": {
         "required": [
           "Name"
         ],
@@ -2677,7 +2620,7 @@
         "additionalProperties": false,
         "description": "Contact persons"
       },
-      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.Parts.OrganizationPart": {
+      "Melde.DTO.V10.ExternalAPI.Parts.OrganizationPart": {
         "type": "object",
         "properties": {
           "OrgNumber": {
@@ -2745,12 +2688,12 @@
         "additionalProperties": false,
         "description": "Organization part"
       },
-      "Hdir.EnVeiInn.DTO.V10.ExternalAPI.RadiationReportPart": {
+      "Melde.DTO.V10.ExternalAPI.RadiationReportPart": {
         "type": "object",
         "additionalProperties": false,
         "description": "Radiation report part. Currently empty, but may be expanded in the future"
       },
-      "Hdir.EnVeiInn.DTO.V10.Feedback": {
+      "Melde.DTO.V10.Feedback": {
         "type": "object",
         "properties": {
           "ReportAreaName": {
@@ -2767,23 +2710,24 @@
         "additionalProperties": false,
         "description": "User feedback"
       },
-      "Hdir.EnVeiInn.Felles.Enums.Language": {
+      "Melde.Felles.Enums.Language": {
         "enum": [
           0,
           1,
-          2
+          2,
+          3
         ],
         "type": "integer",
         "format": "int32"
       },
-      "Hdir.EnVeiInn.Felles.Enums.YesNo": {
+      "Melde.Felles.Enums.YesNo": {
         "enum": [
           "Yes",
           "No"
         ],
         "type": "string"
       },
-      "Hdir.EnVeiInn.Felles.Enums.YesNoDontKnow": {
+      "Melde.Felles.Enums.YesNoDontKnow": {
         "enum": [
           "Yes",
           "No",
@@ -2791,7 +2735,7 @@
         ],
         "type": "string"
       },
-      "Hdir.EnVeiInn.Felles.Enums.YesNoPartialDontKnow": {
+      "Melde.Felles.Enums.YesNoPartialDontKnow": {
         "enum": [
           "Yes",
           "No",
@@ -2800,7 +2744,7 @@
         ],
         "type": "string"
       },
-      "Hdir.EnVeiInn.Service.Services.NokupLookupOption": {
+      "Melde.Service.Services.NokupLookupOption": {
         "type": "object",
         "properties": {
           "Code": {
@@ -2821,7 +2765,7 @@
         },
         "additionalProperties": false
       },
-      "Hdir.EnVeiInn.Service.Services.NokupLookupResult": {
+      "Melde.Service.Services.NokupLookupResult": {
         "type": "object",
         "properties": {
           "Code": {
@@ -2833,7 +2777,7 @@
             "nullable": true
           },
           "InputType": {
-            "$ref": "#/components/schemas/Hdir.EnVeiInn.Service.Services.OptionType"
+            "$ref": "#/components/schemas/Melde.Service.Services.OptionType"
           },
           "Mandatory": {
             "type": "boolean"
@@ -2852,14 +2796,14 @@
           "Options": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Hdir.EnVeiInn.Service.Services.NokupLookupOption"
+              "$ref": "#/components/schemas/Melde.Service.Services.NokupLookupOption"
             },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "Hdir.EnVeiInn.Service.Services.OptionType": {
+      "Melde.Service.Services.OptionType": {
         "enum": [
           0,
           1,
