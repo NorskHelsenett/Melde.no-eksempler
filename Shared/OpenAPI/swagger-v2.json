@@ -2082,7 +2082,8 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -2132,7 +2133,8 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
+            "nullable": true
           },
           "Id": {
             "type": "integer",
@@ -2254,7 +2256,8 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
+            "nullable": true
           },
           "DialogRef": {
             "type": "string",
@@ -2272,7 +2275,8 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
+            "nullable": true
           },
           "MessageRef": {
             "type": "string",
