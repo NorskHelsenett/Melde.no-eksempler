@@ -1948,6 +1948,12 @@
             "description": "Distributor",
             "nullable": true
           },
+          "EquipmentReference": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Equipment internal reference",
+            "nullable": true
+          },
           "IncidentClassification": {
             "$ref": "#/components/schemas/Melde.DTO.V10.Enums.IncidentClassification"
           },
@@ -2082,8 +2088,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
-            "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
           }
         },
         "additionalProperties": false,
@@ -2133,8 +2138,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
-            "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
           },
           "Id": {
             "type": "integer",
@@ -2256,8 +2260,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
-            "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
           },
           "DialogRef": {
             "type": "string",
@@ -2275,8 +2278,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel",
-            "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
           },
           "MessageRef": {
             "type": "string",
