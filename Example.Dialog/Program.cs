@@ -125,14 +125,14 @@ namespace Example.Toveisdialog
                     "Ny linje<p>" +
                     "Melding fra saksbehandler (API)",
                     SenderName = "Ola Nordmann",
-                    Attachments = new List<Attachment>
+                    Attachments = new List<AttachmentPart>
                     {
-                        new Attachment
+                        new AttachmentPart
                         {
                             Name ="fil.txt",
                             Content = "SW5uaG9sZCBpIGZpbAo="
                         },
-                        new Attachment
+                        new AttachmentPart
                         {
                             Name = "fil2.txt",
                             Content = "RGVubmUgZmlsYSBoYXIgZ2Fuc2tlIG15ZSBtZXIgaW5uaG9sZCBlbm4gZGVuIGbDuHJzdGUK"

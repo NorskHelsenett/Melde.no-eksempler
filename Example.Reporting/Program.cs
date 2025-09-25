@@ -51,6 +51,14 @@ namespace Example.Varselordningen
                             Phone = "00000000",
                             Position = "Doktor"
                         }
+                    },
+                    Attachments = new[]
+                    {
+                        new AttachmentPart
+                        {
+                            Name = "Test.txt",
+                            Content = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
+                        }
                     }
                 },
                 Report = new AdverseIncidentReportPart
@@ -100,15 +108,7 @@ namespace Example.Varselordningen
                                     ReportedToVendorOrManufacturer = YesNoDontKnow.DontKnow,
                                     PurchaseLocation = "Hvor",
                                     ShopName = "Butikknavn",
-                                    BatchLotNumber = "Batch",
-                                    Attachments = new []
-                                    {
-                                        new AttachmentPart
-                                        {
-                                            Name = "Test.txt",
-                                            Content = "SGVyIGVyIGV0IGVua2VsdCB0ZXN0dmVkbGVnZy4NCg=="
-                                        }
-                                    }
+                                    BatchLotNumber = "Batch"
                                 },
                                 ProductUsage = new DietarySupplementsProductUsagePart
                                 {
