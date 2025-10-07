@@ -20,7 +20,11 @@ namespace Example.Varselordningen
                         Nin = "13075706604",
                         Email = "TestData@melde.no",
                         Phone = "99999999",
-                        Organization = new OrganizationPart { OrgNumber = "883974832" },
+                        Organization = new OrganizationPart
+                        {
+                            OrgNumber = "883974832",
+                            LocalReferenceNumber = "Local ref text"
+                        },
                         Role = ReporterRole.Treator,
                         Position = "Lege"
                     },
@@ -28,7 +32,7 @@ namespace Example.Varselordningen
                     {
                         IncidentDescription = "Datt på rattata",
                         IncidentDate = "2021-07-13",
-                        DateUnknown = YesNo.No
+                        DateUnknown = YesNo.No,
                     },
                     Patient = new AdverseIncidentPatientPart
                     {
@@ -134,6 +138,35 @@ namespace Example.Varselordningen
                         PossibleConsequenceOnRepetition = "7.3",
                         DefinitionCode = "3",
                         DiscoveredCode = "2"
+                    },
+                    DrugSideEffects = new DrugSideEffectsReportPart
+                    {
+                        Drugs = [
+                            new DrugSideEffectsDrugPart
+                            {
+                                // Use active ingredient instead of specific drug
+                                DrugId = "ID_DF40453A-DAD1-450D-A58D-0FE411DCDB05",
+                                IsActiveIngredient = YesNo.Yes
+                            }
+                        ],
+                        Symptoms = [
+                            new DrugSideEffectsSymptomsPart
+                            {
+                                 Description = "Haupin"
+                            }
+                        ],
+                        OtherInformation = new DrugSideEffectsOtherInformationPart
+                        {
+                            HospitalName = "Sykehuset"
+                        }
+                    },
+                    MedicalEquipment = new()
+                    {
+                        EquipmentName = "Name of the equipment",
+                        Manufacturer = "Manufacturer of the equipment",
+                        NkknCategory = NkknCategory.ElectroMechanicEquipment,
+                        EquipmentLocation = EquipmentLocation.Healthcare,
+                        IncidentClassification = IncidentClassification.MayHaveCausedDeathOrSeriousDeterioration,
                     }
                 }
             };

@@ -367,59 +367,25 @@
         }
       }
     },
-    "/api/v2/feedback": {
-      "post": {
+    "/api/v2/dialog/events": {
+      "get": {
         "tags": [
-          "Feedback"
+          "Dialog"
         ],
-        "summary": "Oppretter en ny tilbakemelding og varsler via epost",
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Melde.DTO.V10.Feedback"
-              }
-            }
-          }
-        },
+        "summary": "This endpoint will keep the connection to the client open for a long period to be\r\nable to notify the client(s) about new dialog messages etc. (SSE, server sent events)",
         "responses": {
-          "200": {
-            "description": "Opprettet tilbakemelding",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Feil i meldingen, for eksempel påkrevde felt mangler",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
-                }
-              }
-            }
-          },
           "401": {
-            "description": "Autorisasjon feilet. Sjekk at det er gyldig bearer token i header Authorization",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.UnauthorizedResult"
-                }
-              }
-            }
+            "description": "Authentication failed"
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token"
           },
           "500": {
-            "description": "Andre feil",
+            "description": "Other error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
                 }
               }
             }
@@ -492,7 +458,7 @@
         "tags": [
           "Ping"
         ],
-        "summary": "Ping tjeneste",
+        "summary": "Test connectivity",
         "responses": {
           "200": {
             "description": "Success"
@@ -1948,12 +1914,6 @@
             "description": "Distributor",
             "nullable": true
           },
-          "EquipmentReference": {
-            "maxLength": 150,
-            "type": "string",
-            "description": "Equipment internal reference",
-            "nullable": true
-          },
           "IncidentClassification": {
             "$ref": "#/components/schemas/Melde.DTO.V10.Enums.IncidentClassification"
           },
@@ -1995,7 +1955,7 @@
             "nullable": true
           },
           "Relation": {
-            "maxLength": 100,
+            "maxLength": 250,
             "type": "string",
             "description": "Relation to patient",
             "nullable": true
@@ -2088,7 +2048,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
           }
         },
         "additionalProperties": false,
@@ -2138,7 +2098,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
           },
           "Id": {
             "type": "integer",
@@ -2260,7 +2220,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
           },
           "DialogRef": {
             "type": "string",
@@ -2278,7 +2238,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true, "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
           },
           "MessageRef": {
             "type": "string",
@@ -2712,23 +2672,6 @@
         "additionalProperties": false,
         "description": "Radiation report part. Currently empty, but may be expanded in the future"
       },
-      "Melde.DTO.V10.Feedback": {
-        "type": "object",
-        "properties": {
-          "ReportAreaName": {
-            "type": "string",
-            "description": "Report area name",
-            "nullable": true
-          },
-          "Content": {
-            "type": "string",
-            "description": "Feedback content",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "User feedback"
-      },
       "Melde.Felles.Enums.Language": {
         "enum": [
           0,
@@ -2832,16 +2775,6 @@
         "type": "integer",
         "format": "int32"
       },
-      "Microsoft.AspNetCore.Mvc.UnauthorizedResult": {
-        "type": "object",
-        "properties": {
-          "StatusCode": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
       "System.Net.HttpStatusCode": {
         "enum": [
           100,
@@ -2927,7 +2860,7 @@
   "tags": [
     {
       "name": "Ping",
-      "description": "Tilbyr tjenester som kan brukes i forbindelse med testing"
+      "description": "Test connectivity"
     },
     {
       "name": "AdverseIncident",
@@ -2935,7 +2868,11 @@
     },
     {
       "name": "Dialog",
-      "description": "Dialog API version 2 accepts standard DPoP access tokens only"
+      "description": "Dialog API version 2 accepts DPoP access tokens only"
+    },
+    {
+      "name": "Nokup",
+      "description": "Nokup lookup API version 2 accepts DPoP access tokens only"
     }
   ]
 }
