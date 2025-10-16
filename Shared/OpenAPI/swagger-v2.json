@@ -367,12 +367,58 @@
         }
       }
     },
+    "/api/v2/dialog/unreads": {
+      "get": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Get a list of dialogs having unread messages",
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Unread messages returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.GetUnreadDialogsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/dialog/events": {
       "get": {
         "tags": [
           "Dialog"
         ],
-        "summary": "This endpoint will keep the connection to the client open for a long period to be\r\nable to notify the client(s) about new dialog messages etc. (SSE, server sent events)",
+        "summary": "Receive dialog events (clientRegistered, newDialog, newMessage, dialogDeleted, readMessages).\r\nThis endpoint will keep the connection to the client open for a long period to be\r\nable to send notification events to the client(s) (SSE, server sent events)",
         "responses": {
           "401": {
             "description": "Authentication failed"
@@ -2260,6 +2306,21 @@
         },
         "additionalProperties": false,
         "description": "Dialog info response"
+      },
+      "Melde.DTO.V10.Dialog.Response.GetUnreadDialogsResponse": {
+        "type": "object",
+        "properties": {
+          "DialogRefs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Liste med meldinger",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Respons containing dialog refs to all dialogs having unread messages"
       },
       "Melde.DTO.V10.Dialog.Response.GetUnreadMessagesResponse": {
         "type": "object",

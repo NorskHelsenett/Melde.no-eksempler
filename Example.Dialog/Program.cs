@@ -13,8 +13,8 @@ namespace Example.Toveisdialog
 {
     class Program
     {
-        const string UONSKET_HENDELSE_REF = "Vm59nbj";
-        const int MELDEORDNING_ID = 10; //2: bivir,  10:biovig, 8:alvor, 11:radiation, 7: med.equipment
+        const string UONSKET_HENDELSE_REF = "Vxxxx";
+        const int MELDEORDNING_ID = 10; //2:Bivirkninger, 10:Biovigilans, 8:Alvorlig hendelse, 11:Stråling, 7:Medisinsk utstyr
         const bool CREATE_DIALOG = true;
 
         static Client _dialogClient = null;
@@ -91,11 +91,7 @@ namespace Example.Toveisdialog
                 Console.WriteLine(e.Message);
             }
 
-            // Expected no unread messages at this point
-            var messages = await _dialogClient.MessageGETAsync(dialogRef);
-
             // Listen for events (SSE)
-            // I.e. reply messages
             var sseClient = new SseClient(httpClient);
             while (true)
             {
@@ -119,6 +115,20 @@ namespace Example.Toveisdialog
         private static async Task HandleEvents(DialogEventMessage dialogEvent)
         {
             Console.WriteLine($"New event: {dialogEvent.EventType}");
+
+            if (dialogEvent.EventType == "clientRegistered")
+            {
+                Console.WriteLine("Get all unread dialogs");
+                var unreadDialogs = await _dialogClient.UnreadsAsync();
+                foreach (var dialogRef in unreadDialogs.DialogRefs)
+                {
+                    var unreadMessages = await _dialogClient.MessageGETAsync(dialogRef);
+                    foreach (var message in unreadMessages.Messages)
+                    {
+                        Console.WriteLine($"{dialogRef}: Content: {message.MessageText}");
+                    }
+                }
+            }
 
             if (!string.IsNullOrEmpty(dialogEvent.DialogRef))
             {
@@ -169,9 +179,16 @@ namespace Example.Toveisdialog
         }
     }
 
+
+    /// <summary>
+    /// Event type
+    /// </summary>
     public record DialogEventMessage(string EventType, string DialogRef, string ReportRef);
 
 
+    /// <summary>
+    /// SSE client
+    /// </summary>
     class SseClient
     {
         private readonly HttpClient _client;
