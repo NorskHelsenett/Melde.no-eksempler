@@ -16,14 +16,14 @@
         "tags": [
           "AdverseIncident"
         ],
-        "summary": "Validate an adverse indicent. This endpoint supports multiple report areas in the same report (combined reporting).",
+        "summary": "Validate an adverse indicent.",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
         "requestBody": {
           "description": "Request object",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentRequest"
+                "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentRequest"
               }
             }
           }
@@ -73,14 +73,14 @@
         "tags": [
           "AdverseIncident"
         ],
-        "summary": "Report an adverse indicent. This endpoint supports multiple report areas in the same report (combined reporting).",
-        "description": "Requires authentication via HelseId and a valid HPR authorization",
+        "summary": "Report an adverse indicent.\r\nThis endpoint",
+        "description": "Requires authentication via HelseId",
         "requestBody": {
           "description": "Request object",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentRequest"
+                "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentRequest"
               }
             }
           }
@@ -124,6 +124,327 @@
           },
           "400": {
             "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/v2/report/adverse-incident-multipart": {
+      "post": {
+        "tags": [
+          "AdverseIncident"
+        ],
+        "summary": "Report an adverse indicent.\r\nThe request must be of type multi part form data and contain one part with content type 'application/json' (the form) and\r\nup to 5 attachments in each file part.",
+        "description": "Requires authentication via HelseId",
+        "parameters": [
+          {
+            "name": "adverseIncidentRequest",
+            "in": "query",
+            "description": "Request form data",
+            "schema": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentRequest"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "attachments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Uploaded files"
+                  }
+                }
+              },
+              "encoding": {
+                "attachments": {
+                  "style": "form"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "attachments": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Uploaded files"
+                  }
+                }
+              },
+              "encoding": {
+                "attachments": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/delivery/list": {
+      "get": {
+        "tags": [
+          "Delivery"
+        ],
+        "summary": "Get unfetched report references. If a from datetime is specified, return all reports from that datetime",
+        "description": "Requires authentication via HelseId",
+        "parameters": [
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "Report reference",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.Response.ReportInfoList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/delivery/report/{reportRef}": {
+      "get": {
+        "tags": [
+          "Delivery"
+        ],
+        "summary": "Get specific report",
+        "description": "Requires authentication via HelseId",
+        "parameters": [
+          {
+            "name": "reportRef",
+            "in": "path",
+            "description": "Report reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ReportDeliveryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/delivery/report/{reportRef}/attachment/{attachmentRef}": {
+      "get": {
+        "tags": [
+          "Delivery"
+        ],
+        "summary": "Get attachment",
+        "description": "Requires authentication via HelseId",
+        "parameters": [
+          {
+            "name": "reportRef",
+            "in": "path",
+            "description": "Report reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attachmentRef",
+            "in": "path",
+            "description": "Attachment reference",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/delivery/events": {
+      "get": {
+        "tags": [
+          "Delivery"
+        ],
+        "summary": "Receive delivery events (clientRegistered, newReport, reportDeleted).\r\nThis endpoint will keep the connection to the client open for a long period to be\r\nable to send notification events to the client(s) (SSE, server sent events)",
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -322,6 +643,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "includeReadMessages",
+            "in": "query",
+            "description": "Include read messages in the response (Optional, default false)",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -439,6 +768,159 @@
         }
       }
     },
+    "/api/ekstern-vs/dialog": {
+      "post": {
+        "tags": [
+          "EksternDialogForVigisec"
+        ],
+        "summary": "Oppretter en dialog for en gitt uønsket hendelse, meldeordning og pålogget saksbehandler.",
+        "requestBody": {
+          "description": "Informasjon om hvilken uønsket hendelse og hvilken meldeordning man vil opprette dialog for, pluss tekst i første melding",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Melde.WebApi.Controllers.OpprettDialogInfoVS"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Opprettet dialog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogOpprettetRespons"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dialog eksisterte, eller feil i meldingen, for eksempel påkrevde felt mangler",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogOpprettetRespons"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/ekstern-vs/dialog/opprettmelding": {
+      "post": {
+        "tags": [
+          "EksternDialogForVigisec"
+        ],
+        "summary": "Oppretter en ny melding i en gitt dialog.",
+        "requestBody": {
+          "description": "Hvilken dialog man vil opprette en ny melding i, og hvilken tekst det skal stå i meldingen",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Melde.WebApi.Controllers.OpprettDialogMeldingInfoVS"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Opprettet dialogmelding",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogMeldingOpprettetRespons"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Finner ikke dialog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogMeldingOpprettetRespons"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/ekstern-vs/dialog/sok/{refnr}": {
+      "get": {
+        "tags": [
+          "EksternDialogForVigisec"
+        ],
+        "summary": "Henter informasjon om hvilke meldeordninger en uønsket hendelse har gått til, og eventuelt dialog hvor pålogget bruker er saksbehandler.",
+        "parameters": [
+          {
+            "name": "refnr",
+            "in": "path",
+            "description": "Hvilken uønsket hendelse man vil hente eventuell dialog for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Kall uten feil",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.SearchDialogRespons"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
     "/api/v2/nokup/lookup/{codes}": {
       "get": {
         "tags": [
@@ -449,7 +931,7 @@
           {
             "name": "codes",
             "in": "path",
-            "description": "Semicolon separated list of codes",
+            "description": "Semicolon separated list of codes. Max 10 codes",
             "required": true,
             "schema": {
               "type": "string"
@@ -515,7 +997,125 @@
   },
   "components": {
     "schemas": {
-      "DTO.V10.ExternalApi.AdverseIncidentHeaderPart": {
+      "Melde.DTO.IdNavn": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "description": "Generert ID i En Vei Inn sin database",
+            "format": "int64"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name of the item",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Generic long id + string name"
+      },
+      "Melde.DTO.Response.BaseRespons": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Generell baseklasse for respons fra APIet. Inneholder statuskode og feilmelding"
+      },
+      "Melde.DTO.Response.FeilmeldingViewModel": {
+        "type": "object",
+        "properties": {
+          "Message": {
+            "type": "string",
+            "description": "Feilmeldingsteksten",
+            "nullable": true
+          },
+          "Timestamp": {
+            "type": "string",
+            "description": "Når feilen oppsto",
+            "format": "date-time"
+          },
+          "ExceptionType": {
+            "type": "string",
+            "description": "Hva slags type feil det gjelder",
+            "nullable": true
+          },
+          "CorrelationId": {
+            "type": "string",
+            "description": "KorrelasjonsId fra kallet som feilen oppsto i",
+            "nullable": true
+          },
+          "InnerException": {
+            "type": "string",
+            "description": "Fylles bare ut i testmiljø - indre feilmelding",
+            "nullable": true
+          },
+          "Brukernavn": {
+            "type": "string",
+            "description": "Navn på bruker som kalte funksjonen feilen oppsto i",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Informasjon om feilmeldinger fra APIet"
+      },
+      "Melde.DTO.Response.KvitteringsMelding": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+          },
+          "Id": {
+            "type": "integer",
+            "description": "Generert ID i En Vei Inn sin database",
+            "format": "int64"
+          },
+          "EksterntSaksSystem": {
+            "type": "string",
+            "description": "Eksternt system, for eksempel navn på avvikssystem",
+            "nullable": true
+          },
+          "EksternSaksid": {
+            "type": "string",
+            "description": "Id i eksternt system, for eksempel AVVIK123",
+            "nullable": true
+          },
+          "MeldingsId": {
+            "type": "string",
+            "description": "MeldingsId på meldingen. Oppgitt ved innsending.",
+            "format": "uuid"
+          },
+          "Mottakere": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Liste med navn på meldeordninger som mottar meldingen",
+            "nullable": true
+          },
+          "Referansenummer": {
+            "type": "string",
+            "description": "Menneskelig leselig referansenummer, for eksempel XYZ12",
+            "nullable": true
+          },
+          "MeldersEpost": {
+            "type": "string",
+            "description": "Dersom e-postadresse ble oppgitt, e-postadresse varsling blir sendt til.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Svarmelding uavhengig av om kall til controlleren gikk bra eller ikke. Dersom feil oppstår legges det i Feil-feltet."
+      },
+      "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentHeaderPart": {
         "required": [
           "ExternalCaseId",
           "Incident",
@@ -541,20 +1141,25 @@
             "nullable": true,
             "example": "8c3d9d5d-bf98-4ca7-8406-8df657ae3a82"
           },
+          "FormName": {
+            "type": "string",
+            "description": "Name of form (relevant to Helsenorge reports only)",
+            "nullable": true
+          },
           "Reporter": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentReporterPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentReporterPart"
           },
           "Patient": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentPatientPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentPatientPart"
           },
           "Incident": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentIncidentPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentIncidentPart"
           },
           "ContactPersons": {
             "maxItems": 5,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.ContactPersonPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.ContactPersonPart"
             },
             "description": "List of contact persons",
             "nullable": true
@@ -563,19 +1168,19 @@
             "maxItems": 5,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AttachmentPart"
             },
             "description": "Attachments",
             "nullable": true
           },
           "ReportAreas": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentReportAreasPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentReportAreasPart"
           }
         },
         "additionalProperties": false,
         "description": "Header part"
       },
-      "DTO.V10.ExternalApi.AdverseIncidentIncidentPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentIncidentPart": {
         "required": [
           "IncidentDescription"
         ],
@@ -606,7 +1211,7 @@
         "additionalProperties": false,
         "description": "Adverse incident part"
       },
-      "DTO.V10.ExternalApi.AdverseIncidentPatientPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentPatientPart": {
         "type": "object",
         "properties": {
           "Nin": {
@@ -669,7 +1274,7 @@
         "additionalProperties": false,
         "description": "UonsketHendelsePasientPart"
       },
-      "DTO.V10.ExternalApi.AdverseIncidentReportAreasPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentReportAreasPart": {
         "type": "object",
         "properties": {
           "SeriousIncident": {
@@ -708,38 +1313,38 @@
         "additionalProperties": false,
         "description": "Report areas"
       },
-      "DTO.V10.ExternalApi.AdverseIncidentReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentReportPart": {
         "type": "object",
         "properties": {
           "SeriousIncident": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.SeriousIncidentReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.SeriousIncidentReportPart"
           },
           "DrugSideEffects": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsReportPart"
           },
           "Biovigilance": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.BiovigilanceReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.BiovigilanceReportPart"
           },
           "Cosmetics": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.CosmeticsReportPart"
           },
           "DietarySupplements": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsReportPart"
           },
           "MedicalEquipment": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.MedicalEquipmentReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.MedicalEquipmentReportPart"
           },
           "ECigarette": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigaretteReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.ECigaretteReportPart"
           },
           "Radiation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.RadiationReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.RadiationReportPart"
           }
         },
         "additionalProperties": false,
         "description": "Report part"
       },
-      "DTO.V10.ExternalApi.AdverseIncidentReporterPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentReporterPart": {
         "type": "object",
         "properties": {
           "Nin": {
@@ -757,10 +1362,10 @@
             "nullable": true
           },
           "Organization": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.OrganizationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
           },
           "IncidentOrganization": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.OrganizationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
           },
           "Email": {
             "maxLength": 150,
@@ -802,7 +1407,7 @@
         "additionalProperties": false,
         "description": "Adverse incident part"
       },
-      "DTO.V10.ExternalApi.AdverseIncidentRequest": {
+      "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentRequest": {
         "required": [
           "Header",
           "Report"
@@ -810,16 +1415,48 @@
         "type": "object",
         "properties": {
           "Header": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentHeaderPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentHeaderPart"
           },
           "Report": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.AdverseIncidentReportPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentReportPart"
           }
         },
         "additionalProperties": false,
         "description": "Adverse incident DTO"
       },
-      "DTO.V10.ExternalApi.BiovigilanceReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.AttachmentPart": {
+        "required": [
+          "Content",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "maxLength": 300,
+            "minLength": 1,
+            "type": "string",
+            "description": "Attachment name (i.e. file name)",
+            "example": "document.pdf"
+          },
+          "ContentType": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Content type/mime type",
+            "nullable": true,
+            "example": "application/pdf"
+          },
+          "Content": {
+            "maxLength": 6993600,
+            "minLength": 1,
+            "type": "string",
+            "description": "Attachment content.\r\nBase64 encoded.",
+            "example": "QSBuaWNlIFBERiBmaWxlCg=="
+          }
+        },
+        "additionalProperties": false,
+        "description": "Attachment part"
+      },
+      "Melde.DTO.V10.AdverseIncidentRequest.BiovigilanceReportPart": {
         "required": [
           "ActualConsequenceForPatient",
           "ContributingFactors",
@@ -854,7 +1491,8 @@
             "items": {
               "type": "string"
             },
-            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder."
+            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder.",
+            "example": "['3.2.2', '3.4.3']"
           },
           "Preventability": {
             "maxLength": 10,
@@ -937,7 +1575,8 @@
               "type": "string"
             },
             "description": "Tilleggsinfo: CellerOgVevKode",
-            "nullable": true
+            "nullable": true,
+            "example": "['7', '8']"
           },
           "DefinitionCode": {
             "pattern": "^([1-4]|99)$",
@@ -968,7 +1607,8 @@
               "type": "string"
             },
             "description": "Tilleggsinfo: HvaGikkGaltKode",
-            "nullable": true
+            "nullable": true,
+            "example": "['11', '12']"
           },
           "DiscoveredCode": {
             "pattern": "^([1-5]|99)$",
@@ -992,7 +1632,8 @@
               "type": "string"
             },
             "description": "Tilleggsinfo: OrganKode",
-            "nullable": true
+            "nullable": true,
+            "example": "['7', '8']"
           },
           "ReactionStartedLocationCode": {
             "pattern": "^[1-3]$",
@@ -1023,7 +1664,8 @@
               "type": "string"
             },
             "description": "Tilleggsinfo: SymptomKode",
-            "nullable": true
+            "nullable": true,
+            "example": "['4', '5']"
           },
           "TapTypeCode": {
             "pattern": "^([0-3]|99)$",
@@ -1047,7 +1689,8 @@
               "type": "string"
             },
             "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
-            "nullable": true
+            "nullable": true,
+            "example": "['0', '1']"
           },
           "MeasuresCode": {
             "pattern": "^[1-6]$",
@@ -1057,7 +1700,8 @@
               "type": "string"
             },
             "description": "Tilleggsinfo: TiltakKode",
-            "nullable": true
+            "nullable": true,
+            "example": "['4', '5']"
           },
           "TransfusionCode": {
             "pattern": "^[0-5]$",
@@ -1095,7 +1739,47 @@
         "additionalProperties": false,
         "description": "Biovigilance report part"
       },
-      "DTO.V10.ExternalApi.CosmeticsProductInformationPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.ContactPersonPart": {
+        "required": [
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string",
+            "description": "Name",
+            "example": "Ola Nordmann"
+          },
+          "Email": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "E-mail address",
+            "format": "email",
+            "nullable": true,
+            "example": "ola@nordmann.email"
+          },
+          "Phone": {
+            "maxLength": 40,
+            "type": "string",
+            "description": "Phone number",
+            "format": "tel",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "Position": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Contact person's position",
+            "nullable": true,
+            "example": "Klossmajor"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Contact persons"
+      },
+      "Melde.DTO.V10.AdverseIncidentRequest.CosmeticsProductInformationPart": {
         "required": [
           "ProductName",
           "ProductType",
@@ -1142,23 +1826,23 @@
         "additionalProperties": false,
         "description": "Product information part"
       },
-      "DTO.V10.ExternalApi.CosmeticsProductPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.CosmeticsProductPart": {
         "required": [
           "ProductInformation"
         ],
         "type": "object",
         "properties": {
           "ProductInformation": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsProductInformationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.CosmeticsProductInformationPart"
           },
           "ProductUsage": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsProductUsagePart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.CosmeticsProductUsagePart"
           }
         },
         "additionalProperties": false,
         "description": "Product part"
       },
-      "DTO.V10.ExternalApi.CosmeticsProductUsagePart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.CosmeticsProductUsagePart": {
         "type": "object",
         "properties": {
           "BodyLocations": {
@@ -1180,7 +1864,7 @@
         "additionalProperties": false,
         "description": "Product usage part"
       },
-      "DTO.V10.ExternalApi.CosmeticsRelevantInformationPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.CosmeticsRelevantInformationPart": {
         "type": "object",
         "properties": {
           "SideEffectsOnPreviousUse": {
@@ -1217,24 +1901,24 @@
         "additionalProperties": false,
         "description": "Relevant information part"
       },
-      "DTO.V10.ExternalApi.CosmeticsReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.CosmeticsReportPart": {
         "required": [
           "SideEffects"
         ],
         "type": "object",
         "properties": {
           "SideEffects": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsSideEffectsPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.CosmeticsSideEffectsPart"
           },
           "RelevantInformation": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsRelevantInformationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.CosmeticsRelevantInformationPart"
           },
           "Products": {
             "maxItems": 4,
             "minItems": 1,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DTO.V10.ExternalApi.CosmeticsProductPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.CosmeticsProductPart"
             },
             "description": "Products part",
             "nullable": true
@@ -1243,7 +1927,7 @@
         "additionalProperties": false,
         "description": "Cosmetics part"
       },
-      "DTO.V10.ExternalApi.CosmeticsSideEffectsPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.CosmeticsSideEffectsPart": {
         "type": "object",
         "properties": {
           "AffectedSkinAreas": {
@@ -1285,7 +1969,7 @@
         "additionalProperties": false,
         "description": "Side effects part"
       },
-      "DTO.V10.ExternalApi.DietarySupplementsProductInformationPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsProductInformationPart": {
         "required": [
           "BestBeforeDate",
           "Ingredients",
@@ -1345,7 +2029,7 @@
         "additionalProperties": false,
         "description": "Product information part"
       },
-      "DTO.V10.ExternalApi.DietarySupplementsProductPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsProductPart": {
         "required": [
           "ProductInformation",
           "ProductUsage"
@@ -1353,16 +2037,16 @@
         "type": "object",
         "properties": {
           "ProductInformation": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsProductInformationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsProductInformationPart"
           },
           "ProductUsage": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsProductUsagePart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsProductUsagePart"
           }
         },
         "additionalProperties": false,
         "description": "Product part"
       },
-      "DTO.V10.ExternalApi.DietarySupplementsProductUsagePart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsProductUsagePart": {
         "required": [
           "AmountOfIngredientsInDailyDose",
           "RecommendedDailyDose"
@@ -1408,21 +2092,21 @@
         "additionalProperties": false,
         "description": "Product usage part"
       },
-      "DTO.V10.ExternalApi.DietarySupplementsReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsReportPart": {
         "required": [
           "SideEffect"
         ],
         "type": "object",
         "properties": {
           "SideEffect": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsSideEffectsPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsSideEffectsPart"
           },
           "Products": {
             "maxItems": 4,
             "minItems": 1,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DTO.V10.ExternalApi.DietarySupplementsProductPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsProductPart"
             },
             "description": "Products part",
             "nullable": true
@@ -1431,7 +2115,7 @@
         "additionalProperties": false,
         "description": "Report part"
       },
-      "DTO.V10.ExternalApi.DietarySupplementsSideEffectsPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DietarySupplementsSideEffectsPart": {
         "type": "object",
         "properties": {
           "Reactions": {
@@ -1505,7 +2189,7 @@
         "additionalProperties": false,
         "description": "Dietary supplements side effects part"
       },
-      "DTO.V10.ExternalApi.DrugSideEffectsDosagePart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsDosagePart": {
         "type": "object",
         "properties": {
           "DosageDescription": {
@@ -1552,23 +2236,12 @@
           },
           "DoseNumber": {
             "$ref": "#/components/schemas/Melde.DTO.V10.Enums.DoseNumber"
-          },
-          "AdministrationRoute": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.AdministrationArea"
-          },
-          "AdministrationRouteOther": {
-            "maxLength": 100,
-            "type": "string",
-            "description": "Use AdministrationAreaOther instead",
-            "nullable": true,
-            "writeOnly": true,
-            "example": "Obsolete. Use AdministrationAreaOther instead"
           }
         },
         "additionalProperties": false,
         "description": "Dosage part"
       },
-      "DTO.V10.ExternalApi.DrugSideEffectsDrugPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsDrugPart": {
         "required": [
           "Dosage",
           "Role"
@@ -1618,13 +2291,6 @@
             "nullable": true,
             "example": "Oralt"
           },
-          "AreaOfUse": {
-            "type": "string",
-            "description": "AdministrationRoute",
-            "nullable": true,
-            "writeOnly": true,
-            "example": "Obsolete. Use AdministrationRoute instead"
-          },
           "StillInUse": {
             "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
           },
@@ -1665,13 +2331,13 @@
             "nullable": true
           },
           "Dosage": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsDosagePart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsDosagePart"
           }
         },
         "additionalProperties": false,
         "description": "Drug part"
       },
-      "DTO.V10.ExternalApi.DrugSideEffectsOtherInformationPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsOtherInformationPart": {
         "type": "object",
         "properties": {
           "Severity": {
@@ -1697,7 +2363,7 @@
         "additionalProperties": false,
         "description": "Other information part"
       },
-      "DTO.V10.ExternalApi.DrugSideEffectsReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsReportPart": {
         "required": [
           "Drugs",
           "Symptoms"
@@ -1707,25 +2373,25 @@
           "Drugs": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsDrugPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsDrugPart"
             },
             "description": "Drug parts"
           },
           "Symptoms": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsSymptomsPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsSymptomsPart"
             },
             "description": "Symptom parts"
           },
           "OtherInformation": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.DrugSideEffectsOtherInformationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsOtherInformationPart"
           }
         },
         "additionalProperties": false,
         "description": "Report part"
       },
-      "DTO.V10.ExternalApi.DrugSideEffectsSymptomsPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.DrugSideEffectsSymptomsPart": {
         "required": [
           "Description"
         ],
@@ -1766,7 +2432,7 @@
         "additionalProperties": false,
         "description": "Symptom part"
       },
-      "DTO.V10.ExternalApi.ECigaretteGeneralPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.ECigaretteGeneralPart": {
         "type": "object",
         "properties": {
           "HealthcarePersonnelContacted": {
@@ -1788,7 +2454,7 @@
         "additionalProperties": false,
         "description": "General part"
       },
-      "DTO.V10.ExternalApi.ECigaretteProductPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.ECigaretteProductPart": {
         "required": [
           "MakeAndModel"
         ],
@@ -1801,7 +2467,7 @@
             "nullable": true
           },
           "PurchaseLocation": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigarettePurchaseLocation"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ECigarettePurchaseLocation"
           },
           "PurchaseLocationName": {
             "maxLength": 250,
@@ -1846,30 +2512,20 @@
         "additionalProperties": false,
         "description": "Next of kin"
       },
-      "DTO.V10.ExternalApi.ECigarettePurchaseLocation": {
-        "enum": [
-          "NorwegianDealer",
-          "ForeignDealer",
-          "WebShop",
-          "Unknown"
-        ],
-        "type": "string",
-        "description": "Purchase location"
-      },
-      "DTO.V10.ExternalApi.ECigaretteReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.ECigaretteReportPart": {
         "type": "object",
         "properties": {
           "General": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigaretteGeneralPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.ECigaretteGeneralPart"
           },
           "Product": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.ECigaretteProductPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.ECigaretteProductPart"
           }
         },
         "additionalProperties": false,
         "description": "ECigarette report part"
       },
-      "DTO.V10.ExternalApi.MedicalEquipmentImplantInformation": {
+      "Melde.DTO.V10.AdverseIncidentRequest.MedicalEquipmentImplantInformation": {
         "type": "object",
         "properties": {
           "ImplantDate": {
@@ -1888,7 +2544,7 @@
         "additionalProperties": false,
         "description": "MedisinskUtstyrImplantatInformasjon"
       },
-      "DTO.V10.ExternalApi.MedicalEquipmentReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.MedicalEquipmentReportPart": {
         "required": [
           "EquipmentLocation",
           "EquipmentName",
@@ -1964,13 +2620,86 @@
             "$ref": "#/components/schemas/Melde.DTO.V10.Enums.IncidentClassification"
           },
           "ImplantInformation": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.MedicalEquipmentImplantInformation"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.MedicalEquipmentImplantInformation"
           }
         },
         "additionalProperties": false,
         "description": "Medical equipment report part"
       },
-      "DTO.V10.ExternalApi.SeriousIncidentAdditionalInfo": {
+      "Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart": {
+        "type": "object",
+        "properties": {
+          "OrgNumber": {
+            "pattern": "^\\d{9}$",
+            "type": "string",
+            "description": "Organization number.\r\nRequired if Name is empty",
+            "nullable": true,
+            "example": "883974832"
+          },
+          "Name": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Organization name.\r\nRequired if OrgNumber is empty",
+            "nullable": true,
+            "example": "ST. OLAVS HOSPITAL HF"
+          },
+          "Address": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Organization address",
+            "nullable": true,
+            "example": "SykehusGaten 5"
+          },
+          "ZipCode": {
+            "maxLength": 10,
+            "type": "string",
+            "description": "Organization zip code",
+            "nullable": true,
+            "example": "\"0424\""
+          },
+          "City": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Organization city",
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Municipality": {
+            "maxLength": 64,
+            "type": "string",
+            "description": "Organization municipality",
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Institution": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Institution",
+            "nullable": true
+          },
+          "Department": {
+            "maxLength": 250,
+            "type": "string",
+            "description": "Department",
+            "nullable": true
+          },
+          "LocalReferenceNumber": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Local reference number if applicable",
+            "nullable": true,
+            "example": "ATL-123321"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Organization part"
+      },
+      "Melde.DTO.V10.AdverseIncidentRequest.RadiationReportPart": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Radiation report part. Currently empty, but may be expanded in the future"
+      },
+      "Melde.DTO.V10.AdverseIncidentRequest.SeriousIncidentAdditionalInfo": {
         "type": "object",
         "properties": {
           "SendToHtil": {
@@ -1985,7 +2714,7 @@
         "additionalProperties": false,
         "description": "Additional info. Relevent to Helsenorge reports only"
       },
-      "DTO.V10.ExternalApi.SeriousIncidentNextOfKin": {
+      "Melde.DTO.V10.AdverseIncidentRequest.SeriousIncidentNextOfKin": {
         "type": "object",
         "properties": {
           "Nin": {
@@ -2052,145 +2781,1392 @@
         "additionalProperties": false,
         "description": "Next of kin"
       },
-      "DTO.V10.ExternalApi.SeriousIncidentReportPart": {
+      "Melde.DTO.V10.AdverseIncidentRequest.SeriousIncidentReportPart": {
         "type": "object",
         "properties": {
           "NextOfKin": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DTO.V10.ExternalApi.SeriousIncidentNextOfKin"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.SeriousIncidentNextOfKin"
             },
             "description": "Next of kin",
             "nullable": true
           },
           "AdditionalInfo": {
-            "$ref": "#/components/schemas/DTO.V10.ExternalApi.SeriousIncidentAdditionalInfo"
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.SeriousIncidentAdditionalInfo"
           }
         },
         "additionalProperties": false,
         "description": "Report part"
       },
-      "Melde.DTO.IdNavn": {
+      "Melde.DTO.V10.Delivery.AttachmentPart": {
         "type": "object",
         "properties": {
-          "Id": {
-            "type": "integer",
-            "description": "Generert ID i En Vei Inn sin database",
-            "format": "int64"
-          },
-          "Name": {
+          "AttachmentRef": {
             "type": "string",
-            "description": "Name of the item",
+            "description": "Attachment url for downloading",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": "Generic long id + string name"
+        "description": "Attachment part"
       },
-      "Melde.DTO.Response.BaseRespons": {
+      "Melde.DTO.V10.Delivery.BiovigilanceReportPart": {
         "type": "object",
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          },
-          "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Generell baseklasse for respons fra APIet. Inneholder statuskode og feilmelding"
-      },
-      "Melde.DTO.Response.FeilmeldingViewModel": {
-        "type": "object",
-        "properties": {
-          "Message": {
+          "IncidentLocation": {
             "type": "string",
-            "description": "Feilmeldingsteksten",
-            "nullable": true
+            "description": "Sted for hendelsen kode (1.x...). Obligatorisk",
+            "nullable": true,
+            "example": "1.6.4"
           },
-          "Timestamp": {
+          "TypeOfIncident": {
             "type": "string",
-            "description": "Når feilen oppsto",
-            "format": "date-time"
+            "description": "Hendelsestype kode (2.x...). Obligatorisk",
+            "nullable": true,
+            "example": "2.10.1.1.1"
           },
-          "ExceptionType": {
-            "type": "string",
-            "description": "Hva slags type feil det gjelder",
-            "nullable": true
-          },
-          "CorrelationId": {
-            "type": "string",
-            "description": "KorrelasjonsId fra kallet som feilen oppsto i",
-            "nullable": true
-          },
-          "InnerException": {
-            "type": "string",
-            "description": "Fylles bare ut i testmiljø - indre feilmelding",
-            "nullable": true
-          },
-          "Brukernavn": {
-            "type": "string",
-            "description": "Navn på bruker som kalte funksjonen feilen oppsto i",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Informasjon om feilmeldinger fra APIet"
-      },
-      "Melde.DTO.Response.KvitteringsMelding": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          },
-          "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
-          },
-          "Id": {
-            "type": "integer",
-            "description": "Generert ID i En Vei Inn sin database",
-            "format": "int64"
-          },
-          "EksterntSaksSystem": {
-            "type": "string",
-            "description": "Eksternt system, for eksempel navn på avvikssystem",
-            "nullable": true
-          },
-          "EksternSaksid": {
-            "type": "string",
-            "description": "Id i eksternt system, for eksempel AVVIK123",
-            "nullable": true
-          },
-          "MeldingsId": {
-            "type": "string",
-            "description": "MeldingsId på meldingen. Oppgitt ved innsending.",
-            "format": "uuid"
-          },
-          "Mottakere": {
+          "ContributingFactors": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Liste med navn på meldeordninger som mottar meldingen",
+            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder.",
+            "nullable": true,
+            "example": "['3.2.2', '3.4.3']"
+          },
+          "Preventability": {
+            "type": "string",
+            "description": "Forebyggbarhet kode (4.x...). Obligatorisk",
+            "nullable": true,
+            "example": "4.3"
+          },
+          "ActualConsequenceForPatient": {
+            "type": "string",
+            "description": "Faktisk konsekvens for pasient kode (5.x...). Obligatorisk",
+            "nullable": true,
+            "example": "5.2"
+          },
+          "Frequency": {
+            "type": "string",
+            "description": "Hyppighet kode (6.x...). Obligatorisk",
+            "nullable": true,
+            "example": "6.3"
+          },
+          "PossibleConsequenceOnRepetition": {
+            "type": "string",
+            "description": "Mulig konsekvens ved gjentakelse kode (7.x...). Obligatorisk",
+            "nullable": true,
+            "example": "7.4"
+          },
+          "AntiSubstance": {
+            "type": "string",
+            "description": "Tilleggsinfo: Antistoff tekst",
+            "nullable": true,
+            "example": "Anti-D"
+          },
+          "AutologousCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: AutologKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "DepartmentCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: AvdelingsKode",
+            "nullable": true,
+            "example": "5"
+          },
+          "DeregistrationCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: AvregistreringKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "BloodProductCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: BlodproduktKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "CellsAndTissuesDefinitionCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: CellerOgVevDefinisjonKode",
+            "nullable": true,
+            "example": "4"
+          },
+          "CellsAndTissuesCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: CellerOgVevKode",
+            "nullable": true,
+            "example": "['7', '8']"
+          },
+          "DefinitionCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: DefinisjonKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "DonorCountryCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: DonorlandKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "DonorExperienceCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: GivererfaringKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "WhatWentWrongCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: HvaGikkGaltKode",
+            "nullable": true,
+            "example": "['11', '12']"
+          },
+          "DiscoveredCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: OppdagetKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "OrganDefinitionCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: OrganDefinisjonKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "OrganCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: OrganKode",
+            "nullable": true,
+            "example": "['7', '8']"
+          },
+          "ReactionStartedLocationCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: ReaksjonStartetHvorKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "ReactionDurationCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: ReaksjonsvarighetKode",
+            "nullable": true,
+            "example": "4"
+          },
+          "SickLeaveCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: SykemeldingKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "SymptomsCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: SymptomKode",
+            "nullable": true,
+            "example": "['4', '5']"
+          },
+          "TapTypeCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: TappetypeKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "TimeBeforeReactionCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: TidTilReaksjonKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "AdditionalBloodProductCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
+            "nullable": true,
+            "example": "['0', '1']"
+          },
+          "MeasuresCode": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tilleggsinfo: TiltakKode",
+            "nullable": true,
+            "example": "['4', '5']"
+          },
+          "TransfusionCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: TransfusjonsindikasjonKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "CausationCode": {
+            "type": "string",
+            "description": "Tilleggsinfo: AarsakssammenhengKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "ISBT128ProductCode": {
+            "type": "string",
+            "description": "ISBT128Produktkode tekst",
             "nullable": true
           },
-          "Referansenummer": {
+          "ScandiaTransplantNumber": {
             "type": "string",
-            "description": "Menneskelig leselig referansenummer, for eksempel XYZ12",
+            "description": "ScandiatransplantNummer tekst",
             "nullable": true
           },
-          "MeldersEpost": {
+          "InfectiousSubstance": {
             "type": "string",
-            "description": "Dersom e-postadresse ble oppgitt, e-postadresse varsling blir sendt til.",
+            "description": "Smittestoff tekst",
             "nullable": true
           }
         },
         "additionalProperties": false,
-        "description": "Svarmelding uavhengig av om kall til controlleren gikk bra eller ikke. Dersom feil oppstår legges det i Feil-feltet."
+        "description": "Biovigilance report part"
+      },
+      "Melde.DTO.V10.Delivery.ContactPersonPart": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Name",
+            "nullable": true,
+            "example": "Ola Nordmann"
+          },
+          "Email": {
+            "type": "string",
+            "description": "E-mail address",
+            "nullable": true,
+            "example": "ola@nordmann.email"
+          },
+          "Phone": {
+            "type": "string",
+            "description": "Phone number",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "Position": {
+            "type": "string",
+            "description": "Contact person's position",
+            "nullable": true,
+            "example": "Klossmajor"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Contact persons"
+      },
+      "Melde.DTO.V10.Delivery.CosmeticsProductInformationPart": {
+        "type": "object",
+        "properties": {
+          "ProductName": {
+            "type": "string",
+            "description": "Product name",
+            "nullable": true
+          },
+          "ProductType": {
+            "type": "string",
+            "description": "Product type",
+            "nullable": true
+          },
+          "VendorOrManufacturer": {
+            "type": "string",
+            "description": "Vendor or manufacturer",
+            "nullable": true
+          },
+          "ReportedToVendorOrManufacturer": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "BestBeforeDateExpired": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "PurchaseLocation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.PurchaseLocation"
+          },
+          "SalesChannel": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SalesChannel"
+          },
+          "BatchLotNumber": {
+            "type": "string",
+            "description": "Product batch/lot number",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product information part"
+      },
+      "Melde.DTO.V10.Delivery.CosmeticsProductPart": {
+        "type": "object",
+        "properties": {
+          "ProductInformation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsProductInformationPart"
+          },
+          "ProductUsage": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsProductUsagePart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product part"
+      },
+      "Melde.DTO.V10.Delivery.CosmeticsProductUsagePart": {
+        "type": "object",
+        "properties": {
+          "BodyLocations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Where on the body is the product used",
+            "nullable": true
+          },
+          "UsageDuration": {
+            "type": "string",
+            "description": "For how long was the product used",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product usage part"
+      },
+      "Melde.DTO.V10.Delivery.CosmeticsRelevantInformationPart": {
+        "type": "object",
+        "properties": {
+          "SideEffectsOnPreviousUse": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoPartialDontKnow"
+          },
+          "PreviousUseDescription": {
+            "type": "string",
+            "description": "Previous use description",
+            "nullable": true
+          },
+          "ConditionOfSkinAreaBeforeUse": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Tilstand"
+            },
+            "description": "Condition of affected skin area before use of the products",
+            "nullable": true
+          },
+          "ConditionOfSkinAreaBeforeUseDescription": {
+            "type": "string",
+            "description": "Condition of affected skin area before use of the products",
+            "nullable": true
+          },
+          "AllergiesOrSkinDiseases": {
+            "type": "string",
+            "description": "Any allergies or skin diseases",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Relevant information part"
+      },
+      "Melde.DTO.V10.Delivery.CosmeticsReportPart": {
+        "type": "object",
+        "properties": {
+          "SideEffects": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsSideEffectsPart"
+          },
+          "RelevantInformation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsRelevantInformationPart"
+          },
+          "Products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsProductPart"
+            },
+            "description": "Products part",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Cosmetics part"
+      },
+      "Melde.DTO.V10.Delivery.CosmeticsSideEffectsPart": {
+        "type": "object",
+        "properties": {
+          "AffectedSkinAreas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Affected skin areas\r\nWhere on the body showed side effects?",
+            "nullable": true
+          },
+          "Reactions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reactions.\r\nWhich reactions happened?",
+            "nullable": true
+          },
+          "ReactionDelay": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ReactionDelay"
+          },
+          "ReactionDelayDescription": {
+            "type": "string",
+            "description": "Reaction delay description",
+            "nullable": true
+          },
+          "SideEffectDuration": {
+            "type": "string",
+            "description": "Side effect duration",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Side effects part"
+      },
+      "Melde.DTO.V10.Delivery.DietarySupplementsProductInformationPart": {
+        "type": "object",
+        "properties": {
+          "ProductName": {
+            "type": "string",
+            "description": "Product name",
+            "nullable": true
+          },
+          "Ingredients": {
+            "type": "string",
+            "description": "Ingredients",
+            "nullable": true
+          },
+          "VendorOrManufacturer": {
+            "type": "string",
+            "description": "Vendor or manufacturer",
+            "nullable": true
+          },
+          "BestBeforeDate": {
+            "type": "string",
+            "description": "Best before date",
+            "nullable": true
+          },
+          "ReportedToVendorOrManufacturer": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "PurchaseLocation": {
+            "type": "string",
+            "description": "Purchase location",
+            "nullable": true
+          },
+          "ShopName": {
+            "type": "string",
+            "description": "Shop name",
+            "nullable": true
+          },
+          "BatchLotNumber": {
+            "type": "string",
+            "description": "Batch/lot number",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product information part"
+      },
+      "Melde.DTO.V10.Delivery.DietarySupplementsProductPart": {
+        "type": "object",
+        "properties": {
+          "ProductInformation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsProductInformationPart"
+          },
+          "ProductUsage": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsProductUsagePart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product part"
+      },
+      "Melde.DTO.V10.Delivery.DietarySupplementsProductUsagePart": {
+        "type": "object",
+        "properties": {
+          "AmountOfIngredientsInDailyDose": {
+            "type": "string",
+            "description": "Amount of ingredients per daily dose",
+            "nullable": true
+          },
+          "RecommendedDailyDose": {
+            "type": "string",
+            "description": "Recommended daily dose",
+            "nullable": true
+          },
+          "ActualDailyDoseTaken": {
+            "type": "string",
+            "description": "Actual daily dose taken",
+            "nullable": true
+          },
+          "UsageDuration": {
+            "type": "string",
+            "description": "For how long was the product used",
+            "nullable": true
+          },
+          "AnyDrugsTakenAtSameTime": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "DrugsTakenAtSameTime": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Which drugs. Required if AnyDrugsTakenAtSameTime is yes.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Product usage part"
+      },
+      "Melde.DTO.V10.Delivery.DietarySupplementsReportPart": {
+        "type": "object",
+        "properties": {
+          "SideEffect": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsSideEffectsPart"
+          },
+          "Products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsProductPart"
+            },
+            "description": "Products part",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
+      },
+      "Melde.DTO.V10.Delivery.DietarySupplementsSideEffectsPart": {
+        "type": "object",
+        "properties": {
+          "Reactions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Reactions.\r\nWhich reactions happened?",
+            "nullable": true
+          },
+          "ReactionDelay": {
+            "type": "string",
+            "description": "Reaction delay.\r\nHow long after the use did the reactions show up?",
+            "nullable": true
+          },
+          "ReactionDelayDescription": {
+            "type": "string",
+            "description": "Reaction delay description",
+            "nullable": true
+          },
+          "Outcome": {
+            "type": "string",
+            "description": "Outcome",
+            "nullable": true
+          },
+          "OutcomeDescription": {
+            "type": "string",
+            "description": "Outcome description",
+            "nullable": true
+          },
+          "SideEffectDuration": {
+            "type": "string",
+            "description": "Side effect duration",
+            "nullable": true
+          },
+          "Ongoing": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "SideEffectsOnPreviousUse": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "SideEffectsOnPreviousUseDescription": {
+            "type": "string",
+            "description": "Side effects on previous use description",
+            "nullable": true
+          },
+          "AnyAllergiesOrInfluencingIssues": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "AnyAllergiesOrInfluencingIssuesDescription": {
+            "type": "string",
+            "description": "Any allergies or influencing issues description.\r\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
+            "nullable": true
+          },
+          "AnyUnderlyingDiseases": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "CanDiseaseBeTheCause": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Dietary supplements side effects part"
+      },
+      "Melde.DTO.V10.Delivery.DrugSideEffectsDosagePart": {
+        "type": "object",
+        "properties": {
+          "DosageDescription": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Dosage description",
+            "nullable": true,
+            "example": "1000mg per dag"
+          },
+          "StartDate": {
+            "type": "string",
+            "description": "Dosage start date. At least year must be specified.",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "StartTimeOfDay": {
+            "type": "string",
+            "description": "Time of day when the patient started using the drug.",
+            "nullable": true,
+            "example": "\"14:13\""
+          },
+          "EndDate": {
+            "type": "string",
+            "description": "Dosage end date. At least year must be specified.",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "BatchLotNumber": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Batch/lot number",
+            "nullable": true,
+            "example": "Batchnummer #R1195"
+          },
+          "AdministrationArea": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.AdministrationArea"
+          },
+          "AdministrationAreaOther": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Administration area other.\r\nWhere was the drug taken/injected.",
+            "nullable": true,
+            "example": "Other administration route"
+          },
+          "DoseNumber": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.DoseNumber"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Dosage part"
+      },
+      "Melde.DTO.V10.Delivery.DrugSideEffectsDrugPart": {
+        "required": [
+          "Dosage",
+          "Role"
+        ],
+        "type": "object",
+        "properties": {
+          "DrugId": {
+            "maxLength": 64,
+            "type": "string",
+            "description": "Drug id",
+            "nullable": true,
+            "example": "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C"
+          },
+          "AtcCode": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Drug ATC code",
+            "nullable": true,
+            "example": "J07BN01"
+          },
+          "IsVaccine": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "IsActiveIngredient": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "DrugName": {
+            "maxLength": 300,
+            "type": "string",
+            "description": "Drug name.",
+            "nullable": true
+          },
+          "Role": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.LegemiddelRolle"
+          },
+          "Indication": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Indication.",
+            "nullable": true,
+            "example": ""
+          },
+          "AdministrationRoute": {
+            "maxLength": 100,
+            "type": "string",
+            "description": "Drug administration route",
+            "nullable": true,
+            "example": "Oralt"
+          },
+          "StillInUse": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "DrugForm": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Drig form, i.e. tablet\r\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
+            "nullable": true
+          },
+          "UnsureDrugFormOrStrength": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "UnsureAreas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.UnsureArea"
+            },
+            "description": "Unsure about what?\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "nullable": true
+          },
+          "UnsureDescription": {
+            "type": "string",
+            "description": "Description of the unsureness\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "nullable": true
+          },
+          "DrugSideEffectsAction": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.LegemiddelBivirkningsHandling"
+          },
+          "SideEffectsReoccured": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "SalesChannel": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Kjøpssted"
+          },
+          "SalesChannelDescription": {
+            "type": "string",
+            "description": "Additional info about the sales channel",
+            "nullable": true
+          },
+          "Dosage": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsDosagePart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Drug part"
+      },
+      "Melde.DTO.V10.Delivery.DrugSideEffectsOtherInformationPart": {
+        "type": "object",
+        "properties": {
+          "Severity": {
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SideEffectSeverity"
+            },
+            "description": "Severity",
+            "nullable": true,
+            "example": [
+              "Livstruende",
+              "AnomaliFodselsdefekt"
+            ]
+          },
+          "HospitalName": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "Hospital name",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Other information part"
+      },
+      "Melde.DTO.V10.Delivery.DrugSideEffectsReportPart": {
+        "required": [
+          "Drugs",
+          "Symptoms"
+        ],
+        "type": "object",
+        "properties": {
+          "Drugs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsDrugPart"
+            },
+            "description": "Drug parts"
+          },
+          "Symptoms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsSymptomsPart"
+            },
+            "description": "Symptom parts"
+          },
+          "OtherInformation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsOtherInformationPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
+      },
+      "Melde.DTO.V10.Delivery.DrugSideEffectsSymptomsPart": {
+        "required": [
+          "Description"
+        ],
+        "type": "object",
+        "properties": {
+          "Description": {
+            "maxLength": 250,
+            "minLength": 1,
+            "type": "string",
+            "description": "Symptom description",
+            "example": "Blodtrykksfall"
+          },
+          "StartDate": {
+            "type": "string",
+            "description": "Symptom start date. Supports only year or year and month as well",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "EndDate": {
+            "type": "string",
+            "description": "Symptom end date. Supports only year or year and month as well",
+            "nullable": true,
+            "example": "\"1996-01-04\""
+          },
+          "Ongoing": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "SideEffectsDelay": {
+            "maxLength": 150,
+            "type": "string",
+            "description": "How long it took from the first use of the drug to side effects occured",
+            "nullable": true
+          },
+          "Outcome": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SideEffectOutcome"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Symptom part"
+      },
+      "Melde.DTO.V10.Delivery.ECigaretteGeneralPart": {
+        "type": "object",
+        "properties": {
+          "HealthcarePersonnelContacted": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "UsageFrequency": {
+            "type": "string",
+            "description": "How often do you use e-cigarettes",
+            "nullable": true
+          },
+          "OtherInformation": {
+            "type": "string",
+            "description": "Other relevant information",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "General part"
+      },
+      "Melde.DTO.V10.Delivery.ECigaretteProductPart": {
+        "type": "object",
+        "properties": {
+          "PurchaseTime": {
+            "type": "string",
+            "description": "Purchase time",
+            "nullable": true
+          },
+          "PurchaseLocation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ECigarettePurchaseLocation"
+          },
+          "PurchaseLocationName": {
+            "type": "string",
+            "description": "Name of the shop where the product was purchased",
+            "nullable": true
+          },
+          "PurchaseCountry": {
+            "type": "string",
+            "description": "The purchase country",
+            "nullable": true
+          },
+          "WebShopAddress": {
+            "type": "string",
+            "description": "Web shop address",
+            "nullable": true
+          },
+          "MakeAndModel": {
+            "type": "string",
+            "description": "Make and model information",
+            "nullable": true
+          },
+          "EcId": {
+            "type": "string",
+            "description": "EC id. Format '00000-00-00000'",
+            "nullable": true
+          },
+          "NicotineFluidUsed": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "NicotineStrength": {
+            "type": "string",
+            "description": "Nictine fluid strength",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Next of kin"
+      },
+      "Melde.DTO.V10.Delivery.ECigaretteReportPart": {
+        "type": "object",
+        "properties": {
+          "General": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ECigaretteGeneralPart"
+          },
+          "Product": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ECigaretteProductPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "ECigarette report part"
+      },
+      "Melde.DTO.V10.Delivery.HeaderPart": {
+        "type": "object",
+        "properties": {
+          "ReportRef": {
+            "type": "string",
+            "description": "Report reference",
+            "nullable": true
+          },
+          "ExternalCaseId": {
+            "type": "string",
+            "description": "Unique report identifier in the external system.",
+            "nullable": true,
+            "example": "MYSYS-REF8345"
+          },
+          "ExternalMessageId": {
+            "type": "string",
+            "description": "External message id",
+            "format": "uuid",
+            "nullable": true,
+            "example": "8c3d9d5d-bf98-4ca7-8406-8df657ae3a82"
+          },
+          "FormName": {
+            "type": "string",
+            "description": "Name of form (relevant to Helsenorge reports only)",
+            "nullable": true
+          },
+          "Reporter": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ReporterPart"
+          },
+          "Patient": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.PatientPart"
+          },
+          "Incident": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.IncidentPart"
+          },
+          "ContactPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ContactPersonPart"
+            },
+            "description": "List of contact persons",
+            "nullable": true
+          },
+          "AttachmentRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.AttachmentPart"
+            },
+            "description": "Attachments",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Header part"
+      },
+      "Melde.DTO.V10.Delivery.IncidentPart": {
+        "type": "object",
+        "properties": {
+          "IncidentDescription": {
+            "type": "string",
+            "description": "Indicent description",
+            "nullable": true
+          },
+          "IncidentDate": {
+            "type": "string",
+            "description": "Incident date. Required for report area Medical equipment",
+            "nullable": true,
+            "example": "2020-03-12"
+          },
+          "DateUnknown": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          },
+          "DateText": {
+            "type": "string",
+            "description": "Date period if no other date is given and DateUnknown is false",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Adverse incident part"
+      },
+      "Melde.DTO.V10.Delivery.MedicalEquipmentImplantInformation": {
+        "type": "object",
+        "properties": {
+          "ImplantDate": {
+            "type": "string",
+            "description": "Implant date.\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "nullable": true,
+            "example": "2021-10-23"
+          },
+          "ExplantDate": {
+            "type": "string",
+            "description": "Explant date\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "nullable": true,
+            "example": "2021-10-23"
+          }
+        },
+        "additionalProperties": false,
+        "description": "MedisinskUtstyrImplantatInformasjon"
+      },
+      "Melde.DTO.V10.Delivery.MedicalEquipmentReportPart": {
+        "type": "object",
+        "properties": {
+          "NkknTypeCode": {
+            "type": "integer",
+            "description": "NKKN type code",
+            "format": "int32",
+            "nullable": true
+          },
+          "EquipmentName": {
+            "type": "string",
+            "description": "Equipment name",
+            "nullable": true
+          },
+          "Manufacturer": {
+            "type": "string",
+            "description": "Manufacturer",
+            "nullable": true
+          },
+          "ModelName": {
+            "type": "string",
+            "description": "Model name",
+            "nullable": true
+          },
+          "NkknGroup": {
+            "$ref": "#/components/schemas/Melde.DTO.IdNavn"
+          },
+          "NkknCategory": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.NkknCategory"
+          },
+          "SerialNumber": {
+            "type": "string",
+            "description": "Serial number",
+            "nullable": true
+          },
+          "BatchLotNumber": {
+            "type": "string",
+            "description": "Batch/lot number",
+            "nullable": true
+          },
+          "ProductionDate": {
+            "type": "string",
+            "description": "Production date.\r\nYear only or year and month are also accepted",
+            "nullable": true
+          },
+          "ExpirationDate": {
+            "type": "string",
+            "description": "Equipment expiration date.\r\nYear only or year and month are also accepted",
+            "nullable": true,
+            "example": "2021-10-23"
+          },
+          "EquipmentLocation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.EquipmentLocation"
+          },
+          "Distributor": {
+            "type": "string",
+            "description": "Distributor",
+            "nullable": true
+          },
+          "IncidentClassification": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.IncidentClassification"
+          },
+          "ImplantInformation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.MedicalEquipmentImplantInformation"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Medical equipment report part"
+      },
+      "Melde.DTO.V10.Delivery.PatientPart": {
+        "type": "object",
+        "properties": {
+          "Nin": {
+            "type": "string",
+            "description": "National is number.\r\nRequired for report area Drug side effects if date of birth and gender is not set.\r\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
+            "nullable": true
+          },
+          "Initials": {
+            "type": "string",
+            "description": "Patient's initials",
+            "nullable": true
+          },
+          "DateOfBirth": {
+            "type": "string",
+            "description": "Date of birth.\r\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
+            "nullable": true
+          },
+          "Gender": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Gender"
+          },
+          "YearOfBirth": {
+            "type": "integer",
+            "description": "Year of birth.\r\nRequired for report areas Cosmetics and Dietary supplements",
+            "format": "int32",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name.\r\nRequired for report area Serious incident if Nin is not set",
+            "nullable": true
+          },
+          "Nationality": {
+            "type": "string",
+            "description": "Nationality.\r\nRequired for report area Serious incident if Nin is not set",
+            "nullable": true
+          },
+          "Height": {
+            "type": "integer",
+            "description": "Height, in cm",
+            "format": "int32",
+            "nullable": true
+          },
+          "Weight": {
+            "type": "integer",
+            "description": "Weight, in kg",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "UonsketHendelsePasientPart"
+      },
+      "Melde.DTO.V10.Delivery.RadiationReportPart": {
+        "type": "object",
+        "additionalProperties": false,
+        "description": "Radiation report part. Currently empty, but may be expanded in the future"
+      },
+      "Melde.DTO.V10.Delivery.ReportDeliveryResponse": {
+        "type": "object",
+        "properties": {
+          "Header": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.HeaderPart"
+          },
+          "Report": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ReportPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Adverse incident DTO"
+      },
+      "Melde.DTO.V10.Delivery.ReportPart": {
+        "type": "object",
+        "properties": {
+          "SeriousIncident": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.SeriousIncidentReportPart"
+          },
+          "DrugSideEffects": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsReportPart"
+          },
+          "Biovigilance": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.BiovigilanceReportPart"
+          },
+          "Cosmetics": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsReportPart"
+          },
+          "DietarySupplements": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsReportPart"
+          },
+          "MedicalEquipment": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.MedicalEquipmentReportPart"
+          },
+          "ECigarette": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ECigaretteReportPart"
+          },
+          "Radiation": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.RadiationReportPart"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
+      },
+      "Melde.DTO.V10.Delivery.ReporterPart": {
+        "type": "object",
+        "properties": {
+          "Nin": {
+            "type": "string",
+            "description": "Social security number",
+            "nullable": true
+          },
+          "HprId": {
+            "type": "integer",
+            "description": "HPR id",
+            "format": "int32",
+            "nullable": true
+          },
+          "Organization": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
+          },
+          "IncidentOrganization": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
+          },
+          "Email": {
+            "type": "string",
+            "description": "E-mail address",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name",
+            "nullable": true
+          },
+          "Phone": {
+            "type": "string",
+            "description": "Phone number.\r\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "Qualification": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Qualification"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ReporterRole"
+          },
+          "Position": {
+            "type": "string",
+            "description": "Position. Required for report area Serious incident",
+            "nullable": true
+          },
+          "IsOnBehalfOf": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Adverse incident part"
+      },
+      "Melde.DTO.V10.Delivery.Response.ReportInfo": {
+        "type": "object",
+        "properties": {
+          "ReportRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportArea": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IsFetched": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Adverse report info"
+      },
+      "Melde.DTO.V10.Delivery.Response.ReportInfoList": {
+        "type": "object",
+        "properties": {
+          "ReportRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.Response.ReportInfo"
+            },
+            "description": "Liste med meldinger",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Response containing report refs to requested reports"
+      },
+      "Melde.DTO.V10.Delivery.SeriousIncidentNextOfKin": {
+        "type": "object",
+        "properties": {
+          "Nin": {
+            "type": "string",
+            "description": "National id number",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name",
+            "nullable": true
+          },
+          "Relation": {
+            "type": "string",
+            "description": "Relation to patient",
+            "nullable": true
+          },
+          "IsClosestNextOfKin": {
+            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
+          },
+          "Address": {
+            "type": "string",
+            "description": "Address",
+            "nullable": true
+          },
+          "ZipCode": {
+            "type": "string",
+            "description": "Zip code",
+            "nullable": true
+          },
+          "City": {
+            "type": "string",
+            "description": "City",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "description": "E-mail address",
+            "nullable": true
+          },
+          "Phone": {
+            "type": "string",
+            "description": "Phone number",
+            "nullable": true,
+            "example": "12345678"
+          },
+          "Notes": {
+            "type": "string",
+            "description": "Notes",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Next of kin"
+      },
+      "Melde.DTO.V10.Delivery.SeriousIncidentReportPart": {
+        "type": "object",
+        "properties": {
+          "NextOfKin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.SeriousIncidentNextOfKin"
+            },
+            "description": "Next of kin",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Report part"
       },
       "Melde.DTO.V10.Dialog.CreateDialogInfo": {
         "required": [
-          "ReportArea",
           "ReportRef"
         ],
         "type": "object",
@@ -2202,9 +4178,12 @@
             "description": "Reference to the report that this dialog is associated with, on the format [Uxxxx] or [Vxxxx]"
           },
           "ReportArea": {
+            "maximum": 199,
+            "minimum": 1,
             "type": "integer",
-            "description": "Report area id. Assigned by NHN when the API is activated.",
-            "format": "int32"
+            "description": "Report area id.\r\nMust be specified if Melde is not able to uniquely identify the report area, by validating the report, report origin and client definition",
+            "format": "int32",
+            "nullable": true
           },
           "Email": {
             "maxLength": 150,
@@ -2250,7 +4229,7 @@
             "maxItems": 5,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AttachmentPart"
             },
             "description": "Message attachments. Max 5.",
             "nullable": true
@@ -2266,7 +4245,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
           },
           "DialogRef": {
             "type": "string",
@@ -2277,6 +4256,24 @@
         "additionalProperties": false,
         "description": "Kvittering for opprettet dialog"
       },
+      "Melde.DTO.V10.Dialog.Response.DialogMeldingOpprettetRespons": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+          },
+          "Referansenummer": {
+            "type": "string",
+            "description": "Referansenummer til generert dialogmelding i En Vei Inn sin database",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Kvittering for opprettet dialogmelding"
+      },
       "Melde.DTO.V10.Dialog.Response.DialogMessageCreatedResponse": {
         "type": "object",
         "properties": {
@@ -2284,7 +4281,7 @@
             "$ref": "#/components/schemas/System.Net.HttpStatusCode"
           },
           "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel", "nullable": true
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
           },
           "MessageRef": {
             "type": "string",
@@ -2294,6 +4291,29 @@
         },
         "additionalProperties": false,
         "description": "Kvittering for opprettet dialogmelding"
+      },
+      "Melde.DTO.V10.Dialog.Response.DialogOpprettetRespons": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+          },
+          "DialogRefnr": {
+            "type": "string",
+            "description": "Referansenummer til generert dialog i En Vei Inn sin database",
+            "nullable": true
+          },
+          "MeldingRefNr": {
+            "type": "string",
+            "description": "Melding referansenummer",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Kvittering for opprettet dialog"
       },
       "Melde.DTO.V10.Dialog.Response.GetDialogInfoResponse": {
         "type": "object",
@@ -2337,6 +4357,48 @@
         "additionalProperties": false,
         "description": "Respons som inneholder en liste med uleste meldinger"
       },
+      "Melde.DTO.V10.Dialog.Response.SearchDialogRespons": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+          },
+          "Feil": {
+            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
+          },
+          "MelderEpostAdresse": {
+            "type": "string",
+            "description": "Melder's email address",
+            "nullable": true
+          },
+          "Meldeordninger": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.IdNavn"
+            },
+            "description": "Meldeordninger den uønskede hendelsen er sendt til",
+            "nullable": true
+          },
+          "MeldeordningId": {
+            "type": "integer",
+            "description": "Meldeordning id for the dialog, if the dialog exists",
+            "format": "int32",
+            "nullable": true
+          },
+          "MeldeordningNavn": {
+            "type": "string",
+            "description": "Meldeordning name for the dialog, if the dialog exists",
+            "nullable": true
+          },
+          "Referansenummer": {
+            "type": "string",
+            "description": "Dialog reference number, if the dialog exists",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Kvittering for henting av dialog"
+      },
       "Melde.DTO.V10.Dialog.Response.UnreadMessage": {
         "required": [
           "MessageRef",
@@ -2358,7 +4420,7 @@
           "Attachments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart"
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AttachmentPart"
             },
             "description": "Liste med vedlegg",
             "nullable": true
@@ -2399,6 +4461,16 @@
         ],
         "type": "string",
         "description": "Dose number"
+      },
+      "Melde.DTO.V10.Enums.ECigarettePurchaseLocation": {
+        "enum": [
+          "NorwegianDealer",
+          "ForeignDealer",
+          "WebShop",
+          "Unknown"
+        ],
+        "type": "string",
+        "description": "Purchase location"
       },
       "Melde.DTO.V10.Enums.EquipmentLocation": {
         "enum": [
@@ -2588,150 +4660,31 @@
         "type": "string",
         "description": "Legemiddelrolle"
       },
-      "Melde.DTO.V10.ExternalAPI.Parts.AttachmentPart": {
+      "Melde.DTO.V10.VedleggVigisec": {
         "required": [
-          "Content",
-          "Name"
+          "Innhold",
+          "Navn"
         ],
         "type": "object",
         "properties": {
-          "Name": {
-            "maxLength": 300,
+          "Innhold": {
             "minLength": 1,
             "type": "string",
-            "description": "Attachment name (i.e. file name)",
-            "example": "document.pdf"
+            "description": "Filinnhold. Base 64 enkodet string."
           },
-          "ContentType": {
-            "maxLength": 100,
+          "Filtype": {
             "type": "string",
-            "description": "Content type/mime type",
-            "nullable": true,
-            "example": "application/pdf"
-          },
-          "Content": {
-            "maxLength": 6993600,
-            "minLength": 1,
-            "type": "string",
-            "description": "Attachment content.\r\nBase64 encoded.",
-            "example": "QSBuaWNlIFBERiBmaWxlCg=="
-          }
-        },
-        "additionalProperties": false,
-        "description": "Attachment part"
-      },
-      "Melde.DTO.V10.ExternalAPI.Parts.ContactPersonPart": {
-        "required": [
-          "Name"
-        ],
-        "type": "object",
-        "properties": {
-          "Name": {
-            "maxLength": 100,
-            "minLength": 1,
-            "type": "string",
-            "description": "Name",
-            "example": "Ola Nordmann"
-          },
-          "Email": {
-            "maxLength": 100,
-            "type": "string",
-            "description": "E-mail address",
-            "format": "email",
-            "nullable": true,
-            "example": "ola@nordmann.email"
-          },
-          "Phone": {
-            "maxLength": 40,
-            "type": "string",
-            "description": "Phone number",
-            "format": "tel",
-            "nullable": true,
-            "example": "12345678"
-          },
-          "Position": {
-            "maxLength": 100,
-            "type": "string",
-            "description": "Contact person's position",
-            "nullable": true,
-            "example": "Klossmajor"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Contact persons"
-      },
-      "Melde.DTO.V10.ExternalAPI.Parts.OrganizationPart": {
-        "type": "object",
-        "properties": {
-          "OrgNumber": {
-            "pattern": "^\\d{9}$",
-            "type": "string",
-            "description": "Organization number.\r\nRequired if Name is empty",
-            "nullable": true,
-            "example": "883974832"
-          },
-          "Name": {
-            "maxLength": 250,
-            "type": "string",
-            "description": "Organization name.\r\nRequired if OrgNumber is empty",
-            "nullable": true,
-            "example": "ST. OLAVS HOSPITAL HF"
-          },
-          "Address": {
-            "maxLength": 250,
-            "type": "string",
-            "description": "Organization address",
-            "nullable": true,
-            "example": "SykehusGaten 5"
-          },
-          "ZipCode": {
-            "maxLength": 10,
-            "type": "string",
-            "description": "Organization zip code",
-            "nullable": true,
-            "example": "\"0424\""
-          },
-          "City": {
-            "maxLength": 250,
-            "type": "string",
-            "description": "Organization city",
-            "nullable": true,
-            "example": "Oslo"
-          },
-          "Municipality": {
-            "maxLength": 64,
-            "type": "string",
-            "description": "Organization municipality",
-            "nullable": true,
-            "example": "Oslo"
-          },
-          "Institution": {
-            "maxLength": 250,
-            "type": "string",
-            "description": "Institution",
+            "description": "Filtype (mimetype)",
             "nullable": true
           },
-          "Department": {
-            "maxLength": 250,
+          "Navn": {
+            "maxLength": 256,
+            "minLength": 1,
             "type": "string",
-            "description": "Department",
-            "nullable": true
-          },
-          "LocalReferenceNumber": {
-            "maxLength": 100,
-            "type": "string",
-            "description": "Local reference number if applicable",
-            "nullable": true,
-            "example": "ATL-123321"
+            "description": "Filnavn."
           }
         },
-        "additionalProperties": false,
-        "description": "Organization part"
-      },
-      "Melde.DTO.V10.ExternalAPI.RadiationReportPart": {
-        "type": "object",
-        "additionalProperties": false,
-        "description": "Radiation report part. Currently empty, but may be expanded in the future"
+        "additionalProperties": false
       },
       "Melde.Felles.Enums.Language": {
         "enum": [
@@ -2836,6 +4789,92 @@
         "type": "integer",
         "format": "int32"
       },
+      "Melde.WebApi.Controllers.OpprettDialogInfoVS": {
+        "required": [
+          "UonsketHendelseRefnr"
+        ],
+        "type": "object",
+        "properties": {
+          "UonsketHendelseRefnr": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Referansenummer til den uønskede hendelsen man vil opprette dialog for"
+          },
+          "Meldingstekst": {
+            "type": "string",
+            "description": "Teksten i den første meldingen",
+            "nullable": true
+          },
+          "Vedlegg": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.VedleggVigisec"
+            },
+            "description": "Vedlegg",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Melde.WebApi.Controllers.OpprettDialogMeldingInfoVS": {
+        "required": [
+          "Meldingstekst"
+        ],
+        "type": "object",
+        "properties": {
+          "DialogRefnr": {
+            "type": "string",
+            "description": "Referansenummer til dialogen meldingen skal opprettes i",
+            "nullable": true
+          },
+          "Meldingstekst": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Teksten i meldingen"
+          },
+          "VarsleMottaker": {
+            "type": "boolean",
+            "description": "Hvis denne er false, ikke send varsel-mail til mottaker",
+            "nullable": true
+          },
+          "Vedlegg": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.VedleggVigisec"
+            },
+            "description": "Vedlegg",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Microsoft.AspNetCore.Mvc.ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
       "System.Net.HttpStatusCode": {
         "enum": [
           100,
@@ -2905,7 +4944,7 @@
       }
     },
     "securitySchemes": {
-      "Bearer": {
+      "JWT Authentication": {
         "type": "http",
         "description": "Put **_ONLY_** your JWT Bearer token on textbox below!",
         "scheme": "Bearer",
@@ -2914,26 +4953,32 @@
     }
   },
   "security": [
-    {
-      "Bearer": [ ]
-    }
+    { }
   ],
   "tags": [
     {
-      "name": "Ping",
-      "description": "Test connectivity"
-    },
-    {
       "name": "AdverseIncident",
       "description": "Adverse incident reporting API version 2 accepts DPoP access tokens only"
+    },
+    {
+      "name": "Delivery",
+      "description": "Delivery API version 2 accepts DPoP access tokens only"
     },
     {
       "name": "Dialog",
       "description": "Dialog API version 2 accepts DPoP access tokens only"
     },
     {
+      "name": "EksternDialogForVigisec",
+      "description": "Tilbyr tjenester for å føre dialog.\r\nUnder utfasing, bruk api/v2/dialog endepunkter istedet"
+    },
+    {
       "name": "Nokup",
       "description": "Nokup lookup API version 2 accepts DPoP access tokens only"
+    },
+    {
+      "name": "Ping",
+      "description": "Test connectivity"
     }
   ]
 }

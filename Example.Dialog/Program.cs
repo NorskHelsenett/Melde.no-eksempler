@@ -2,14 +2,10 @@
 using MeldeV2;
 using OpenAPI;
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace Example.Toveisdialog
+namespace Example.Dialog
 {
     class Program
     {
@@ -122,7 +118,7 @@ namespace Example.Toveisdialog
                 var unreadDialogs = await _dialogClient.UnreadsAsync();
                 foreach (var dialogRef in unreadDialogs.DialogRefs)
                 {
-                    var unreadMessages = await _dialogClient.MessageGETAsync(dialogRef);
+                    var unreadMessages = await _dialogClient.MessageGETAsync(dialogRef, false);
                     foreach (var message in unreadMessages.Messages)
                     {
                         Console.WriteLine($"{dialogRef}: Content: {message.MessageText}");
@@ -133,11 +129,12 @@ namespace Example.Toveisdialog
             if (!string.IsNullOrEmpty(dialogEvent.DialogRef))
             {
                 // Get unread messages
-                var unreadMessages = await _dialogClient.MessageGETAsync(dialogEvent.DialogRef);
+                var unreadMessages = await _dialogClient.MessageGETAsync(dialogEvent.DialogRef, false);
 
                 Console.WriteLine($"{unreadMessages.Messages.Count} new messages");
 
-                foreach (var message in unreadMessages.Messages) {
+                foreach (var message in unreadMessages.Messages)
+                {
                     Console.WriteLine($"Content: {message.MessageText}");
                 }
             }
@@ -168,7 +165,7 @@ namespace Example.Toveisdialog
 
             };
 
-            var jwtHandler = new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, Config.ClientType, Config.TokenType, htHandler);
+            var jwtHandler = new JwkTokenHandler(Config.HelseIdUrl, Config.ClientId, Config.Jwk, scopes, htHandler);
 
             var httpClient = new HttpClient(jwtHandler)
             {
@@ -176,60 +173,6 @@ namespace Example.Toveisdialog
             };
 
             return httpClient;
-        }
-    }
-
-
-    /// <summary>
-    /// Event type
-    /// </summary>
-    public record DialogEventMessage(string EventType, string DialogRef, string ReportRef);
-
-
-    /// <summary>
-    /// SSE client
-    /// </summary>
-    class SseClient
-    {
-        private readonly HttpClient _client;
-
-        public SseClient(HttpClient client)
-        {
-            _client = client;
-        }
-
-        public async Task ListenAsync(
-            string url,
-            Func<DialogEventMessage, Task> eventHandler,
-            CancellationToken cancellationToken = default)
-        {
-            // Make request, get the stream
-            using var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Accept.Clear();
-            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/event-stream"));
-
-            using var response = await _client.SendAsync(
-                request,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken);
-
-            response.EnsureSuccessStatusCode();
-
-            using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            using var reader = new StreamReader(stream, Encoding.UTF8);
-
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                var line = await reader.ReadLineAsync(cancellationToken);
-                if (string.IsNullOrEmpty(line))
-                {
-                    continue;
-                }
-
-                Console.WriteLine($"Event: {line}");
-                var sseEvent = JsonSerializer.Deserialize<DialogEventMessage>(line, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                await eventHandler.Invoke(sseEvent!);
-            }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace OpenAPI
 {
     public class HelseIdTokenHelper
     {
-        public static async Task<string> GetAccessToken(string stsUrl, string clientId, string jwkPrivateKey, string[] scopes, ClientType clientType, TokenType tokenType, CancellationToken cancellationToken = default)
+        public static async Task<string> GetAccessToken(string stsUrl, string clientId, string jwkPrivateKey, string[] scopes, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(stsUrl)) throw new ArgumentException(nameof(stsUrl));
             if (string.IsNullOrEmpty(clientId)) throw new ArgumentException(nameof(clientId));
@@ -25,69 +25,45 @@ namespace OpenAPI
                 throw new Exception($"Error getting discovery document from HelseId: {disco.Error}, stsUrl: {stsUrl}");
             }
 
-            var useDpop = tokenType == TokenType.DPoPToken;
             string nonce = null;
             TokenResponse response = null;
             string accessToken = "";
 
-            if (clientType == ClientType.Machine)
+            for (int i = 0; i < 2; i++)
             {
-                for (int i = 0; i < (useDpop ? 2 : 1); i++)
+                var tokenRequest = new ClientCredentialsTokenRequest
                 {
-                    var tokenRequest = new ClientCredentialsTokenRequest
-                    {
-                        Address = disco.TokenEndpoint,
-                        ClientId = clientId,
-                        GrantType = OidcConstants.GrantTypes.ClientCredentials,
-                        ClientCredentialStyle = ClientCredentialStyle.PostBody,
-                        ClientAssertion = new ClientAssertion
-                        {
-                            Type = OidcConstants.ClientAssertionTypes.JwtBearer,
-                            Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
-                        },
-                        Scope = string.Join(' ', scopes),
-
-                        // Dpop
-                        DPoPProofToken = useDpop ? new DPoPProofCreator(jwkPrivateKey, SecurityAlgorithms.RsaSha256)
-                            .CreateDPoPProof(disco.TokenEndpoint!, "POST", dPoPNonce: nonce) : null
-                    };
-                    response = await c.RequestTokenAsync(tokenRequest);
-
-                    if (response.IsError && response.Error == "use_dpop_nonce" && !string.IsNullOrEmpty(response.DPoPNonce))
-                    {
-                        nonce = response.DPoPNonce;
-                    }
-                    else
-                        break;
-                }
-
-                if (response!.IsError)
-                {
-                    throw new Exception($"Error getting access token from HelseId. {response.Error}, ErrorDescription: {response.ErrorDescription}, stsUrl: {stsUrl}, clientId: {clientId}");
-                }
-
-                accessToken =  response?.AccessToken;
-            }
-            else if (clientType == ClientType.Person)
-            {
-                var tokenRequest = new PersonalTokenRequest()
-                {
-                    StsUrl = stsUrl,
+                    Address = disco.TokenEndpoint,
                     ClientId = clientId,
+                    GrantType = OidcConstants.GrantTypes.ClientCredentials,
+                    ClientCredentialStyle = ClientCredentialStyle.PostBody,
                     ClientAssertion = new ClientAssertion
                     {
                         Type = OidcConstants.ClientAssertionTypes.JwtBearer,
                         Value = BuildClientAssertion(disco, clientId, jwkPrivateKey)
                     },
-                    Scopes = scopes,
+                    Scope = string.Join(' ', scopes),
 
                     // Dpop
-                    DPoPProofToken = useDpop ? new DPoPProofCreator(jwkPrivateKey, SecurityAlgorithms.RsaSha256)
-                            .CreateDPoPProof(disco.TokenEndpoint!, "POST", dPoPNonce: nonce) : null
+                    DPoPProofToken = new DPoPProofCreator(jwkPrivateKey, SecurityAlgorithms.RsaSha256)
+                        .CreateDPoPProof(disco.TokenEndpoint!, "POST", dPoPNonce: nonce)
                 };
-                accessToken = await tokenRequest.RequestTokenAsync().ConfigureAwait(false);
+                response = await c.RequestTokenAsync(tokenRequest);
+
+                if (response.IsError && response.Error == "use_dpop_nonce" && !string.IsNullOrEmpty(response.DPoPNonce))
+                {
+                    nonce = response.DPoPNonce;
+                }
+                else
+                    break;
             }
 
+            if (response!.IsError)
+            {
+                throw new Exception($"Error getting access token from HelseId. {response.Error}, ErrorDescription: {response.ErrorDescription}, stsUrl: {stsUrl}, clientId: {clientId}");
+            }
+
+            accessToken =  response?.AccessToken;
             return accessToken;
         }
 

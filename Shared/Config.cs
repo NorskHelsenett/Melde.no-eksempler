@@ -2,7 +2,7 @@
 
 namespace Shared.Configuration
 {
-    public enum Env { LOCAL, DEV, TEST, QA }
+    public enum Env { LOCAL, DEV, TEST }
 
     public class SharedConfig
     {
@@ -12,7 +12,6 @@ namespace Shared.Configuration
             {
                 Env.DEV => new("https://api.melde.dev.sky.nhn.no/"),
                 Env.TEST => new("https://api.melde.test.nhn.no/"),
-                Env.QA => new("https://api.melde.qa.nhn.no/"),
                 _ => new("https://localhost:44342/"),
             };
         }
