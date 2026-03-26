@@ -10,7 +10,7 @@ namespace Shared.Configuration
         {
             return e switch
             {
-                Env.DEV => new("https://api.melde.dev.sky.nhn.no/"),
+                Env.DEV => new("https://api.melde.dev.nhn.no/"),
                 Env.TEST => new("https://api.melde.test.nhn.no/"),
                 _ => new("https://localhost:44342/"),
             };

@@ -235,8 +235,8 @@ class Program
             {
                 // Accept even if the certificate is expired
                 if (errors == System.Net.Security.SslPolicyErrors.None ||
-                    errors == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
-                    errors == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch)
+                    (errors & System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors) == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
+                    (errors & System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch) == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch)
                 {
                     return true;
                 }

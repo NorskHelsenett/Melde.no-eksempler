@@ -45,7 +45,7 @@ namespace Example.Dialog
                     var createPayload = new CreateDialogInfo
                     {
                         ReportRef = UONSKET_HENDELSE_REF,
-                        ReportArea = MELDEORDNING_ID
+                        //ReportArea = MELDEORDNING_ID
                     };
 
                     var createdResponse = await _dialogClient.DialogPOSTAsync(createPayload);
@@ -154,8 +154,8 @@ namespace Example.Dialog
                 {
                     // Accept even if the certificate is expired
                     if (errors == System.Net.Security.SslPolicyErrors.None ||
-                        errors == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
-                        errors == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch)
+                        (errors & System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors) == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
+                        (errors & System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch) == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch)
                     {
                         return true;
                     }

@@ -2,7 +2,7 @@
   "openapi": "3.0.4",
   "info": {
     "title": "Melde API",
-    "description": "<p>API for reporting and handling dialog related to adverse incidents.</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
+    "description": "<p>API for reporting and handling dialog related to adverse incidents.</p>\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\n",
     "contact": {
       "name": "Norsk Helsenett",
       "url": "https://www.nhn.no",
@@ -73,7 +73,7 @@
         "tags": [
           "AdverseIncident"
         ],
-        "summary": "Report an adverse indicent.\r\nThis endpoint",
+        "summary": "Report an adverse indicent.\nThis endpoint",
         "description": "Requires authentication via HelseId",
         "requestBody": {
           "description": "Request object",
@@ -141,7 +141,7 @@
         "tags": [
           "AdverseIncident"
         ],
-        "summary": "Report an adverse indicent.\r\nThe request must be of type multi part form data and contain one part with content type 'application/json' (the form) and\r\nup to 5 attachments in each file part.",
+        "summary": "Report an adverse indicent.\nThe request must be of type multi part form data and contain one part with content type 'application/json' (the form) and\nup to 5 attachments in each file part.",
         "description": "Requires authentication via HelseId",
         "parameters": [
           {
@@ -236,215 +236,6 @@
           },
           "400": {
             "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/delivery/list": {
-      "get": {
-        "tags": [
-          "Delivery"
-        ],
-        "summary": "Get unfetched report references. If a from datetime is specified, return all reports from that datetime",
-        "description": "Requires authentication via HelseId",
-        "parameters": [
-          {
-            "name": "fromDate",
-            "in": "query",
-            "description": "Report reference",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.Response.ReportInfoList"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/delivery/report/{reportRef}": {
-      "get": {
-        "tags": [
-          "Delivery"
-        ],
-        "summary": "Get specific report",
-        "description": "Requires authentication via HelseId",
-        "parameters": [
-          {
-            "name": "reportRef",
-            "in": "path",
-            "description": "Report reference",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ReportDeliveryResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/delivery/report/{reportRef}/attachment/{attachmentRef}": {
-      "get": {
-        "tags": [
-          "Delivery"
-        ],
-        "summary": "Get attachment",
-        "description": "Requires authentication via HelseId",
-        "parameters": [
-          {
-            "name": "reportRef",
-            "in": "path",
-            "description": "Report reference",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "attachmentRef",
-            "in": "path",
-            "description": "Attachment reference",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v2/delivery/events": {
-      "get": {
-        "tags": [
-          "Delivery"
-        ],
-        "summary": "Receive delivery events (clientRegistered, newReport, reportDeleted).\r\nThis endpoint will keep the connection to the client open for a long period to be\r\nable to send notification events to the client(s) (SSE, server sent events)",
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error",
             "content": {
               "application/json": {
                 "schema": {
@@ -747,7 +538,7 @@
         "tags": [
           "Dialog"
         ],
-        "summary": "Receive dialog events (clientRegistered, newDialog, newMessage, dialogDeleted, readMessages).\r\nThis endpoint will keep the connection to the client open for a long period to be\r\nable to send notification events to the client(s) (SSE, server sent events)",
+        "summary": "Receive dialog events (clientRegistered, newDialog, newMessage, dialogDeleted, readMessages).\nThis endpoint will keep the connection to the client open for a long period to be\nable to send notification events to the client(s) (SSE, server sent events)",
         "responses": {
           "401": {
             "description": "Authentication failed"
@@ -1217,7 +1008,7 @@
           "Nin": {
             "pattern": "^\\d{11}$",
             "type": "string",
-            "description": "National is number.\r\nRequired for report area Drug side effects if date of birth and gender is not set.\r\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
+            "description": "National is number.\nRequired for report area Drug side effects if date of birth and gender is not set.\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
             "nullable": true
           },
           "Initials": {
@@ -1228,7 +1019,7 @@
           },
           "DateOfBirth": {
             "type": "string",
-            "description": "Date of birth.\r\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
+            "description": "Date of birth.\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
             "nullable": true
           },
           "Gender": {
@@ -1238,20 +1029,20 @@
             "maximum": 2100,
             "minimum": 1900,
             "type": "integer",
-            "description": "Year of birth.\r\nRequired for report areas Cosmetics and Dietary supplements",
+            "description": "Year of birth.\nRequired for report areas Cosmetics and Dietary supplements",
             "format": "int32",
             "nullable": true
           },
           "Name": {
             "maxLength": 150,
             "type": "string",
-            "description": "Name.\r\nRequired for report area Serious incident if Nin is not set",
+            "description": "Name.\nRequired for report area Serious incident if Nin is not set",
             "nullable": true
           },
           "Nationality": {
             "maxLength": 150,
             "type": "string",
-            "description": "Nationality.\r\nRequired for report area Serious incident if Nin is not set",
+            "description": "Nationality.\nRequired for report area Serious incident if Nin is not set",
             "nullable": true
           },
           "Height": {
@@ -1383,7 +1174,7 @@
           "Phone": {
             "maxLength": 50,
             "type": "string",
-            "description": "Phone number.\r\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
+            "description": "Phone number.\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
             "format": "tel",
             "nullable": true,
             "example": "12345678"
@@ -1449,7 +1240,7 @@
             "maxLength": 6993600,
             "minLength": 1,
             "type": "string",
-            "description": "Attachment content.\r\nBase64 encoded.",
+            "description": "Attachment content.\nBase64 encoded.",
             "example": "QSBuaWNlIFBERiBmaWxlCg=="
           }
         },
@@ -1491,7 +1282,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder.",
+            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\nReturnerer en liste med valgte koder.",
             "example": "['3.2.2', '3.4.3']"
           },
           "Preventability": {
@@ -1937,7 +1728,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Affected skin areas\r\nWhere on the body showed side effects?",
+            "description": "Affected skin areas\nWhere on the body showed side effects?",
             "nullable": true
           },
           "Reactions": {
@@ -1947,7 +1738,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reactions.\r\nWhich reactions happened?",
+            "description": "Reactions.\nWhich reactions happened?",
             "nullable": true
           },
           "ReactionDelay": {
@@ -2125,13 +1916,13 @@
             "items": {
               "type": "string"
             },
-            "description": "Reactions.\r\nWhich reactions happened?",
+            "description": "Reactions.\nWhich reactions happened?",
             "nullable": true
           },
           "ReactionDelay": {
             "maxLength": 100,
             "type": "string",
-            "description": "Reaction delay.\r\nHow long after the use did the reactions show up?",
+            "description": "Reaction delay.\nHow long after the use did the reactions show up?",
             "nullable": true
           },
           "ReactionDelayDescription": {
@@ -2176,7 +1967,7 @@
           "AnyAllergiesOrInfluencingIssuesDescription": {
             "maxLength": 500,
             "type": "string",
-            "description": "Any allergies or influencing issues description.\r\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
+            "description": "Any allergies or influencing issues description.\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
             "nullable": true
           },
           "AnyUnderlyingDiseases": {
@@ -2230,7 +2021,7 @@
           "AdministrationAreaOther": {
             "maxLength": 100,
             "type": "string",
-            "description": "Administration area other.\r\nWhere was the drug taken/injected.",
+            "description": "Administration area other.\nWhere was the drug taken/injected.",
             "nullable": true,
             "example": "Other administration route"
           },
@@ -2297,7 +2088,7 @@
           "DrugForm": {
             "maxLength": 150,
             "type": "string",
-            "description": "Drig form, i.e. tablet\r\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
+            "description": "Drig form, i.e. tablet\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
             "nullable": true
           },
           "UnsureDrugFormOrStrength": {
@@ -2308,12 +2099,12 @@
             "items": {
               "$ref": "#/components/schemas/Melde.DTO.V10.Enums.UnsureArea"
             },
-            "description": "Unsure about what?\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "description": "Unsure about what?\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
             "nullable": true
           },
           "UnsureDescription": {
             "type": "string",
-            "description": "Description of the unsureness\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "description": "Description of the unsureness\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
             "nullable": true
           },
           "DrugSideEffectsAction": {
@@ -2530,13 +2321,13 @@
         "properties": {
           "ImplantDate": {
             "type": "string",
-            "description": "Implant date.\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "description": "Implant date.\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
             "example": "2021-10-23"
           },
           "ExplantDate": {
             "type": "string",
-            "description": "Explant date\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "description": "Explant date\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
             "example": "2021-10-23"
           }
@@ -2598,12 +2389,12 @@
           },
           "ProductionDate": {
             "type": "string",
-            "description": "Production date.\r\nYear only or year and month are also accepted",
+            "description": "Production date.\nYear only or year and month are also accepted",
             "nullable": true
           },
           "ExpirationDate": {
             "type": "string",
-            "description": "Equipment expiration date.\r\nYear only or year and month are also accepted",
+            "description": "Equipment expiration date.\nYear only or year and month are also accepted",
             "nullable": true,
             "example": "2021-10-23"
           },
@@ -2632,14 +2423,14 @@
           "OrgNumber": {
             "pattern": "^\\d{9}$",
             "type": "string",
-            "description": "Organization number.\r\nRequired if Name is empty",
+            "description": "Organization number.\nRequired if Name is empty",
             "nullable": true,
             "example": "883974832"
           },
           "Name": {
             "maxLength": 250,
             "type": "string",
-            "description": "Organization name.\r\nRequired if OrgNumber is empty",
+            "description": "Organization name.\nRequired if OrgNumber is empty",
             "nullable": true,
             "example": "ST. OLAVS HOSPITAL HF"
           },
@@ -2799,1372 +2590,6 @@
         "additionalProperties": false,
         "description": "Report part"
       },
-      "Melde.DTO.V10.Delivery.AttachmentPart": {
-        "type": "object",
-        "properties": {
-          "AttachmentRef": {
-            "type": "string",
-            "description": "Attachment url for downloading",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Attachment part"
-      },
-      "Melde.DTO.V10.Delivery.BiovigilanceReportPart": {
-        "type": "object",
-        "properties": {
-          "IncidentLocation": {
-            "type": "string",
-            "description": "Sted for hendelsen kode (1.x...). Obligatorisk",
-            "nullable": true,
-            "example": "1.6.4"
-          },
-          "TypeOfIncident": {
-            "type": "string",
-            "description": "Hendelsestype kode (2.x...). Obligatorisk",
-            "nullable": true,
-            "example": "2.10.1.1.1"
-          },
-          "ContributingFactors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder.",
-            "nullable": true,
-            "example": "['3.2.2', '3.4.3']"
-          },
-          "Preventability": {
-            "type": "string",
-            "description": "Forebyggbarhet kode (4.x...). Obligatorisk",
-            "nullable": true,
-            "example": "4.3"
-          },
-          "ActualConsequenceForPatient": {
-            "type": "string",
-            "description": "Faktisk konsekvens for pasient kode (5.x...). Obligatorisk",
-            "nullable": true,
-            "example": "5.2"
-          },
-          "Frequency": {
-            "type": "string",
-            "description": "Hyppighet kode (6.x...). Obligatorisk",
-            "nullable": true,
-            "example": "6.3"
-          },
-          "PossibleConsequenceOnRepetition": {
-            "type": "string",
-            "description": "Mulig konsekvens ved gjentakelse kode (7.x...). Obligatorisk",
-            "nullable": true,
-            "example": "7.4"
-          },
-          "AntiSubstance": {
-            "type": "string",
-            "description": "Tilleggsinfo: Antistoff tekst",
-            "nullable": true,
-            "example": "Anti-D"
-          },
-          "AutologousCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: AutologKode",
-            "nullable": true,
-            "example": "3"
-          },
-          "DepartmentCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: AvdelingsKode",
-            "nullable": true,
-            "example": "5"
-          },
-          "DeregistrationCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: AvregistreringKode",
-            "nullable": true,
-            "example": "1"
-          },
-          "BloodProductCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: BlodproduktKode",
-            "nullable": true,
-            "example": "2"
-          },
-          "CellsAndTissuesDefinitionCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: CellerOgVevDefinisjonKode",
-            "nullable": true,
-            "example": "4"
-          },
-          "CellsAndTissuesCode": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Tilleggsinfo: CellerOgVevKode",
-            "nullable": true,
-            "example": "['7', '8']"
-          },
-          "DefinitionCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: DefinisjonKode",
-            "nullable": true,
-            "example": "1"
-          },
-          "DonorCountryCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: DonorlandKode",
-            "nullable": true,
-            "example": "1"
-          },
-          "DonorExperienceCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: GivererfaringKode",
-            "nullable": true,
-            "example": "2"
-          },
-          "WhatWentWrongCode": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Tilleggsinfo: HvaGikkGaltKode",
-            "nullable": true,
-            "example": "['11', '12']"
-          },
-          "DiscoveredCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: OppdagetKode",
-            "nullable": true,
-            "example": "3"
-          },
-          "OrganDefinitionCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: OrganDefinisjonKode",
-            "nullable": true,
-            "example": "1"
-          },
-          "OrganCode": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Tilleggsinfo: OrganKode",
-            "nullable": true,
-            "example": "['7', '8']"
-          },
-          "ReactionStartedLocationCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: ReaksjonStartetHvorKode",
-            "nullable": true,
-            "example": "3"
-          },
-          "ReactionDurationCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: ReaksjonsvarighetKode",
-            "nullable": true,
-            "example": "4"
-          },
-          "SickLeaveCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: SykemeldingKode",
-            "nullable": true,
-            "example": "2"
-          },
-          "SymptomsCode": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Tilleggsinfo: SymptomKode",
-            "nullable": true,
-            "example": "['4', '5']"
-          },
-          "TapTypeCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: TappetypeKode",
-            "nullable": true,
-            "example": "2"
-          },
-          "TimeBeforeReactionCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: TidTilReaksjonKode",
-            "nullable": true,
-            "example": "3"
-          },
-          "AdditionalBloodProductCode": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
-            "nullable": true,
-            "example": "['0', '1']"
-          },
-          "MeasuresCode": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Tilleggsinfo: TiltakKode",
-            "nullable": true,
-            "example": "['4', '5']"
-          },
-          "TransfusionCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: TransfusjonsindikasjonKode",
-            "nullable": true,
-            "example": "2"
-          },
-          "CausationCode": {
-            "type": "string",
-            "description": "Tilleggsinfo: AarsakssammenhengKode",
-            "nullable": true,
-            "example": "3"
-          },
-          "ISBT128ProductCode": {
-            "type": "string",
-            "description": "ISBT128Produktkode tekst",
-            "nullable": true
-          },
-          "ScandiaTransplantNumber": {
-            "type": "string",
-            "description": "ScandiatransplantNummer tekst",
-            "nullable": true
-          },
-          "InfectiousSubstance": {
-            "type": "string",
-            "description": "Smittestoff tekst",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Biovigilance report part"
-      },
-      "Melde.DTO.V10.Delivery.ContactPersonPart": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string",
-            "description": "Name",
-            "nullable": true,
-            "example": "Ola Nordmann"
-          },
-          "Email": {
-            "type": "string",
-            "description": "E-mail address",
-            "nullable": true,
-            "example": "ola@nordmann.email"
-          },
-          "Phone": {
-            "type": "string",
-            "description": "Phone number",
-            "nullable": true,
-            "example": "12345678"
-          },
-          "Position": {
-            "type": "string",
-            "description": "Contact person's position",
-            "nullable": true,
-            "example": "Klossmajor"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Contact persons"
-      },
-      "Melde.DTO.V10.Delivery.CosmeticsProductInformationPart": {
-        "type": "object",
-        "properties": {
-          "ProductName": {
-            "type": "string",
-            "description": "Product name",
-            "nullable": true
-          },
-          "ProductType": {
-            "type": "string",
-            "description": "Product type",
-            "nullable": true
-          },
-          "VendorOrManufacturer": {
-            "type": "string",
-            "description": "Vendor or manufacturer",
-            "nullable": true
-          },
-          "ReportedToVendorOrManufacturer": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "BestBeforeDateExpired": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "PurchaseLocation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.PurchaseLocation"
-          },
-          "SalesChannel": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SalesChannel"
-          },
-          "BatchLotNumber": {
-            "type": "string",
-            "description": "Product batch/lot number",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Product information part"
-      },
-      "Melde.DTO.V10.Delivery.CosmeticsProductPart": {
-        "type": "object",
-        "properties": {
-          "ProductInformation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsProductInformationPart"
-          },
-          "ProductUsage": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsProductUsagePart"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Product part"
-      },
-      "Melde.DTO.V10.Delivery.CosmeticsProductUsagePart": {
-        "type": "object",
-        "properties": {
-          "BodyLocations": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Where on the body is the product used",
-            "nullable": true
-          },
-          "UsageDuration": {
-            "type": "string",
-            "description": "For how long was the product used",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Product usage part"
-      },
-      "Melde.DTO.V10.Delivery.CosmeticsRelevantInformationPart": {
-        "type": "object",
-        "properties": {
-          "SideEffectsOnPreviousUse": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoPartialDontKnow"
-          },
-          "PreviousUseDescription": {
-            "type": "string",
-            "description": "Previous use description",
-            "nullable": true
-          },
-          "ConditionOfSkinAreaBeforeUse": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Tilstand"
-            },
-            "description": "Condition of affected skin area before use of the products",
-            "nullable": true
-          },
-          "ConditionOfSkinAreaBeforeUseDescription": {
-            "type": "string",
-            "description": "Condition of affected skin area before use of the products",
-            "nullable": true
-          },
-          "AllergiesOrSkinDiseases": {
-            "type": "string",
-            "description": "Any allergies or skin diseases",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Relevant information part"
-      },
-      "Melde.DTO.V10.Delivery.CosmeticsReportPart": {
-        "type": "object",
-        "properties": {
-          "SideEffects": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsSideEffectsPart"
-          },
-          "RelevantInformation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsRelevantInformationPart"
-          },
-          "Products": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsProductPart"
-            },
-            "description": "Products part",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Cosmetics part"
-      },
-      "Melde.DTO.V10.Delivery.CosmeticsSideEffectsPart": {
-        "type": "object",
-        "properties": {
-          "AffectedSkinAreas": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Affected skin areas\r\nWhere on the body showed side effects?",
-            "nullable": true
-          },
-          "Reactions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Reactions.\r\nWhich reactions happened?",
-            "nullable": true
-          },
-          "ReactionDelay": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ReactionDelay"
-          },
-          "ReactionDelayDescription": {
-            "type": "string",
-            "description": "Reaction delay description",
-            "nullable": true
-          },
-          "SideEffectDuration": {
-            "type": "string",
-            "description": "Side effect duration",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Side effects part"
-      },
-      "Melde.DTO.V10.Delivery.DietarySupplementsProductInformationPart": {
-        "type": "object",
-        "properties": {
-          "ProductName": {
-            "type": "string",
-            "description": "Product name",
-            "nullable": true
-          },
-          "Ingredients": {
-            "type": "string",
-            "description": "Ingredients",
-            "nullable": true
-          },
-          "VendorOrManufacturer": {
-            "type": "string",
-            "description": "Vendor or manufacturer",
-            "nullable": true
-          },
-          "BestBeforeDate": {
-            "type": "string",
-            "description": "Best before date",
-            "nullable": true
-          },
-          "ReportedToVendorOrManufacturer": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "PurchaseLocation": {
-            "type": "string",
-            "description": "Purchase location",
-            "nullable": true
-          },
-          "ShopName": {
-            "type": "string",
-            "description": "Shop name",
-            "nullable": true
-          },
-          "BatchLotNumber": {
-            "type": "string",
-            "description": "Batch/lot number",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Product information part"
-      },
-      "Melde.DTO.V10.Delivery.DietarySupplementsProductPart": {
-        "type": "object",
-        "properties": {
-          "ProductInformation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsProductInformationPart"
-          },
-          "ProductUsage": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsProductUsagePart"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Product part"
-      },
-      "Melde.DTO.V10.Delivery.DietarySupplementsProductUsagePart": {
-        "type": "object",
-        "properties": {
-          "AmountOfIngredientsInDailyDose": {
-            "type": "string",
-            "description": "Amount of ingredients per daily dose",
-            "nullable": true
-          },
-          "RecommendedDailyDose": {
-            "type": "string",
-            "description": "Recommended daily dose",
-            "nullable": true
-          },
-          "ActualDailyDoseTaken": {
-            "type": "string",
-            "description": "Actual daily dose taken",
-            "nullable": true
-          },
-          "UsageDuration": {
-            "type": "string",
-            "description": "For how long was the product used",
-            "nullable": true
-          },
-          "AnyDrugsTakenAtSameTime": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "DrugsTakenAtSameTime": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Which drugs. Required if AnyDrugsTakenAtSameTime is yes.",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Product usage part"
-      },
-      "Melde.DTO.V10.Delivery.DietarySupplementsReportPart": {
-        "type": "object",
-        "properties": {
-          "SideEffect": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsSideEffectsPart"
-          },
-          "Products": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsProductPart"
-            },
-            "description": "Products part",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Report part"
-      },
-      "Melde.DTO.V10.Delivery.DietarySupplementsSideEffectsPart": {
-        "type": "object",
-        "properties": {
-          "Reactions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Reactions.\r\nWhich reactions happened?",
-            "nullable": true
-          },
-          "ReactionDelay": {
-            "type": "string",
-            "description": "Reaction delay.\r\nHow long after the use did the reactions show up?",
-            "nullable": true
-          },
-          "ReactionDelayDescription": {
-            "type": "string",
-            "description": "Reaction delay description",
-            "nullable": true
-          },
-          "Outcome": {
-            "type": "string",
-            "description": "Outcome",
-            "nullable": true
-          },
-          "OutcomeDescription": {
-            "type": "string",
-            "description": "Outcome description",
-            "nullable": true
-          },
-          "SideEffectDuration": {
-            "type": "string",
-            "description": "Side effect duration",
-            "nullable": true
-          },
-          "Ongoing": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          },
-          "SideEffectsOnPreviousUse": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "SideEffectsOnPreviousUseDescription": {
-            "type": "string",
-            "description": "Side effects on previous use description",
-            "nullable": true
-          },
-          "AnyAllergiesOrInfluencingIssues": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "AnyAllergiesOrInfluencingIssuesDescription": {
-            "type": "string",
-            "description": "Any allergies or influencing issues description.\r\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
-            "nullable": true
-          },
-          "AnyUnderlyingDiseases": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "CanDiseaseBeTheCause": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Dietary supplements side effects part"
-      },
-      "Melde.DTO.V10.Delivery.DrugSideEffectsDosagePart": {
-        "type": "object",
-        "properties": {
-          "DosageDescription": {
-            "maxLength": 300,
-            "type": "string",
-            "description": "Dosage description",
-            "nullable": true,
-            "example": "1000mg per dag"
-          },
-          "StartDate": {
-            "type": "string",
-            "description": "Dosage start date. At least year must be specified.",
-            "nullable": true,
-            "example": "\"1996-01-04\""
-          },
-          "StartTimeOfDay": {
-            "type": "string",
-            "description": "Time of day when the patient started using the drug.",
-            "nullable": true,
-            "example": "\"14:13\""
-          },
-          "EndDate": {
-            "type": "string",
-            "description": "Dosage end date. At least year must be specified.",
-            "nullable": true,
-            "example": "\"1996-01-04\""
-          },
-          "BatchLotNumber": {
-            "maxLength": 150,
-            "type": "string",
-            "description": "Batch/lot number",
-            "nullable": true,
-            "example": "Batchnummer #R1195"
-          },
-          "AdministrationArea": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.AdministrationArea"
-          },
-          "AdministrationAreaOther": {
-            "maxLength": 100,
-            "type": "string",
-            "description": "Administration area other.\r\nWhere was the drug taken/injected.",
-            "nullable": true,
-            "example": "Other administration route"
-          },
-          "DoseNumber": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.DoseNumber"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Dosage part"
-      },
-      "Melde.DTO.V10.Delivery.DrugSideEffectsDrugPart": {
-        "required": [
-          "Dosage",
-          "Role"
-        ],
-        "type": "object",
-        "properties": {
-          "DrugId": {
-            "maxLength": 64,
-            "type": "string",
-            "description": "Drug id",
-            "nullable": true,
-            "example": "ID_7BC40EE4-9823-44BD-8785-A2F9B119EF5C"
-          },
-          "AtcCode": {
-            "maxLength": 20,
-            "type": "string",
-            "description": "Drug ATC code",
-            "nullable": true,
-            "example": "J07BN01"
-          },
-          "IsVaccine": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          },
-          "IsActiveIngredient": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          },
-          "DrugName": {
-            "maxLength": 300,
-            "type": "string",
-            "description": "Drug name.",
-            "nullable": true
-          },
-          "Role": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.LegemiddelRolle"
-          },
-          "Indication": {
-            "maxLength": 150,
-            "type": "string",
-            "description": "Indication.",
-            "nullable": true,
-            "example": ""
-          },
-          "AdministrationRoute": {
-            "maxLength": 100,
-            "type": "string",
-            "description": "Drug administration route",
-            "nullable": true,
-            "example": "Oralt"
-          },
-          "StillInUse": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "DrugForm": {
-            "maxLength": 150,
-            "type": "string",
-            "description": "Drig form, i.e. tablet\r\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
-            "nullable": true
-          },
-          "UnsureDrugFormOrStrength": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          },
-          "UnsureAreas": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.UnsureArea"
-            },
-            "description": "Unsure about what?\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
-            "nullable": true
-          },
-          "UnsureDescription": {
-            "type": "string",
-            "description": "Description of the unsureness\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
-            "nullable": true
-          },
-          "DrugSideEffectsAction": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.LegemiddelBivirkningsHandling"
-          },
-          "SideEffectsReoccured": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "SalesChannel": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Kjøpssted"
-          },
-          "SalesChannelDescription": {
-            "type": "string",
-            "description": "Additional info about the sales channel",
-            "nullable": true
-          },
-          "Dosage": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsDosagePart"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Drug part"
-      },
-      "Melde.DTO.V10.Delivery.DrugSideEffectsOtherInformationPart": {
-        "type": "object",
-        "properties": {
-          "Severity": {
-            "maxItems": 6,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SideEffectSeverity"
-            },
-            "description": "Severity",
-            "nullable": true,
-            "example": [
-              "Livstruende",
-              "AnomaliFodselsdefekt"
-            ]
-          },
-          "HospitalName": {
-            "maxLength": 150,
-            "type": "string",
-            "description": "Hospital name",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Other information part"
-      },
-      "Melde.DTO.V10.Delivery.DrugSideEffectsReportPart": {
-        "required": [
-          "Drugs",
-          "Symptoms"
-        ],
-        "type": "object",
-        "properties": {
-          "Drugs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsDrugPart"
-            },
-            "description": "Drug parts"
-          },
-          "Symptoms": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsSymptomsPart"
-            },
-            "description": "Symptom parts"
-          },
-          "OtherInformation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsOtherInformationPart"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Report part"
-      },
-      "Melde.DTO.V10.Delivery.DrugSideEffectsSymptomsPart": {
-        "required": [
-          "Description"
-        ],
-        "type": "object",
-        "properties": {
-          "Description": {
-            "maxLength": 250,
-            "minLength": 1,
-            "type": "string",
-            "description": "Symptom description",
-            "example": "Blodtrykksfall"
-          },
-          "StartDate": {
-            "type": "string",
-            "description": "Symptom start date. Supports only year or year and month as well",
-            "nullable": true,
-            "example": "\"1996-01-04\""
-          },
-          "EndDate": {
-            "type": "string",
-            "description": "Symptom end date. Supports only year or year and month as well",
-            "nullable": true,
-            "example": "\"1996-01-04\""
-          },
-          "Ongoing": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          },
-          "SideEffectsDelay": {
-            "maxLength": 150,
-            "type": "string",
-            "description": "How long it took from the first use of the drug to side effects occured",
-            "nullable": true
-          },
-          "Outcome": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.SideEffectOutcome"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Symptom part"
-      },
-      "Melde.DTO.V10.Delivery.ECigaretteGeneralPart": {
-        "type": "object",
-        "properties": {
-          "HealthcarePersonnelContacted": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          },
-          "UsageFrequency": {
-            "type": "string",
-            "description": "How often do you use e-cigarettes",
-            "nullable": true
-          },
-          "OtherInformation": {
-            "type": "string",
-            "description": "Other relevant information",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "General part"
-      },
-      "Melde.DTO.V10.Delivery.ECigaretteProductPart": {
-        "type": "object",
-        "properties": {
-          "PurchaseTime": {
-            "type": "string",
-            "description": "Purchase time",
-            "nullable": true
-          },
-          "PurchaseLocation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ECigarettePurchaseLocation"
-          },
-          "PurchaseLocationName": {
-            "type": "string",
-            "description": "Name of the shop where the product was purchased",
-            "nullable": true
-          },
-          "PurchaseCountry": {
-            "type": "string",
-            "description": "The purchase country",
-            "nullable": true
-          },
-          "WebShopAddress": {
-            "type": "string",
-            "description": "Web shop address",
-            "nullable": true
-          },
-          "MakeAndModel": {
-            "type": "string",
-            "description": "Make and model information",
-            "nullable": true
-          },
-          "EcId": {
-            "type": "string",
-            "description": "EC id. Format '00000-00-00000'",
-            "nullable": true
-          },
-          "NicotineFluidUsed": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "NicotineStrength": {
-            "type": "string",
-            "description": "Nictine fluid strength",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Next of kin"
-      },
-      "Melde.DTO.V10.Delivery.ECigaretteReportPart": {
-        "type": "object",
-        "properties": {
-          "General": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ECigaretteGeneralPart"
-          },
-          "Product": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ECigaretteProductPart"
-          }
-        },
-        "additionalProperties": false,
-        "description": "ECigarette report part"
-      },
-      "Melde.DTO.V10.Delivery.HeaderPart": {
-        "type": "object",
-        "properties": {
-          "ReportRef": {
-            "type": "string",
-            "description": "Report reference",
-            "nullable": true
-          },
-          "ExternalCaseId": {
-            "type": "string",
-            "description": "Unique report identifier in the external system.",
-            "nullable": true,
-            "example": "MYSYS-REF8345"
-          },
-          "ExternalMessageId": {
-            "type": "string",
-            "description": "External message id",
-            "format": "uuid",
-            "nullable": true,
-            "example": "8c3d9d5d-bf98-4ca7-8406-8df657ae3a82"
-          },
-          "FormName": {
-            "type": "string",
-            "description": "Name of form (relevant to Helsenorge reports only)",
-            "nullable": true
-          },
-          "Reporter": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ReporterPart"
-          },
-          "Patient": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.PatientPart"
-          },
-          "Incident": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.IncidentPart"
-          },
-          "ContactPersons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ContactPersonPart"
-            },
-            "description": "List of contact persons",
-            "nullable": true
-          },
-          "AttachmentRefs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.AttachmentPart"
-            },
-            "description": "Attachments",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Header part"
-      },
-      "Melde.DTO.V10.Delivery.IncidentPart": {
-        "type": "object",
-        "properties": {
-          "IncidentDescription": {
-            "type": "string",
-            "description": "Indicent description",
-            "nullable": true
-          },
-          "IncidentDate": {
-            "type": "string",
-            "description": "Incident date. Required for report area Medical equipment",
-            "nullable": true,
-            "example": "2020-03-12"
-          },
-          "DateUnknown": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          },
-          "DateText": {
-            "type": "string",
-            "description": "Date period if no other date is given and DateUnknown is false",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Adverse incident part"
-      },
-      "Melde.DTO.V10.Delivery.MedicalEquipmentImplantInformation": {
-        "type": "object",
-        "properties": {
-          "ImplantDate": {
-            "type": "string",
-            "description": "Implant date.\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
-            "nullable": true,
-            "example": "2021-10-23"
-          },
-          "ExplantDate": {
-            "type": "string",
-            "description": "Explant date\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
-            "nullable": true,
-            "example": "2021-10-23"
-          }
-        },
-        "additionalProperties": false,
-        "description": "MedisinskUtstyrImplantatInformasjon"
-      },
-      "Melde.DTO.V10.Delivery.MedicalEquipmentReportPart": {
-        "type": "object",
-        "properties": {
-          "NkknTypeCode": {
-            "type": "integer",
-            "description": "NKKN type code",
-            "format": "int32",
-            "nullable": true
-          },
-          "EquipmentName": {
-            "type": "string",
-            "description": "Equipment name",
-            "nullable": true
-          },
-          "Manufacturer": {
-            "type": "string",
-            "description": "Manufacturer",
-            "nullable": true
-          },
-          "ModelName": {
-            "type": "string",
-            "description": "Model name",
-            "nullable": true
-          },
-          "NkknGroup": {
-            "$ref": "#/components/schemas/Melde.DTO.IdNavn"
-          },
-          "NkknCategory": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.NkknCategory"
-          },
-          "SerialNumber": {
-            "type": "string",
-            "description": "Serial number",
-            "nullable": true
-          },
-          "BatchLotNumber": {
-            "type": "string",
-            "description": "Batch/lot number",
-            "nullable": true
-          },
-          "ProductionDate": {
-            "type": "string",
-            "description": "Production date.\r\nYear only or year and month are also accepted",
-            "nullable": true
-          },
-          "ExpirationDate": {
-            "type": "string",
-            "description": "Equipment expiration date.\r\nYear only or year and month are also accepted",
-            "nullable": true,
-            "example": "2021-10-23"
-          },
-          "EquipmentLocation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.EquipmentLocation"
-          },
-          "Distributor": {
-            "type": "string",
-            "description": "Distributor",
-            "nullable": true
-          },
-          "IncidentClassification": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.IncidentClassification"
-          },
-          "ImplantInformation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.MedicalEquipmentImplantInformation"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Medical equipment report part"
-      },
-      "Melde.DTO.V10.Delivery.PatientPart": {
-        "type": "object",
-        "properties": {
-          "Nin": {
-            "type": "string",
-            "description": "National is number.\r\nRequired for report area Drug side effects if date of birth and gender is not set.\r\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
-            "nullable": true
-          },
-          "Initials": {
-            "type": "string",
-            "description": "Patient's initials",
-            "nullable": true
-          },
-          "DateOfBirth": {
-            "type": "string",
-            "description": "Date of birth.\r\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
-            "nullable": true
-          },
-          "Gender": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Gender"
-          },
-          "YearOfBirth": {
-            "type": "integer",
-            "description": "Year of birth.\r\nRequired for report areas Cosmetics and Dietary supplements",
-            "format": "int32",
-            "nullable": true
-          },
-          "Name": {
-            "type": "string",
-            "description": "Name.\r\nRequired for report area Serious incident if Nin is not set",
-            "nullable": true
-          },
-          "Nationality": {
-            "type": "string",
-            "description": "Nationality.\r\nRequired for report area Serious incident if Nin is not set",
-            "nullable": true
-          },
-          "Height": {
-            "type": "integer",
-            "description": "Height, in cm",
-            "format": "int32",
-            "nullable": true
-          },
-          "Weight": {
-            "type": "integer",
-            "description": "Weight, in kg",
-            "format": "int32",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "UonsketHendelsePasientPart"
-      },
-      "Melde.DTO.V10.Delivery.RadiationReportPart": {
-        "type": "object",
-        "additionalProperties": false,
-        "description": "Radiation report part. Currently empty, but may be expanded in the future"
-      },
-      "Melde.DTO.V10.Delivery.ReportDeliveryResponse": {
-        "type": "object",
-        "properties": {
-          "Header": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.HeaderPart"
-          },
-          "Report": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ReportPart"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Adverse incident DTO"
-      },
-      "Melde.DTO.V10.Delivery.ReportPart": {
-        "type": "object",
-        "properties": {
-          "SeriousIncident": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.SeriousIncidentReportPart"
-          },
-          "DrugSideEffects": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DrugSideEffectsReportPart"
-          },
-          "Biovigilance": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.BiovigilanceReportPart"
-          },
-          "Cosmetics": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.CosmeticsReportPart"
-          },
-          "DietarySupplements": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.DietarySupplementsReportPart"
-          },
-          "MedicalEquipment": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.MedicalEquipmentReportPart"
-          },
-          "ECigarette": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.ECigaretteReportPart"
-          },
-          "Radiation": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.RadiationReportPart"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Report part"
-      },
-      "Melde.DTO.V10.Delivery.ReporterPart": {
-        "type": "object",
-        "properties": {
-          "Nin": {
-            "type": "string",
-            "description": "Social security number",
-            "nullable": true
-          },
-          "HprId": {
-            "type": "integer",
-            "description": "HPR id",
-            "format": "int32",
-            "nullable": true
-          },
-          "Organization": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
-          },
-          "IncidentOrganization": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
-          },
-          "Email": {
-            "type": "string",
-            "description": "E-mail address",
-            "nullable": true
-          },
-          "Name": {
-            "type": "string",
-            "description": "Name",
-            "nullable": true
-          },
-          "Phone": {
-            "type": "string",
-            "description": "Phone number.\r\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
-            "nullable": true,
-            "example": "12345678"
-          },
-          "Qualification": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Qualification"
-          },
-          "Role": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ReporterRole"
-          },
-          "Position": {
-            "type": "string",
-            "description": "Position. Required for report area Serious incident",
-            "nullable": true
-          },
-          "IsOnBehalfOf": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Adverse incident part"
-      },
-      "Melde.DTO.V10.Delivery.Response.ReportInfo": {
-        "type": "object",
-        "properties": {
-          "ReportRef": {
-            "type": "string",
-            "nullable": true
-          },
-          "ReportArea": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "IsFetched": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false,
-        "description": "Adverse report info"
-      },
-      "Melde.DTO.V10.Delivery.Response.ReportInfoList": {
-        "type": "object",
-        "properties": {
-          "ReportRefs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.Response.ReportInfo"
-            },
-            "description": "Liste med meldinger",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Response containing report refs to requested reports"
-      },
-      "Melde.DTO.V10.Delivery.SeriousIncidentNextOfKin": {
-        "type": "object",
-        "properties": {
-          "Nin": {
-            "type": "string",
-            "description": "National id number",
-            "nullable": true
-          },
-          "Name": {
-            "type": "string",
-            "description": "Name",
-            "nullable": true
-          },
-          "Relation": {
-            "type": "string",
-            "description": "Relation to patient",
-            "nullable": true
-          },
-          "IsClosestNextOfKin": {
-            "$ref": "#/components/schemas/Melde.Felles.Enums.YesNoDontKnow"
-          },
-          "Address": {
-            "type": "string",
-            "description": "Address",
-            "nullable": true
-          },
-          "ZipCode": {
-            "type": "string",
-            "description": "Zip code",
-            "nullable": true
-          },
-          "City": {
-            "type": "string",
-            "description": "City",
-            "nullable": true
-          },
-          "Email": {
-            "type": "string",
-            "description": "E-mail address",
-            "nullable": true
-          },
-          "Phone": {
-            "type": "string",
-            "description": "Phone number",
-            "nullable": true,
-            "example": "12345678"
-          },
-          "Notes": {
-            "type": "string",
-            "description": "Notes",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Next of kin"
-      },
-      "Melde.DTO.V10.Delivery.SeriousIncidentReportPart": {
-        "type": "object",
-        "properties": {
-          "NextOfKin": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.SeriousIncidentNextOfKin"
-            },
-            "description": "Next of kin",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Report part"
-      },
       "Melde.DTO.V10.Dialog.CreateDialogInfo": {
         "required": [
           "ReportRef"
@@ -4181,14 +2606,14 @@
             "maximum": 199,
             "minimum": 1,
             "type": "integer",
-            "description": "Report area id.\r\nMust be specified if Melde is not able to uniquely identify the report area, by validating the report, report origin and client definition",
+            "description": "Report area id.\nMust be specified if Melde is not able to uniquely identify the report area, by validating the report, report origin and client definition",
             "format": "int32",
             "nullable": true
           },
           "Email": {
             "maxLength": 150,
             "type": "string",
-            "description": "Dialog creator's email address.\r\nRequired for web frontend only.",
+            "description": "Dialog creator's email address.\nRequired for web frontend only.",
             "format": "email",
             "nullable": true
           }
@@ -4217,12 +2642,12 @@
           "SenderName": {
             "maxLength": 64,
             "type": "string",
-            "description": "Sender name. For instance case manager name.\r\nIf not specified, the name of the client is used.\r\nNote. If the authenticated user's access token contains a 'name' claim, the claim value will overwrite the senderName.\r\nThis is the case when the user has logged in interactively.",
+            "description": "Sender name. For instance case manager name.\nIf not specified, the name of the client is used.\nNote. If the authenticated user's access token contains a 'name' claim, the claim value will overwrite the senderName.\nThis is the case when the user has logged in interactively.",
             "nullable": true
           },
           "NotifyRecipient": {
             "type": "boolean",
-            "description": "Flag to control receiver notification.\r\nIf false, the receiver will not receive a notification (often email) about the new message.\r\nIf true, the receiver is notified.\r\nDefault is true.",
+            "description": "Flag to control receiver notification.\nIf false, the receiver will not receive a notification (often email) about the new message.\nIf true, the receiver is notified.\nDefault is true.",
             "nullable": true
           },
           "Attachments": {
@@ -4427,7 +2852,7 @@
           },
           "ReceivedTime": {
             "type": "string",
-            "description": "Tidspunkt når meldingen ble mottatt av Melde. ISO datoformat i UTC.\r\nEksempel. '2022-07-13T05:20:01.908Z'",
+            "description": "Tidspunkt når meldingen ble mottatt av Melde. ISO datoformat i UTC.\nEksempel. '2022-07-13T05:20:01.908Z'",
             "format": "date-time"
           },
           "ReportRef": {
@@ -4494,7 +2919,7 @@
           "NotSpecified"
         ],
         "type": "string",
-        "description": "Pasientens kjønn (OID=3101)\r\nSe kodeverk 3101 på volven: <URL>https://volven.no/produkt.asp?id=382591&catID=3&subID=8</URL>."
+        "description": "Pasientens kjønn (OID=3101)\nSe kodeverk 3101 på volven: <URL>https://volven.no/produkt.asp?id=382591&catID=3&subID=8</URL>."
       },
       "Melde.DTO.V10.Enums.IncidentClassification": {
         "enum": [
@@ -4626,7 +3051,7 @@
           "Unknown"
         ],
         "type": "string",
-        "description": "Side effect outcome\r\nRef kodeverk 7469 at volven: <URL>https://volven.no/produkt.asp?id=382526&catID=3&subID=8</URL>."
+        "description": "Side effect outcome\nRef kodeverk 7469 at volven: <URL>https://volven.no/produkt.asp?id=382526&catID=3&subID=8</URL>."
       },
       "Melde.DTO.V10.Enums.SideEffectSeverity": {
         "enum": [
@@ -4638,7 +3063,7 @@
           "Other"
         ],
         "type": "string",
-        "description": "Bivirkningens alvorlighet\r\nSe kodeverk 7468 på volven: <URL>https://volven.no/produkt.asp?id=382525&catID=3&subID=8</URL>."
+        "description": "Bivirkningens alvorlighet\nSe kodeverk 7468 på volven: <URL>https://volven.no/produkt.asp?id=382525&catID=3&subID=8</URL>."
       },
       "Melde.DTO.V10.Enums.Tilstand": {
         "enum": [
@@ -4848,33 +3273,6 @@
         },
         "additionalProperties": false
       },
-      "Microsoft.AspNetCore.Mvc.ProblemDetails": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": { }
-      },
       "System.Net.HttpStatusCode": {
         "enum": [
           100,
@@ -4961,16 +3359,12 @@
       "description": "Adverse incident reporting API version 2 accepts DPoP access tokens only"
     },
     {
-      "name": "Delivery",
-      "description": "Delivery API version 2 accepts DPoP access tokens only"
-    },
-    {
       "name": "Dialog",
       "description": "Dialog API version 2 accepts DPoP access tokens only"
     },
     {
       "name": "EksternDialogForVigisec",
-      "description": "Tilbyr tjenester for å føre dialog.\r\nUnder utfasing, bruk api/v2/dialog endepunkter istedet"
+      "description": "Tilbyr tjenester for å føre dialog.\nUnder utfasing, bruk api/v2/dialog endepunkter istedet"
     },
     {
       "name": "Nokup",
