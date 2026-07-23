@@ -20,9 +20,8 @@
 	</ItemGroup>
 
 	<!-- Remember to set <ClassName> - https://github.com/dotnet/aspnetcore/issues/21656 -->
-
 	<ItemGroup>
-		<OpenApiReference Include="OpenAPI\swagger-v2.json" CodeGenerator="NSwagCSharp" Namespace="MeldeV2">
+		<OpenApiReference Include="OpenAPI\swagger.json" CodeGenerator="NSwagCSharp" Namespace="MeldeV2">
 			<!--<SourceUri>https://api.qa.melde.no/swagger/index.html?url=/swagger/External/v1/swagger.json</SourceUri>-->
 			<ClassName>{controller}Client</ClassName>
 			<Options>/useBaseUrl:false /GenerateClientInterfaces:false /GenerateExceptionClasses:false /AdditionalNamespaceUsages:OpenAPI</Options>
