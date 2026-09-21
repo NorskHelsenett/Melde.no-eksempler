@@ -2,7 +2,7 @@
   "openapi": "3.0.4",
   "info": {
     "title": "Melde API",
-    "description": "<p>API for reporting and handling dialog related to adverse incidents.</p>\r\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\r\n",
+    "description": "<p>API for reporting and handling dialog related to adverse incidents.</p>\n<p>Usage examples can be found in <a href=\"https://github.com/NorskHelsenett/Melde.no-eksempler\" target=\"_blank\">our example repository</a></p>\n",
     "contact": {
       "name": "Norsk Helsenett",
       "url": "https://www.nhn.no",
@@ -14,20 +14,20 @@
     "/api/v2/report/validate-adverse-incident": {
       "post": {
         "tags": [
-          "AdverseIncident"
+          "Adverse Incident Reporting"
         ],
         "summary": "Validate an adverse indicent.",
         "description": "Requires authentication via HelseId and a valid HPR authorization",
-        "requestBody": {
-          "description": "Request object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentRequest"
-              }
+        "parameters": [
+          {
+            "name": "adverseIncidentRequest",
+            "in": "query",
+            "description": "Request object",
+            "schema": {
+              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentRequest"
             }
           }
-        },
+        ],
         "responses": {
           "401": {
             "description": "Unauthorized"
@@ -68,123 +68,12 @@
         }
       }
     },
-    "/api/v2/report/adverse-incident-multipart": {
-      "post": {
-        "tags": [
-          "AdverseIncident"
-        ],
-        "summary": "Report an adverse indicent.\r\nThe request must be of type multi part form data and contain one part with content type 'application/json' (the form) and\r\nup to 5 attachments in each file part.",
-        "description": "Requires authentication via HelseId",
-        "parameters": [
-          {
-            "name": "adverseIncidentRequest",
-            "in": "query",
-            "description": "Request form data",
-            "schema": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentRequest"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "attachments": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "Uploaded files"
-                  }
-                }
-              },
-              "encoding": {
-                "attachments": {
-                  "style": "form"
-                }
-              }
-            },
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "attachments": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "Uploaded files"
-                  }
-                }
-              },
-              "encoding": {
-                "attachments": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.KvitteringsMelding"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v2/report/adverse-incident": {
       "post": {
         "tags": [
-          "AdverseIncident"
+          "Adverse Incident Reporting"
         ],
-        "summary": "Report an adverse indicent.\r\nThe request must be of type multi part form data and contain one part with content type 'application/json' (the form) and\r\nup to 5 attachments in each file part.",
+        "summary": "Report an adverse indicent.\nThe request must be of type multi part form data and contain one part with content type 'application/json' (the form) and\nup to 5 attachments in each file part.",
         "description": "Requires authentication via HelseId",
         "parameters": [
           {
@@ -299,9 +188,18 @@
         "description": "Requires authentication via HelseId",
         "parameters": [
           {
+            "name": "reportArea",
+            "in": "query",
+            "description": "Report area (optional)",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
             "name": "fromDate",
             "in": "query",
-            "description": "Report reference",
+            "description": "Optional from date in the ISO date format [yyyy-mm-dd]",
             "schema": {
               "type": "string"
             }
@@ -361,7 +259,16 @@
             "description": "Report reference",
             "required": true,
             "schema": {
+              "maxLength": 15,
               "type": "string"
+            }
+          },
+          {
+            "name": "markAsRead",
+            "in": "query",
+            "description": "If true, mark the report as read (Optional, default false)",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -405,6 +312,58 @@
         }
       }
     },
+    "/api/v2/delivery/report/{reportRef}/markAsRead": {
+      "patch": {
+        "tags": [
+          "Delivery"
+        ],
+        "summary": "Mark specific report as read",
+        "description": "Requires authentication via HelseId",
+        "parameters": [
+          {
+            "name": "reportRef",
+            "in": "path",
+            "description": "Report reference",
+            "required": true,
+            "schema": {
+              "maxLength": 15,
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Microsoft.AspNetCore.Mvc.ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v2/delivery/report/{reportRef}/attachment/{attachmentRef}": {
       "get": {
         "tags": [
@@ -419,6 +378,7 @@
             "description": "Report reference",
             "required": true,
             "schema": {
+              "maxLength": 15,
               "type": "string"
             }
           },
@@ -428,6 +388,7 @@
             "description": "Attachment reference",
             "required": true,
             "schema": {
+              "maxLength": 15,
               "type": "string"
             }
           }
@@ -478,8 +439,18 @@
         "tags": [
           "Delivery"
         ],
-        "summary": "Receive delivery events (clientRegistered, newReport, reportDeleted).\r\nThis endpoint will keep the connection to the client open for a long period to be\r\nable to send notification events to the client(s) (SSE, server sent events)",
+        "summary": "Receive delivery events (clientRegistered, newReport, reportDeleted).\nThis endpoint will keep the connection to the client open for a long period to be\nable to send notification events to the client(s) (SSE, server sent events)",
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/System.Net.ServerSentEvents.SseItem`1[[Melde.DTO.SseEvents.DeliveryEventMessage, Melde.DTO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized"
           },
@@ -694,6 +665,15 @@
             "schema": {
               "type": "boolean"
             }
+          },
+          {
+            "name": "markAsRead",
+            "in": "query",
+            "description": "If true, the dialog will be marked as read (Optional, default true, to be backward compatible)",
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -722,6 +702,59 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Dialog not found"
+          }
+        }
+      }
+    },
+    "/api/v2/dialog/{dialogRef}/markAsRead": {
+      "patch": {
+        "tags": [
+          "Dialog"
+        ],
+        "summary": "Mark dialog as read",
+        "parameters": [
+          {
+            "name": "dialogRef",
+            "in": "path",
+            "description": "Dialog reference. Format [Dxxxx]",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Authentication failed"
+          },
+          "403": {
+            "description": "Authorization failed. Check for valid scopes in access token"
+          },
+          "500": {
+            "description": "Other error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Unread messages returned"
           },
           "400": {
             "description": "Bad Request",
@@ -790,8 +823,18 @@
         "tags": [
           "Dialog"
         ],
-        "summary": "Receive dialog events (clientRegistered, newDialog, newMessage, dialogDeleted, readMessages).\r\nThis endpoint will keep the connection to the client open for a long period to be\r\nable to send notification events to the client(s) (SSE, server sent events)",
+        "summary": "Receive dialog events (clientRegistered, newDialog, newMessage, dialogDeleted, readMessages).\nThis endpoint will keep the connection to the client open for a long period to be\nable to send notification events to the client(s) (SSE, server sent events)",
         "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/System.Net.ServerSentEvents.SseItem`1[[Melde.DTO.SseEvents.DialogEventMessage, Melde.DTO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Authentication failed"
           },
@@ -809,159 +852,6 @@
             }
           }
         }
-      }
-    },
-    "/api/ekstern-vs/dialog": {
-      "post": {
-        "tags": [
-          "EksternDialogForVigisec"
-        ],
-        "summary": "Oppretter en dialog for en gitt uønsket hendelse, meldeordning og pålogget saksbehandler.",
-        "requestBody": {
-          "description": "Informasjon om hvilken uønsket hendelse og hvilken meldeordning man vil opprette dialog for, pluss tekst i første melding",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Melde.WebApi.Controllers.OpprettDialogInfoVS"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Authentication failed"
-          },
-          "500": {
-            "description": "Other error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          },
-          "201": {
-            "description": "Opprettet dialog",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogOpprettetRespons"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Dialog eksisterte, eller feil i meldingen, for eksempel påkrevde felt mangler",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogOpprettetRespons"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/ekstern-vs/dialog/opprettmelding": {
-      "post": {
-        "tags": [
-          "EksternDialogForVigisec"
-        ],
-        "summary": "Oppretter en ny melding i en gitt dialog.",
-        "requestBody": {
-          "description": "Hvilken dialog man vil opprette en ny melding i, og hvilken tekst det skal stå i meldingen",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Melde.WebApi.Controllers.OpprettDialogMeldingInfoVS"
-              }
-            }
-          }
-        },
-        "responses": {
-          "401": {
-            "description": "Authentication failed"
-          },
-          "500": {
-            "description": "Other error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Opprettet dialogmelding",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogMeldingOpprettetRespons"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Finner ikke dialog",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.DialogMeldingOpprettetRespons"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
-    "/api/ekstern-vs/dialog/sok/{refnr}": {
-      "get": {
-        "tags": [
-          "EksternDialogForVigisec"
-        ],
-        "summary": "Henter informasjon om hvilke meldeordninger en uønsket hendelse har gått til, og eventuelt dialog hvor pålogget bruker er saksbehandler.",
-        "parameters": [
-          {
-            "name": "refnr",
-            "in": "path",
-            "description": "Hvilken uønsket hendelse man vil hente eventuell dialog for",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "401": {
-            "description": "Authentication failed"
-          },
-          "500": {
-            "description": "Other error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.Response.BaseRespons"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Kall uten feil",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Melde.DTO.V10.Dialog.Response.SearchDialogRespons"
-                }
-              }
-            }
-          }
-        },
-        "deprecated": true
       }
     },
     "/api/v2/nokup/lookup/{codes}": {
@@ -1158,6 +1048,54 @@
         "additionalProperties": false,
         "description": "Svarmelding uavhengig av om kall til controlleren gikk bra eller ikke. Dersom feil oppstår legges det i Feil-feltet."
       },
+      "Melde.DTO.SseEvents.DeliveryEventMessage": {
+        "type": "object",
+        "properties": {
+          "ReportArea": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "EventType": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasNewReports": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Melde.DTO.SseEvents.DialogEventMessage": {
+        "type": "object",
+        "properties": {
+          "ReportArea": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "EventType": {
+            "type": "string",
+            "nullable": true
+          },
+          "DialogRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportRef": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasUnreadMessages": {
+            "type": "boolean",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentHeaderPart": {
         "required": [
           "ExternalCaseId",
@@ -1260,7 +1198,7 @@
           "Nin": {
             "pattern": "^\\d{11}$",
             "type": "string",
-            "description": "National is number.\r\nRequired for report area Drug side effects if date of birth and gender is not set.\r\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
+            "description": "National is number.\nRequired for report area Drug side effects if date of birth and gender is not set.\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
             "nullable": true
           },
           "Initials": {
@@ -1271,7 +1209,7 @@
           },
           "DateOfBirth": {
             "type": "string",
-            "description": "Date of birth.\r\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
+            "description": "Date of birth.\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
             "nullable": true
           },
           "Gender": {
@@ -1281,20 +1219,20 @@
             "maximum": 2100,
             "minimum": 1900,
             "type": "integer",
-            "description": "Year of birth.\r\nRequired for report areas Cosmetics and Dietary supplements",
+            "description": "Year of birth.\nRequired for report areas Cosmetics and Dietary supplements",
             "format": "int32",
             "nullable": true
           },
           "Name": {
             "maxLength": 150,
             "type": "string",
-            "description": "Name.\r\nRequired for report area Serious incident if Nin is not set",
+            "description": "Name.\nRequired for report area Serious incident if Nin is not set",
             "nullable": true
           },
           "Nationality": {
             "maxLength": 150,
             "type": "string",
-            "description": "Nationality.\r\nRequired for report area Serious incident if Nin is not set",
+            "description": "Nationality.\nRequired for report area Serious incident if Nin is not set",
             "nullable": true
           },
           "Height": {
@@ -1426,7 +1364,7 @@
           "Phone": {
             "maxLength": 50,
             "type": "string",
-            "description": "Phone number.\r\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
+            "description": "Phone number.\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
             "format": "tel",
             "nullable": true,
             "example": "12345678"
@@ -1492,7 +1430,7 @@
             "maxLength": 6993600,
             "minLength": 1,
             "type": "string",
-            "description": "Attachment content.\r\nBase64 encoded.",
+            "description": "Attachment content.\nBase64 encoded.",
             "example": "QSBuaWNlIFBERiBmaWxlCg=="
           }
         },
@@ -1534,7 +1472,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder.",
+            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\nReturnerer en liste med valgte koder.",
             "example": "['3.2.2', '3.4.3']"
           },
           "Preventability": {
@@ -1837,6 +1775,7 @@
             "description": "Product name"
           },
           "ProductType": {
+            "maxLength": 150,
             "minLength": 1,
             "type": "string",
             "description": "Product type"
@@ -1980,7 +1919,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Affected skin areas\r\nWhere on the body showed side effects?",
+            "description": "Affected skin areas\nWhere on the body showed side effects?",
             "nullable": true
           },
           "Reactions": {
@@ -1990,7 +1929,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reactions.\r\nWhich reactions happened?",
+            "description": "Reactions.\nWhich reactions happened?",
             "nullable": true
           },
           "ReactionDelay": {
@@ -2168,13 +2107,13 @@
             "items": {
               "type": "string"
             },
-            "description": "Reactions.\r\nWhich reactions happened?",
+            "description": "Reactions.\nWhich reactions happened?",
             "nullable": true
           },
           "ReactionDelay": {
             "maxLength": 100,
             "type": "string",
-            "description": "Reaction delay.\r\nHow long after the use did the reactions show up?",
+            "description": "Reaction delay.\nHow long after the use did the reactions show up?",
             "nullable": true
           },
           "ReactionDelayDescription": {
@@ -2219,7 +2158,7 @@
           "AnyAllergiesOrInfluencingIssuesDescription": {
             "maxLength": 500,
             "type": "string",
-            "description": "Any allergies or influencing issues description.\r\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
+            "description": "Any allergies or influencing issues description.\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
             "nullable": true
           },
           "AnyUnderlyingDiseases": {
@@ -2273,7 +2212,7 @@
           "AdministrationAreaOther": {
             "maxLength": 100,
             "type": "string",
-            "description": "Administration area other.\r\nWhere was the drug taken/injected.",
+            "description": "Administration area other.\nWhere was the drug taken/injected.",
             "nullable": true,
             "example": "Other administration route"
           },
@@ -2340,7 +2279,7 @@
           "DrugForm": {
             "maxLength": 150,
             "type": "string",
-            "description": "Drig form, i.e. tablet\r\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
+            "description": "Drig form, i.e. tablet\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
             "nullable": true
           },
           "UnsureDrugFormOrStrength": {
@@ -2351,12 +2290,12 @@
             "items": {
               "$ref": "#/components/schemas/Melde.DTO.V10.Enums.UnsureArea"
             },
-            "description": "Unsure about what?\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "description": "Unsure about what?\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
             "nullable": true
           },
           "UnsureDescription": {
             "type": "string",
-            "description": "Description of the unsureness\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "description": "Description of the unsureness\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
             "nullable": true
           },
           "DrugSideEffectsAction": {
@@ -2573,13 +2512,13 @@
         "properties": {
           "ImplantDate": {
             "type": "string",
-            "description": "Implant date.\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "description": "Implant date.\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
             "example": "2021-10-23"
           },
           "ExplantDate": {
             "type": "string",
-            "description": "Explant date\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "description": "Explant date\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
             "example": "2021-10-23"
           }
@@ -2641,12 +2580,12 @@
           },
           "ProductionDate": {
             "type": "string",
-            "description": "Production date.\r\nYear only or year and month are also accepted",
+            "description": "Production date.\nYear only or year and month are also accepted",
             "nullable": true
           },
           "ExpirationDate": {
             "type": "string",
-            "description": "Equipment expiration date.\r\nYear only or year and month are also accepted",
+            "description": "Equipment expiration date.\nYear only or year and month are also accepted",
             "nullable": true,
             "example": "2021-10-23"
           },
@@ -2675,14 +2614,14 @@
           "OrgNumber": {
             "pattern": "^\\d{9}$",
             "type": "string",
-            "description": "Organization number.\r\nRequired if Name is empty",
+            "description": "Organization number.\nRequired if Name is empty",
             "nullable": true,
             "example": "883974832"
           },
           "Name": {
             "maxLength": 250,
             "type": "string",
-            "description": "Organization name.\r\nRequired if OrgNumber is empty",
+            "description": "Organization name.\nRequired if OrgNumber is empty",
             "nullable": true,
             "example": "ST. OLAVS HOSPITAL HF"
           },
@@ -2874,7 +2813,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\r\nReturnerer en liste med valgte koder.",
+            "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\nReturnerer en liste med valgte koder.",
             "nullable": true,
             "example": "['3.2.2', '3.4.3']"
           },
@@ -3248,7 +3187,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Affected skin areas\r\nWhere on the body showed side effects?",
+            "description": "Affected skin areas\nWhere on the body showed side effects?",
             "nullable": true
           },
           "Reactions": {
@@ -3256,7 +3195,7 @@
             "items": {
               "type": "string"
             },
-            "description": "Reactions.\r\nWhich reactions happened?",
+            "description": "Reactions.\nWhich reactions happened?",
             "nullable": true
           },
           "ReactionDelay": {
@@ -3398,12 +3337,12 @@
             "items": {
               "type": "string"
             },
-            "description": "Reactions.\r\nWhich reactions happened?",
+            "description": "Reactions.\nWhich reactions happened?",
             "nullable": true
           },
           "ReactionDelay": {
             "type": "string",
-            "description": "Reaction delay.\r\nHow long after the use did the reactions show up?",
+            "description": "Reaction delay.\nHow long after the use did the reactions show up?",
             "nullable": true
           },
           "ReactionDelayDescription": {
@@ -3442,7 +3381,7 @@
           },
           "AnyAllergiesOrInfluencingIssuesDescription": {
             "type": "string",
-            "description": "Any allergies or influencing issues description.\r\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
+            "description": "Any allergies or influencing issues description.\nRequired when AnyAllergiesOrInfluencingIssues is Yes",
             "nullable": true
           },
           "AnyUnderlyingDiseases": {
@@ -3496,7 +3435,7 @@
           "AdministrationAreaOther": {
             "maxLength": 100,
             "type": "string",
-            "description": "Administration area other.\r\nWhere was the drug taken/injected.",
+            "description": "Administration area other.\nWhere was the drug taken/injected.",
             "nullable": true,
             "example": "Other administration route"
           },
@@ -3563,7 +3502,7 @@
           "DrugForm": {
             "maxLength": 150,
             "type": "string",
-            "description": "Drig form, i.e. tablet\r\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
+            "description": "Drig form, i.e. tablet\nRef kodeverk 7448 at Volven: <URL>https://volven.no/produkt.asp?id=382962&catID=3&subID=8</URL>.",
             "nullable": true
           },
           "UnsureDrugFormOrStrength": {
@@ -3574,12 +3513,12 @@
             "items": {
               "$ref": "#/components/schemas/Melde.DTO.V10.Enums.UnsureArea"
             },
-            "description": "Unsure about what?\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "description": "Unsure about what?\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
             "nullable": true
           },
           "UnsureDescription": {
             "type": "string",
-            "description": "Description of the unsureness\r\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
+            "description": "Description of the unsureness\nRequired if UnsureDrugFormOrStrength is Yes and Role is suspect or interacting",
             "nullable": true
           },
           "DrugSideEffectsAction": {
@@ -3787,6 +3726,12 @@
             "description": "Report reference",
             "nullable": true
           },
+          "ReportTime": {
+            "type": "string",
+            "description": "Report time",
+            "nullable": true,
+            "example": "2026-09-07T08:10:34"
+          },
           "ExternalCaseId": {
             "type": "string",
             "description": "Unique report identifier in the external system.",
@@ -3803,6 +3748,14 @@
           "FormName": {
             "type": "string",
             "description": "Name of form (relevant to Helsenorge reports only)",
+            "nullable": true
+          },
+          "Recipients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Melde.Felles.Enums.RoutingDestination"
+            },
+            "description": "The recipients of this report",
             "nullable": true
           },
           "Reporter": {
@@ -3833,6 +3786,20 @@
         },
         "additionalProperties": false,
         "description": "Header part"
+      },
+      "Melde.DTO.V10.Delivery.IdName": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "Melde.DTO.V10.Delivery.IncidentPart": {
         "type": "object",
@@ -3865,13 +3832,13 @@
         "properties": {
           "ImplantDate": {
             "type": "string",
-            "description": "Implant date.\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "description": "Implant date.\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
             "example": "2021-10-23"
           },
           "ExplantDate": {
             "type": "string",
-            "description": "Explant date\r\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
+            "description": "Explant date\nYear only or year and month are also accepted (2021-10-23 or 2021-10 or 2021)",
             "nullable": true,
             "example": "2021-10-23"
           }
@@ -3921,12 +3888,12 @@
           },
           "ProductionDate": {
             "type": "string",
-            "description": "Production date.\r\nYear only or year and month are also accepted",
+            "description": "Production date.\nYear only or year and month are also accepted",
             "nullable": true
           },
           "ExpirationDate": {
             "type": "string",
-            "description": "Equipment expiration date.\r\nYear only or year and month are also accepted",
+            "description": "Equipment expiration date.\nYear only or year and month are also accepted",
             "nullable": true,
             "example": "2021-10-23"
           },
@@ -3948,12 +3915,80 @@
         "additionalProperties": false,
         "description": "Medical equipment report part"
       },
+      "Melde.DTO.V10.Delivery.OrganizationPart": {
+        "type": "object",
+        "properties": {
+          "OrgNumber": {
+            "type": "string",
+            "description": "Organization number.\nRequired if Name is empty",
+            "nullable": true,
+            "example": "883974832"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Organization name.\nRequired if OrgNumber is empty",
+            "nullable": true,
+            "example": "ST. OLAVS HOSPITAL HF"
+          },
+          "Address": {
+            "type": "string",
+            "description": "Organization address",
+            "nullable": true,
+            "example": "SykehusGaten 5"
+          },
+          "ZipCode": {
+            "type": "string",
+            "description": "Organization zip code",
+            "nullable": true,
+            "example": "\"0424\""
+          },
+          "City": {
+            "type": "string",
+            "description": "Organization city",
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Municipality": {
+            "type": "string",
+            "description": "Organization municipality",
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "MunicipalityNumber": {
+            "type": "string",
+            "description": "Organization municipality number",
+            "nullable": true,
+            "example": "Oslo"
+          },
+          "Institution": {
+            "type": "string",
+            "description": "Institution",
+            "nullable": true
+          },
+          "Department": {
+            "type": "string",
+            "description": "Department",
+            "nullable": true
+          },
+          "IndustrialCode": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.IdName"
+          },
+          "LocalReferenceNumber": {
+            "type": "string",
+            "description": "Local reference number if applicable",
+            "nullable": true,
+            "example": "ATL-123321"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Organization part"
+      },
       "Melde.DTO.V10.Delivery.PatientPart": {
         "type": "object",
         "properties": {
           "Nin": {
             "type": "string",
-            "description": "National is number.\r\nRequired for report area Drug side effects if date of birth and gender is not set.\r\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
+            "description": "National is number.\nRequired for report area Drug side effects if date of birth and gender is not set.\nRequired for report area Serious incident if name, gender, date of birth and nationality is not set",
             "nullable": true
           },
           "Initials": {
@@ -3963,7 +3998,7 @@
           },
           "DateOfBirth": {
             "type": "string",
-            "description": "Date of birth.\r\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
+            "description": "Date of birth.\nRequired for report areas Drug side effects and Serious incident if Nin is not set",
             "nullable": true
           },
           "Gender": {
@@ -3971,18 +4006,18 @@
           },
           "YearOfBirth": {
             "type": "integer",
-            "description": "Year of birth.\r\nRequired for report areas Cosmetics and Dietary supplements",
+            "description": "Year of birth.\nRequired for report areas Cosmetics and Dietary supplements",
             "format": "int32",
             "nullable": true
           },
           "Name": {
             "type": "string",
-            "description": "Name.\r\nRequired for report area Serious incident if Nin is not set",
+            "description": "Name.\nRequired for report area Serious incident if Nin is not set",
             "nullable": true
           },
           "Nationality": {
             "type": "string",
-            "description": "Nationality.\r\nRequired for report area Serious incident if Nin is not set",
+            "description": "Nationality.\nRequired for report area Serious incident if Nin is not set",
             "nullable": true
           },
           "Height": {
@@ -4065,10 +4100,10 @@
             "nullable": true
           },
           "Organization": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.OrganizationPart"
           },
           "IncidentOrganization": {
-            "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.OrganizationPart"
+            "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.OrganizationPart"
           },
           "Email": {
             "type": "string",
@@ -4082,7 +4117,7 @@
           },
           "Phone": {
             "type": "string",
-            "description": "Phone number.\r\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
+            "description": "Phone number.\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
             "nullable": true,
             "example": "12345678"
           },
@@ -4115,7 +4150,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "IsFetched": {
+          "IsRead": {
             "type": "boolean"
           }
         },
@@ -4125,7 +4160,7 @@
       "Melde.DTO.V10.Delivery.Response.ReportInfoList": {
         "type": "object",
         "properties": {
-          "ReportRefs": {
+          "ReportInfos": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Melde.DTO.V10.Delivery.Response.ReportInfo"
@@ -4224,14 +4259,14 @@
             "maximum": 199,
             "minimum": 1,
             "type": "integer",
-            "description": "Report area id.\r\nMust be specified if Melde is not able to uniquely identify the report area, by validating the report, report origin and client definition",
+            "description": "Report area id.\nMust be specified if Melde is not able to uniquely identify the report area, by validating the report, report origin and client definition",
             "format": "int32",
             "nullable": true
           },
           "Email": {
             "maxLength": 150,
             "type": "string",
-            "description": "Dialog creator's email address.\r\nRequired for web frontend only.",
+            "description": "Dialog creator's email address.\nRequired for web frontend only.",
             "format": "email",
             "nullable": true
           }
@@ -4253,19 +4288,19 @@
           },
           "MessageText": {
             "maxLength": 1048576,
-            "minLength": 1,
+            "minLength": 10,
             "type": "string",
             "description": "Message text. HTML formatting may be used if the receiving system supports it. Melde does."
           },
           "SenderName": {
             "maxLength": 64,
             "type": "string",
-            "description": "Sender name. For instance case manager name.\r\nIf not specified, the name of the client is used.\r\nNote. If the authenticated user's access token contains a 'name' claim, the claim value will overwrite the senderName.\r\nThis is the case when the user has logged in interactively.",
+            "description": "Sender name. For instance case manager name.\nIf not specified, the name of the client is used.\nNote. If the authenticated user's access token contains a 'name' claim, the claim value will overwrite the senderName.\nThis is the case when the user has logged in interactively.",
             "nullable": true
           },
           "NotifyRecipient": {
             "type": "boolean",
-            "description": "Flag to control receiver notification.\r\nIf false, the receiver will not receive a notification (often email) about the new message.\r\nIf true, the receiver is notified.\r\nDefault is true.",
+            "description": "Flag to control receiver notification.\nIf false, the receiver will not receive a notification (often email) about the new message.\nIf true, the receiver is notified.\nDefault is true.",
             "nullable": true
           },
           "Attachments": {
@@ -4299,24 +4334,6 @@
         "additionalProperties": false,
         "description": "Kvittering for opprettet dialog"
       },
-      "Melde.DTO.V10.Dialog.Response.DialogMeldingOpprettetRespons": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          },
-          "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
-          },
-          "Referansenummer": {
-            "type": "string",
-            "description": "Referansenummer til generert dialogmelding i En Vei Inn sin database",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Kvittering for opprettet dialogmelding"
-      },
       "Melde.DTO.V10.Dialog.Response.DialogMessageCreatedResponse": {
         "type": "object",
         "properties": {
@@ -4334,29 +4351,6 @@
         },
         "additionalProperties": false,
         "description": "Kvittering for opprettet dialogmelding"
-      },
-      "Melde.DTO.V10.Dialog.Response.DialogOpprettetRespons": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          },
-          "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
-          },
-          "DialogRefnr": {
-            "type": "string",
-            "description": "Referansenummer til generert dialog i En Vei Inn sin database",
-            "nullable": true
-          },
-          "MeldingRefNr": {
-            "type": "string",
-            "description": "Melding referansenummer",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Kvittering for opprettet dialog"
       },
       "Melde.DTO.V10.Dialog.Response.GetDialogInfoResponse": {
         "type": "object",
@@ -4400,48 +4394,6 @@
         "additionalProperties": false,
         "description": "Respons som inneholder en liste med uleste meldinger"
       },
-      "Melde.DTO.V10.Dialog.Response.SearchDialogRespons": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          },
-          "Feil": {
-            "$ref": "#/components/schemas/Melde.DTO.Response.FeilmeldingViewModel"
-          },
-          "MelderEpostAdresse": {
-            "type": "string",
-            "description": "Melder's email address",
-            "nullable": true
-          },
-          "Meldeordninger": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.IdNavn"
-            },
-            "description": "Meldeordninger den uønskede hendelsen er sendt til",
-            "nullable": true
-          },
-          "MeldeordningId": {
-            "type": "integer",
-            "description": "Meldeordning id for the dialog, if the dialog exists",
-            "format": "int32",
-            "nullable": true
-          },
-          "MeldeordningNavn": {
-            "type": "string",
-            "description": "Meldeordning name for the dialog, if the dialog exists",
-            "nullable": true
-          },
-          "Referansenummer": {
-            "type": "string",
-            "description": "Dialog reference number, if the dialog exists",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Kvittering for henting av dialog"
-      },
       "Melde.DTO.V10.Dialog.Response.UnreadMessage": {
         "required": [
           "MessageRef",
@@ -4470,7 +4422,7 @@
           },
           "ReceivedTime": {
             "type": "string",
-            "description": "Tidspunkt når meldingen ble mottatt av Melde. ISO datoformat i UTC.\r\nEksempel. '2022-07-13T05:20:01.908Z'",
+            "description": "Tidspunkt når meldingen ble mottatt av Melde. ISO datoformat i UTC.\nEksempel. '2022-07-13T05:20:01.908Z'",
             "format": "date-time"
           },
           "ReportRef": {
@@ -4537,7 +4489,7 @@
           "NotSpecified"
         ],
         "type": "string",
-        "description": "Pasientens kjønn (OID=3101)\r\nSe kodeverk 3101 på volven: <URL>https://volven.no/produkt.asp?id=382591&catID=3&subID=8</URL>."
+        "description": "Pasientens kjønn (OID=3101)\nSe kodeverk 3101 på volven: <URL>https://volven.no/produkt.asp?id=382591&catID=3&subID=8</URL>."
       },
       "Melde.DTO.V10.Enums.IncidentClassification": {
         "enum": [
@@ -4669,7 +4621,7 @@
           "Unknown"
         ],
         "type": "string",
-        "description": "Side effect outcome\r\nRef kodeverk 7469 at volven: <URL>https://volven.no/produkt.asp?id=382526&catID=3&subID=8</URL>."
+        "description": "Side effect outcome\nRef kodeverk 7469 at volven: <URL>https://volven.no/produkt.asp?id=382526&catID=3&subID=8</URL>."
       },
       "Melde.DTO.V10.Enums.SideEffectSeverity": {
         "enum": [
@@ -4681,7 +4633,7 @@
           "Other"
         ],
         "type": "string",
-        "description": "Bivirkningens alvorlighet\r\nSe kodeverk 7468 på volven: <URL>https://volven.no/produkt.asp?id=382525&catID=3&subID=8</URL>."
+        "description": "Bivirkningens alvorlighet\nSe kodeverk 7468 på volven: <URL>https://volven.no/produkt.asp?id=382525&catID=3&subID=8</URL>."
       },
       "Melde.DTO.V10.Enums.Tilstand": {
         "enum": [
@@ -4703,38 +4655,32 @@
         "type": "string",
         "description": "Legemiddelrolle"
       },
-      "Melde.DTO.V10.VedleggVigisec": {
-        "required": [
-          "Innhold",
-          "Navn"
-        ],
-        "type": "object",
-        "properties": {
-          "Innhold": {
-            "minLength": 1,
-            "type": "string",
-            "description": "Filinnhold. Base 64 enkodet string."
-          },
-          "Filtype": {
-            "type": "string",
-            "description": "Filtype (mimetype)",
-            "nullable": true
-          },
-          "Navn": {
-            "maxLength": 256,
-            "minLength": 1,
-            "type": "string",
-            "description": "Filnavn."
-          }
-        },
-        "additionalProperties": false
-      },
       "Melde.Felles.Enums.Language": {
         "enum": [
           0,
           1,
           2,
           3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Melde.Felles.Enums.RoutingDestination": {
+        "enum": [
+          0,
+          2,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          100,
+          101,
+          102,
+          999
         ],
         "type": "integer",
         "format": "int32"
@@ -4832,65 +4778,6 @@
         "type": "integer",
         "format": "int32"
       },
-      "Melde.WebApi.Controllers.OpprettDialogInfoVS": {
-        "required": [
-          "UonsketHendelseRefnr"
-        ],
-        "type": "object",
-        "properties": {
-          "UonsketHendelseRefnr": {
-            "minLength": 1,
-            "type": "string",
-            "description": "Referansenummer til den uønskede hendelsen man vil opprette dialog for"
-          },
-          "Meldingstekst": {
-            "type": "string",
-            "description": "Teksten i den første meldingen",
-            "nullable": true
-          },
-          "Vedlegg": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.VedleggVigisec"
-            },
-            "description": "Vedlegg",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Melde.WebApi.Controllers.OpprettDialogMeldingInfoVS": {
-        "required": [
-          "Meldingstekst"
-        ],
-        "type": "object",
-        "properties": {
-          "DialogRefnr": {
-            "type": "string",
-            "description": "Referansenummer til dialogen meldingen skal opprettes i",
-            "nullable": true
-          },
-          "Meldingstekst": {
-            "minLength": 1,
-            "type": "string",
-            "description": "Teksten i meldingen"
-          },
-          "VarsleMottaker": {
-            "type": "boolean",
-            "description": "Hvis denne er false, ikke send varsel-mail til mottaker",
-            "nullable": true
-          },
-          "Vedlegg": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.VedleggVigisec"
-            },
-            "description": "Vedlegg",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "Microsoft.AspNetCore.Mvc.ProblemDetails": {
         "type": "object",
         "properties": {
@@ -4984,6 +4871,50 @@
         ],
         "type": "integer",
         "format": "int32"
+      },
+      "System.Net.ServerSentEvents.SseItem`1[[Melde.DTO.SseEvents.DeliveryEventMessage, Melde.DTO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "Data": {
+            "$ref": "#/components/schemas/Melde.DTO.SseEvents.DeliveryEventMessage"
+          },
+          "EventType": {
+            "type": "string",
+            "nullable": true
+          },
+          "EventId": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReconnectionInterval": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "System.Net.ServerSentEvents.SseItem`1[[Melde.DTO.SseEvents.DialogEventMessage, Melde.DTO, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]": {
+        "type": "object",
+        "properties": {
+          "Data": {
+            "$ref": "#/components/schemas/Melde.DTO.SseEvents.DialogEventMessage"
+          },
+          "EventType": {
+            "type": "string",
+            "nullable": true
+          },
+          "EventId": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReconnectionInterval": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
@@ -5000,7 +4931,7 @@
   ],
   "tags": [
     {
-      "name": "AdverseIncident",
+      "name": "Adverse Incident Reporting",
       "description": "Adverse incident reporting API version 2 accepts DPoP access tokens only"
     },
     {
@@ -5010,10 +4941,6 @@
     {
       "name": "Dialog",
       "description": "Dialog API version 2 accepts DPoP access tokens only"
-    },
-    {
-      "name": "EksternDialogForVigisec",
-      "description": "Tilbyr tjenester for å føre dialog.\r\nUnder utfasing, bruk api/v2/dialog endepunkter istedet"
     },
     {
       "name": "Nokup",

@@ -24,7 +24,7 @@
 		<OpenApiReference Include="OpenAPI\swagger.json" CodeGenerator="NSwagCSharp" Namespace="MeldeV2">
 			<!--<SourceUri>https://api.qa.melde.no/swagger/index.html?url=/swagger/External/v1/swagger.json</SourceUri>-->
 			<ClassName>{controller}Client</ClassName>
-			<Options>/useBaseUrl:false /GenerateClientInterfaces:false /GenerateExceptionClasses:false /AdditionalNamespaceUsages:OpenAPI</Options>
+			<Options>/useBaseUrl:false /GenerateClientInterfaces:false /GenerateExceptionClasses:false /AdditionalNamespaceUsages:OpenAPI /JsonLibrary:SystemTextJson</Options>
 		</OpenApiReference>
 	</ItemGroup>
 </Project>

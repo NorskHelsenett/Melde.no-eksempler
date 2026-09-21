@@ -1,40 +1,56 @@
 ﻿using Example.Configuration;
 using MeldeV2;
 using OpenAPI;
+using System.Text.Json;
 
 namespace Example.Delivery;
 
 class Program
 {
     static Client? _deliveryClient;
+    static HttpClient? _httpClient; 
 
     static async Task Main(string[] args)
     {
+        int i = 0;
+        int max = 1;
         try
         {
-            var httpClient = CreateClient(["nhn:melde/delivery/full-access"]);
-            _deliveryClient = new Client(httpClient);
+            _httpClient = CreateClient(["nhn:melde/delivery/full-access"]);
+            _deliveryClient = new Client(_httpClient);
 
             // Call API, wait for response
-            var response = await _deliveryClient.ListAsync(null);
-
-            var reportRef = response.ReportRefs.FirstOrDefault()!.ReportRef;
-
-            //var r = await httpClient.GetAsync($"api/v2/Delivery/report/{reportRef}");
-            //var rc = await r.Content.ReadAsStringAsync();
-            //var js = JsonSerializer.Deserialize<ReportDeliveryResponse>(rc);
-
-            var response2 = await _deliveryClient.ReportAsync(reportRef);
-
-            foreach(var attachmentRef in response2.Header.AttachmentRefs)
+            ReportInfoList listResponse = new();
+            
+            for(i=0; i < max; i++)
             {
-                var file = await _deliveryClient.AttachmentAsync(reportRef, attachmentRef.AttachmentRef);
+                listResponse = await _deliveryClient.ListAsync(null, null);
+            }
 
-                Console.WriteLine();
+            if (listResponse.ReportInfos.Any())
+            {
+                var reportRef = listResponse.ReportInfos.FirstOrDefault()!.ReportRef;
+                var getResponse = await _httpClient.GetAsync($"api/v2/Delivery/report/{reportRef}");
+                var getResponseContent = await getResponse.Content.ReadAsStringAsync();
+                var report = JsonSerializer.Deserialize<ReportDeliveryResponse>(getResponseContent);
+
+                // Use generated client stub
+                //var report = await _deliveryClient.ReportAsync(reportRef, false);
+
+                foreach (var attachmentRef in report!.Header.AttachmentRefs)
+                {
+                    var file = await _deliveryClient.AttachmentAsync(reportRef, attachmentRef.AttachmentRef);
+
+
+                    Console.WriteLine();
+                }
+
+                // Mark resport as read
+                await _deliveryClient.MarkAsReadAsync(reportRef);
             }
 
             // Listen for events (SSE)
-            var sseClient = new SseClient(httpClient);
+            var sseClient = new SseClient(_httpClient);
             while (true)
             {
                 try
@@ -46,7 +62,7 @@ class Program
                     Console.WriteLine("Cancelled");
                     break;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     Console.WriteLine("Disconnected. Try again");
                     await Task.Delay(5000);
@@ -68,19 +84,27 @@ class Program
         if (deliveryEvent.EventType == "clientRegistered")
         {
             Console.WriteLine("Get all unread dialogs");
-            var unfetchedReports = await _deliveryClient!.ListAsync(null);
-            foreach (var reportRef in unfetchedReports.ReportRefs)
+            var unfetchedReports = await _deliveryClient!.ListAsync(null, null);
+            foreach (var reportInfo in unfetchedReports.ReportInfos)
             {
-                Console.WriteLine($"Unfetched report {reportRef}");
+                Console.WriteLine($"Unfetched report {reportInfo.ReportRef}");
             }
         }
 
         if(deliveryEvent.EventType == "newReport" && !string.IsNullOrEmpty(deliveryEvent.ReportRef))
         {
+            //Console.WriteLine("Wait");
+            //await Task.Delay(5000);
+
             // Get report
-            var report = await _deliveryClient!.ReportAsync(deliveryEvent.ReportRef);
+            //var report = await _deliveryClient!.ReportAsync(deliveryEvent.ReportRef, false);
+            var r = await _httpClient!.GetAsync($"api/v2/Delivery/report/{deliveryEvent.ReportRef}");
+            var reportJson = await r.Content.ReadAsStringAsync();
+            var report = JsonSerializer.Deserialize<ReportDeliveryResponse>(reportJson) ?? new();
 
             Console.WriteLine($"New report fetched: {report.Header.ReportRef}");
+
+            await _deliveryClient.MarkAsReadAsync(deliveryEvent.ReportRef);
         }
     }
 

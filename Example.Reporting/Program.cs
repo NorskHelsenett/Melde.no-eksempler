@@ -35,7 +35,7 @@ class Program
                 ExternalCaseId = Guid.NewGuid().ToString(),
                 Reporter = new AdverseIncidentReporterPart
                 {
-                    Nin = "13075706604",
+                    Nin = "27849498814",
                     Email = "TestData@melde.no",
                     Phone = "99999999",
                     Organization = new OrganizationPart
@@ -48,24 +48,24 @@ class Program
                 },
                 Incident = new AdverseIncidentIncidentPart
                 {
-                    IncidentDescription = "Datt på rattata",
+                    IncidentDescription = "Datt på rattata. Noen flere tegn: < > &",
                     IncidentDate = "2021-07-13",
                     DateUnknown = YesNo.No,
                 },
-                //Patient = new AdverseIncidentPatientPart
-                //{
-                //    //DateOfBirth = "1990-07-13",
-                //    //Gender = Gender.Male,
-                //    Nin = "13075706604"
-                //},
+                Patient = new AdverseIncidentPatientPart
+                {
+                    DateOfBirth = "1990-07-13",
+                    Gender = Gender.Male,
+                    //Nin = "13075706604"
+                },
                 ReportAreas = new AdverseIncidentReportAreasPart
                 {
                     DrugSideEffects = false,
-                    MedicalEquipment = true,
+                    MedicalEquipment = false,
                     SeriousIncident = false,
                     DietarySupplements = false,
                     Biovigilance = false,
-                    Cosmetics = false,
+                    Cosmetics = true,
                     ECigarette = false,
                     Radiation = false
                 },
@@ -183,7 +183,8 @@ class Program
                     NkknCategory = NkknCategory.ElectroMechanicEquipment,
                     EquipmentLocation = EquipmentLocation.Healthcare,
                     IncidentClassification = IncidentClassification.MayHaveCausedDeathOrSeriousDeterioration,
-                }
+                },
+                Radiation = new()
             }
         };
 
@@ -216,7 +217,7 @@ class Program
                 );
             }
 
-            var response2 = await httpClient.PostAsync($"api/v2/report/adverse-incident-multipart", content);
+            var response2 = await httpClient.PostAsync($"api/v2/report/adverse-incident", content);
             var respCont = await response2.Content.ReadAsStringAsync();
         }
         catch (ApiException ex)
@@ -263,5 +264,28 @@ public static class StreamContentExtension
     {
         content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
         return content;
+    }
+}
+
+public class FeedbackSender
+{
+    HttpClient _httpClient;
+
+    public FeedbackSender(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+    public async Task<System.Net.HttpStatusCode> Post(string email, string reportArea, string content)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Post, "api/v2/feedback");
+        var payload = new { ReporterEmail = email, ReportAreaName = reportArea, Content = content };
+        request.Content = JsonContent.Create(payload);
+
+        using var response = await _httpClient.SendAsync(
+            request,
+            HttpCompletionOption.ResponseHeadersRead);
+
+        return response.StatusCode;
     }
 }

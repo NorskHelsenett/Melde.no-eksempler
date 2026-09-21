@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Net.ServerSentEvents;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -14,7 +15,7 @@ namespace Example.Dialog;
 /// <summary>
 /// Event type
 /// </summary>
-public record DialogEventMessage(string EventType, string DialogRef, string ReportRef);
+public record DialogEventMessage(int ReportArea, string EventType, string DialogRef, string ReportRef, bool? HasUnreadMessages);
 
 
 /// <summary>
@@ -49,16 +50,11 @@ class SseClient
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
         using var reader = new StreamReader(stream, Encoding.UTF8);
 
-        while (!cancellationToken.IsCancellationRequested)
+        await foreach (var item in SseParser.Create(stream).EnumerateAsync(cancellationToken))
         {
-            var line = await reader.ReadLineAsync(cancellationToken);
-            if (string.IsNullOrEmpty(line))
-            {
-                continue;
-            }
+            Console.WriteLine($"Event type: {item.EventType}, Data: {item.Data}");
 
-            Console.WriteLine($"Event: {line}");
-            var sseEvent = JsonSerializer.Deserialize<DialogEventMessage>(line, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var sseEvent = JsonSerializer.Deserialize<DialogEventMessage>(item.Data, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             await eventHandler.Invoke(sseEvent!);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Net.ServerSentEvents;
 using System.Text;
 using System.Text.Json;
 
@@ -7,7 +8,7 @@ namespace Example.Delivery;
 /// <summary>
 /// Event type
 /// </summary>
-public record DeliveryEventMessage(string EventType, string ReportRef);
+public record DeliveryEventMessage(int reportArea, string EventType, string ReportRef, bool? HasNewReports);
 
 
 /// <summary>
@@ -42,16 +43,11 @@ class SseClient
         using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
         using var reader = new StreamReader(stream, Encoding.UTF8);
 
-        while (!cancellationToken.IsCancellationRequested)
+        await foreach (var item in SseParser.Create(stream).EnumerateAsync(cancellationToken))
         {
-            var line = await reader.ReadLineAsync(cancellationToken);
-            if (string.IsNullOrEmpty(line))
-            {
-                continue;
-            }
+            Console.WriteLine($"Event type: {item.EventType}, Data: {item.Data}");
 
-            Console.WriteLine($"Event: {line}");
-            var sseEvent = JsonSerializer.Deserialize<DeliveryEventMessage>(line, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var sseEvent = JsonSerializer.Deserialize<DeliveryEventMessage>(item.Data, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             await eventHandler.Invoke(sseEvent!);
         }
     }
