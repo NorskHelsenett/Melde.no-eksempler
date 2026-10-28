@@ -1,13 +1,12 @@
 ﻿using Example.Configuration;
-using MeldeV2;
 using OpenAPI;
-using System.Text.Json;
+using System.Net.Mime;
+using System.Text;
 
 namespace Example.Delivery;
 
 class Program
 {
-    static Client? _deliveryClient;
     static HttpClient _httpClient = new();
 
     static async Task Main(string[] args)
@@ -15,15 +14,14 @@ class Program
         try
         {
             _httpClient = CreateClient(["nhn:melde/delivery/full-access"]);
-            _deliveryClient = new Client(_httpClient);
 
             // Listen for events (SSE)
-            var sseClient = new SseClient(_httpClient);
             while (true)
             {
                 try
                 {
-                    await sseClient.ListenAsync("api/v2/delivery/events", HandleEvents);
+                    ApiClient apiClient = new(_httpClient);
+                    await apiClient.ListenForEvents(HandleEvents);
                 }
                 catch (OperationCanceledException)
                 {
@@ -54,10 +52,11 @@ class Program
     {
         Console.WriteLine($"New event: {deliveryEvent.EventType}");
 
+        ApiClient apiClient = new(_httpClient);
         if (deliveryEvent.EventType == "clientRegistered")
         {
             Console.WriteLine("Get all unread dialogs");
-            var unfetchedReports = await _deliveryClient!.ListAsync(null, null);
+            var unfetchedReports = await apiClient.ListReports(null, null);
             foreach (var reportInfo in unfetchedReports.ReportInfos)
             {
                 // Get report
@@ -88,6 +87,10 @@ class Program
         {
             var att = await apiClient.DownloadAttachment(reportRef, attachmentRef.AttachmentRef);
             Console.WriteLine($"  Attachment: Name={att.FileName}, ContentType={att.ContentType}, Size={att.Content.Length}");
+            if(att.ContentType == MediaTypeNames.Text.Plain)
+            {
+                Console.WriteLine($"      Content={Encoding.UTF8.GetString(att.Content)}");
+            }
         }
 
         // Mark report as read

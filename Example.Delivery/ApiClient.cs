@@ -1,7 +1,15 @@
 ﻿using MeldeV2;
+using System.Net.Mime;
+using System.Net.ServerSentEvents;
+using System.Text;
 using System.Text.Json;
 
 namespace Example.Delivery;
+
+/// <summary>
+/// Event type
+/// </summary>
+internal record DeliveryEventMessage(int reportArea, string EventType, string ReportRef, bool? HasNewReports);
 
 internal class ApiClient
 {
@@ -10,6 +18,48 @@ internal class ApiClient
     public ApiClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
+    }
+
+    public async Task ListenForEvents(
+        Func<DeliveryEventMessage, Task> eventHandler,
+        CancellationToken cancellationToken = default)
+    {
+        // Make request, get the stream
+        using var request = new HttpRequestMessage(HttpMethod.Get, "api/v2/delivery/events");
+        request.Headers.Accept.Clear();
+        request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.EventStream));
+
+        using var response = await _httpClient.SendAsync(
+            request,
+            HttpCompletionOption.ResponseHeadersRead,
+            cancellationToken);
+
+        response.EnsureSuccessStatusCode();
+
+        using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+        using var reader = new StreamReader(stream, Encoding.UTF8);
+
+        await foreach (var item in SseParser.Create(stream).EnumerateAsync(cancellationToken))
+        {
+            Console.WriteLine($"Event type: {item.EventType}, Data: {item.Data}");
+
+            var sseEvent = JsonSerializer.Deserialize<DeliveryEventMessage>(item.Data, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            await eventHandler.Invoke(sseEvent!);
+        }
+    }
+
+    public async Task<ReportInfoList> ListReports(int? reportArea, string? fromDate)
+    {
+        List<string> queryParamsList = new();
+        if (reportArea is not null) queryParamsList.Add($"reportArea={reportArea}");
+        if (fromDate is not null) queryParamsList.Add($"fromDate={fromDate}");
+
+        var queryParams = queryParamsList.Any() ? "?" + string.Join("&", queryParamsList) : "";
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, "api/v2/delivery/list" + queryParams);
+        var response = await _httpClient.SendAsync(requestMessage);
+        var getResponseContent = await response.Content.ReadAsStringAsync();
+        var list = JsonSerializer.Deserialize<ReportInfoList>(getResponseContent);
+        return list!;
     }
 
     public async Task<ReportDeliveryResponse?> DownloadReport(string reportRef)

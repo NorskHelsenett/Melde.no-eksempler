@@ -1056,8 +1056,7 @@
             "format": "int32"
           },
           "EventType": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/Melde.ServiceModel.Events.DeliveryEventType"
           },
           "ReportRef": {
             "type": "string",
@@ -1078,8 +1077,7 @@
             "format": "int32"
           },
           "EventType": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/Melde.ServiceModel.Events.DialogEventType"
           },
           "DialogRef": {
             "type": "string",
@@ -1145,15 +1143,6 @@
             "description": "List of contact persons",
             "nullable": true
           },
-          "Attachments": {
-            "maxItems": 5,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AttachmentPart"
-            },
-            "description": "Attachments",
-            "nullable": true
-          },
           "ReportAreas": {
             "$ref": "#/components/schemas/Melde.DTO.V10.AdverseIncidentRequest.AdverseIncidentReportAreasPart"
           }
@@ -1178,6 +1167,20 @@
             "description": "Incident date. Required for report area Medical equipment",
             "nullable": true,
             "example": "2020-03-12"
+          },
+          "IncidentCountyId": {
+            "maxLength": 3,
+            "type": "string",
+            "description": "Incident county id",
+            "nullable": true,
+            "example": "Troms"
+          },
+          "IncidentCountyName": {
+            "maxLength": 50,
+            "type": "string",
+            "description": "Incident county name",
+            "nullable": true,
+            "example": "Troms"
           },
           "DateUnknown": {
             "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
@@ -1473,7 +1476,10 @@
               "type": "string"
             },
             "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\nReturnerer en liste med valgte koder.",
-            "example": "['3.2.2', '3.4.3']"
+            "example": [
+              "3.2.2",
+              "3.4.3"
+            ]
           },
           "Preventability": {
             "maxLength": 10,
@@ -1557,7 +1563,10 @@
             },
             "description": "Tilleggsinfo: CellerOgVevKode",
             "nullable": true,
-            "example": "['7', '8']"
+            "example": [
+              "7",
+              "8"
+            ]
           },
           "DefinitionCode": {
             "pattern": "^([1-4]|99)$",
@@ -1589,7 +1598,10 @@
             },
             "description": "Tilleggsinfo: HvaGikkGaltKode",
             "nullable": true,
-            "example": "['11', '12']"
+            "example": [
+              "11",
+              "12"
+            ]
           },
           "DiscoveredCode": {
             "pattern": "^([1-5]|99)$",
@@ -1614,7 +1626,10 @@
             },
             "description": "Tilleggsinfo: OrganKode",
             "nullable": true,
-            "example": "['7', '8']"
+            "example": [
+              "7",
+              "8"
+            ]
           },
           "ReactionStartedLocationCode": {
             "pattern": "^[1-3]$",
@@ -1646,7 +1661,10 @@
             },
             "description": "Tilleggsinfo: SymptomKode",
             "nullable": true,
-            "example": "['4', '5']"
+            "example": [
+              "4",
+              "5"
+            ]
           },
           "TapTypeCode": {
             "pattern": "^([0-3]|99)$",
@@ -1671,7 +1689,10 @@
             },
             "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
             "nullable": true,
-            "example": "['0', '1']"
+            "example": [
+              "0",
+              "1"
+            ]
           },
           "MeasuresCode": {
             "pattern": "^[1-6]$",
@@ -1682,7 +1703,10 @@
             },
             "description": "Tilleggsinfo: TiltakKode",
             "nullable": true,
-            "example": "['4', '5']"
+            "example": [
+              "4",
+              "5"
+            ]
           },
           "TransfusionCode": {
             "pattern": "^[0-5]$",
@@ -1715,6 +1739,55 @@
             "type": "string",
             "description": "Smittestoff tekst",
             "nullable": true
+          },
+          "PrpMeasuresCode": {
+            "pattern": "^[1-5]$",
+            "maxItems": 5,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tillegsinfo: PrpTiltakkode",
+            "nullable": true,
+            "example": [
+              "4",
+              "5"
+            ]
+          },
+          "PrpTapTypeCode": {
+            "pattern": "^([1-3])$",
+            "type": "string",
+            "description": "Tilleggsinfo: PrpTappetypeKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "PrpReactionStartedLocationCode": {
+            "pattern": "^[1-3]$",
+            "type": "string",
+            "description": "Tilleggsinfo: PrpReaksjonStartetHvorKode",
+            "nullable": true,
+            "example": "3"
+          },
+          "PrpDefinitionCode": {
+            "pattern": "^([1-2])$",
+            "type": "string",
+            "description": "Tilleggsinfo: PrpDefinisjonKode",
+            "nullable": true,
+            "example": "1"
+          },
+          "PrpBloodProductCode": {
+            "pattern": "^([1-3])$",
+            "type": "string",
+            "description": "Tilleggsinfo: BlodproduktKode",
+            "nullable": true,
+            "example": "2"
+          },
+          "PrpTransfusionCode": {
+            "pattern": "^[1-8]$",
+            "type": "string",
+            "description": "Tilleggsinfo: PrpTransfusjonsindikasjonKode",
+            "nullable": true,
+            "example": "2"
           }
         },
         "additionalProperties": false,
@@ -2815,7 +2888,10 @@
             },
             "description": "Medvirkende faktorer (kode 3.x...). Obligatorisk\nReturnerer en liste med valgte koder.",
             "nullable": true,
-            "example": "['3.2.2', '3.4.3']"
+            "example": [
+              "3.2.2",
+              "3.4.3"
+            ]
           },
           "Preventability": {
             "type": "string",
@@ -2884,7 +2960,10 @@
             },
             "description": "Tilleggsinfo: CellerOgVevKode",
             "nullable": true,
-            "example": "['7', '8']"
+            "example": [
+              "7",
+              "8"
+            ]
           },
           "DefinitionCode": {
             "type": "string",
@@ -2911,7 +2990,10 @@
             },
             "description": "Tilleggsinfo: HvaGikkGaltKode",
             "nullable": true,
-            "example": "['11', '12']"
+            "example": [
+              "11",
+              "12"
+            ]
           },
           "DiscoveredCode": {
             "type": "string",
@@ -2932,7 +3014,10 @@
             },
             "description": "Tilleggsinfo: OrganKode",
             "nullable": true,
-            "example": "['7', '8']"
+            "example": [
+              "7",
+              "8"
+            ]
           },
           "ReactionStartedLocationCode": {
             "type": "string",
@@ -2959,7 +3044,10 @@
             },
             "description": "Tilleggsinfo: SymptomKode",
             "nullable": true,
-            "example": "['4', '5']"
+            "example": [
+              "4",
+              "5"
+            ]
           },
           "TapTypeCode": {
             "type": "string",
@@ -2980,7 +3068,10 @@
             },
             "description": "Tilleggsinfo: TilleggsinfoBlodproduktKode",
             "nullable": true,
-            "example": "['0', '1']"
+            "example": [
+              "0",
+              "1"
+            ]
           },
           "MeasuresCode": {
             "type": "array",
@@ -2989,7 +3080,10 @@
             },
             "description": "Tilleggsinfo: TiltakKode",
             "nullable": true,
-            "example": "['4', '5']"
+            "example": [
+              "4",
+              "5"
+            ]
           },
           "TransfusionCode": {
             "type": "string",
@@ -3815,6 +3909,18 @@
             "nullable": true,
             "example": "2020-03-12"
           },
+          "IncidentCountyId": {
+            "type": "string",
+            "description": "Incident county id",
+            "nullable": true,
+            "example": "Troms"
+          },
+          "IncidentCountyName": {
+            "type": "string",
+            "description": "Incident county name",
+            "nullable": true,
+            "example": "Troms"
+          },
           "DateUnknown": {
             "$ref": "#/components/schemas/Melde.Felles.Enums.YesNo"
           },
@@ -4120,6 +4226,11 @@
             "description": "Phone number.\nRequired for report areas Serious incident, Cosmetics, Diatary supplements, Drug side effects and medical equipments",
             "nullable": true,
             "example": "12345678"
+          },
+          "County": {
+            "type": "string",
+            "description": "Reporter's county",
+            "nullable": true
           },
           "Qualification": {
             "$ref": "#/components/schemas/Melde.DTO.V10.Enums.Qualification"
@@ -4741,6 +4852,10 @@
             "type": "string",
             "nullable": true
           },
+          "NameEnglish": {
+            "type": "string",
+            "nullable": true
+          },
           "InputType": {
             "$ref": "#/components/schemas/Melde.Service.Services.OptionType"
           },
@@ -4774,6 +4889,26 @@
           1,
           2,
           3
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Melde.ServiceModel.Events.DeliveryEventType": {
+        "enum": [
+          0,
+          1,
+          99
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Melde.ServiceModel.Events.DialogEventType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          99
         ],
         "type": "integer",
         "format": "int32"
