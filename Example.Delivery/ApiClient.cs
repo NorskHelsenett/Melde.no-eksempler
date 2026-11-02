@@ -84,18 +84,12 @@ internal class ApiClient
 
     public async Task<Attachment> DownloadAttachment(string reportRef, string attachmentRef)
     {
-        var requestMessage = new HttpRequestMessage(HttpMethod.Get, $"api/v2/delivery/report/{reportRef}/attachment/{attachmentRef}");
-        var response = await _httpClient.SendAsync(requestMessage);
+        return await DownloadFile($"api/v2/delivery/report/{reportRef}/attachment/{attachmentRef}");
+    }
 
-        var fileName = response.Content.Headers.ContentDisposition?.FileNameStar
-         ?? response.Content.Headers.ContentDisposition?.FileName
-         ?? $"file-{Guid.NewGuid()}";
-
-        var contentType = response.Content.Headers.ContentType?.MediaType ?? "application/octet-stream";
-
-        byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
-
-        return new Attachment(fileName, contentType, fileBytes);
+    public async Task<Attachment> DownloadPdf(string reportRef)
+    {
+        return await DownloadFile($"api/v2/delivery/report/{reportRef}/pdf");
     }
 
     public async Task<bool> MarkReportAsRead(string reportRef)
@@ -103,5 +97,21 @@ internal class ApiClient
         var requestMessage = new HttpRequestMessage(HttpMethod.Patch, $"api/v2/delivery/report/{reportRef}/markAsRead");
         var response = await _httpClient.SendAsync(requestMessage);
         return response.IsSuccessStatusCode;
+    }
+
+    private async Task<Attachment> DownloadFile(string url)
+    {
+        var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+        var response = await _httpClient.SendAsync(requestMessage);
+
+        var fileName = response.Content.Headers.ContentDisposition?.FileNameStar
+         ?? response.Content.Headers.ContentDisposition?.FileName
+         ?? $"file-{Guid.NewGuid()}";
+
+        var contentType = response.Content.Headers.ContentType?.MediaType ?? MediaTypeNames.Application.Octet;
+
+        byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+
+        return new Attachment(fileName, contentType, fileBytes);
     }
 }
