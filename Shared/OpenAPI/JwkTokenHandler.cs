@@ -59,7 +59,7 @@ namespace OpenAPI
             {
                 IssuerUri = stsUrl,
                 ClientId = clientId,
-                Scope = string.Join(",", scopes),
+                Scope = string.Join(" ", scopes),
             };
 
             services.AddHelseIdClientCredentials(config)
