@@ -1,7 +1,6 @@
 ﻿using Example.Configuration;
 using MeldeV2;
 using OpenAPI;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -198,33 +197,14 @@ class Program
         {
             //call API, wait for response
             var httpClient = CreateClient(["nhn:melde/report/send"]);
-            var apiClient = new Client(httpClient);
+            var apiClient = new ApiClient(httpClient);
 
-            // Upload form and files
-            using var content = new MultipartFormDataContent();
-
-            content.Add(
-                content: JsonContent.Create(requestData, options: new JsonSerializerOptions { PropertyNamingPolicy = null }),
-                name: "adverseIncidentRequest"
-            );
-
-            foreach(var attachment in attachments)
-            {
-                var fileStream = new MemoryStream(Convert.FromBase64String(attachment.Content));
-                content.Add(
-                    content: new StreamContent(fileStream).WithContentType(attachment.ContentType),
-                    name: "attachments",              // MUST match parameter name
-                    fileName: attachment.Name
-                );
-            }
-
-            var response2 = await httpClient.PostAsync($"api/v2/report/adverse-incident", content);
-            var respCont = await response2.Content.ReadAsStringAsync();
+            var response = await apiClient.ReportAdverseIncident(requestData, attachments);
+            Console.WriteLine(response);
         }
-        catch (ApiException ex)
+        catch (Exception ex)
         {
             Console.WriteLine("-- Feil");
-            Console.WriteLine($"HTTP statuskode: {ex.StatusCode}");
             Console.WriteLine($"Feilemdling: {ex.Message}");
         }
     }
@@ -256,15 +236,6 @@ class Program
         };
 
         return httpClient;
-    }
-}
-
-public static class StreamContentExtension
-{
-    public static StreamContent WithContentType(this StreamContent content, string contentType)
-    {
-        content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-        return content;
     }
 }
 
