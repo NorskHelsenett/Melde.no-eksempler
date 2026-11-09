@@ -3,9 +3,6 @@ using MeldeV2;
 using OpenAPI;
 using System;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Example.Dialog
@@ -15,12 +12,12 @@ namespace Example.Dialog
         const string UONSKET_HENDELSE_REF = "Vbkdzbp";
         const bool CREATE_DIALOG = true;
 
-        static Client _dialogClient = null;
+        static ApiClient _dialogClient = null;
 
         static async Task Main(string[] args)
         {
             var httpClient = CreateClient(["nhn:melde/dialog/opprett", "nhn:melde/dialog/melding"]);
-            _dialogClient = new Client(httpClient);
+            _dialogClient = new ApiClient(httpClient);
 
             //
             // Check dialog existence
@@ -28,12 +25,11 @@ namespace Example.Dialog
             string dialogRef = null;
             try
             {
-                var response = await _dialogClient.DialogGETAsync(UONSKET_HENDELSE_REF);
-                dialogRef = response.DialogRef;
+                var response = await _dialogClient.GetDialog(UONSKET_HENDELSE_REF);
+                dialogRef = response?.DialogRef;
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e.StatusCode);
                 Console.WriteLine(e.Message);
             }
 
@@ -49,12 +45,11 @@ namespace Example.Dialog
                         ReportRef = UONSKET_HENDELSE_REF,
                     };
 
-                    var createdResponse = await _dialogClient.DialogPOSTAsync(createPayload);
+                    var createdResponse = await _dialogClient.CreateDialog(createPayload);
                     dialogRef = createdResponse.DialogRef;
                 }
-                catch (ApiException e)
+                catch (Exception e)
                 {
-                    Console.WriteLine(e.StatusCode);
                     Console.WriteLine(e.Message);
                 }
             }
@@ -88,22 +83,10 @@ namespace Example.Dialog
                     ]
                 };
 
-                // Generated client
-                //var messageResponse = await _dialogClient.MessagePOSTAsync(messagePayload);
-
-                using var request = new HttpRequestMessage(HttpMethod.Post, "api/v2/dialog/message");
-                request.Content = JsonContent.Create(messagePayload);
-
-#if true
-                using var response = await httpClient.SendAsync(
-                    request,
-                    HttpCompletionOption.ResponseHeadersRead);
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-#endif
+                var messageResponse = await _dialogClient.SendMessage(messagePayload);
             }
-            catch (ApiException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e.StatusCode);
                 Console.WriteLine(e.Message);
             }
 
@@ -137,11 +120,11 @@ namespace Example.Dialog
                 if(dialogEvent.HasUnreadMessages ?? false)
                 {
                     Console.WriteLine("Get all unread dialogs");
-                    var unreadDialogs = await _dialogClient.UnreadsAsync();
+                    var unreadDialogs = await _dialogClient.GetUnreadDialogs();
                     foreach (var dialogRef in unreadDialogs.DialogRefs)
                     {
                         await ReadMessages(dialogRef);
-                        await _dialogClient.MarkAsRead2Async(dialogRef);
+                        await _dialogClient.MarkAsRead(dialogRef);
                     }
                 }
             }
@@ -150,7 +133,7 @@ namespace Example.Dialog
                 if (!string.IsNullOrEmpty(dialogEvent.DialogRef))
                 {
                     await ReadMessages(dialogEvent.DialogRef);
-                    await _dialogClient.MarkAsRead2Async(dialogEvent.DialogRef);
+                    await _dialogClient.MarkAsRead(dialogEvent.DialogRef);
                 }
             }
             else if(dialogEvent.EventType == "readMessages")
@@ -165,7 +148,7 @@ namespace Example.Dialog
 
         private static async Task ReadMessages(string dialogRef)
         {
-            var unreadMessages = await _dialogClient.MessageGETAsync(dialogRef, false, false);
+            var unreadMessages = await _dialogClient.GetUnreadMessages(dialogRef);
 
             Console.WriteLine($"{unreadMessages.Messages.Count} new messages");
 
