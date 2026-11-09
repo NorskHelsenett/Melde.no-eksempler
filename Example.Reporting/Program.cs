@@ -35,6 +35,7 @@ class Program
                 ExternalCaseId = Guid.NewGuid().ToString(),
                 Reporter = new AdverseIncidentReporterPart
                 {
+                    Name = "Balle Clorin",
                     Nin = "27849498814",
                     Email = "TestData@melde.no",
                     Phone = "99999999",
@@ -54,20 +55,20 @@ class Program
                 },
                 Patient = new AdverseIncidentPatientPart
                 {
-                    DateOfBirth = "1990-07-13",
-                    Gender = Gender.Male,
-                    //Nin = "13075706604"
+                    DateOfBirth = "1981-10-24",
+                    Gender = Gender.Female,
+                    Nin = "24908196046"
                 },
                 ReportAreas = new AdverseIncidentReportAreasPart
                 {
                     DrugSideEffects = false,
                     MedicalEquipment = false,
-                    SeriousIncident = false,
+                    SeriousIncident = true,
                     DietarySupplements = false,
                     Biovigilance = false,
-                    Cosmetics = true,
+                    Cosmetics = false,
                     ECigarette = false,
-                    Radiation = false
+                    Radiation = true
                 },
                 ContactPersons = new List<ContactPersonPart>
                 {

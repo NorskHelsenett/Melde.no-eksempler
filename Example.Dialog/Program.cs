@@ -12,7 +12,7 @@ namespace Example.Dialog
 {
     class Program
     {
-        const string UONSKET_HENDELSE_REF = "Vpk3qkx";
+        const string UONSKET_HENDELSE_REF = "Vbkdzbp";
         const bool CREATE_DIALOG = true;
 
         static Client _dialogClient = null;
