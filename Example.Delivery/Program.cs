@@ -108,9 +108,13 @@ class Program
             ServerCertificateCustomValidationCallback = (message, cert, chain, errors) =>
             {
                 // Accept even if the certificate is expired. For test environments only.
-                if (errors == System.Net.Security.SslPolicyErrors.None ||
-                    (errors & System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors) == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
-                    (errors & System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch) == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch)
+                if (errors == System.Net.Security.SslPolicyErrors.None)
+                {
+                    return true;
+                }
+                else if (Config.SkipCertificateValidation &&
+                    ((errors & System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors) == System.Net.Security.SslPolicyErrors.RemoteCertificateChainErrors ||
+                    (errors & System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch) == System.Net.Security.SslPolicyErrors.RemoteCertificateNameMismatch))
                 {
                     return true;
                 }

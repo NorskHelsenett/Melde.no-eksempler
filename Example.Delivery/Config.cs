@@ -9,6 +9,8 @@ namespace Example.Configuration
 
         public static Uri ApiUri => SharedConfig.GetApiUri(Env.LOCAL);
 
+        public static bool SkipCertificateValidation => false;
+
         public static string ClientId => "<Client id>";
 
         public static string Jwk => "";
