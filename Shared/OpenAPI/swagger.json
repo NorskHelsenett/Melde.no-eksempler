@@ -4274,6 +4274,9 @@
       "Melde.DTO.V10.Delivery.ReporterPart": {
         "type": "object",
         "properties": {
+          "ReporterType": {
+            "$ref": "#/components/schemas/Melde.DTO.V10.Enums.ReporterType"
+          },
           "Nin": {
             "type": "string",
             "description": "Social security number",
@@ -4787,6 +4790,17 @@
         ],
         "type": "string",
         "description": "Avaliable reporter roles"
+      },
+      "Melde.DTO.V10.Enums.ReporterType": {
+        "enum": [
+          "Unknown",
+          "HealthcarePersonnel",
+          "Patient",
+          "NextOfKin",
+          "ExternalSystem"
+        ],
+        "type": "string",
+        "description": "Reporter type"
       },
       "Melde.DTO.V10.Enums.SalesChannel": {
         "enum": [
